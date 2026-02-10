@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import image404 from "@/assets/img/404.png";
+import "./globals.css";
 
 export default function NotFound() {
   const t = useTranslations("NotFound");

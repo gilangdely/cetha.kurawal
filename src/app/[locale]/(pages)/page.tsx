@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import HeroSection from "@/components/sections/HeroSection";
 import AdventagesSection from "@/components/sections/AdventagesSection";

@@ -9,5 +9,11 @@
       "jobMatch": "Job recommendations based on your skills"
     },
     "imageAlt": "CV building illustration"
+  },
+
+  "NotFound": {
+    "title": "Error 404: Page Not Found!",
+    "description": "We’ve looked everywhere, but couldn’t find the page you were looking for.",
+    "back": "Back to Home"
   }
 }
