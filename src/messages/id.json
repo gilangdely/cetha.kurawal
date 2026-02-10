@@ -1,0 +1,21 @@
+{
+  "Hero": {
+    "headlineHighlight": "Upgrade CV, upgrade karier.",
+    "headlineText": "Platform pintar buat kamu yang mau naik level dan dapet kerja lebih cepat.",
+    "description": "Cetha bantu kamu bikin CV standout, optimalkan profil, dan temukan kerjaan yang pas semuanya di satu tempat.",
+    "cta": "Mulai Sekarang",
+    "benefits": {
+      "freeTrial": "Coba gratis tanpa ribet",
+      "jobMatch": "Rekomendasi kerja sesuai skill"
+    },
+    "imageAlt": "Ilustrasi membangun CV"
+  },
+  
+  "NotFound": {
+    "title": "Error 404: Halaman Tidak Ditemukan!",
+    "description": "Kami sudah mencari ke mana pun, tapi tidak menemukan halaman yang kamu maksud.",
+    "back": "Kembali ke Halaman Utama"
+  }
+
+
+}

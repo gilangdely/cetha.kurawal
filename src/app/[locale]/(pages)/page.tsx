@@ -1,3 +1,5 @@
+"use client"
+
 import HeroSection from "@/components/sections/HeroSection";
 import AdventagesSection from "@/components/sections/AdventagesSection";
 import HowItWorksSection from "@/components/sections/HowItWorksSection";
@@ -10,11 +12,11 @@ export default function HomePage() {
   return (
     <main>
       <HeroSection />
-      <AdventagesSection />
+      {/* <AdventagesSection />
       <HowItWorksSection />
       <CvUpgradeSection />
       <ImproveLinkedinSection />
-      <CtaSection />
+      <CtaSection /> */}
       {/* <JobMatchSection /> */}
     </main>
   );
