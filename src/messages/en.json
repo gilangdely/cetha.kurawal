@@ -1,0 +1,19 @@
+{
+  "Hero": {
+    "headlineHighlight": "Upgrade your CV, upgrade your career.",
+    "headlineText": "A smart platform to help you level up and land a job faster.",
+    "description": "Cetha helps you create a standout CV, optimize your profile, and find the right job — all in one place.",
+    "cta": "Get Started",
+    "benefits": {
+      "freeTrial": "Try for free, no hassle",
+      "jobMatch": "Job recommendations based on your skills"
+    },
+    "imageAlt": "CV building illustration"
+  },
+
+  "NotFound": {
+    "title": "Error 404: Page Not Found!",
+    "description": "We’ve looked everywhere, but couldn’t find the page you were looking for.",
+    "back": "Back to Home"
+  }
+}
