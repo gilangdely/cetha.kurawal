@@ -47,6 +47,8 @@
 
 @theme {
     --color-primaryBlue: #2563eb;
+    --color-primaryBlueHover: #1d4ed8;
+    
     --color-accentOrange: #f59e0b;
 
     --color-TextPrimary: #111827;

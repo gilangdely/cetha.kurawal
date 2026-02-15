@@ -4,10 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { MoveLeft } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import illustration from "@/assets/img/illustration-optimize-linkedIn.jpg";
 
 const ImproveLinkedinSection = () => {
+  const t = useTranslations("ImproveLinkedin");
+
   return (
     <motion.section
       initial={{ opacity: 0 }}
@@ -27,7 +30,7 @@ const ImproveLinkedinSection = () => {
         >
           <Image
             src={illustration}
-            alt="ilustrasi improve"
+            alt="imageAlt"
             className="w-full h-auto object-contain"
           />
         </motion.div>
@@ -43,18 +46,17 @@ const ImproveLinkedinSection = () => {
           <div className="flex justify-end">
             <div className="border-primaryBlue w-fit rounded-full border-2 px-2 py-1 lg:px-3 lg:py-1.5">
               <p className="text-primaryBlue font-medium">
-                Improve LinkedIn Kamu
+                {t('badge')}
               </p>
             </div>
           </div>
 
           <div className="mt-4 flex-col text-end">
             <h2 className="text-TextPrimary text-2xl font-semibold md:text-4xl lg:text-3xl">
-              Biar Profil LinkedIn Kamu Lebih Standout
+              {t('title')}
             </h2>
             <p className="text-TextSecondary mt-2 max-w-2xl text-base lg:text-lg">
-              AI bantu perbaiki headline, ringkasan, dan skill kamu supaya lebih
-              menarik, profesional, dan siap dilihat oleh perekrut.
+              {t('description')}
             </p>
           </div>
 
@@ -70,7 +72,7 @@ const ImproveLinkedinSection = () => {
               className="group hover:border-primaryBlue mt-8 inline-flex w-fit items-center gap-2 border-b-2 border-transparent font-medium"
             >
               <MoveLeft size={20} className="text-primaryBlue" />
-              <span className="text-primaryBlue">Coba sekarang</span>
+              <span className="text-primaryBlue">{t('cta')}</span>
             </Link>
           </motion.div>
         </motion.div>

@@ -21,39 +21,14 @@ import UserAvatar from "../user-avatar";
 import { logoutUser } from "@/app/lib/auth";
 import { auth } from "@/app/lib/firebase";
 import { useRouter } from "next/navigation";
-
-const navLinks = [
-  {
-    label: "Fitur",
-    key: "features",
-    children: [
-      {
-        href: "/review-cv",
-        title: "Review CV Instan",
-        desc: "Dapatkan feedback profesional untuk CV kamu",
-      },
-      {
-        href: "/tingkatkan-linkedIn",
-        title: "Improve Profile LinkedIn",
-        desc: "Optimalisasi profil LinkedIn kamu",
-      },
-      {
-        href: "/rekomendasi-pekerjaan",
-        title: "Job Match",
-        desc: "Rekomendasi pekerjaan terbaik sesuai CV kamu",
-      },
-    ],
-  },
-  {
-    label: "Blog & Tips",
-    href: "/tips-karir",
-  },
-  { label: "Harga", href: "/daftar-harga" },
-  { label: "Tentang Kami", href: "/tentang-kami" },
-];
+import LangSwitchDesktop from "../lang-switch-desktop";
+import LangSwitchMobile from "../lang-switch-mobile";
+import { useTranslations } from "next-intl";
 
 const Navbar = () => {
   const router = useRouter();
+  const t = useTranslations("navbar");
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -64,6 +39,42 @@ const Navbar = () => {
 
   const avatarMenuRef = useRef<HTMLDivElement>(null);
   const desktopAvatarRef = useRef<HTMLDivElement>(null);
+
+  const navLinks = [
+    {
+      key: "features",
+      label: t("features"),
+      children: [
+        {
+          href: "/review-cv",
+          title: t("dropdown.reviewCv.title"),
+          desc: t("dropdown.reviewCv.desc"),
+        },
+        {
+          href: "/tingkatkan-linkedIn",
+          title: t("dropdown.linkedin.title"),
+          desc: t("dropdown.linkedin.desc"),
+        },
+        {
+          href: "/rekomendasi-pekerjaan",
+          title: t("dropdown.jobMatch.title"),
+          desc: t("dropdown.jobMatch.desc"),
+        },
+      ],
+    },
+    {
+      label: t("blog"),
+      href: "/tips-karir",
+    },
+    {
+      label: t("price"),
+      href: "/daftar-harga",
+    },
+    {
+      label: t("about"),
+      href: "/tentang-kami",
+    },
+  ];
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -127,6 +138,7 @@ const Navbar = () => {
 
   return (
     <nav
+      data-scrolled={isMobileMenuOpen || isScrolled}
       className={`fixed top-0 left-0 z-50 w-full transition-all duration-300 ${
         isMobileMenuOpen
           ? "bg-white shadow-sm"
@@ -135,10 +147,10 @@ const Navbar = () => {
             : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-3 py-3">
         {/* Logo */}
         <Link href="/" className="z-10 flex items-center">
-          <Image alt="Cetha Logo" src={logo} height={50} />
+          <Image alt="Cetha Logo" src={logo} height={52} />
         </Link>
 
         {/* Desktop Nav */}
@@ -207,30 +219,35 @@ const Navbar = () => {
 
         {/* Avatar + Auth - Desktop */}
         <div
-          className="z-10 hidden items-center lg:flex"
+          className="z-10 hidden items-center gap-2 lg:flex"
           ref={desktopAvatarRef}
         >
+          {/* Language Switch */}
+          <LangSwitchDesktop />
+
           {!isLoggedIn ? (
             <Link
               href="/login"
-              className="bg-primaryBlue hover:bg-primaryBlue/90 flex items-center justify-center rounded-full px-4 py-2.5 font-medium text-white transition-colors"
+              className="bg-primaryBlue hover:bg-primaryBlueHover flex items-center justify-center rounded-full px-4 py-2.5 font-medium text-white transition-colors hover:shadow-sm"
             >
-              Masuk <ChevronRight size={20} />
+              {t("auth.login")} <ChevronRight size={20} />
             </Link>
           ) : (
             <div className="relative">
               <button
                 onClick={() => setOpenAvatarMenu(!openAvatarMenu)}
-                className="flex items-center gap-2 rounded-lg px-2 py-1 transition hover:bg-gray-50"
+                className="flex items-center gap-2 rounded-lg px-2 py-2 transition hover:bg-gray-50"
               >
                 <Avatar>
                   <UserAvatar />
                 </Avatar>
                 <div className="flex max-w-[140px] flex-col truncate text-left md:max-w-[160px] lg:max-w-none">
                   <span className="truncate text-sm font-medium text-gray-800">
-                    Hai, {username}
+                    {t("auth.greeting")}, {username}
                   </span>
-                  <span className="text-xs text-gray-500">Lihat profil</span>
+                  <span className="text-xs text-gray-500">
+                    {t("auth.viewProfile")}
+                  </span>
                 </div>
               </button>
 
@@ -249,20 +266,20 @@ const Navbar = () => {
                       className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-50"
                       onClick={() => setOpenAvatarMenu(false)}
                     >
-                      <User size={16} /> Dashboard
+                      <User size={16} /> {t("auth.dashboard")}
                     </Link>
                     <Link
                       href="/settings"
                       className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-50"
                       onClick={() => setOpenAvatarMenu(false)}
                     >
-                      <Settings size={16} /> Pengaturan
+                      <Settings size={16} /> {t("auth.settings")}
                     </Link>
                     <button
                       onClick={handleLogout}
                       className="flex w-full items-center gap-2 px-4 py-2 text-left text-gray-700 hover:bg-gray-50"
                     >
-                      <LogOut size={16} /> Keluar
+                      <LogOut size={16} /> {t("auth.logout")}
                     </button>
                   </motion.div>
                 )}
@@ -304,8 +321,9 @@ const Navbar = () => {
                       </Avatar>
                       <div className="flex flex-col text-left">
                         <span className="text-sm font-medium text-gray-800">
-                          Hai, {username}
+                          {t("auth.greeting")}, {username}
                         </span>
+
                         <span className="text-xs text-gray-500">{email}</span>
                       </div>
                     </div>
@@ -331,20 +349,20 @@ const Navbar = () => {
                           className="flex items-center gap-2 rounded-md px-3 py-2 text-gray-700 hover:bg-gray-50"
                           onClick={closeMobileMenu}
                         >
-                          <User size={16} /> Dashboard
+                          <User size={16} /> {t("auth.dashboard")}
                         </Link>
                         <Link
                           href="/settings"
                           className="flex items-center gap-2 rounded-md px-3 py-2 text-gray-700 hover:bg-gray-50"
                           onClick={closeMobileMenu}
                         >
-                          <Settings size={16} /> Pengaturan
+                          <Settings size={16} /> {t("auth.settings")}
                         </Link>
                         <button
                           onClick={handleLogout}
                           className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-gray-700 hover:bg-gray-50"
                         >
-                          <LogOut size={16} /> Keluar
+                          <LogOut size={16} /> {t("auth.logout")}
                         </button>
                       </motion.div>
                     )}
@@ -402,14 +420,17 @@ const Navbar = () => {
                 ),
               )}
 
+              {/* Language Switch */}
+              <LangSwitchMobile />
+
               {/* Login Button on Mobile (if not logged in) */}
               {!isLoggedIn && (
                 <Link
                   href="/login"
-                  className="bg-primaryBlue hover:bg-primaryBlue/90 flex items-center justify-center rounded-full px-4 py-2.5 font-medium text-white transition-colors"
+                  className="bg-primaryBlue hover:bg-primaryBlueHover flex items-center justify-center rounded-full px-4 py-2.5 font-medium text-white transition-colors"
                   onClick={closeMobileMenu}
                 >
-                  Masuk <ChevronRight size={20} />
+                  {t("auth.login")} <ChevronRight size={20} />
                 </Link>
               )}
             </div>

@@ -1,150 +1,269 @@
 "use client";
 
-import { useState } from "react";
-import { registerUser } from "@/app/lib/auth";
+import { useState, useEffect } from "react";
+import { registerUser, loginWithGoogle } from "@/app/lib/auth";
 import { useRouter } from "next/navigation";
-import { motion } from "motion/react";
 import { toast } from "sonner";
 
 import AuthCarousel from "@/components/auth-carousel";
-import { loginWithGoogle } from "@/app/lib/auth";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export default function RegisterPage() {
+  const router = useRouter();
+  const t = useTranslations("register");
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
   const [errorMsg, setErrorMsg] = useState("");
+  const [mounted, setMounted] = useState(false);
+
+  const isDisabled = loading;
 
   const handleRegister = async () => {
     if (!username || !email || !password || !confirmPassword) {
-      toast("Semua field harus diisi");
+      toast(t("toast.empty"));
       return;
     }
 
+    if (password !== confirmPassword) {
+      toast(t("toast.passwordMismatch"));
+      return;
+    }
+
+    if (loading) return;
+
     setLoading(true);
+    setErrorMsg("");
+
     try {
       await registerUser(username, email, password, confirmPassword);
-      toast("Registrasi berhasil");
+      toast(t("toast.success"));
       router.push("/login");
     } catch (error: any) {
       console.error("Error registrasi:", error);
 
       if (error.code === "auth/email-already-in-use") {
-        toast("Email telah terdaftar, gunakan email lain");
-        setErrorMsg("Email telah terdaftar, gunakan email lain");
+        toast(t("toast.emailUsed"));
+        setErrorMsg(t("toast.emailUsed"));
       } else {
-        toast("Gagal registrasi: " + error.message);
-        setErrorMsg("Gagal registrasi: " + error.message);
+        toast(t("toast.failed"));
+        setErrorMsg(t("toast.failedRetry"));
       }
     } finally {
       setLoading(false);
     }
   };
 
-  const handleGoogleLogin = async () => {
-      try {
-        const user = await loginWithGoogle();
-        toast(`Selamat datang, ${user.displayName}`);
-        router.push("/dashboard");
-      } catch (error: any) {
-        console.error("Error saat login Google:", error);
-        toast(`Gagal login: ${error.message}`);
-      }
-    };
+  const handleGoogleRegister = async () => {
+    if (loading) return;
+
+    setLoading(true);
+    try {
+      const user = await loginWithGoogle();
+      toast(`${t("toast.welcome")}, ${user.displayName}`);
+      router.push("/dashboard");
+    } catch (error: any) {
+      console.error("Error Google register:", error);
+      toast(t("toast.googleFailed"));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <main className="flex h-screen max-w-screen bg-[#F9FAFB]">
-      <section className="max-w-8xl mx-auto flex min-h-screen w-full flex-row gap-4">
-        {/* Right Panel */}
+      <section className="max-w-8xl mx-auto flex min-h-screen w-full flex-row">
+        {/* Left Panel */}
         <AuthCarousel />
 
-        {/* Left Panel */}
-        <div className="flex flex-1 p-5">
-          <div className="flex flex-1 flex-col rounded-xl bg-white">
-            <div className="flex flex-1 items-center justify-center">
-              <div className="flex w-full max-w-md flex-1 flex-col gap-4">
-                <div className="flex flex-col gap-2 text-center">
+        {/* Right Panel */}
+        <div className="flex flex-1 p-3">
+          <div className="relative flex flex-1 flex-col rounded-2xl bg-white shadow-sm">
+            {/* Back Button */}
+            <div
+              className={`hidden transition-all delay-200 duration-500 ease-out md:block ${
+                mounted
+                  ? "translate-y-0 opacity-100"
+                  : "-translate-y-4 opacity-0"
+              }`}
+            >
+              <button
+                type="button"
+                onClick={() => router.back()}
+                className="group text-primaryBlue hover:bg-primaryBlue/10 absolute top-6 left-6 z-10 inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium transition-all duration-200"
+              >
+                <ArrowLeft className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5" />
+                <span>{t("back")}</span>
+              </button>
+            </div>
+
+            <div className="flex flex-1 items-center justify-center px-4">
+              <div className="flex w-full max-w-md flex-col gap-4">
+                {/* Header */}
+                <div
+                  className={`flex flex-col gap-2 text-center transition-all delay-300 duration-700 ease-out ${
+                    mounted
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-8 opacity-0"
+                  }`}
+                >
                   <div className="text-TextPrimary text-3xl font-semibold">
-                    Daftar Akun Baru
+                    {t("title")}
                   </div>
                   <div className="text-TextSecondary text-sm">
-                    Buat profilmu, unggah CV, dan biarkan sistem kami
-                    rekomendasikan pekerjaan yang tepat.
+                    {t("subtitle")}
                   </div>
                 </div>
 
-                <div className="mt-1 flex w-full flex-col gap-1">
+                {/* Username Input */}
+                <div
+                  className={`flex flex-col gap-1 transition-all delay-[400ms] duration-700 ease-out ${
+                    mounted
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-8 opacity-0"
+                  }`}
+                >
                   <div className="text-TextPrimary text-sm font-medium">
-                    Username
+                    {t("usernameLabel")}
                   </div>
                   <input
-                    type="username"
-                    placeholder="Masukan username kamu"
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="text-TextPrimary h-10 rounded-xl border-2 border-gray-300 bg-white px-3 text-sm placeholder:text-gray-400"
+                    type="text"
+                    value={username}
+                    onChange={(e) => {
+                      setUsername(e.target.value);
+                      setErrorMsg("");
+                    }}
+                    placeholder={t("usernamePlaceholder")}
+                    className="text-TextPrimary focus:border-primaryBlue focus:ring-primaryBlue/20 h-10 rounded-xl border-2 border-gray-300 bg-white px-3 text-sm transition-all duration-200 ease-out placeholder:text-gray-400 focus:ring-2 focus:outline-none"
                   />
                 </div>
 
-                <div className="flex w-full flex-col gap-1">
+                {/* Email Input */}
+                <div
+                  className={`flex flex-col gap-1 transition-all delay-500 duration-700 ease-out ${
+                    mounted
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-8 opacity-0"
+                  }`}
+                >
                   <div className="text-TextPrimary text-sm font-medium">
-                    Email
+                    {t("emailLabel")}
                   </div>
                   <input
                     type="email"
-                    placeholder="Masukan email kamu"
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="text-TextPrimary h-10 rounded-xl border-2 border-gray-300 bg-white px-3 text-sm placeholder:text-gray-400"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setErrorMsg("");
+                    }}
+                    placeholder={t("emailPlaceholder")}
+                    className="text-TextPrimary focus:border-primaryBlue focus:ring-primaryBlue/20 h-10 rounded-xl border-2 border-gray-300 bg-white px-3 text-sm transition-all duration-200 ease-out placeholder:text-gray-400 focus:ring-2 focus:outline-none"
                   />
                 </div>
 
-                <div className="flex w-full flex-col gap-1">
+                {/* Password Input */}
+                <div
+                  className={`flex flex-col gap-1 transition-all delay-[600ms] duration-700 ease-out ${
+                    mounted
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-8 opacity-0"
+                  }`}
+                >
                   <div className="text-TextPrimary text-sm font-medium">
-                    Password
+                    {t("passwordLabel")}
                   </div>
                   <input
                     type="password"
-                    placeholder="Masukan password kamu"
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="text-TextPrimary h-10 rounded-xl border-2 border-gray-300 bg-white px-3 text-sm placeholder:text-gray-400"
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      setErrorMsg("");
+                    }}
+                    placeholder={t("passwordPlaceholder")}
+                    className="text-TextPrimary focus:border-primaryBlue focus:ring-primaryBlue/20 h-10 rounded-xl border-2 border-gray-300 bg-white px-3 text-sm transition-all duration-200 ease-out placeholder:text-gray-400 focus:ring-2 focus:outline-none"
                   />
                 </div>
 
-                <div className="flex w-full flex-col gap-1">
+                {/* Confirm Password Input */}
+                <div
+                  className={`flex flex-col gap-1 transition-all delay-700 duration-700 ease-out ${
+                    mounted
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-8 opacity-0"
+                  }`}
+                >
                   <div className="text-TextPrimary text-sm font-medium">
-                    Konfirmasi Password
+                    {t("confirmPasswordLabel")}
                   </div>
                   <input
                     type="password"
-                    placeholder="Masukan password kamu"
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="text-TextPrimary h-10 rounded-xl border-2 border-gray-300 bg-white px-3 text-sm placeholder:text-gray-400"
+                    value={confirmPassword}
+                    onChange={(e) => {
+                      setConfirmPassword(e.target.value);
+                      setErrorMsg("");
+                    }}
+                    placeholder={t("confirmPasswordPlaceholder")}
+                    className="text-TextPrimary focus:border-primaryBlue focus:ring-primaryBlue/20 h-10 rounded-xl border-2 border-gray-300 bg-white px-3 text-sm transition-all duration-200 ease-out placeholder:text-gray-400 focus:ring-2 focus:outline-none"
                   />
                 </div>
 
-                <div className="mt-2 w-full">
+                {/* Error Message */}
+                {errorMsg && (
+                  <p className="animate-in fade-in slide-in-from-top-2 text-sm text-red-500 duration-300">
+                    {errorMsg}
+                  </p>
+                )}
+
+                {/* Register Button */}
+                <div
+                  className={`mt-2 w-full transition-all delay-[800ms] duration-700 ease-out ${
+                    mounted
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-8 opacity-0"
+                  }`}
+                >
                   <button
                     onClick={handleRegister}
-                    className="bg-primaryBlue h-12 w-full cursor-pointer rounded-full font-semibold text-white"
+                    disabled={isDisabled}
+                    className="bg-primaryBlue hover:bg-primaryBlueHover focus:ring-primaryBlue/30 h-10 w-full rounded-full font-semibold text-white transition-all duration-200 ease-out focus:ring-2 focus:outline-none active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    Buat Akun
+                    {isDisabled ? t("registerLoading") : t("registerButton")}
                   </button>
                 </div>
 
-                {errorMsg && (
-                  <p className="mt-2 text-sm text-red-500">{errorMsg}</p>
-                )}
- 
-                <div className="flex items-center gap-6">
+                {/* Divider */}
+                <div
+                  className={`flex items-center gap-6 transition-all delay-[900ms] duration-700 ease-out ${
+                    mounted ? "scale-100 opacity-100" : "scale-95 opacity-0"
+                  }`}
+                >
                   <div className="h-0.5 w-full rounded-lg bg-gray-200" />
-                  <div className="text-TextSecondary text-sm">atau</div>
+                  <div className="text-TextSecondary text-sm">{t("or")}</div>
                   <div className="h-0.5 w-full rounded-lg bg-gray-200" />
                 </div>
 
-                <div className="flex w-full flex-col gap-4 lg:flex-row">
-                  <button onClick={handleGoogleLogin} className="flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-full border-2 border-[#E0E1E2] bg-[#F9FAFB]">
+                {/* Google Register Button */}
+                <div
+                  className={`transition-all delay-1000 duration-700 ease-out ${
+                    mounted
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-8 opacity-0"
+                  }`}
+                >
+                  <button
+                    onClick={handleGoogleRegister}
+                    disabled={isDisabled}
+                    className="flex h-10 w-full items-center justify-center gap-2 rounded-full border-2 border-[#E0E1E2] bg-[#F9FAFB] transition-all duration-200 ease-out hover:bg-white hover:shadow-sm active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
+                  >
                     <svg className="h-5 w-5" viewBox="0 0 48 48">
                       <path
                         fill="#fbc02d"
@@ -164,9 +283,26 @@ export default function RegisterPage() {
                       />
                     </svg>
                     <p className="text-TextPrimary font-medium">
-                      Login dengan Google
+                      {isDisabled ? t("registerLoading") : t("googleRegister")}
                     </p>
                   </button>
+                </div>
+
+                {/* Login Link */}
+                <div
+                  className={`text-TextSecondary mt-3 text-center font-medium transition-all delay-[1100ms] duration-700 ease-out ${
+                    mounted
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-8 opacity-0"
+                  }`}
+                >
+                  <p className="hidden lg:inline">{t("alreadyHaveAccount")} </p>
+                  <Link
+                    href="/login"
+                    className="text-primaryBlue after:bg-primaryBlueHover hover:text-primaryBlueHover relative inline-block transition-colors duration-150 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
+                  >
+                    {t("login")}
+                  </Link>
                 </div>
               </div>
             </div>

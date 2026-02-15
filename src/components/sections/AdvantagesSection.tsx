@@ -8,35 +8,35 @@ import { MoveRight } from "lucide-react";
 import icons1 from "@/assets/icons/pencils-quils.svg";
 import icons2 from "@/assets/icons/human-resources.svg";
 import icons3 from "@/assets/icons/jobs-search.svg";
+import { useTranslations } from "next-intl";
 
 const Cards = [
   {
     id: 1,
     image: icons1,
-    title: "Review CV Instan",
-    description:
-      "Upload CV kamu, biarkan AI menganalisis, dan dapatkan saran perbaikan agar CV lebih menarik dan lolos ATS.",
+    titleKey: "cards.cv.title",
+    descriptionKey: "cards.cv.description",
     link: "/review-cv",
   },
   {
     id: 2,
     image: icons2,
-    title: "Profil LinkedIn Lebih Standout",
-    description:
-      "Dapatkan masukan untuk headline, summary, dan skill agar lebih mudah ditemukan recruiter.",
+    titleKey: "cards.linkedin.title",
+    descriptionKey: "cards.linkedin.description",
     link: "/tingkatkan-linkedIn",
   },
   {
     id: 3,
     image: icons3,
-    title: "Lowongan yang Tepat untuk Kamu",
-    description:
-      "AI mencarikan pekerjaan sesuai skill, pengalaman, dan lokasi. Jadi kamu hanya lihat lowongan yang relevan.",
+    titleKey: "cards.jobs.title",
+    descriptionKey: "cards.jobs.description",
     link: "/review-cv",
   },
 ];
 
 const AdventagesSection = () => {
+  const t = useTranslations("Advantages");
+
   return (
     <section className="mx-auto w-full max-w-7xl px-6 pb-12">
       {/* Title */}
@@ -48,16 +48,14 @@ const AdventagesSection = () => {
         className="flex flex-col items-center text-center"
       >
         <div className="border-primaryBlue rounded-full border-2 px-2 py-1 lg:px-3 lg:py-1.5">
-          <p className="text-primaryBlue lg:font-medium">Kenapa Cetha</p>
+          <p className="text-primaryBlue lg:font-medium">{t("badge")}</p>
         </div>
         <div className="mt-4 max-w-3xl flex-col text-center">
           <h2 className="text-TextPrimary text-2xl font-semibold md:text-3xl">
-            Cara Pintar Untuk Mencapai Karier <br className="hidden md:block" />{" "}
-            Impianmu
+            {t("title")}
           </h2>
           <p className="text-TextSecondary mt-2 text-base lg:text-lg">
-            Cetha bantu kamu bikin CV standout, optimalkan profil LinkedIn, dan
-            dapatkan rekomendasi kerja sesuai skill semuanya di satu platform.
+            {t("description")}
           </p>
         </div>
       </motion.div>
@@ -80,21 +78,21 @@ const AdventagesSection = () => {
             <div>
               <Image
                 src={card.image}
-                alt={card.title}
+                alt={t(card.titleKey)}
                 className="mb-4 h-10 w-10"
               />
               <h3 className="text-TextPrimary text-lg font-semibold">
-                {card.title}
+                {t(card.titleKey)}
               </h3>
               <p className="text-TextSecondary mt-2 text-sm font-normal">
-                {card.description}
+                {t(card.descriptionKey)}
               </p>
             </div>
             <Link
               href={card.link}
               className="group hover:border-primaryBlue mt-4 inline-flex w-fit items-center gap-2 border-b-2 border-transparent font-medium"
             >
-              <span className="text-primaryBlue">Coba sekarang</span>
+              <span className="text-primaryBlue">{t("cta")}</span>
               <MoveRight size={20} className="text-primaryBlue" />
             </Link>
           </motion.div>

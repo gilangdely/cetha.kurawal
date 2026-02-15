@@ -9,41 +9,51 @@ import { toast } from "sonner";
 
 import Link from "next/link";
 import AuthCarousel from "@/components/auth-carousel";
+import { ArrowLeft } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function LoginPage() {
   const router = useRouter();
+  const t = useTranslations("login");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [mounted, setMounted] = useState(false);
+
+  const isDisabled = loading;
 
   const handleLogin = async () => {
     if (!email || !password) {
-      toast("Email dan Password wajib diisi");
+      toast(t("toast.empty"));
       return;
     }
+
+    if (loading) return;
 
     setLoading(true);
     try {
       await loginUser(email, password);
-      toast("Login berhasil");
+      toast(t("toast.success"));
       router.push("/dashboard");
     } catch (error: any) {
       console.error("Error login:", error);
 
       switch (error.code) {
         case "auth/wrong-password":
-          toast("Password salah");
-          setErrorMsg("Password salah");
+          toast(t("toast.wrongPassword"));
+          setErrorMsg(t("toast.wrongPassword"));
           break;
+
         case "auth/user-not-found":
-          toast("Email belum terdaftar");
-          setErrorMsg("Email belum terdaftar");
+          toast(t("toast.userNotFound"));
+          setErrorMsg(t("toast.userNotFound"));
           break;
+
         default:
-          toast("Email atau password tidak cocok");
-          setErrorMsg("Email atau password tidak cocok");
+          toast(t("toast.invalid"));
+          setErrorMsg(t("toast.invalid"));
       }
     } finally {
       setLoading(false);
@@ -51,104 +61,188 @@ export default function LoginPage() {
   };
 
   const handleGoogleLogin = async () => {
+    if (loading) return;
+    setLoading(true);
+
     try {
       const user = await loginWithGoogle();
-      toast(`Selamat datang, ${user.displayName}`);
+      toast(`${t("toast.welcome")}, ${user.displayName}`);
       router.push("/dashboard");
     } catch (error: any) {
-      console.error("Error saat login Google:", error);
-      toast(`Gagal login: ${error.message}`);
+      toast(t("toast.googleFail"));
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        toast("Kamu sudah login, diarahkan ke dashboard");
+        toast(t("toast.already"));
         router.push("/dashboard");
       }
     });
     return () => unsubscribe();
-  }, []);
+  }, [router]);
 
   return (
     <main className="flex h-screen max-w-screen bg-[#F9FAFB]">
       <section className="max-w-8xl mx-auto flex min-h-screen w-full flex-row">
-        {/* Right Panel */}
+        {/* Left Panel */}
         <AuthCarousel />
 
-        {/* Left Panel */}
-        <div className="flex flex-1 p-5">
-          <div className="flex flex-1 flex-col rounded-xl bg-white">
-            <div className="flex flex-1 items-center justify-center">
-              <div className="flex w-full max-w-md flex-1 flex-col gap-4">
-                <div className="flex flex-col gap-2 text-center">
+        {/* Right Panel */}
+        <div className="flex flex-1 p-3">
+          <div className="relative flex flex-1 flex-col rounded-2xl bg-white shadow-sm">
+            {/* Back Button */}
+            <div
+              className={`hidden transition-all delay-200 duration-500 ease-out md:block ${
+                mounted
+                  ? "translate-y-0 opacity-100"
+                  : "-translate-y-4 opacity-0"
+              }`}
+            >
+              <button
+                type="button"
+                onClick={() => router.back()}
+                className="group text-primaryBlue hover:bg-primaryBlue/10 absolute top-6 left-6 z-10 inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium transition-all duration-200"
+              >
+                <ArrowLeft className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5" />
+                <span>{t("back")}</span>
+              </button>
+            </div>
+
+            <div className="flex flex-1 items-center justify-center px-4">
+              <div className="flex w-full max-w-md flex-col gap-4">
+                {/* Header */}
+                <div
+                  className={`flex flex-col gap-2 text-center transition-all delay-300 duration-700 ease-out ${
+                    mounted
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-8 opacity-0"
+                  }`}
+                >
                   <div className="text-TextPrimary text-3xl font-semibold">
-                    Hai, senang melihatmu lagi!
+                    {t("title")}
                   </div>
                   <div className="text-TextSecondary text-sm">
-                    Login dan lanjutkan upgrade CV serta kariermu sekarang.
+                    {t("subtitle")}
                   </div>
                 </div>
 
-                {/* Form Login */}
-                <div className="mt-1 flex w-full flex-col gap-1">
+                {/* Email Input */}
+                <div
+                  className={`mt-1 flex w-full flex-col gap-1 transition-all delay-[400ms] duration-700 ease-out ${
+                    mounted
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-8 opacity-0"
+                  }`}
+                >
                   <div className="text-TextPrimary text-sm font-medium">
-                    Email
+                    {t("emailLabel")}
                   </div>
                   <input
                     type="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setErrorMsg("");
+                    }}
                     placeholder="Masukan email kamu"
-                    className="text-TextPrimary h-10 rounded-xl border-2 border-gray-300 bg-white px-3 text-sm placeholder:text-gray-400"
+                    className="text-TextPrimary focus:border-primaryBlue focus:ring-primaryBlue/20 h-10 rounded-xl border-2 border-gray-300 bg-white px-3 text-sm transition-all duration-200 ease-out placeholder:text-gray-400 focus:ring-2 focus:outline-none"
                   />
                 </div>
 
-                <div className="flex w-full flex-col gap-1">
+                {/* Password Input */}
+                <div
+                  className={`flex w-full flex-col gap-1 transition-all delay-500 duration-700 ease-out ${
+                    mounted
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-8 opacity-0"
+                  }`}
+                >
                   <div className="text-TextPrimary text-sm font-medium">
-                    Password
+                    {t("passwordLabel")}
                   </div>
                   <input
                     type="password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Masukan password kamu"
-                    className="text-TextPrimary h-10 rounded-xl border-2 border-gray-300 bg-white px-3 text-sm placeholder:text-gray-400"
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      setErrorMsg("");
+                    }}
+                    placeholder={t("passwordPlaceholder")}
+                    className="text-TextPrimary focus:border-primaryBlue focus:ring-primaryBlue/20 h-10 rounded-xl border-2 border-gray-300 bg-white px-3 text-sm transition-all duration-200 ease-out placeholder:text-gray-400 focus:ring-2 focus:outline-none"
                   />
                 </div>
 
+                {/* Error Message */}
                 {errorMsg && (
-                  <p className="mt-2 text-sm text-red-500">{errorMsg}</p>
+                  <p className="animate-in fade-in slide-in-from-top-2 mt-2 text-sm text-red-500 duration-300">
+                    {errorMsg}
+                  </p>
                 )}
 
-                {/* Lupa Password */}
-                <div className="text-primaryBlue -mt-2 mb-2 text-start font-medium underline-offset-2 hover:underline">
-                  <Link href={"/lupa-password"}>Lupa password?</Link>
+                {/* Forgot Password */}
+                <div
+                  className={`text-primaryBlue hover:text-primaryBlueHover font-medium transition-all delay-[600ms] duration-700 ease-out ${
+                    mounted
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-8 opacity-0"
+                  }`}
+                >
+                  <Link
+                    href="/lupa-password"
+                    className="text-primaryBlue after:bg-primaryBlueHover hover:text-primaryBlueHover relative inline-block font-medium transition-colors duration-150 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
+                  >
+                    {t("forgotPassword")}
+                  </Link>
                 </div>
 
-                {/* Tombol Login */}
-                <div className="mt-2 w-full">
+                {/* Login Button */}
+                <div
+                  className={`mt-2 w-full transition-all delay-700 duration-700 ease-out ${
+                    mounted
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-8 opacity-0"
+                  }`}
+                >
                   <button
                     onClick={handleLogin}
-                    className="bg-primaryBlue h-12 w-full cursor-pointer rounded-full font-semibold text-white"
+                    disabled={isDisabled}
+                    className="bg-primaryBlue hover:bg-primaryBlueHover focus:ring-primaryBlue/30 h-10 w-full rounded-full font-semibold text-white transition-all duration-200 ease-out focus:ring-2 focus:outline-none active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    Login
+                    {isDisabled ? t("loginLoading") : t("loginButton")}
                   </button>
                 </div>
 
                 {/* Divider */}
-                <div className="flex items-center gap-6">
+                <div
+                  className={`flex items-center gap-6 transition-all delay-[800ms] duration-700 ease-out ${
+                    mounted ? "scale-100 opacity-100" : "scale-95 opacity-0"
+                  }`}
+                >
                   <div className="h-0.5 w-full rounded-lg bg-gray-200" />
-                  <div className="text-TextSecondary text-sm">atau</div>
+                  <div className="text-TextSecondary text-sm">{t("or")}</div>
                   <div className="h-0.5 w-full rounded-lg bg-gray-200" />
                 </div>
 
-                {/* Tombol Login Sosial */}
-                <div className="flex w-full flex-col gap-4 lg:flex-row">
+                {/* Google Login Button */}
+                <div
+                  className={`flex w-full flex-col gap-4 transition-all delay-[900ms] duration-700 ease-out lg:flex-row ${
+                    mounted
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-8 opacity-0"
+                  }`}
+                >
                   <button
                     onClick={handleGoogleLogin}
-                    className="flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-full border-2 border-[#E0E1E2] bg-[#F9FAFB]"
+                    disabled={isDisabled}
+                    className="flex h-10 w-full items-center justify-center gap-2 rounded-full border-2 border-[#E0E1E2] bg-[#F9FAFB] transition-all duration-200 ease-out hover:bg-white hover:shadow-sm active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     <svg className="h-5 w-5" viewBox="0 0 48 48">
                       <path
@@ -169,17 +263,25 @@ export default function LoginPage() {
                       />
                     </svg>
                     <p className="text-TextPrimary font-medium">
-                      Login dengan Google
+                      {t("googleLogin")}
                     </p>
                   </button>
                 </div>
-                <div className="text-TextSecondary mt-5 text-center font-medium">
-                  <p className="hidden lg:inline">{"Belum ada akun? "}</p>
+
+                {/* Register Link */}
+                <div
+                  className={`text-TextSecondary mt-3 text-center font-medium transition-all delay-1000 duration-700 ease-out ${
+                    mounted
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-8 opacity-0"
+                  }`}
+                >
+                  <p className="hidden lg:inline">{t("noAccount")} </p>
                   <Link
-                    href={"/register"}
-                    className="text-primaryBlue underliner-offset-2 hover:underline"
+                    href="/register"
+                    className="text-primaryBlue after:bg-primaryBlueHover hover:text-primaryBlueHover relative inline-block transition-colors duration-150 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
                   >
-                    Daftar
+                    {t("register")}
                   </Link>
                 </div>
               </div>
