@@ -2,52 +2,41 @@
 
 import { motion } from "framer-motion";
 import { CheckCircle } from "lucide-react";
-
-const QuotaList = [
-  {
-    tier: "Pemula",
-    price: "20.000 IDR",
-    quota: "10 Kuota",
-    tagline: "Coba fitur review dengan harga terjangkau.",
-    features: [
-      "Analisis CV & LinkedIn dasar",
-      "Rekomendasi pekerjaan terbatas",
-      "Saran perbaikan umum",
-    ],
-    buttonText: "Beli 10 Kuota",
-    featured: false,
-  },
-  {
-    tier: "Profesional",
-    price: "50.000 IDR",
-    quota: "30 Kuota",
-    tagline: "Untuk pencari kerja aktif yang ingin hasil lebih detail.",
-    features: [
-      "Semua fitur paket Pemula",
-      "Analisis kata kunci AI",
-      "Simpan riwayat hasil review",
-      "Rekomendasi pekerjaan real-time",
-    ],
-    buttonText: "Beli 30 Kuota",
-    featured: true,
-  },
-  {
-    tier: "Eksklusif",
-    price: "100.000 IDR",
-    quota: "100 Kuota",
-    tagline: "Akses penuh dengan hasil tercepat dan terakurat.",
-    features: [
-      "Semua fitur paket Profesional",
-      "Analisis AI lanjutan",
-      "Kesesuaian pekerjaan berdasarkan minat & pengalaman",
-      "Prioritas dukungan pengguna",
-    ],
-    buttonText: "Beli 100 Kuota",
-    featured: false,
-  },
-];
+import { useTranslations } from "next-intl";
 
 export default function PricingByQuota() {
+  const t = useTranslations("pricingQuota");
+
+  const QuotaList = [
+    {
+      tier: t("plans.beginner.tier"),
+      price: t("plans.beginner.price"),
+      quota: t("plans.beginner.quota"),
+      tagline: t("plans.beginner.tagline"),
+      features: t.raw("plans.beginner.features"),
+      buttonText: t("plans.beginner.button"),
+      featured: false,
+    },
+    {
+      tier: t("plans.professional.tier"),
+      price: t("plans.professional.price"),
+      quota: t("plans.professional.quota"),
+      tagline: t("plans.professional.tagline"),
+      features: t.raw("plans.professional.features"),
+      buttonText: t("plans.professional.button"),
+      featured: false,
+    },
+    {
+      tier: t("plans.exclusive.tier"),
+      price: t("plans.exclusive.price"),
+      quota: t("plans.exclusive.quota"),
+      tagline: t("plans.exclusive.tagline"),
+      features: t.raw("plans.exclusive.features"),
+      buttonText: t("plans.exclusive.button"),
+      featured: false,
+    },
+  ];
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 20 }}
@@ -63,14 +52,14 @@ export default function PricingByQuota() {
         className="mb-8 text-center"
       >
         <div className="border-primaryBlue mx-auto w-fit rounded-full border-2 px-2 py-1 lg:px-3 lg:py-1.5">
-          <p className="text-primaryBlue lg:font-medium">Paket Kuota</p>
+          <p className="text-primaryBlue lg:font-medium">{t("badge")}</p>
         </div>
-        <div className="mt-4 mx-auto max-w-3xl flex-col text-center">
+        <div className="mx-auto mt-4 max-w-3xl flex-col text-center">
           <h2 className="text-TextPrimary text-2xl font-semibold md:text-4xl lg:text-3xl">
-            Bayar Sekali, Gunakan Sesuai Kebutuhan
+            {t("title")}
           </h2>
           <p className="text-TextSecondary mt-2 text-base lg:text-lg">
-            Dapatkan kuota review untuk menganalisis CV dan mendapatkan rekomendasi kerja sesuai kebutuhanmu.
+            {t("description")}
           </p>
         </div>
       </motion.div>
@@ -113,7 +102,7 @@ export default function PricingByQuota() {
             </div>
 
             <ul className="mb-8 flex flex-1 flex-col gap-2 text-sm">
-              {plan.features.map((f) => (
+              {plan.features.map((f: string) => (
                 <li key={f} className="flex items-center gap-2">
                   <CheckCircle
                     className={plan.featured ? "text-white" : "text-[#2563eb]"}

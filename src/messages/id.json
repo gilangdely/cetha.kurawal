@@ -1,4 +1,100 @@
 {
+  "login": {
+    "title": "Hai, senang melihatmu lagi!",
+    "subtitle": "Login dan lanjutkan upgrade CV serta kariermu sekarang.",
+
+    "emailLabel": "Email",
+    "emailPlaceholder": "Masukan email kamu",
+
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Masukan password kamu",
+
+    "forgotPassword": "Lupa password?",
+    "loginButton": "Login",
+    "loginLoading": "Memproses...",
+    "googleLogin": "Login dengan Google",
+
+    "noAccount": "Belum ada akun?",
+    "register": "Daftar",
+    "back": "Kembali",
+
+    "or": "atau",
+
+    "toast": {
+      "welcome" : "Selamat datang",
+      "empty": "Email dan Password wajib diisi",
+      "success": "Login berhasil",
+      "already": "Kamu sudah login, diarahkan ke dashboard",
+      "wrongPassword": "Password salah",
+      "userNotFound": "Email belum terdaftar",
+      "invalid": "Email atau password tidak cocok",
+      "googleFail": "Gagal login dengan Google"
+    }
+  },
+
+  "register": {
+    "title": "Daftar Akun Baru",
+    "subtitle": "Buat profilmu dan mulai upgrade CV serta kariermu.",
+
+    "usernameLabel": "Username",
+    "usernamePlaceholder": "Masukan username kamu",
+
+    "emailLabel": "Email",
+    "emailPlaceholder": "Masukan email kamu",
+
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Masukan password kamu",
+
+    "confirmPasswordLabel": "Konfirmasi Password",
+    "confirmPasswordPlaceholder": "Ulangi password kamu",
+
+    "registerButton": "Buat Akun",
+    "registerLoading": "Memproses...",
+
+    "googleRegister": "Daftar dengan Google",
+
+    "alreadyHaveAccount": "Sudah punya akun?",
+    "login": "Login",
+
+    "back": "Kembali",
+    "or": "atau",
+
+    "toast": {
+      "empty": "Semua field harus diisi",
+      "passwordMismatch": "Password dan konfirmasi password tidak sama",
+      "success": "Registrasi berhasil",
+      "emailUsed": "Email telah terdaftar",
+      "failed": "Gagal registrasi",
+      "failedRetry": "Gagal registrasi, silakan coba lagi",
+      "googleFailed": "Gagal daftar dengan Google",
+      "welcome": "Selamat datang"
+    }
+  },
+
+  "forgotPassword": {
+    "back": "Kembali",
+
+    "title": "Lupa password?",
+    "subtitle": "Masukkan email untuk menerima link reset password.",
+
+    "emailLabel": "Email",
+    "emailPlaceholder": "Masukan email kamu",
+
+    "sendButton": "Kirim Link Reset",
+    "sendLoading": "Mengirim...",
+
+    "rememberPassword": "Sudah ingat password?",
+    "backToLogin": "Kembali ke Login",
+
+    "toast": {
+      "emptyEmail": "Email wajib diisi",
+      "success": "Link reset password telah dikirim. Cek inbox atau folder spam.",
+      "userNotFound": "Email tidak terdaftar",
+      "invalidEmail": "Format email tidak valid",
+      "error": "Terjadi kesalahan, silakan coba lagi"
+    }
+  },
+
   "Hero": {
     "headlineHighlight": "Upgrade CV, upgrade karier.",
     "headlineText": "Platform pintar buat kamu yang mau naik level dan dapet kerja lebih cepat.",
@@ -9,6 +105,228 @@
       "jobMatch": "Rekomendasi kerja sesuai skill"
     },
     "imageAlt": "Ilustrasi membangun CV"
+  },
+
+  "Advantages": {
+    "badge": "Kenapa Cetha",
+    "title": "Cara Pintar Untuk Mencapai Karier Impianmu",
+    "description": "Cetha bantu kamu bikin CV standout, optimalkan profil LinkedIn, dan dapatkan rekomendasi kerja sesuai skill semuanya di satu platform.",
+
+    "cards": {
+      "cv": {
+        "title": "Review CV Instan",
+        "description": "Upload CV kamu, biarkan AI menganalisis, dan dapatkan saran perbaikan agar CV lebih menarik dan lolos ATS."
+      },
+      "linkedin": {
+        "title": "Profil LinkedIn Lebih Standout",
+        "description": "Dapatkan masukan untuk headline, summary, dan skill agar lebih mudah ditemukan recruiter."
+      },
+      "jobs": {
+        "title": "Lowongan yang Tepat untuk Kamu",
+        "description": "AI mencarikan pekerjaan sesuai skill, pengalaman, dan lokasi. Jadi kamu hanya lihat lowongan yang relevan."
+      }
+    },
+
+    "cta": "Coba sekarang"
+  },
+
+  "HowItWorks": {
+    "badge": "Cara Kerja Cetha",
+    "title": "Cara Cetha Bantu Kamu Dapat Kerjaan Impian",
+    "description": "Ikuti langkah mudah ini untuk optimalkan CV, profil LinkedIn, dan temukan lowongan yang paling cocok.",
+
+    "steps": {
+      "register": {
+        "title": "Daftar & Buat Profil",
+        "description": "Buat akun gratis dan isi data dasar agar sistem mengenal latar belakang kamu.",
+        "features": [
+          {
+            "highlight": "Mudah & Cepat.",
+            "text": "Daftar hanya butuh beberapa klik."
+          },
+          {
+            "highlight": "Profil Terpersonalisasi.",
+            "text": "Rekomendasi disesuaikan dengan datamu."
+          }
+        ]
+      },
+      "cv": {
+        "title": "Review CV dengan AI",
+        "description": "Upload CV kamu, AI langsung menganalisis dan beri saran perbaikan agar CV lebih menarik & lolos ATS.",
+        "features": [
+          { "highlight": "Analisis otomatis oleh AI.", "text": "" },
+          { "highlight": "Saran perbaikan berbasis data ATS.", "text": "" }
+        ]
+      },
+      "linkedin": {
+        "title": "Optimalkan Profil LinkedIn",
+        "description": "Masukkan URL LinkedIn kamu dan dapatkan tips untuk headline, summary, dan skill agar profil lebih standout.",
+        "features": [
+          { "highlight": "Rekomendasi headline profesional.", "text": "" },
+          {
+            "highlight": "Optimasi skill & summary.",
+            "text": "agar mudah ditemukan recruiter."
+          }
+        ]
+      },
+      "jobs": {
+        "title": "Dapatkan Rekomendasi Pekerjaan",
+        "description": "Lihat rekomendasi lowongan yang cocok dengan skill & pengalamanmu.",
+        "features": [
+          { "highlight": "Lowongan hanya yang relevan.", "text": "" },
+          {
+            "highlight": "Personalisasi sesuai lokasi & pengalaman.",
+            "text": ""
+          }
+        ]
+      }
+    }
+  },
+
+  "CvUpgrade": {
+    "badge": "Upgrade CV Kamu",
+    "title": "Perbaiki CV, Tingkatkan Peluangmu",
+    "description": "AI kami akan mengecek CV-mu, memberi masukan detail, dan membantu menjadikannya lebih menarik di mata recruiter.",
+    "cta": "Coba sekarang",
+    "imageAlt": "Ilustrasi upgrade CV"
+  },
+
+  "ImproveLinkedin": {
+    "badge": "Improve LinkedIn Kamu",
+    "title": "Biar Profil LinkedIn Kamu Lebih Standout",
+    "description": "AI bantu perbaiki headline, ringkasan, dan skill kamu supaya lebih menarik, profesional, dan siap dilihat oleh perekrut.",
+    "cta": "Coba sekarang",
+    "imageAlt": "Ilustrasi optimasi LinkedIn"
+  },
+
+  "Footer": {
+    "description": "Review CV cerdas berbasis AI untuk masa depan karier Anda.",
+
+    "navigation": {
+      "title": "Navigasi",
+      "reviewCv": "Review CV",
+      "reviewLinkedin": "Review LinkedIn",
+      "blog": "Blog Karier",
+      "pricing": "Harga",
+      "about": "Tentang Kami"
+    },
+
+    "other": {
+      "title": "Lainnya",
+      "faq": "FAQ",
+      "contact": "Hubungi Kami",
+      "privacy": "Kebijakan Privasi",
+      "terms": "Syarat & Ketentuan"
+    },
+
+    "contact": {
+      "title": "Kontak Kami",
+      "phone": "+62 123-456-789",
+      "email": "kurawal.creative@gmail.com",
+      "location": "Purwokerto, Indonesia"
+    },
+
+    "copyright": "All rights reserved."
+  },
+
+  "pricingQuota": {
+    "badge": "Paket Kuota",
+    "title": "Bayar Sekali, Gunakan Sesuai Kebutuhan",
+    "description": "Dapatkan kuota review untuk menganalisis CV dan mendapatkan rekomendasi kerja sesuai kebutuhanmu.",
+
+    "popular": "Paling Populer",
+
+    "plans": {
+      "beginner": {
+        "tier": "Pemula",
+        "price": "20.000 IDR",
+        "quota": "10 Kuota",
+        "tagline": "Coba fitur review dengan harga terjangkau.",
+        "features": [
+          "Analisis CV & LinkedIn dasar",
+          "Rekomendasi pekerjaan terbatas",
+          "Saran perbaikan umum"
+        ],
+        "button": "Beli 10 Kuota"
+      },
+      "professional": {
+        "tier": "Profesional",
+        "price": "50.000 IDR",
+        "quota": "30 Kuota",
+        "tagline": "Untuk pencari kerja aktif yang ingin hasil lebih detail.",
+        "features": [
+          "Semua fitur paket Pemula",
+          "Analisis kata kunci AI",
+          "Simpan riwayat hasil review",
+          "Rekomendasi pekerjaan real-time"
+        ],
+        "button": "Beli 30 Kuota"
+      },
+      "exclusive": {
+        "tier": "Eksklusif",
+        "price": "100.000 IDR",
+        "quota": "100 Kuota",
+        "tagline": "Akses penuh dengan hasil tercepat dan terakurat.",
+        "features": [
+          "Semua fitur paket Profesional",
+          "Analisis AI lanjutan",
+          "Kesesuaian pekerjaan berdasarkan minat & pengalaman",
+          "Prioritas dukungan pengguna"
+        ],
+        "button": "Beli 100 Kuota"
+      }
+    }
+  },
+
+  "authCarousel": {
+    "quotes": [
+      {
+        "quote": "Semua tools yang kami butuhkan kini tersedia dalam satu platform yang rapi, intuitif, dan mudah digunakan.",
+        "name": "Karen Yue",
+        "role": "Director of Digital Marketing Technology"
+      },
+      {
+        "quote": "Proses review CV dan pengembangan karier menjadi jauh lebih terstruktur, cepat, dan efisien.",
+        "name": "Andi Pratama",
+        "role": "Head of Product Strategy"
+      },
+      {
+        "quote": "Alur kerja terasa lebih sederhana, membantu kami mengambil keputusan karier dengan lebih tepat.",
+        "name": "Sinta Maharani",
+        "role": "Senior UX Lead"
+      }
+    ]
+  },
+
+  "navbar": {
+    "features": "Fitur",
+    "blog": "Blog & Tips",
+    "price": "Harga",
+    "about": "Tentang Kami",
+
+    "dropdown": {
+      "reviewCv": {
+        "title": "Review CV Instan",
+        "desc": "Dapatkan feedback profesional untuk CV kamu"
+      },
+      "linkedin": {
+        "title": "Improve Profile LinkedIn",
+        "desc": "Optimalisasi profil LinkedIn kamu"
+      },
+      "jobMatch": {
+        "title": "Job Match",
+        "desc": "Rekomendasi pekerjaan terbaik sesuai CV kamu"
+      }
+    },
+
+    "auth": {
+      "login": "Masuk",
+      "dashboard": "Dashboard",
+      "settings": "Pengaturan",
+      "logout": "Keluar",
+      "viewProfile": "Lihat profil",
+      "greeting": "Hai"
+    }
   },
   
   "NotFound": {

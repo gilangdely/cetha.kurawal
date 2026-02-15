@@ -1,13 +1,16 @@
 "use client";
 
-import { motion } from "motion/react";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import { motion } from "motion/react";
 import { Mail, MapPin, Phone, Facebook, Instagram, Globe } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import logo from "@/assets/icons/cetha-logo-white.svg";
 
 const Footer = () => {
+  const t = useTranslations("Footer");
+
   return (
     <motion.footer
       initial={{ opacity: 0, y: 40 }}
@@ -28,8 +31,7 @@ const Footer = () => {
             <Image src={logo} alt="logo" priority />
           </Link>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-gray-400">
-            Menjelajahi dunia herbal dengan AI, terinspirasi oleh tradisi
-            penyembuhan Nusantara.
+            {t("description")}
           </p>
           <div className="mt-4 flex gap-4">
             {[
@@ -71,14 +73,19 @@ const Footer = () => {
           className="grid grid-cols-2 gap-6 text-sm"
         >
           <div>
-            <h3 className="mb-3 text-lg font-semibold text-white">Navigasi</h3>
+            <h3 className="mb-3 text-lg font-semibold text-white">
+              {t("navigation.title")}
+            </h3>
             <ul className="space-y-2">
               {[
-                { href: "/review-cv", label: "Review CV" },
-                { href: "/tingkatkan-linkedIn", label: "Review LinkedIn" },
-                { href: "/tips-karir", label: "Blog Karier" },
-                { href: "/daftar-harga", label: "Harga" },
-                { href: "/tentang-kami", label: "Tentang Kami" },
+                { href: "/review-cv", label: t("navigation.reviewCv") },
+                {
+                  href: "/tingkatkan-linkedIn",
+                  label: t("navigation.reviewLinkedin"),
+                },
+                { href: "/tips-karir", label: t("navigation.blog") },
+                { href: "/daftar-harga", label: t("navigation.pricing") },
+                { href: "/tentang-kami", label: t("navigation.about") },
               ].map((item, i) => (
                 <motion.li
                   key={i}
@@ -96,13 +103,15 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h3 className="mb-3 text-lg font-semibold text-white">Lainnya</h3>
+            <h3 className="mb-3 text-lg font-semibold text-white">
+              {t("other.title")}
+            </h3>
             <ul className="space-y-2">
               {[
-                { href: "/faq", label: "FAQ" },
-                { href: "/contact", label: "Hubungi Kami" },
-                { href: "/privacy", label: "Kebijakan Privasi" },
-                { href: "/terms", label: "Syarat & Ketentuan" },
+                { href: "/faq", label: t("other.faq") },
+                { href: "/contact", label: t("other.contact") },
+                { href: "/privacy", label: t("other.privacy") },
+                { href: "/terms", label: t("other.terms") },
               ].map((item, i) => (
                 <motion.li
                   key={i}
@@ -129,16 +138,18 @@ const Footer = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="text-sm"
         >
-          <h3 className="mb-3 text-lg font-semibold text-white">Kontak Kami</h3>
+          <h3 className="mb-3 text-lg font-semibold text-white">
+            {t("contact.title")}
+          </h3>
           <ul className="space-y-2">
             <li className="flex items-center gap-2">
-              <Phone size={16} /> +62 123-456-789
+              <Phone size={16} /> {t("contact.phone")}
             </li>
             <li className="flex items-center gap-2">
-              <Mail size={16} /> kurawal.creative@gmail.com
+              <Mail size={16} /> {t("contact.email")}
             </li>
             <li className="flex items-center gap-2">
-              <MapPin size={16} /> Purwokerto, Indonesia
+              <MapPin size={16} /> {t("contact.location")}
             </li>
           </ul>
         </motion.div>
@@ -152,7 +163,7 @@ const Footer = () => {
         transition={{ duration: 0.8, delay: 0.4 }}
         className="mt-10 border-t border-gray-700 py-4 text-center text-xs text-white"
       >
-        © {new Date().getFullYear()} Cetha. All rights reserved.
+        © {new Date().getFullYear()} Cetha. {t("copyright")}
       </motion.div>
     </motion.footer>
   );

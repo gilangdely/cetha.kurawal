@@ -4,10 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { MoveRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import illustration from "@/assets/img/illustration-upgrade-cv.jpg";
 
 const CvUpgradeSection = () => {
+  const t = useTranslations("CvUpgrade");
+
   return (
     <motion.section
       initial={{ opacity: 0 }}
@@ -26,15 +29,14 @@ const CvUpgradeSection = () => {
           viewport={{ once: true }}
         >
           <div className="border-primaryBlue w-fit rounded-full border-2 px-2 py-1 lg:px-3 lg:py-1.5">
-            <p className="text-primaryBlue font-medium">Upgrade CV Kamu</p>
+            <p className="text-primaryBlue font-medium">{t("badge")}</p>
           </div>
           <div className="mt-4 flex-col text-start">
             <h2 className="text-TextPrimary text-2xl font-semibold lg:text-3xl">
-              Perbaiki CV, Tingkatkan Peluangmu
+              {t('title')}
             </h2>
             <p className="text-TextSecondary mt-2 max-w-2xl text-base lg:text-lg">
-              AI kami akan mengecek CV-mu, memberi masukan detail, dan membantu
-              menjadikannya lebih menarik di mata recruiter.
+              {t('description')}
             </p>
           </div>
           <motion.div
@@ -48,7 +50,7 @@ const CvUpgradeSection = () => {
               href={"/review-cv"}
               className="group hover:border-primaryBlue mt-8 inline-flex w-fit items-center gap-2 border-b-2 border-transparent font-medium"
             >
-              <span className="text-primaryBlue">Coba sekarang</span>
+              <span className="text-primaryBlue">{t('cta')}</span>
               <MoveRight size={20} className="text-primaryBlue" />
             </Link>
           </motion.div>
@@ -64,7 +66,7 @@ const CvUpgradeSection = () => {
         >
           <Image
             src={illustration}
-            alt="ilustrasi upgrade cv"
+            alt="imageAlt"
             className="h-auto w-full object-contain"
           />
         </motion.div>

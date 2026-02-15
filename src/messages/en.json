@@ -1,4 +1,100 @@
 {
+  "login": {
+    "title": "Hi, nice to see you again!",
+    "subtitle": "Log in and continue upgrading your CV and career today.",
+
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
+
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+
+    "forgotPassword": "Forgot password?",
+    "loginButton": "Login",
+    "loginLoading": "Processing...",
+    "googleLogin": "Login with Google",
+
+    "noAccount": "Don’t have an account?",
+    "register": "Register",
+    "back": "Back",
+
+    "or": "or",
+
+    "toast": {
+      "welcome" : "Welcome",
+      "empty": "Email and password are required",
+      "success": "Login successful",
+      "already": "You are already logged in, redirecting to dashboard",
+      "wrongPassword": "Incorrect password",
+      "userNotFound": "Email is not registered",
+      "invalid": "Email or password is incorrect",
+      "googleFail": "Google login failed"
+    }
+  },
+
+  "register": {
+    "title": "Create New Account",
+    "subtitle": "Build your profile and start upgrading your CV and career.",
+
+    "usernameLabel": "Username",
+    "usernamePlaceholder": "Enter your username",
+
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
+
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+
+    "confirmPasswordLabel": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter your password",
+
+    "registerButton": "Create Account",
+    "registerLoading": "Processing...",
+
+    "googleRegister": "Sign up with Google",
+
+    "alreadyHaveAccount": "Already have an account?",
+    "login": "Login",
+
+    "back": "Back",
+    "or": "or",
+
+    "toast": {
+      "empty": "All fields are required",
+      "passwordMismatch": "Password and confirmation do not match",
+      "success": "Registration successful",
+      "emailUsed": "Email is already registered",
+      "failed": "Registration failed",
+      "failedRetry": "Registration failed, please try again",
+      "googleFailed": "Google sign-up failed",
+      "welcome": "Welcome"
+    }
+  },
+
+  "forgotPassword": {
+    "back": "Back",
+
+    "title": "Forgot password?",
+    "subtitle": "Enter your email to receive a password reset link.",
+
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
+
+    "sendButton": "Send Reset Link",
+    "sendLoading": "Sending...",
+
+    "rememberPassword": "Remember your password?",
+    "backToLogin": "Back to Login",
+
+    "toast": {
+      "emptyEmail": "Email is required",
+      "success": "Password reset link has been sent. Check your inbox or spam folder.",
+      "userNotFound": "Email is not registered",
+      "invalidEmail": "Invalid email format",
+      "error": "Something went wrong, please try again"
+    }
+  },
+
   "Hero": {
     "headlineHighlight": "Upgrade your CV, upgrade your career.",
     "headlineText": "A smart platform to help you level up and land a job faster.",
@@ -9,6 +105,228 @@
       "jobMatch": "Job recommendations based on your skills"
     },
     "imageAlt": "CV building illustration"
+  },
+
+  "Advantages": {
+    "badge": "Why Cetha",
+    "title": "A Smarter Way to Achieve Your Dream Career",
+    "description": "Cetha helps you build a standout CV, optimize your LinkedIn profile, and get job recommendations that match your skills — all in one platform.",
+
+    "cards": {
+      "cv": {
+        "title": "Instant CV Review",
+        "description": "Upload your CV, let AI analyze it, and get improvement suggestions to make it more attractive and ATS-friendly."
+      },
+      "linkedin": {
+        "title": "Standout LinkedIn Profile",
+        "description": "Get suggestions for your headline, summary, and skills to increase visibility for recruiters."
+      },
+      "jobs": {
+        "title": "Jobs That Fit You",
+        "description": "AI finds job opportunities based on your skills, experience, and location — so you only see relevant listings."
+      }
+    },
+
+    "cta": "Try it now"
+  },
+
+  "HowItWorks": {
+    "badge": "How Cetha Works",
+    "title": "How Cetha Helps You Land Your Dream Job",
+    "description": "Follow these simple steps to optimize your CV, LinkedIn profile, and find the most relevant job opportunities.",
+
+    "steps": {
+      "register": {
+        "title": "Sign Up & Create Your Profile",
+        "description": "Create a free account and fill in your basic information so the system understands your background.",
+        "features": [
+          {
+            "highlight": "Fast & Easy.",
+            "text": "Sign up in just a few clicks."
+          },
+          {
+            "highlight": "Personalized Profile.",
+            "text": "Recommendations tailored to your data."
+          }
+        ]
+      },
+      "cv": {
+        "title": "AI-Powered CV Review",
+        "description": "Upload your CV and let AI analyze it instantly with suggestions to improve visibility and pass ATS.",
+        "features": [
+          { "highlight": "Automatic AI analysis.", "text": "" },
+          { "highlight": "ATS-based improvement suggestions.", "text": "" }
+        ]
+      },
+      "linkedin": {
+        "title": "Optimize Your LinkedIn Profile",
+        "description": "Enter your LinkedIn URL and get tips for headlines, summaries, and skills to stand out.",
+        "features": [
+          { "highlight": "Professional headline recommendations.", "text": "" },
+          {
+            "highlight": "Skill & summary optimization.",
+            "text": "to get noticed by recruiters."
+          }
+        ]
+      },
+      "jobs": {
+        "title": "Get Job Recommendations",
+        "description": "See job recommendations that match your skills and experience.",
+        "features": [
+          { "highlight": "Only relevant job listings.", "text": "" },
+          {
+            "highlight": "Personalized by location & experience.",
+            "text": ""
+          }
+        ]
+      }
+    }
+  },
+
+  "CvUpgrade": {
+    "badge": "Upgrade Your CV",
+    "title": "Improve Your CV, Boost Your Opportunities",
+    "description": "Our AI reviews your CV, provides detailed feedback, and helps make it more attractive to recruiters.",
+    "cta": "Try it now",
+    "imageAlt": "CV upgrade illustration"
+  },
+
+  "ImproveLinkedin": {
+    "badge": "Improve Your LinkedIn",
+    "title": "Make Your LinkedIn Profile Stand Out",
+    "description": "Our AI helps improve your headline, summary, and skills so your profile looks more professional and appealing to recruiters.",
+    "cta": "Try it now",
+    "imageAlt": "LinkedIn optimization illustration"
+  },
+
+  "Footer": {
+    "description": "AI-powered CV review to help you build a better career future.",
+
+    "navigation": {
+      "title": "Navigation",
+      "reviewCv": "CV Review",
+      "reviewLinkedin": "LinkedIn Review",
+      "blog": "Career Blog",
+      "pricing": "Pricing",
+      "about": "About Us"
+    },
+
+    "other": {
+      "title": "Others",
+      "faq": "FAQ",
+      "contact": "Contact Us",
+      "privacy": "Privacy Policy",
+      "terms": "Terms & Conditions"
+    },
+
+    "contact": {
+      "title": "Contact Us",
+      "phone": "+62 123-456-789",
+      "email": "kurawal.creative@gmail.com",
+      "location": "Purwokerto, Indonesia"
+    },
+
+    "copyright": "All rights reserved."
+  },
+
+  "pricingQuota": {
+    "badge": "Quota Packages",
+    "title": "Pay Once, Use as You Need",
+    "description": "Get review quotas to analyze your CV and receive job recommendations tailored to your needs.",
+
+    "popular": "Most Popular",
+
+    "plans": {
+      "beginner": {
+        "tier": "Beginner",
+        "price": "20,000 IDR",
+        "quota": "10 Quotas",
+        "tagline": "Try the review features at an affordable price.",
+        "features": [
+          "Basic CV & LinkedIn analysis",
+          "Limited job recommendations",
+          "General improvement suggestions"
+        ],
+        "button": "Buy 10 Quotas"
+      },
+      "professional": {
+        "tier": "Professional",
+        "price": "50,000 IDR",
+        "quota": "30 Quotas",
+        "tagline": "For active job seekers who want more detailed results.",
+        "features": [
+          "All Beginner package features",
+          "AI keyword analysis",
+          "Save review history",
+          "Real-time job recommendations"
+        ],
+        "button": "Buy 30 Quotas"
+      },
+      "exclusive": {
+        "tier": "Exclusive",
+        "price": "100,000 IDR",
+        "quota": "100 Quotas",
+        "tagline": "Full access with the fastest and most accurate results.",
+        "features": [
+          "All Professional package features",
+          "Advanced AI analysis",
+          "Job matching based on interests & experience",
+          "Priority user support"
+        ],
+        "button": "Buy 100 Quotas"
+      }
+    }
+  },
+
+  "authCarousel": {
+    "quotes": [
+      {
+        "quote": "All the tools we need are now available in a single platform that is clean, intuitive, and easy to use.",
+        "name": "Karen Yue",
+        "role": "Director of Digital Marketing Technology"
+      },
+      {
+        "quote": "The CV review and career development process has become far more structured, fast, and efficient.",
+        "name": "Andi Pratama",
+        "role": "Head of Product Strategy"
+      },
+      {
+        "quote": "The workflow feels simpler and helps us make more accurate career decisions.",
+        "name": "Sinta Maharani",
+        "role": "Senior UX Lead"
+      }
+    ]
+  },
+
+  "navbar": {
+    "features": "Features",
+    "blog": "Blog & Tips",
+    "price": "Pricing",
+    "about": "About Us",
+
+    "dropdown": {
+      "reviewCv": {
+        "title": "Instant CV Review",
+        "desc": "Get professional feedback for your CV"
+      },
+      "linkedin": {
+        "title": "Improve LinkedIn Profile",
+        "desc": "Optimize your LinkedIn profile"
+      },
+      "jobMatch": {
+        "title": "Job Match",
+        "desc": "Best job recommendations based on your CV"
+      }
+    },
+
+    "auth": {
+      "login": "Sign In",
+      "dashboard": "Dashboard",
+      "settings": "Settings",
+      "logout": "Logout",
+      "viewProfile": "View profile",
+      "greeting": "Hi"
+    }
   },
 
   "NotFound": {
