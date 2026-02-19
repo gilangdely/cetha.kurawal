@@ -41,20 +41,23 @@ const AdventagesSection = () => {
     <section className="mx-auto w-full max-w-7xl px-6 pb-12">
       {/* Title */}
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true }}
         className="flex flex-col items-center text-center"
       >
-        <div className="border-primaryBlue rounded-full border-2 px-2 py-1 lg:px-3 lg:py-1.5">
-          <p className="text-primaryBlue lg:font-medium">{t("badge")}</p>
+        <div className="border-primaryBlue/40 bg-primaryBlue/5 rounded-full border px-3 py-1">
+          <p className="text-primaryBlue text-sm font-medium tracking-wide">
+            {t("badge")}
+          </p>
         </div>
-        <div className="mt-4 max-w-3xl flex-col text-center">
+
+        <div className="mt-4 max-w-3xl">
           <h2 className="text-TextPrimary text-2xl font-semibold md:text-3xl">
             {t("title")}
           </h2>
-          <p className="text-TextSecondary mt-2 text-base lg:text-lg">
+          <p className="text-TextSecondary mt-2 text-base md:text-lg">
             {t("description")}
           </p>
         </div>
@@ -90,10 +93,18 @@ const AdventagesSection = () => {
             </div>
             <Link
               href={card.link}
-              className="group hover:border-primaryBlue mt-4 inline-flex w-fit items-center gap-2 border-b-2 border-transparent font-medium"
+              className="group text-primaryBlue mt-4 w-fit inline-flex items-center gap-2 text-sm font-medium"
             >
-              <span className="text-primaryBlue">{t("cta")}</span>
-              <MoveRight size={20} className="text-primaryBlue" />
+              <span className="relative inline-flex items-center gap-2">
+                {t("cta")}
+                <MoveRight
+                  size={16}
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                />
+
+                {/* underline */}
+                <span className="bg-primaryBlue absolute -bottom-0.5 left-0 h-[1.5px] w-full origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
+              </span>
             </Link>
           </motion.div>
         ))}

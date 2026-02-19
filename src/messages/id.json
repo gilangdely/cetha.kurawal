@@ -99,7 +99,9 @@
     "headlineHighlight": "Upgrade CV, upgrade karier.",
     "headlineText": "Platform pintar buat kamu yang mau naik level dan dapet kerja lebih cepat.",
     "description": "Cetha bantu kamu bikin CV standout, optimalkan profil, dan temukan kerjaan yang pas semuanya di satu tempat.",
-    "cta": "Mulai Sekarang",
+    "ctaLogin": "Mulai Sekarang",
+    "ctaPrimary": "Coba Review CV",
+    "ctaSecondary": "Pelajari Cara Kerjanya",
     "benefits": {
       "freeTrial": "Coba gratis tanpa ribet",
       "jobMatch": "Rekomendasi kerja sesuai skill"
