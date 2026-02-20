@@ -99,7 +99,9 @@
     "headlineHighlight": "Upgrade your CV, upgrade your career.",
     "headlineText": "A smart platform to help you level up and land a job faster.",
     "description": "Cetha helps you create a standout CV, optimize your profile, and find the right job — all in one place.",
-    "cta": "Get Started",
+    "ctaLogin": "Get Started",
+    "ctaPrimary": "Try Reviewing the CV",
+    "ctaSecondary": "How It Works",
     "benefits": {
       "freeTrial": "Try for free, no hassle",
       "jobMatch": "Job recommendations based on your skills"
