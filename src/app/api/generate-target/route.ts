@@ -1,6 +1,7 @@
 // filepath: d:\Projectan\cetha\src\app\api\generate-target\route.ts
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { rateLimit } from "@/app/lib/rate-limit";
 
 // Initialize Gemini model (same key usage as other AI endpoints)
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API || "");
@@ -13,6 +14,12 @@ const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-001" });
  */
 export async function POST(req: Request) {
   try {
+    const ip = req.headers.get("x-forwarded-for") || "127.0.0.1";
+    const { success } = rateLimit(ip);
+    if (!success) {
+      return NextResponse.json({ success: false, message: "Terlalu banyak permintaan generate." }, { status: 429 });
+    }
+
     const body = await req.json();
     const { title, count = 6 } = body || {};
 
@@ -60,10 +67,10 @@ Jawab hanya JSON valid.`;
     // Normalisasi ke struktur edit-target-karir
     const normalizedTasks = Array.isArray(parsed.tasks)
       ? parsed.tasks.map((t: any, idx: number) => ({
-          id: typeof t.id === "number" ? t.id : idx + 1,
-          label: t.label || `Tugas ${idx + 1}`,
-          checked: false,
-        }))
+        id: typeof t.id === "number" ? t.id : idx + 1,
+        label: t.label || `Tugas ${idx + 1}`,
+        checked: false,
+      }))
       : [];
 
     const summary = typeof parsed.summary === "string" ? parsed.summary : "";

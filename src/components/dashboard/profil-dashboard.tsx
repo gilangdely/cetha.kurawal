@@ -24,7 +24,7 @@ interface UserData {
   photoURL?: string;
   createdAt?: any;
   lastLogin?: any;
-  role?: string[];
+  role?: string[] | string;
   skills?: string[];
 }
 
@@ -41,6 +41,12 @@ export default function ProfilDashboard({
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const user = auth.currentUser;
+
+  const roles = Array.isArray(userData?.role)
+    ? userData.role
+    : userData?.role
+      ? [userData.role]
+      : [];
 
   // === PALETTE WARNA UNTUK CHIP ===
   const chipColors = [
@@ -118,8 +124,8 @@ export default function ProfilDashboard({
               </h2>
               <p className="text-gray-600">{email}</p>
               <div className="mt-2 font-medium text-blue-600 capitalize flex flex-wrap gap-2">
-                {(userData?.role || []).length > 0 ? (
-                  userData!.role!.map((r) => (
+                {roles.length > 0 ? (
+                  roles.map((r) => (
                     <span
                       key={r}
                       className={`inline-block rounded-full border px-3 py-1 text-sm font-medium transition-all hover:scale-105 ${getChipColor(
@@ -154,19 +160,19 @@ export default function ProfilDashboard({
           <h3 className="mb-3 font-medium text-gray-600">Skill Highlights</h3>
           <div className="mt-2 flex flex-wrap gap-2">
             {(userData?.skills || []).length > 0 ? (
-                  userData!.skills!.map((skill) => (
-                    <span
-                      key={skill}
-                      className={`inline-block rounded-full border px-3 py-1 text-sm font-medium transition-all hover:scale-105 ${getChipColor(
-                        skill
-                      )}`}
-                    >
-                      {skill}
-                    </span>
-                  ))
-                ) : (
-                  <p className="text-sm text-gray-400">Belum ada skill.</p>
-                )}
+              userData!.skills!.map((skill) => (
+                <span
+                  key={skill}
+                  className={`inline-block rounded-full border px-3 py-1 text-sm font-medium transition-all hover:scale-105 ${getChipColor(
+                    skill
+                  )}`}
+                >
+                  {skill}
+                </span>
+              ))
+            ) : (
+              <p className="text-sm text-gray-400">Belum ada skill.</p>
+            )}
           </div>
         </div>
       </div>

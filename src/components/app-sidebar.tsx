@@ -84,14 +84,27 @@ export function AppSidebar() {
   const [username, setUsername] = useState("Cetha");
   const [email, setEmail] = useState("m@example.com");
   const [openDialog, setOpenDialog] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         setUsername(
           user.displayName || user.email?.split("@")[0] || "Pengguna",
         );
         setEmail(user.email || "m@example.com");
+
+        try {
+          const res = await fetch("/api/me");
+          if (res.ok) {
+            const data = await res.json();
+            setIsAdmin(data.role === "admin");
+          }
+        } catch (e) {
+          console.error("Failed to fetch user role status");
+        }
+      } else {
+        setIsAdmin(false);
       }
     });
     return () => unsubscribe();
@@ -131,6 +144,21 @@ export function AppSidebar() {
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
+
+                {isAdmin && (
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild variant={"default"}>
+                      <Link
+                        href="/admin"
+                        className="hover:bg-accent/50 flex !hover:text-primaryBlue items-center gap-3 rounded-md px-3 !py-6 text-sm font-medium transition-all duration-150"
+                      >
+                        <Settings2 className="text-muted-foreground !h-6 !w-6" />
+                        <span className="text-gray-600 font-medium">Buka Admin</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )}
+
                 <div className="p-2.5">
                   <div className="overflow-hidden rounded-md border border-gray-200 bg-white shadow-xs">
                     <div className="relative h-20 w-full bg-gradient-to-br from-blue-50 to-blue-100">
