@@ -29,9 +29,9 @@ const HeroSection = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8, ease: "easeInOut" }}
-      className="mx-auto flex w-full max-w-7xl items-center lg:min-h-screen lg:px-6"
+      className="mx-auto mt-6 flex w-full max-w-7xl items-center lg:mt-0 lg:min-h-screen lg:px-6"
     >
-      <div className="flex w-full flex-col-reverse items-center gap-2 px-6 pt-16 pb-12 md:flex-row md:pt-24 lg:gap-10 lg:px-0 lg:pt-0">
+      <div className="flex w-full flex-col-reverse items-center gap-6 px-6 pt-16 pb-12 md:flex-row md:pt-24 lg:gap-10 lg:px-0 lg:pt-0">
         {/* LEFT */}
         <motion.div
           className="flex-1"
@@ -53,7 +53,9 @@ const HeroSection = () => {
                 href="/tingkatkan-linkedIn"
                 className="group border-primaryBlue text-primaryBlue hover:border-primaryBlueHover hover:bg-primaryBlue/5 hover:text-primaryBlueHover focus-visible:ring-primaryBlue flex w-full items-center justify-center rounded-full border-2 px-6 py-2.5 transition-all duration-200 ease-out focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:w-fit"
               >
-                <span className="font-medium">{t("ctaSecondary")}</span>
+                <span className="font-medium whitespace-nowrap">
+                  {t("ctaSecondary")}
+                </span>
               </Link>
 
               {/* Primary CTA */}
@@ -61,7 +63,9 @@ const HeroSection = () => {
                 href={isLoggedIn ? "/review-cv" : "/login"}
                 className="group bg-primaryBlue hover:bg-primaryBlueHover focus-visible:ring-primaryBlue flex w-full items-center justify-center gap-2 rounded-full px-6 py-2.5 font-semibold text-white shadow-sm transition-all duration-200 ease-out hover:shadow-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.98] md:w-fit"
               >
-                <span>{isLoggedIn ? t("ctaPrimary") : t("ctaLogin")}</span>
+                <span className="whitespace-nowrap">
+                  {isLoggedIn ? t("ctaPrimary") : t("ctaLogin")}
+                </span>
 
                 <Send
                   height={20}
@@ -90,17 +94,20 @@ const HeroSection = () => {
 
         {/* RIGHT */}
         <motion.div
-          className="relative flex-1"
+          className="relative flex-1 overflow-visible"
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
         >
-          <Image
-            src={illustration}
-            alt={t("imageAlt")}
-            draggable={false}
-            priority
-          />
+          <div className="relative overflow-visible">
+            <Image
+              src={illustration}
+              alt={t("imageAlt")}
+              draggable={false}
+              priority
+              className="overflow-visible"
+            />
+          </div>
 
           {/* Lingkaran 1 - Kiri Atas */}
           <motion.div
