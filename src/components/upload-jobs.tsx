@@ -13,6 +13,7 @@ import office from "@/assets/icons/office-docsx.svg";
 import { auth } from "@/app/lib/firebase";
 import { useJobResultStore } from "@/store/jobResultStore";
 import { useUploadStore } from "@/store/uploadStore";
+import { UpgradeModal } from "@/components/UpgradeModal";
 
 const UploadJobs = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -25,6 +26,9 @@ const UploadJobs = () => {
   const [ip, setIp] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [uploadCount, setUploadCount] = useState(0);
+
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [upgradeMessage, setUpgradeMessage] = useState("");
 
   const router = useRouter();
   const pathname = usePathname();
@@ -93,22 +97,37 @@ const UploadJobs = () => {
 
     try {
       setGlobalUploading(true, "job");
-      setProgressGlobal(0);
-
-      const res = await axios.post("/api/jobrecommend", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-        onUploadProgress: (event) => {
-          const percent = event.total
-            ? Math.round((event.loaded * 100) / event.total)
-            : 0;
-          setProgressGlobal(percent);
-        },
+      // Langkah 2: Kirim ke backend untuk review 
+      const res = await fetch("/api/jobrecommend", {
+        method: "POST",
+        body: formData,
       });
 
-      toast.success("Analisis CV berhasil!");
-      console.log("🔍 Respons rekomendasi:", res.data);
+      if (!res.ok) {
+        let errorMessage = "Gagal mengunggah atau menganalisis CV";
+        let errData: any = {};
+        try {
+          errData = await res.json();
+          errorMessage = errData?.message || errData?.error || errorMessage;
+        } catch (_) { }
 
-      const hasil = res.data.result?.data?.[0];
+        if (errData?.requireUpgrade) {
+          setUpgradeMessage(errorMessage);
+          setShowUpgradeModal(true);
+          return;
+        }
+
+        throw new Error(errorMessage);
+      }
+
+      const responseData = await res.json();
+      const finalResult = responseData?.data?.result || responseData?.result;
+
+      // Update store
+      setJobResult(finalResult?.data || finalResult);
+      toast.success("Rekomendasi berhasil dibuat!");
+
+      const hasil = responseData.result?.data?.[0];
       if (!hasil) throw new Error("Data hasil tidak ditemukan.");
 
       setJobResult(hasil);
@@ -126,8 +145,8 @@ const UploadJobs = () => {
 
       router.push(targetRoute);
     } catch (err: any) {
-      console.error("❌ Upload gagal:", err.response?.data || err.message);
-      toast.error("Gagal mengunggah atau menganalisis CV");
+      console.error("❌ Upload gagal:", err.message || err);
+      toast.error(err.message || "Gagal mengunggah atau menganalisis CV");
     } finally {
       setGlobalUploading(false);
     }
@@ -137,11 +156,10 @@ const UploadJobs = () => {
     <div className="w-full pt-6">
       {/* Upload Area */}
       <div
-        className={`relative flex h-50 items-center justify-center rounded-2xl border-3 border-dashed ${
-          uploadEnabled
-            ? "cursor-pointer border-gray-400"
-            : "cursor-not-allowed border-gray-300 bg-gray-100 opacity-60"
-        }`}
+        className={`relative flex h-50 items-center justify-center rounded-2xl border-3 border-dashed ${uploadEnabled
+          ? "cursor-pointer border-gray-400"
+          : "cursor-not-allowed border-gray-300 bg-gray-100 opacity-60"
+          }`}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onClick={() => {
@@ -257,6 +275,12 @@ const UploadJobs = () => {
           </button>
         </div>
       </div>
+
+      <UpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        message={upgradeMessage}
+      />
     </div>
   );
 };

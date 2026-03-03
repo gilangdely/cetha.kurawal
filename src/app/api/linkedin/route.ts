@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { QuotaService } from "@/lib/quota-service";
+import { getSessionUidFromCookie } from "@/app/lib/session";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -6,15 +8,27 @@ export async function GET(request: Request) {
 
   if (!username || username.trim() === "") {
     return NextResponse.json(
-      { error: "Parameter 'username' wajib diisi." },
+      { success: false, message: "Parameter 'username' wajib diisi." },
       { status: 400 }
+    );
+  }
+
+  // Periksa Kuota AI
+  const userId = await getSessionUidFromCookie();
+  const ipAddress = request.headers.get("x-forwarded-for") || "127.0.0.1";
+
+  const quotaCheck = await QuotaService.checkQuota(userId, ipAddress);
+  if (!quotaCheck.hasQuota) {
+    return NextResponse.json(
+      { success: false, message: quotaCheck.message, requireUpgrade: true },
+      { status: 403 }
     );
   }
 
   const apiKeys = process.env.LINKDAPI_KEYS?.split(",").map((k) => k.trim());
   if (!apiKeys || apiKeys.length === 0) {
     return NextResponse.json(
-      { error: "API key tidak ditemukan di environment." },
+      { success: false, message: "API key tidak ditemukan di environment." },
       { status: 500 }
     );
   }
@@ -33,7 +47,7 @@ export async function GET(request: Request) {
 
     if (!overviewRes.ok) {
       return NextResponse.json(
-        { error: `Gagal mengambil data overview (${overviewRes.status}).` },
+        { success: false, message: `Gagal mengambil data overview (${overviewRes.status}).` },
         { status: overviewRes.status }
       );
     }
@@ -43,7 +57,7 @@ export async function GET(request: Request) {
 
     if (!urn) {
       return NextResponse.json(
-        { error: `URN tidak ditemukan untuk username '${username}'.` },
+        { success: false, message: `URN tidak ditemukan untuk username '${username}'.` },
         { status: 404 }
       );
     }
@@ -59,7 +73,7 @@ export async function GET(request: Request) {
 
     if (!detailRes.ok) {
       return NextResponse.json(
-        { error: `Gagal mengambil data detail (${detailRes.status}).` },
+        { success: false, message: `Gagal mengambil data detail (${detailRes.status}).` },
         { status: detailRes.status }
       );
     }
@@ -77,7 +91,7 @@ export async function GET(request: Request) {
 
     if (!experienceRes.ok) {
       return NextResponse.json(
-        { error: `Gagal mengambil data pengalaman (${experienceRes.status}).` },
+        { success: false, message: `Gagal mengambil data pengalaman (${experienceRes.status}).` },
         { status: experienceRes.status }
       );
     }
@@ -95,24 +109,30 @@ export async function GET(request: Request) {
 
     if (!educationRes.ok) {
       return NextResponse.json(
-        { error: `Gagal mengambil data pendidikan (${educationRes.status}).` },
+        { success: false, message: `Gagal mengambil data pendidikan (${educationRes.status}).` },
         { status: educationRes.status }
       );
     }
 
     const educationData = await educationRes.json();
 
+    // Kurangi kuota jika sukses
+    await QuotaService.consumeQuota(userId, "LinkedIn Optimization", ipAddress);
+
     // 5️⃣ Gabungkan semua data jadi satu respons JSON
     return NextResponse.json({
+      success: true,
       message: "Data profil lengkap berhasil diambil.",
-      overview: overviewData.data,
-      details: detailData.data,
-      experience: experienceData.data?.experience || [],
-      education: educationData.data?.education || [],
+      data: {
+        overview: overviewData.data,
+        details: detailData.data,
+        experience: experienceData.data?.experience || [],
+        education: educationData.data?.education || [],
+      }
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: `Terjadi kesalahan server: ${error.message}` },
+      { success: false, message: `Terjadi kesalahan server: ${error.message}` },
       { status: 500 }
     );
   }

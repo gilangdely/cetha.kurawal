@@ -2,6 +2,8 @@
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { rateLimit } from "@/app/lib/rate-limit";
+import { QuotaService } from "@/lib/quota-service";
+import { getSessionUidFromCookie } from "@/app/lib/session";
 
 // Initialize Gemini model (same key usage as other AI endpoints)
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API || "");
@@ -18,6 +20,16 @@ export async function POST(req: Request) {
     const { success } = rateLimit(ip);
     if (!success) {
       return NextResponse.json({ success: false, message: "Terlalu banyak permintaan generate." }, { status: 429 });
+    }
+
+    // Periksa Kuota AI
+    const userId = await getSessionUidFromCookie();
+    const quotaCheck = await QuotaService.checkQuota(userId, ip);
+    if (!quotaCheck.hasQuota) {
+      return NextResponse.json(
+        { success: false, message: quotaCheck.message, requireUpgrade: true },
+        { status: 403 }
+      );
     }
 
     const body = await req.json();
@@ -74,6 +86,8 @@ Jawab hanya JSON valid.`;
       : [];
 
     const summary = typeof parsed.summary === "string" ? parsed.summary : "";
+
+    await QuotaService.consumeQuota(userId, "Generate Career Target", ip);
 
     return NextResponse.json({
       success: true,

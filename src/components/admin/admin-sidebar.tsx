@@ -38,10 +38,10 @@ import LogoutAlert from "@/components/logout-alert";
 
 const nav = [
   { label: "Admin Dashboard", href: "/admin", icon: LayoutDashboard },
+  { label: "Pilihan Tier Langganan", href: "/admin/subscription-tiers", icon: Blocks },
+  { label: "Verifikasi Pembayaran", href: "/admin/subscriptions", icon: FileText },
   { label: "Kelola Konten & Tips", href: "/admin/contents", icon: Newspaper },
-  { label: "Kelola Halaman", href: "/admin/pages", icon: FileText },
-  { label: "Landing Sections", href: "/admin/landing", icon: Blocks },
-  { label: "Site Settings", href: "/admin/settings", icon: Settings },
+  { label: "Pengaturan Situs", href: "/admin/settings", icon: Settings },
 ];
 
 export function AdminSidebar() {
@@ -70,7 +70,7 @@ export function AdminSidebar() {
     <>
       <Sidebar className="border-r bg-white/90 backdrop-blur">
         <SidebarHeader className="flex items-center justify-start pt-4">
-          <Link href={"/id/admin"} className="text-TextPrimary flex h-12 items-center gap-2 text-lg font-semibold">
+          <Link href={"/admin"} className="text-TextPrimary flex h-12 items-center gap-2 text-lg font-semibold">
             <Image alt="logo cetha" src={logo} height={60} />
             <span className="text-[10px] font-bold bg-accentOrange text-white px-2 py-0.5 rounded ml-1 tracking-wider uppercase shadow-sm">ADMIN</span>
           </Link>

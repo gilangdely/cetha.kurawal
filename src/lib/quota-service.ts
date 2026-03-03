@@ -1,0 +1,122 @@
+import { adminDb } from "@/app/lib/firebase-admin";
+import { FieldValue } from "firebase-admin/firestore";
+
+/**
+ * Service to manage user quotas and guest (IP-based) quotas.
+ */
+export class QuotaService {
+    /**
+     * Checks if a user or guest has remaining quota.
+     */
+    static async checkQuota(userId: string | null, ipAddress: string): Promise<{ hasQuota: boolean; message?: string }> {
+        if (userId) {
+            // Check User Quota
+            const quotaRef = adminDb.collection("user_quotas").doc(userId);
+            const quotaDoc = await quotaRef.get();
+
+            if (!quotaDoc.exists) {
+                // Give default free quota if document doesn't exist
+                return { hasQuota: true };
+            }
+
+            const remaining = quotaDoc.data()?.remaining_quota || 0;
+            if (remaining > 0) {
+                return { hasQuota: true };
+            }
+
+            return { hasQuota: false, message: "Kuota kamu sudah habis. Silakan upgrade paket langganan untuk melanjutkan." };
+        } else {
+            // Check Guest Quota by IP
+            const guestRef = adminDb.collection("guest_usage").doc(ipAddress.replace(/[:.]/g, "_"));
+            const guestDoc = await guestRef.get();
+
+            if (!guestDoc.exists) {
+                return { hasQuota: true };
+            }
+
+            const used = guestDoc.data()?.used_quota || 0;
+            if (used < 1) { // 1x free usage for guests
+                return { hasQuota: true };
+            }
+
+            return { hasQuota: false, message: "Batas penggunaan tamu telah habis. Silakan login atau daftar untuk mendapatkan kuota tambahan gratis." };
+        }
+    }
+
+    /**
+     * Consumes 1 quota from a user or guest and logs the usage.
+     */
+    static async consumeQuota(userId: string | null, featureName: string, ipAddress: string): Promise<void> {
+        await adminDb.runTransaction(async (transaction) => {
+            const logRef = adminDb.collection("usage_logs").doc();
+
+            if (userId) {
+                // 1. Read User Quota First
+                const quotaRef = adminDb.collection("user_quotas").doc(userId);
+                const quotaDoc = await transaction.get(quotaRef);
+
+                // 2. Write operations
+                transaction.set(logRef, {
+                    user_id: userId,
+                    ip_address: ipAddress,
+                    feature: featureName,
+                    created_at: FieldValue.serverTimestamp()
+                });
+
+                if (quotaDoc.exists) {
+                    const currentRemaining = quotaDoc.data()?.remaining_quota || 0;
+                    const currentUsed = quotaDoc.data()?.used_quota || 0;
+
+                    if (currentRemaining <= 0) {
+                        throw new Error("Insufficient quota");
+                    }
+
+                    transaction.update(quotaRef, {
+                        remaining_quota: currentRemaining - 1,
+                        used_quota: currentUsed + 1,
+                        updated_at: FieldValue.serverTimestamp()
+                    });
+                } else {
+                    // Create default free quota minus 1
+                    transaction.set(quotaRef, {
+                        user_id: userId,
+                        total_quota: 2, // 2 free standard
+                        used_quota: 1,
+                        remaining_quota: 1,
+                        updated_at: FieldValue.serverTimestamp()
+                    });
+                }
+            } else {
+                // 1. Read Guest Quota First
+                const guestId = ipAddress.replace(/[:.]/g, "_");
+                const guestRef = adminDb.collection("guest_usage").doc(guestId);
+                const guestDoc = await transaction.get(guestRef);
+
+                // 2. Write operations
+                transaction.set(logRef, {
+                    user_id: "guest",
+                    ip_address: ipAddress,
+                    feature: featureName,
+                    created_at: FieldValue.serverTimestamp()
+                });
+
+                if (guestDoc.exists) {
+                    const currentUsed = guestDoc.data()?.used_quota || 0;
+                    if (currentUsed >= 1) {
+                        throw new Error("Insufficient guest quota");
+                    }
+                    transaction.update(guestRef, {
+                        used_quota: currentUsed + 1,
+                        last_used: FieldValue.serverTimestamp()
+                    });
+                } else {
+                    transaction.set(guestRef, {
+                        ip_address: ipAddress,
+                        used_quota: 1,
+                        last_used: FieldValue.serverTimestamp()
+                    });
+                }
+            }
+        });
+    }
+}
