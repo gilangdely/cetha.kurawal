@@ -4,12 +4,16 @@ import { auth } from "@/app/lib/firebase";
 import { Send } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import ReactMarkdown from "react-markdown";
+import { UpgradeModal } from "@/components/UpgradeModal";
 
 const ChatCethaBot = () => {
     const [input, setInput] = useState("");
     const [messages, setMessages] = useState<{ sender: string; text: string }[]>([]);
     const [username, setUsername] = useState<string | null>(null);
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+    const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+    const [upgradeMessage, setUpgradeMessage] = useState("");
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -42,6 +46,15 @@ const ChatCethaBot = () => {
             });
 
             const data = await res.json();
+
+            if (!res.ok) {
+                if (data.requireUpgrade) {
+                    setUpgradeMessage(data.reply || data.error || "Kuota kamu habis.");
+                    setShowUpgradeModal(true);
+                    return;
+                }
+            }
+
             const botMsg = { sender: "bot", text: data.reply };
             setMessages((prev) => [...prev, botMsg]);
         } catch (error) {
@@ -121,6 +134,12 @@ const ChatCethaBot = () => {
                     <Send size={16} />
                 </button>
             </div>
+
+            <UpgradeModal
+                isOpen={showUpgradeModal}
+                onClose={() => setShowUpgradeModal(false)}
+                message={upgradeMessage}
+            />
         </div>
     );
 };

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Client, handle_file, upload_files } from "@gradio/client";
+import { QuotaService } from "@/lib/quota-service";
+import { getSessionUidFromCookie } from "@/app/lib/session";
 
 // ✅ Validasi file
 const validateFile = (file: File | null): string | null => {
@@ -23,7 +25,19 @@ export const POST = async (req: NextRequest) => {
     // Validasi dasar
     const validationError = validateFile(file);
     if (validationError) {
-      return NextResponse.json({ error: validationError }, { status: 400 });
+      return NextResponse.json({ success: false, message: validationError }, { status: 400 });
+    }
+
+    // Periksa Kuota AI
+    const userId = await getSessionUidFromCookie();
+    const ipAddress = req.headers.get("x-forwarded-for") || "127.0.0.1";
+
+    const quotaCheck = await QuotaService.checkQuota(userId, ipAddress);
+    if (!quotaCheck.hasQuota) {
+      return NextResponse.json(
+        { success: false, message: quotaCheck.message, requireUpgrade: true },
+        { status: 403 }
+      );
     }
 
     // Hubungkan ke Hugging Face Space kamu
@@ -40,20 +54,23 @@ export const POST = async (req: NextRequest) => {
     // Panggil fungsi utama di Hugging Face (sesuai `fn=analyze_career_path`)
     const result = await app.predict("/analyze_career_path", [handle_file(fileUrl)]);
 
+    // Kurangi kuota jika sukses
+    await QuotaService.consumeQuota(userId, "Job Recommendation", ipAddress);
+
     // Kirim hasilnya ke frontend
-    return NextResponse.json({ result });
+    return NextResponse.json({ success: true, message: "Review berhasil", data: { result } });
   } catch (error: any) {
     console.error("❌ API Upload Error:", error);
 
     if (error.response?.status === 429) {
       return NextResponse.json(
-        { error: "Kuota API telah terlampaui. Silakan coba lagi beberapa saat lagi." },
+        { success: false, message: "Kuota API Server terlampaui. Silakan coba lagi beberapa saat lagi." },
         { status: 429 }
       );
     }
 
     return NextResponse.json(
-      { error: "Terjadi kesalahan saat memproses file." },
+      { success: false, message: error?.message || "Terjadi kesalahan saat memproses file (Internal Server Error)." },
       { status: 500 }
     );
   }

@@ -109,9 +109,9 @@ const Footer = () => {
             <ul className="space-y-2">
               {[
                 { href: "/faq", label: t("other.faq") },
-                { href: "/contact", label: t("other.contact") },
-                { href: "/privacy", label: t("other.privacy") },
-                { href: "/terms", label: t("other.terms") },
+                { href: "/hubungi-kami", label: t("other.contact") },
+                { href: "/kebijakan-privasi", label: t("other.privacy") },
+                { href: "/syarat-ketentuan", label: t("other.terms") },
               ].map((item, i) => (
                 <motion.li
                   key={i}

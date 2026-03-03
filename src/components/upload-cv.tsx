@@ -16,6 +16,7 @@ import { Trash2, ChevronRight } from "lucide-react";
 import logo from "@/assets/icons/upload-docs.svg";
 import office from "@/assets/icons/office-docsx.svg";
 
+import { UpgradeModal } from "@/components/UpgradeModal";
 import { auth } from "@/app/lib/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { collection, addDoc } from "firebase/firestore";
@@ -34,6 +35,9 @@ const UploadCv = () => {
   const [ip, setIp] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [uploadCount, setUploadCount] = useState(0);
+
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [upgradeMessage, setUpgradeMessage] = useState("");
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -248,29 +252,46 @@ const UploadCv = () => {
       setProgressGlobal(50);
       toast.info("File disimpan, memproses review...");
 
-      // Langkah 2: Kirim ke backend untuk review
-      const res = await axios.post("/api/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-        timeout: 60000,
-        onUploadProgress: (event) => {
-          const percent = event.total
-            ? Math.round((event.loaded * 100) / event.total)
-            : 0;
-          setProgressGlobal(50 + percent / 2);
-        },
+      // Langkah 2: Kirim ke backend untuk review (menggunakan fetch agar error response terbaca utuh)
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
       });
 
+      if (!res.ok) {
+        let errorMessage = "Gagal Upload. Coba lagi.";
+        let errData: any = {};
+        try {
+          errData = await res.json();
+          errorMessage = errData?.message || errData?.error || errorMessage;
+        } catch (_) { }
+
+        if (errData?.requireUpgrade) {
+          setUpgradeMessage(errorMessage);
+          setShowUpgradeModal(true);
+          return;
+        }
+
+        throw new Error(errorMessage);
+      }
+
+      const responseData = await res.json();
+
+      // Ambil data dari response (mendukung format lama dan baru)
+      const finalResult = responseData?.data?.result || responseData?.result;
+      setProgressGlobal(100);
+
       // Langkah 3: Simpan hasil ke Firestore
-      await saveReviewToFirestore(fileUrl, res.data.result.data);
+      await saveReviewToFirestore(fileUrl, finalResult?.data || finalResult);
 
       toast.success("Review CV selesai dan disimpan!");
-      console.log("Respon server:", res.data);
+      console.log("Respon server:", responseData);
 
       setReviewData({
         fileName: selectedFile.name,
         fileType: selectedFile.type,
         fileUrl,
-        result: res.data.result.data,
+        result: finalResult?.data || finalResult,
       });
 
       if (!isLoggedIn) {
@@ -286,9 +307,10 @@ const UploadCv = () => {
       router.push(targetRoute);
     } catch (err: any) {
       console.error("Upload gagal detail:", {
-        message: err.message,
+        message: err.message || err,
         fileSize: selectedFile?.size,
       });
+
       toast.error(err.message || "Gagal Upload. Coba lagi.");
     } finally {
       setGlobalUploading(false);
@@ -451,13 +473,11 @@ const UploadCv = () => {
         </div>
       </div>
 
-      <div className="mt-2 text-center text-sm text-gray-500">
-        {!isLoggedIn && (
-          <span>
-            Sisa upload tanpa login: {Math.max(0, 5 - uploadCount)} dari 5 kali
-          </span>
-        )}
-      </div>
+      <UpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        message={upgradeMessage}
+      />
     </div>
   );
 };

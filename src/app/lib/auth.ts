@@ -40,7 +40,14 @@ export const registerUser = async (
 
 // Login dengan Email & Password
 export const loginUser = async (email: string, password: string) => {
-  return await signInWithEmailAndPassword(auth, email, password);
+  const userCredential = await signInWithEmailAndPassword(auth, email, password);
+  const token = await userCredential.user.getIdToken();
+  await fetch("/api/auth/session", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ idToken: token }),
+  });
+  return userCredential;
 };
 
 // Login dengan Google
@@ -63,6 +70,13 @@ export const loginWithGoogle = async () => {
     await setDoc(userRef, { lastLogin: serverTimestamp() }, { merge: true });
   }
 
+  const token = await user.getIdToken();
+  await fetch("/api/auth/session", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ idToken: token }),
+  });
+
   return user;
 };
 
@@ -76,5 +90,6 @@ export const resetPassword = async (email: string) => {
 
 // Logout
 export const logoutUser = async () => {
+  await fetch("/api/auth/logout", { method: "POST" });
   return await signOut(auth);
 };

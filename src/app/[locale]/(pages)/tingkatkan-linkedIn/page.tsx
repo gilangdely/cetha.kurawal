@@ -13,6 +13,7 @@ import maskHappy from "@/assets/icons/mask-happy.svg";
 
 import LinkedInProfileDisplay from "@/components/linkedin-profile-card";
 import LinkedInAnalysisResult from "@/components/linkedin-analysis";
+import { UpgradeModal } from "@/components/UpgradeModal";
 
 import { auth } from "@/app/lib/firebase";
 
@@ -114,6 +115,9 @@ export default function ImproveLinkedInPage() {
   const [attemptsLeft, setAttemptsLeft] = useState<number>(3);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [upgradeMessage, setUpgradeMessage] = useState("");
+
   // Dapatkan IP address dan periksa jumlah percobaan yang tersisa
   useEffect(() => {
     const fetchIpAndCheckLimit = async () => {
@@ -207,7 +211,15 @@ export default function ImproveLinkedInPage() {
       // 1️⃣ Ambil data LinkedIn lengkap
       const res = await fetch(`/api/linkedin?username=${encodeURIComponent(cleanUsername)}`);
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Gagal mengambil data profil LinkedIn.");
+
+      if (!res.ok || data.success === false) {
+        if (data.requireUpgrade) {
+          setUpgradeMessage(data.message || data.error || "Kuota kamu habis.");
+          setShowUpgradeModal(true);
+          return; // hentikan eksekusi
+        }
+        throw new Error(data.message || data.error || "Gagal mengambil data profil LinkedIn.");
+      }
 
       const { overview, details, experience, education } = data;
       setProfile({ overview, details, experience, education });
@@ -242,15 +254,17 @@ export default function ImproveLinkedInPage() {
       });
 
       const aiData = await aiRes.json();
-      if (!aiRes.ok) throw new Error(aiData.message || "Gagal menganalisis dengan AI.");
+      if (!aiRes.ok || aiData.success === false) {
+        throw new Error(aiData.message || aiData.error || "Gagal menganalisis profil.");
+      }
 
       // 4️⃣ Simpan hasil AI ke state
       setAiResult(aiData.result);
       setShowResults(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err: any) {
-      console.error(err);
-      setError(err.message || "Terjadi kesalahan saat memproses permintaan.");
+      console.error("LinkedIn Analysis Error:", err);
+      setError(err.message || "Terjadi kesalahan saat memproses data LinkedIn.");
     } finally {
       setLoading(false);
     }
@@ -479,6 +493,12 @@ export default function ImproveLinkedInPage() {
           </motion.div>
         </div>
       </section>
+
+      <UpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        message={upgradeMessage}
+      />
     </main>
   );
 }
