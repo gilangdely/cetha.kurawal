@@ -27,7 +27,7 @@ const HowItWorksSection = () => {
   const activeContent = content.find((item) => item.id === activeStep);
 
   return (
-    <motion.section className="mx-auto w-full max-w-7xl px-6 py-12">
+    <motion.section className="mx-auto w-full max-w-7xl px-6 py-8 md:py-12">
       {/* HEADER */}
       <motion.div
         initial={{ opacity: 0, y: 24 }}

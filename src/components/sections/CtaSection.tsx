@@ -14,14 +14,14 @@ const CtaSection = () => {
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8, ease: "easeInOut" }}
       viewport={{ once: true, amount: 0.2 }}
-      className="mx-auto w-full px-4 sm:px-6 py-12"
+      className="mx-auto w-full px-4 py-12 sm:px-6 md:pt-20"
     >
       {/* Desktop/Tabel */}
       <div className="hidden flex-col gap-6 lg:flex lg:flex-row">
         {/* Left Panel */}
-        <div className="bg-primaryBlue relative h-72 md:h-80 w-full overflow-hidden rounded-2xl border border-white/20 shadow-sm">
+        <div className="bg-primaryBlue relative h-72 w-full overflow-hidden rounded-2xl border border-white/20 shadow-sm md:h-80">
           {/* Gradient overlay */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-primaryBlue via-primaryBlue/95 to-transparent" />
+          <div className="from-primaryBlue via-primaryBlue/95 pointer-events-none absolute inset-0 bg-gradient-to-r to-transparent" />
 
           {/* Content */}
           <div className="relative z-10 flex h-full max-w-sm flex-col justify-center px-4 sm:px-6">
@@ -29,7 +29,7 @@ const CtaSection = () => {
               Tingkatkan Karier Anda
             </p>
 
-            <h3 className="mt-2 text-2xl font-semibold leading-tight text-white md:text-3xl">
+            <h3 className="mt-2 text-2xl leading-tight font-semibold text-white md:text-3xl">
               Review CV & Karier dengan AI
             </h3>
 
@@ -41,7 +41,7 @@ const CtaSection = () => {
             <div className="mt-6 flex items-center gap-4">
               <Link
                 href="review-cv"
-                className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-primaryBlue transition-all duration-200 hover:scale-[1.02] hover:bg-white/90 active:scale-[0.98]"
+                className="text-primaryBlue rounded-full bg-white px-6 py-3 text-sm font-semibold transition-all duration-200 hover:scale-[1.02] hover:bg-white/90 active:scale-[0.98]"
               >
                 Coba Review Karier
               </Link>
@@ -60,28 +60,23 @@ const CtaSection = () => {
             alt="CV Dummy"
             src={CvDummy}
             draggable={false}
-            className="
-              absolute top-1/2 -translate-y-1/2 rotate-[-20deg] object-contain
-              lg:right-[-100px] lg:h-[300px] lg:w-[300px]
-              xl:right-[-140px] xl:h-[380px] xl:w-[380px]
-              2xl:right-[-180px]
-            "
+            className="absolute top-1/2 -translate-y-1/2 rotate-[-20deg] object-contain lg:right-[-100px] lg:h-[300px] lg:w-[300px] xl:right-[-140px] xl:h-[380px] xl:w-[380px] 2xl:right-[-180px]"
             priority
           />
         </div>
 
         {/* Right Panel */}
-        <div className="bg-accentOrange relative h-72 md:h-80 w-full overflow-hidden rounded-2xl border border-white/20 shadow-sm">
+        <div className="bg-accentOrange relative h-72 w-full overflow-hidden rounded-2xl border border-white/20 shadow-sm md:h-80">
           {/* Gradient overlay */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-l from-accentOrange via-accentOrange/95 to-transparent" />
+          <div className="from-accentOrange via-accentOrange/95 pointer-events-none absolute inset-0 bg-gradient-to-l to-transparent" />
 
           {/* Content */}
-          <div className="relative z-10 ml-auto flex h-full max-w-sm flex-col justify-center px-4 sm:px-6 text-right">
+          <div className="relative z-10 ml-auto flex h-full max-w-sm flex-col justify-center px-4 text-right sm:px-6">
             <p className="text-sm font-medium tracking-wide text-white/80">
               Bangun Personal Branding
             </p>
 
-            <h3 className="mt-2 text-2xl font-semibold leading-tight text-white md:text-3xl">
+            <h3 className="mt-2 text-2xl leading-tight font-semibold text-white md:text-3xl">
               Optimasi Profil LinkedIn
             </h3>
 
@@ -93,7 +88,7 @@ const CtaSection = () => {
             <div className="mt-6 flex items-center justify-end gap-4">
               <Link
                 href="review-linkedin"
-                className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-accentOrange transition-all duration-200 hover:scale-[1.02] hover:bg-white/90 active:scale-[0.98]"
+                className="text-accentOrange rounded-full bg-white px-6 py-3 text-sm font-semibold transition-all duration-200 hover:scale-[1.02] hover:bg-white/90 active:scale-[0.98]"
               >
                 Review LinkedIn
               </Link>
@@ -112,27 +107,22 @@ const CtaSection = () => {
             alt="LinkedIn Dummy"
             src={LinkedinDummy}
             draggable={false}
-            className="
-              absolute top-1/2 -translate-y-1/2 rotate-[12deg] object-contain
-              lg:left-[-160px] lg:h-[360px] lg:w-[360px]
-              xl:left-[-230px] xl:h-[480px] xl:w-[480px]
-              2xl:left-[-260px]
-            "
+            className="absolute top-1/2 -translate-y-1/2 rotate-[12deg] object-contain lg:left-[-160px] lg:h-[360px] lg:w-[360px] xl:left-[-230px] xl:h-[480px] xl:w-[480px] 2xl:left-[-260px]"
             priority
           />
         </div>
       </div>
 
       {/* Mobile */}
-      <div className="relative mt-2 h-56 w-full overflow-hidden rounded-2xl border border-white/20 bg-primaryBlue shadow-sm lg:hidden">
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-primaryBlue via-primaryBlue/95 to-primaryBlue/80" />
+      <div className="bg-primaryBlue relative mt-2 h-56 w-full overflow-hidden rounded-2xl border border-white/20 shadow-sm lg:hidden">
+        <div className="from-primaryBlue via-primaryBlue/95 to-primaryBlue/80 pointer-events-none absolute inset-0 bg-gradient-to-r" />
 
         <div className="relative z-10 flex h-full max-w-xs flex-col justify-center px-4">
           <p className="text-sm font-medium tracking-wide text-white/80">
             Tingkatkan Karier Anda
           </p>
 
-          <h3 className="mt-1 text-xl font-semibold leading-tight text-white">
+          <h3 className="mt-1 text-xl leading-tight font-semibold text-white">
             Review Karier Berbasis AI
           </h3>
 
@@ -143,7 +133,7 @@ const CtaSection = () => {
 
           <Link
             href="/review"
-            className="mt-4 inline-flex w-fit rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-primaryBlue transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+            className="text-primaryBlue mt-4 inline-flex w-fit rounded-full bg-white px-5 py-2.5 text-sm font-semibold transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
           >
             Mulai Review
           </Link>

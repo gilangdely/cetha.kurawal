@@ -131,7 +131,7 @@ const HeroSection = () => {
           {/* Lingkaran 2 - Kanan Tengah */}
           <motion.div
             aria-hidden
-            className="pointer-events-none absolute top-[40%] right-[-10%] z-10"
+            className="pointer-events-none absolute top-[40%] right-[-10%] z-10 hidden md:block"
             animate={{
               y: [8, -8, 8],
               x: [6, -6, 6],
