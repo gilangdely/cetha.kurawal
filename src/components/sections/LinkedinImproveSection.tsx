@@ -4,8 +4,11 @@ import Image from "next/image";
 import LinkedinIllustration from "@/assets/img/linkedin-illustration.png";
 import { MoveRight, SquareMousePointer } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const LinkedinImproveSection = () => {
+  const t = useTranslations("LinkedinImproveSection");
+
   return (
     <section className="mx-auto w-full max-w-7xl px-6 py-8 md:py-12">
       <div className="flex flex-col items-center gap-10 md:flex-row md:items-center">
@@ -14,17 +17,16 @@ const LinkedinImproveSection = () => {
           <div className="flex flex-col items-start text-left">
             <div className="border-primaryBlue/40 bg-primaryBlue/5 w-fit rounded-full border px-3 py-1">
               <p className="text-primaryBlue text-sm font-medium tracking-wide">
-                LinkedIn Improve
+                {t("badge")}
               </p>
             </div>
 
             <div className="mt-4 max-w-xl">
               <h2 className="text-TextPrimary text-2xl font-semibold md:text-3xl">
-                Tingkatkan Profil Profesional Anda dengan AI
+                {t("title")}
               </h2>
               <p className="text-TextSecondary mt-2 max-w-lg text-base md:text-lg">
-                Optimalkan resume Anda dengan AI untuk menonjolkan kekuatan dan
-                pengalaman terbaik Anda di pasar kerja yang kompetitif.
+                {t("description")}
               </p>
             </div>
 
@@ -33,7 +35,7 @@ const LinkedinImproveSection = () => {
                 href="/tingkatkan-linkedIn"
                 className="group bg-primaryBlue hover:bg-primaryBlueHover shadow-primaryBlue/30 hover:shadow-primaryBlue/25 inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0"
               >
-                <span>Coba Sekarang</span>
+                <span>{t("cta")}</span>
                 <MoveRight
                   size={18}
                   className="transition-transform duration-300 group-hover:translate-x-1"
@@ -61,14 +63,11 @@ const LinkedinImproveSection = () => {
 
                 <div>
                   <p className="text-primaryBlue text-sm font-semibold">
-                    AI LinkedIn Insight
+                    {t("tooltip.title")}
                   </p>
 
                   <p className="mt-1 text-sm leading-relaxed text-gray-800">
-                    Kami menganalisis profil LinkedIn Anda secara menyeluruh dan
-                    memberikan rekomendasi strategis untuk meningkatkan
-                    headline, summary, serta positioning profesional agar lebih
-                    menarik bagi recruiter.
+                    {t("tooltip.description")}
                   </p>
                 </div>
               </div>

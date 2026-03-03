@@ -1,8 +1,11 @@
 import { ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import React from "react";
 
 const ArticlesAndVideoSection = () => {
+  const t = useTranslations("ArticleAndVideo");
+
   const articles = [
     {
       date: "10 Jan 2026",
@@ -29,17 +32,16 @@ const ArticlesAndVideoSection = () => {
       <div className="flex flex-col items-center text-center">
         <div className="border-primaryBlue/40 bg-primaryBlue/5 mx-auto w-fit rounded-full border px-3 py-1">
           <p className="text-primaryBlue text-sm font-medium tracking-wide">
-            Artikel & Video
+            {t("badge")}
           </p>
         </div>
         <div className="mt-4 max-w-2xl">
           <h2 className="text-TextPrimary text-2xl font-semibold md:text-3xl">
-            Belajar Lebih Cerdas. Dapatkan Pekerjaan Lebih Cepat.
+            {t("title")}
           </h2>
 
           <p className="text-TextSecondary mt-2 text-base md:text-lg">
-            Temukan panduan praktis dan video strategi karier untuk meningkatkan
-            kualitas CV dan memperbesar peluang Anda diterima kerja.
+            {t("description")}
           </p>
         </div>
       </div>
@@ -109,7 +111,7 @@ const ArticlesAndVideoSection = () => {
               className="group border-primaryBlue bg-primaryBlue hover:bg-primaryBlueHover inline-flex w-full items-center justify-between rounded-xl border px-6 py-4 text-white transition-all duration-300 hover:shadow-md"
             >
               <span className="text-base font-semibold tracking-tight">
-                Lihat Semua Artikel
+                {t("cta")}
               </span>
 
               <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />

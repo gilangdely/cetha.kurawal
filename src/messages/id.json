@@ -186,19 +186,90 @@
   },
 
   "CvUpgrade": {
-    "badge": "Upgrade CV Kamu",
-    "title": "Perbaiki CV, Tingkatkan Peluangmu",
-    "description": "AI kami akan mengecek CV-mu, memberi masukan detail, dan membantu menjadikannya lebih menarik di mata recruiter.",
-    "cta": "Coba sekarang",
-    "imageAlt": "Ilustrasi upgrade CV"
+    "badge": "Tingkatkan CV",
+
+    "hero": {
+      "title": "Tingkatkan Profil Profesional Anda dengan AI",
+      "description": "Optimalkan resume Anda dengan AI untuk menonjolkan kekuatan dan pengalaman terbaik Anda di pasar kerja yang kompetitif."
+    },
+
+    "step1": {
+      "title": "1. Unggah CV Anda",
+      "description": "Unggah CV Anda dan dapatkan analisis serta rekomendasi perbaikan berbasis AI dalam hitungan detik."
+    },
+
+    "step2": {
+      "title": "2. Lihat Skor dan Kekuatan CV Anda",
+      "description": "AI menganalisis kualitas CV Anda berdasarkan dampak pengalaman, struktur penulisan, dan daya tarik terhadap recruiter untuk menunjukkan area yang sudah kuat dan yang masih bisa ditingkatkan.",
+      "impactLabel": "Dampak Pengalaman Kerja",
+      "impactDescription": "Pengalaman kerja Anda sudah menunjukkan dampak yang jelas dan relevan terhadap posisi yang dituju.",
+      "overallScore": "Skor Keseluruhan",
+      "aboveAverage": "Di atas rata-rata kandidat"
+    },
+
+    "step3": {
+      "title": "3. Dapatkan Saran & Perbaikan CV",
+      "description": "AI menganalisis CV Anda dan memberikan rekomendasi spesifik untuk meningkatkan kekuatan konten, relevansi terhadap posisi, serta peluang lolos tahap screening.",
+      "improvements": [
+        {
+          "point": "Tambahkan hasil yang terukur pada pengalaman kerja",
+          "explanation": "Beberapa pengalaman kerja Anda masih bersifat deskriptif. Tambahkan metrik konkret seperti peningkatan penjualan, efisiensi proses, atau pertumbuhan pengguna untuk menunjukkan dampak nyata dan memperkuat daya saing CV Anda di mata recruiter."
+        },
+        {
+          "point": "Perjelas ringkasan profesional di bagian atas CV",
+          "explanation": "Ringkasan profesional Anda masih terlalu umum. Gunakan 2–3 kalimat yang secara spesifik menyoroti spesialisasi utama, pengalaman inti, dan nilai unik yang Anda tawarkan agar recruiter langsung memahami positioning Anda dalam beberapa detik pertama."
+        }
+      ]
+    },
+
+    "cta": {
+      "title": "Siap Tingkatkan CV Anda?",
+      "description": "Dapatkan analisis mendalam dan rekomendasi berbasis AI untuk meningkatkan struktur, wording, dan daya tarik CV Anda di mata recruiter.",
+      "button": "Coba Review CV Sekarang",
+      "footnote": "Proses cepat • Insight profesional • Siap kirim ke recruiter"
+    }
   },
 
-  "ImproveLinkedin": {
-    "badge": "Improve LinkedIn Kamu",
-    "title": "Biar Profil LinkedIn Kamu Lebih Standout",
-    "description": "AI bantu perbaiki headline, ringkasan, dan skill kamu supaya lebih menarik, profesional, dan siap dilihat oleh perekrut.",
-    "cta": "Coba sekarang",
-    "imageAlt": "Ilustrasi optimasi LinkedIn"
+  "ArticleAndVideo": {
+    "badge": "Artikel & Video",
+    "title": "Belajar Lebih Cerdas. Dapatkan Pekerjaan Lebih Cepat.",
+    "description": "Temukan panduan praktis dan video strategi karier untuk meningkatkan kualitas CV dan memperbesar peluang Anda diterima kerja.",
+    "cta": "Lihat Semua Artikel"
+  },
+
+  "LinkedinImproveSection": {
+    "badge": "LinkedIn Improve",
+    "title": "Tingkatkan Profil Profesional Anda dengan AI",
+    "description": "Optimalkan profil LinkedIn Anda dengan AI untuk menonjolkan kekuatan, pengalaman, dan positioning terbaik Anda di pasar kerja yang kompetitif.",
+    "cta": "Coba Sekarang",
+
+    "tooltip": {
+      "title": "AI LinkedIn Insight",
+      "description": "Kami menganalisis profil LinkedIn Anda secara menyeluruh dan memberikan rekomendasi strategis untuk meningkatkan headline, summary, serta positioning profesional agar lebih menarik bagi recruiter."
+    }
+  },
+
+  "CtaSection": {
+    "cvPanel": {
+      "badge": "Tingkatkan Karier Anda",
+      "title": "Review CV & Karier dengan AI",
+      "description": "Dapatkan insight profesional untuk CV, LinkedIn, dan arah karier Anda dalam hitungan detik.",
+      "primaryCta": "Coba Review Karier",
+      "secondaryCta": "Lihat Contoh"
+    },
+    "linkedinPanel": {
+      "badge": "Bangun Personal Branding",
+      "title": "Optimasi Profil LinkedIn",
+      "description": "Perbaiki headline, summary, dan pengalaman kerja agar lebih menarik recruiter & HR.",
+      "primaryCta": "Review LinkedIn",
+      "secondaryCta": "Lihat Contoh"
+    },
+    "mobile": {
+      "badge": "Tingkatkan Karier Anda",
+      "title": "Review Karier Berbasis AI",
+      "description": "Dapatkan insight instan untuk profil profesional dan arah karier Anda.",
+      "primaryCta": "Mulai Review"
+    }
   },
 
   "Footer": {
