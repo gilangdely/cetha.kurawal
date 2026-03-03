@@ -25,6 +25,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@radix-ui/react-tooltip";
+import { UpgradeModal } from "@/components/UpgradeModal";
 
 interface EditTargetKarirProps {
   open?: boolean;
@@ -55,6 +56,9 @@ export default function EditTargetKarir({
   const [newTask, setNewTask] = useState("");
   const [title, setTitle] = useState(initialTitle || "");
   const [genLoading, setGenLoading] = useState(false);
+
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [upgradeMessage, setUpgradeMessage] = useState("");
 
   // Prefill ketika sheet dibuka dalam mode edit / tambah
   // Reset bila tambah baru
@@ -101,6 +105,11 @@ export default function EditTargetKarir({
       });
       const data = await res.json();
       if (!res.ok || !data?.success) {
+        if (data?.requireUpgrade) {
+          setUpgradeMessage(data.message || "Kuota kamu habis.");
+          setShowUpgradeModal(true);
+          return;
+        }
         throw new Error(data?.message || "Gagal generate task");
       }
       const newGenerated = Array.isArray(data.result?.tasks)
@@ -163,11 +172,10 @@ export default function EditTargetKarir({
                 title="Generate otomatis dari judul"
                 onClick={handleGenerateTasks}
                 disabled={genLoading || !title.trim()}
-                className={`rounded-md p-2 transition-colors ${
-                  genLoading || !title.trim()
+                className={`rounded-md p-2 transition-colors ${genLoading || !title.trim()
                     ? "cursor-not-allowed bg-gray-100 text-gray-400"
                     : "hover:bg-primaryBlue hover:text-white"
-                }`}
+                  }`}
               >
                 {genLoading ? (
                   <Loader2 className="size-4 animate-spin" />
@@ -197,11 +205,10 @@ export default function EditTargetKarir({
 
                   <div className="flex w-full justify-between">
                     <p
-                      className={`text-sm transition-all ${
-                        task.checked
+                      className={`text-sm transition-all ${task.checked
                           ? "text-gray-400 line-through"
                           : "text-gray-700"
-                      }`}
+                        }`}
                     >
                       {task.label}
                     </p>
@@ -275,6 +282,12 @@ export default function EditTargetKarir({
           </Button>
         </div>
       </SheetContent>
+
+      <UpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        message={upgradeMessage}
+      />
     </Sheet>
   );
 }

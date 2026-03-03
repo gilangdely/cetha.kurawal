@@ -33,6 +33,8 @@ import TargetKarir from "@/components/dashboard/target-karir";
 import PencapaianTerbaru from "@/components/dashboard/pencapaian";
 import ProfilDashboard from "@/components/dashboard/profil-dashboard";
 import ActivityHistory from "@/components/activity-history";
+import UserQuotaWidget from "@/components/dashboard/user-quota-widget";
+import UserSubscriptionHistory from "@/components/dashboard/user-subscription-history";
 
 export default function DashboardPage() {
   const [username, setUsername] = useState<string | null>(null);
@@ -78,7 +80,11 @@ export default function DashboardPage() {
         </div>
 
         {/* Profile & Activity */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 mb-6">
+          <div className="lg:col-span-12">
+            <UserQuotaWidget />
+          </div>
+
           {/* Profile Card */}
           <ProfilDashboard username={username} email={email} skills={skills} />
 
@@ -124,7 +130,11 @@ export default function DashboardPage() {
               ✨
             </p>
           </div> */}
-          <ActivityHistory />
+          <div className="lg:col-span-12">
+            <ActivityHistory />
+            <br />
+            <UserSubscriptionHistory />
+          </div>
         </div>
 
         {/* Career Progress & Achievements & Next Steps */}

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { rateLimit } from "@/app/lib/rate-limit";
+import { QuotaService } from "@/lib/quota-service";
+import { getSessionUidFromCookie } from "@/app/lib/session";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API!);
 
@@ -22,6 +24,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ reply: "Terlalu banyak interaksi saat ini, coba lagi sebentar ya." }, { status: 429 });
     }
 
+    // Periksa Kuota AI
+    const userId = await getSessionUidFromCookie();
+    const quotaCheck = await QuotaService.checkQuota(userId, ip);
+    if (!quotaCheck.hasQuota) {
+      return NextResponse.json(
+        { reply: quotaCheck.message, requireUpgrade: true },
+        { status: 403 }
+      );
+    }
+
     const { message, username } = await req.json();
     const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
 
@@ -41,6 +53,8 @@ User: ${message}
 
     const result = await model.generateContent(prompt);
     const reply = result.response.text();
+
+    await QuotaService.consumeQuota(userId, "Chatbot Konsultasi", ip);
 
     return NextResponse.json({ reply });
   } catch (err) {
