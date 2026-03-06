@@ -7,6 +7,8 @@ export interface PersonalInfo {
     linkedin: string;
     portfolio: string;
     summary: string;
+    photoUrl: string;
+    showPhoto: boolean;
 }
 
 export interface Experience {
@@ -51,6 +53,8 @@ export const initialResumeData: ResumeData = {
         linkedin: "",
         portfolio: "",
         summary: "",
+        photoUrl: "",
+        showPhoto: true,
     },
     experience: [],
     education: [],

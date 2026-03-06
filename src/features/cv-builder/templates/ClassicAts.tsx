@@ -4,7 +4,14 @@ export const ClassicAts = ({ data }: { data: ResumeData }) => {
     return (
         <div className="print-cv bg-white p-8 font-sans text-black max-w-[210mm] mx-auto min-h-[297mm] shadow-sm">
             {/* Header */}
-            <div className="text-center border-b-2 border-black pb-4 mb-4">
+            <div className="text-center border-b-2 border-black pb-4 mb-4 flex flex-col items-center">
+                {data.personalInfo.showPhoto && data.personalInfo.photoUrl && (
+                    <img
+                        src={data.personalInfo.photoUrl}
+                        alt="Profile Photo"
+                        className="w-24 h-24 rounded-full object-cover mb-3 border border-gray-300"
+                    />
+                )}
                 <h1 className="text-3xl font-bold uppercase tracking-wider mb-1">
                     {data.personalInfo.fullName || "Nama Lengkap"}
                 </h1>
