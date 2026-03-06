@@ -8,7 +8,9 @@ interface CvBuilderState {
 
     // Actions
     setTemplate: (template: "classic" | "modern" | "minimal") => void;
-    updatePersonalInfo: (field: keyof ResumeData["personalInfo"], value: string) => void;
+    updatePersonalInfo: (field: keyof ResumeData["personalInfo"], value: string | boolean) => void;
+    setPhoto: (url: string) => void;
+    togglePhoto: (show: boolean) => void;
 
     // Experience
     addExperience: (exp: Experience) => void;
@@ -47,6 +49,28 @@ export const useCvBuilderStore = create<CvBuilderState>()(
                         personalInfo: {
                             ...state.data.personalInfo,
                             [field]: value,
+                        },
+                    },
+                })),
+
+            setPhoto: (url) =>
+                set((state) => ({
+                    data: {
+                        ...state.data,
+                        personalInfo: {
+                            ...state.data.personalInfo,
+                            photoUrl: url,
+                        },
+                    },
+                })),
+
+            togglePhoto: (show) =>
+                set((state) => ({
+                    data: {
+                        ...state.data,
+                        personalInfo: {
+                            ...state.data.personalInfo,
+                            showPhoto: show,
                         },
                     },
                 })),

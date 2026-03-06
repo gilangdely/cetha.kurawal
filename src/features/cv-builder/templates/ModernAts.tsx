@@ -4,21 +4,30 @@ export const ModernAts = ({ data }: { data: ResumeData }) => {
     return (
         <div className="print-cv bg-white p-8 font-sans text-gray-900 max-w-[210mm] mx-auto min-h-[297mm] shadow-sm">
             {/* Header */}
-            <header className="mb-8">
-                <h1 className="text-4xl font-extrabold text-primaryBlue mb-2 tracking-tight">
-                    {data.personalInfo.fullName || "Nama Lengkap"}
-                </h1>
-                {data.personalInfo.jobTitle && (
-                    <h2 className="text-2xl font-semibold text-gray-700 mb-3">
-                        {data.personalInfo.jobTitle}
-                    </h2>
+            <header className="mb-8 flex items-start gap-6">
+                {data.personalInfo.showPhoto && data.personalInfo.photoUrl && (
+                    <img
+                        src={data.personalInfo.photoUrl}
+                        alt="Profile Photo"
+                        className="w-24 h-24 rounded-2xl object-cover border border-primaryBlue/20 shadow-sm shrink-0"
+                    />
                 )}
-                <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-gray-500 font-medium">
-                    {data.personalInfo.email && <span className="flex items-center gap-1">{data.personalInfo.email}</span>}
-                    {data.personalInfo.phone && <span className="flex items-center gap-1">{data.personalInfo.phone}</span>}
-                    {data.personalInfo.location && <span className="flex items-center gap-1">{data.personalInfo.location}</span>}
-                    {data.personalInfo.linkedin && <span className="flex items-center gap-1">{data.personalInfo.linkedin}</span>}
-                    {data.personalInfo.portfolio && <span className="flex items-center gap-1">{data.personalInfo.portfolio}</span>}
+                <div className="flex-1">
+                    <h1 className="text-4xl font-extrabold text-primaryBlue mb-2 tracking-tight">
+                        {data.personalInfo.fullName || "Nama Lengkap"}
+                    </h1>
+                    {data.personalInfo.jobTitle && (
+                        <h2 className="text-2xl font-semibold text-gray-700 mb-3">
+                            {data.personalInfo.jobTitle}
+                        </h2>
+                    )}
+                    <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-gray-500 font-medium">
+                        {data.personalInfo.email && <span className="flex items-center gap-1">{data.personalInfo.email}</span>}
+                        {data.personalInfo.phone && <span className="flex items-center gap-1">{data.personalInfo.phone}</span>}
+                        {data.personalInfo.location && <span className="flex items-center gap-1">{data.personalInfo.location}</span>}
+                        {data.personalInfo.linkedin && <span className="flex items-center gap-1">{data.personalInfo.linkedin}</span>}
+                        {data.personalInfo.portfolio && <span className="flex items-center gap-1">{data.personalInfo.portfolio}</span>}
+                    </div>
                 </div>
             </header>
 

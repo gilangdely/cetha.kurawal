@@ -5,15 +5,24 @@ export const MinimalAts = ({ data }: { data: ResumeData }) => {
         <div className="print-cv bg-white p-10 font-sans text-gray-800 max-w-[210mm] mx-auto min-h-[297mm] shadow-sm">
             {/* Header */}
             <header className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-gray-300 pb-6">
-                <div>
-                    <h1 className="text-3xl font-light tracking-tight text-black mb-1">
-                        {data.personalInfo.fullName || "Nama Lengkap"}
-                    </h1>
-                    {data.personalInfo.jobTitle && (
-                        <h2 className="text-lg font-normal text-gray-500 uppercase tracking-widest">
-                            {data.personalInfo.jobTitle}
-                        </h2>
+                <div className="flex items-end gap-5">
+                    {data.personalInfo.showPhoto && data.personalInfo.photoUrl && (
+                        <img
+                            src={data.personalInfo.photoUrl}
+                            alt="Profile Photo"
+                            className="w-20 h-20 rounded-md object-cover border border-gray-200 block"
+                        />
                     )}
+                    <div>
+                        <h1 className="text-3xl font-light tracking-tight text-black mb-1">
+                            {data.personalInfo.fullName || "Nama Lengkap"}
+                        </h1>
+                        {data.personalInfo.jobTitle && (
+                            <h2 className="text-lg font-normal text-gray-500 uppercase tracking-widest">
+                                {data.personalInfo.jobTitle}
+                            </h2>
+                        )}
+                    </div>
                 </div>
                 <div className="flex flex-col text-sm text-gray-500 items-start md:items-end text-right space-y-0.5">
                     {data.personalInfo.email && <span>{data.personalInfo.email}</span>}
