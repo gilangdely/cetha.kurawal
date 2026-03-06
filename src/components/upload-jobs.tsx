@@ -121,16 +121,18 @@ const UploadJobs = () => {
       }
 
       const responseData = await res.json();
-      const finalResult = responseData?.data?.result || responseData?.result;
 
-      // Update store
-      setJobResult(finalResult?.data || finalResult);
-      toast.success("Rekomendasi berhasil dibuat!");
+      // ✅ Result asli dari Gradio / HuggingFace space ada di responseData.data.result.data array
+      const apiResult = responseData?.data?.result || responseData?.result;
+      const parsedData = apiResult?.data?.[0];
 
-      const hasil = responseData.result?.data?.[0];
-      if (!hasil) throw new Error("Data hasil tidak ditemukan.");
+      if (!parsedData) {
+        throw new Error("Data hasil tidak ditemukan dari server.");
+      }
 
-      setJobResult(hasil);
+      // Update global Zustand store
+      setJobResult(parsedData);
+      toast.success("Rekomendasi pekerjaan berhasil dibuat!");
 
       // batas upload guest
       if (!isLoggedIn) {
