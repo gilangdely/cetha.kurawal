@@ -3,11 +3,12 @@
 import { useRouter } from "next/navigation";
 import { Avatar } from "@radix-ui/react-avatar";
 import UserAvatar from "@/components/user-avatar";
-import { Edit, FileUser } from "lucide-react";
+import { Edit, Rocket, Mail } from "lucide-react";
 import { useEffect, useState } from "react";
 import { auth } from "@/app/lib/firebase";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
+import Link from "next/link";
 
 interface ProfilDashboardProps {
   username: string | null;
@@ -36,7 +37,6 @@ export default function ProfilDashboard({
   onEditProfile,
   onViewCV,
 }: ProfilDashboardProps) {
-
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -50,16 +50,16 @@ export default function ProfilDashboard({
 
   // === PALETTE WARNA UNTUK CHIP ===
   const chipColors = [
-    "bg-red-100 text-red-700 border-red-200",
-    "bg-yellow-100 text-yellow-700 border-yellow-200",
-    "bg-green-100 text-green-700 border-green-200",
-    "bg-blue-100 text-blue-700 border-blue-200",
-    "bg-indigo-100 text-indigo-700 border-indigo-200",
-    "bg-purple-100 text-purple-700 border-purple-200",
-    "bg-pink-100 text-pink-700 border-pink-200",
-    "bg-orange-100 text-orange-700 border-orange-200",
-    "bg-teal-100 text-teal-700 border-teal-200",
-    "bg-cyan-100 text-cyan-700 border-cyan-200",
+    "bg-red-50 text-red-600 border-red-100",
+    "bg-amber-50 text-amber-600 border-amber-100",
+    "bg-green-50 text-green-600 border-green-100",
+    "bg-blue-50 text-blue-600 border-blue-100",
+    "bg-indigo-50 text-indigo-600 border-indigo-100",
+    "bg-purple-50 text-purple-600 border-purple-100",
+    "bg-pink-50 text-pink-600 border-pink-100",
+    "bg-orange-50 text-orange-600 border-orange-100",
+    "bg-teal-50 text-teal-600 border-teal-100",
+    "bg-cyan-50 text-cyan-600 border-cyan-100",
   ];
 
   // Fungsi hash sederhana → warna sama setiap skill/role
@@ -99,81 +99,72 @@ export default function ProfilDashboard({
     load();
   }, [user]);
 
+  const displaySkills =
+    (userData?.skills || []).length > 0 ? userData!.skills! : skills;
 
-  const handleEditClick = () => {
-    if (onEditProfile) {
-      onEditProfile();
-    } else {
-      router.push("/dashboard/profile");
-    }
-  };
   return (
-    <div className="overflow-hidden rounded-xl bg-white shadow-md lg:col-span-7">
-      <div className="to-accentOrange h-24 bg-gradient-to-r from-purple-200" />
-      <div className="px-6 pb-6">
-        <div className="-mt-12 flex justify-start">
-          <Avatar>
-            <UserAvatar className="h-20 w-20 rounded-full" />
+    <div className="relative flex w-full flex-col items-center overflow-hidden rounded-3xl bg-gradient-to-b from-white to-slate-50 p-5 transition-all duration-300 hover:shadow-sm">
+      {/* Gradient Accent */}
+      <div className="bg-primaryBlue/30 absolute -top-20 -right-20 h-40 w-40 rounded-full blur-3xl" />
+      <div className="absolute -bottom-20 -left-20 h-40 w-40 rounded-full bg-indigo-400/20 blur-3xl" />
+
+      <div className="flex flex-col items-center text-center">
+        {/* Avatar Section */}
+        <div className="relative mb-2 inline-block">
+          <Avatar className="flex h-22 w-22 items-center justify-center overflow-hidden rounded-full border-4 border-white bg-slate-100 shadow-sm">
+            <UserAvatar className="h-full w-full object-cover text-slate-400" />
           </Avatar>
-        </div>
-        <div className="mt-4 text-start">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-            <div>
-              <h2 className="text-xl font-bold text-gray-800">
-                {username || "Kamu belum login"}
-              </h2>
-              <p className="text-gray-600">{email}</p>
-              <div className="mt-2 font-medium text-blue-600 capitalize flex flex-wrap gap-2">
-                {roles.length > 0 ? (
-                  roles.map((r) => (
-                    <span
-                      key={r}
-                      className={`inline-block rounded-full border px-3 py-1 text-sm font-medium transition-all hover:scale-105 ${getChipColor(
-                        r
-                      )}`}
-                    >
-                      {r}
-                    </span>
-                  ))
-                ) : (
-                  <p className="text-sm text-gray-400">Belum ada role.</p>
-                )}
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={handleEditClick}
-                className="flex items-center rounded-md px-2 py-2 text-sm text-gray-500 hover:bg-blue-50 hover:text-blue-500"
-              >
-                <Edit className="mr-1" size={18} /> Edit Profil
-              </button>
-              <button
-                onClick={onViewCV}
-                className="flex items-center rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-blue-50 hover:text-blue-500"
-              >
-                <FileUser className="mr-1" size={18} /> Lihat CV
-              </button>
-            </div>
+          <div className="absolute right-1 bottom-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-emerald-500 shadow-sm">
+            <div className="h-1 w-1 rounded-full bg-white" />
           </div>
         </div>
-        <div className="mt-4 border-t border-gray-100 pt-3">
-          <h3 className="mb-3 font-medium text-gray-600">Skill Highlights</h3>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {(userData?.skills || []).length > 0 ? (
-              userData!.skills!.map((skill) => (
-                <span
-                  key={skill}
-                  className={`inline-block rounded-full border px-3 py-1 text-sm font-medium transition-all hover:scale-105 ${getChipColor(
-                    skill
-                  )}`}
-                >
-                  {skill}
-                </span>
-              ))
-            ) : (
-              <p className="text-sm text-gray-400">Belum ada skill.</p>
-            )}
-          </div>
+
+        {/* User Info */}
+        <h2 className="text-2xl font-semibold tracking-tight text-gray-900">
+          {username || "Explorer"}
+        </h2>
+        <div className="mt-0.5 flex items-center justify-center gap-1 text-slate-500">
+          <Mail size={14} className="text-slate-400" />
+          <p className="text-sm font-medium">{email || "No email provided"}</p>
+        </div>
+
+        {/* Edit Button */}
+        <Link
+          href="/dashboard/profile"
+          className="absolute top-4 right-4 flex w-fit items-center justify-center gap-2 rounded-full border border-slate-200 bg-white p-2 text-sm font-semibold text-slate-700 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 active:scale-[0.98]"
+        >
+          <Edit size={16} className="text-slate-500" />
+        </Link>
+      </div>
+
+      {/* Skills Section */}
+      <div className="z-10 mt-4 w-full border-t border-slate-100 pt-4">
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="flex items-center gap-2 text-sm font-bold text-gray-900">
+            Top Skills
+          </h3>
+          <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-bold tracking-wider text-slate-500 uppercase">
+            {displaySkills.length} Skills
+          </span>
+        </div>
+
+        <div className="flex cursor-default flex-wrap gap-2">
+          {displaySkills.length > 0 ? (
+            displaySkills.map((skill) => (
+              <span
+                key={skill}
+                className="text-primaryBlue border-primaryBlue/40 inline-block rounded-xl border bg-white px-3 py-1.5 text-xs font-semibold"
+              >
+                {skill}
+              </span>
+            ))
+          ) : (
+            <div className="w-full rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-center">
+              <p className="text-xs font-medium text-slate-500">
+                No skills added yet.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

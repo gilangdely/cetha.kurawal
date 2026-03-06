@@ -15,7 +15,7 @@ import {
   Settings,
 } from "lucide-react";
 
-import logo from "@/assets/icons/cetha-logo.svg";
+import logo from "@/assets/icons/cetha-new-logo.svg";
 import { Avatar } from "@radix-ui/react-avatar";
 import UserAvatar from "../user-avatar";
 import { logoutUser } from "@/app/lib/auth";
@@ -150,7 +150,7 @@ const Navbar = () => {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-3 py-3">
         {/* Logo */}
         <Link href="/" className="z-10 flex items-center">
-          <Image alt="Cetha Logo" src={logo} height={52} />
+          <Image alt="Cetha Logo" src={logo} height={36} />
         </Link>
 
         {/* Desktop Nav */}

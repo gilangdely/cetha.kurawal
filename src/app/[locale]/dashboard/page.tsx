@@ -2,171 +2,136 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { logoutUser } from "@/app/lib/auth";
 import { auth } from "@/app/lib/firebase";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Briefcase,
-  Target,
-  Edit,
   TrendingUp,
-  Check,
-  Clock,
-  FileUser,
-  CircleStar,
   Lightbulb,
-  BookOpenText,
-  Trash2,
-  PlusCircle,
+  Target,
+  Briefcase,
+  Award,
+  Zap,
+  Sparkles,
+  ArrowUpRight,
+  LayoutDashboard,
+  Star,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import EditTargetKarir from "@/components/dashboard/edit-target-karir";
 import TargetKarir from "@/components/dashboard/target-karir";
 import PencapaianTerbaru from "@/components/dashboard/pencapaian";
 import ProfilDashboard from "@/components/dashboard/profil-dashboard";
 import ActivityHistory from "@/components/activity-history";
 import UserQuotaWidget from "@/components/dashboard/user-quota-widget";
-import UserSubscriptionHistory from "@/components/dashboard/user-subscription-history";
+import HeaderDashboard from "@/components/header-dashboard";
+import BentoGridDashboard from "@/components/bento-grid-dashboard";
 
 export default function DashboardPage() {
   const [username, setUsername] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [authChecked, setAuthChecked] = useState(false);
-  const [showInput, setShowInput] = useState(false);
   const router = useRouter();
 
-  const skills = ["React", "Node.js", "TypeScript", "UX Design", "Firebase"];
   const steps = [
-    "Pelajari materi System Design dasar",
-    "Ikuti simulasi interview System Design",
-    "Buat proyek mini dengan arsitektur microservices",
+    "Mastering System Design 2026",
+    "Simulasi AI Behavioral Interview",
+    "Optimasi Portfolio Next.js 16",
   ];
-
-  const handleLogout = async () => {
-    await logoutUser();
-    router.push("/");
-  };
 
   useEffect(() => {
     const user = auth.currentUser;
     if (user) {
-      setUsername(user.displayName || "Pengguna");
-      setEmail(user.email || "email@mail.com");
+      setUsername(user.displayName || "Explorer");
+      setEmail(user.email || "");
     }
   }, []);
 
   return (
-    <div className="min-h-screen w-full p-4 md:px-8 lg:px-10">
-      <div className="mx-auto max-w-7xl">
+    <div className="min-h-screen p-2 text-gray-900 selection:bg-indigo-100 selection:text-indigo-700 lg:p-4">
+      <div className="mx-auto space-y-6">
         {/* Header */}
-        <div className="mb-6 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-800">
-              Halo, {username}
-            </h1>
-            <h3 className="text-lg text-gray-500">
-              Selamat datang di Dashboard Karir
-            </h3>
-          </div>
-        </div>
+        <HeaderDashboard />
 
-        {/* Profile & Activity */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 mb-6">
-          <div className="lg:col-span-12">
-            <UserQuotaWidget />
-          </div>
+        {/* Bento Grid */}
+        <BentoGridDashboard />
 
-          {/* Profile Card */}
-          <ProfilDashboard username={username} email={email} skills={skills} />
-
-          {/* Activity */}
-          {/* <div className="rounded-xl bg-white p-6 shadow-md lg:col-span-5">
-            <div className="mb-4 flex items-center justify-between">
-              <div className="flex items-center">
-                <Clock className="mr-2 inline text-blue-600" />
-                <h3 className="text-lg font-semibold text-gray-800">
-                  Riwayat Aktivitas
-                </h3>
-              </div>
-              <button className="text-sm font-medium text-gray-400 hover:text-blue-500">
-                Lihat Semua
-              </button>
-            </div>
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <div className="flex aspect-square items-center justify-center rounded-md bg-blue-50 p-2 text-blue-500">
-                  <BookOpenText size={20} />
-                </div>
-                <div>
-                  <p className="font-medium">Review CV</p>
-                  <p className="text-sm text-gray-500">
-                    25 Oct, 10:00 - 11:00 • Coba tambahkan beberapa poin ini..
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="flex aspect-square items-center justify-center rounded-md bg-orange-50 p-2 text-orange-500">
-                  <Briefcase size={20} />
-                </div>
-                <div>
-                  <p className="font-medium">Rekomendasi Pekerjaan</p>
-                  <p className="text-sm text-gray-500">
-                    25 Oct, 10:00 - 11:00 • Pelajari detailnya
-                  </p>
-                </div>
-              </div>
-            </div>
-            <p className="mt-6 text-sm text-gray-400">
-              Coba fitur lain di Cetha buat ningkatin kemampuan dan karir kamu
-              ✨
-            </p>
-          </div> */}
-          <div className="lg:col-span-12">
-            <ActivityHistory />
-            <br />
-            <UserSubscriptionHistory />
-          </div>
-        </div>
-
-        {/* Career Progress & Achievements & Next Steps */}
-        <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {/* Target Karir */}
-          <TargetKarir />
-
-          {/* Achievements */}
-          <PencapaianTerbaru />
-
-          {/* Next Steps */}
-          <div className="rounded-xl bg-gradient-to-r from-blue-500 to-orange-600 p-6 text-white shadow-md">
-            <div className="mb-3 flex items-center justify-between">
-              <h3 className="text-lg font-semibold">Next Step</h3>
-              <TrendingUp size={20} />
-            </div>
-            <p className="mb-4 text-sm opacity-90">
-              Berdasarkan profilmu, berikut langkah yang direkomendasikan:
-            </p>
-            <div className="space-y-3">
-              {steps.map((step) => (
-                <div key={step} className="flex items-center gap-2">
-                  <div className="rounded-full border border-white bg-white/20 p-1">
-                    <Lightbulb
-                      className="text-white"
-                      strokeWidth={2}
-                      size={16}
-                    />
+        {/* --- MAIN CONTENT AREA --- */}
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
+          {/* LEFT COLUMN: The Focus Zone */}
+          <div className="space-y-10 lg:col-span-8">
+            {/* AI Recommendation Card (The "Main Attraction") */}
+            <section className="relative overflow-hidden rounded-[2.5rem] bg-slate-900 p-8 text-white shadow-2xl md:p-12">
+              <div className="relative z-10 flex flex-col items-center gap-10 md:flex-row">
+                <div className="flex-1 space-y-6">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/20 px-4 py-1.5 text-xs font-bold tracking-widest text-indigo-400 uppercase">
+                    Next Mission
                   </div>
-                  <p className="text-sm">{step}</p>
+                  <h3 className="text-3xl leading-tight font-bold">
+                    Selesaikan Simulasi Interview untuk{" "}
+                    <span className="text-indigo-400">Unlocking</span> Badge
+                    Senior!
+                  </h3>
+                  <div className="flex flex-wrap gap-3">
+                    {steps.map((s, i) => (
+                      <span
+                        key={i}
+                        className="cursor-pointer rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/10"
+                      >
+                        {s}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              ))}
+                <button className="group flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-indigo-500 shadow-lg shadow-indigo-500/50 transition-all hover:scale-110 hover:bg-indigo-400">
+                  <Zap
+                    className="fill-white group-hover:animate-pulse"
+                    size={32}
+                  />
+                </button>
+              </div>
+              {/* Decorative Glow */}
+              <div className="absolute top-0 right-0 -mt-20 -mr-20 h-64 w-64 rounded-full bg-indigo-600/20 blur-[100px]" />
+            </section>
+
+            {/* Career Progress Grid */}
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+              <div className="space-y-4">
+                <h4 className="flex items-center gap-2 px-2 text-xl font-bold">
+                  <Target size={20} className="text-indigo-600" /> Focus Target
+                </h4>
+                <div className="rounded-[2rem] border border-slate-200 bg-white p-2 shadow-sm">
+                  <TargetKarir />
+                </div>
+              </div>
+              <div className="space-y-4">
+                <h4 className="flex items-center gap-2 px-2 text-xl font-bold">
+                  <Award size={20} className="text-orange-500" /> Recent W's
+                </h4>
+                <div className="rounded-[2rem] border border-slate-200 bg-white p-2 shadow-sm">
+                  <PencapaianTerbaru />
+                </div>
+              </div>
+            </div>
+
+            {/* History Section */}
+            <div className="space-y-4 pt-4">
+              <div className="flex items-center justify-between px-2">
+                <h4 className="text-xl font-bold">Activity Feed</h4>
+                <button className="text-sm font-bold text-indigo-600 underline-offset-4 hover:underline">
+                  View All
+                </button>
+              </div>
+              <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+                <ActivityHistory />
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT COLUMN: Sidebar */}
+          <div className="space-y-8 lg:col-span-4">
+            <div className="sticky top-20 space-y-8">
+              {/* Profile - The Glassmorphism Touch */}
+              <ProfilDashboard
+                username={username}
+                email={email}
+                skills={["React", "AI Prompting", "TypeScript", "UI/UX"]}
+              />
             </div>
           </div>
         </div>

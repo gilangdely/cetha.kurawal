@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { auth } from "@/app/lib/firebase";
-import { logoutUser } from "@/app/lib/auth";
-
+import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import {
   Sidebar,
   SidebarHeader,
@@ -19,255 +18,254 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
-
 import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-
-import {
-  LayoutDashboard,
-  Settings,
-  Info,
-  HelpCircle,
-  LogOut,
-  ChevronDown,
-  ChevronsUpDown,
-  Settings2,
+  Home,
   FileSearch,
   Linkedin,
+  Briefcase,
   Newspaper,
+  Settings2,
+  Menu,
+  Sparkles,
+  Gift,
 } from "lucide-react";
 
-import logo from "@/assets/icons/cetha-logo.svg";
-import cardImg from "@/assets/img/article2.jpg";
-
-import { Avatar } from "@/components/ui/avatar";
-import UserAvatar from "@/components/user-avatar";
-import LogoutAlert from "@/components/logout-alert";
+import logo from "@/assets/icons/cetha-new-logo.svg";
+import favicon from "@/assets/icons/favicon-white-new.svg";
+import faviconBlue from "@/assets/icons/favicon-blue-new.svg";
 
 const mainMenu = [
-  {
-    title: "Dashboard",
-    icon: LayoutDashboard,
-    href: "/dashboard",
-  },
-  {
-    title: "CV Review",
-    icon: FileSearch,
-    href: "/dashboard/review-cv",
-  },
+  { title: "Dashboard", icon: Home, href: "/dashboard" },
+  { title: "CV Review", icon: FileSearch, href: "/dashboard/review-cv" },
   {
     title: "Improve LinkedIn",
     icon: Linkedin,
     href: "/dashboard/tingkatkan-linkedIn",
   },
   {
-    title: "Artikel & Video",
-    icon: Newspaper,
-    href: "/dashboard/tips-karir",
+    title: "Find Jobs AI",
+    icon: Briefcase,
+    href: "/dashboard/rekomendasi-pekerjaan",
   },
-];
-
-const lainnyaMenu = [
-  { title: "Pengaturan", icon: Settings, href: "/settings" },
-  { title: "Bantuan", icon: HelpCircle, href: "/help" },
-  { title: "Tentang Aplikasi", icon: Info, href: "/about" },
+  { title: "Artikel & Video", icon: Newspaper, href: "/dashboard/tips-karir" },
 ];
 
 export function AppSidebar() {
-  const router = useRouter();
-  const [username, setUsername] = useState("Cetha");
-  const [email, setEmail] = useState("m@example.com");
-  const [openDialog, setOpenDialog] = useState(false);
+  const { state } = useSidebar();
+  const pathname = usePathname();
   const [isAdmin, setIsAdmin] = useState(false);
+
+  const isExpanded = state === "expanded";
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        setUsername(
-          user.displayName || user.email?.split("@")[0] || "Pengguna",
-        );
-        setEmail(user.email || "m@example.com");
-
         try {
           const res = await fetch("/api/me");
+
           if (res.ok) {
             const data = await res.json();
             setIsAdmin(data.role === "admin");
           }
         } catch (e) {
-          console.error("Failed to fetch user role status");
+          console.error("Role fetch error");
         }
-      } else {
-        setIsAdmin(false);
       }
     });
+
     return () => unsubscribe();
   }, []);
 
-  const handleLogout = async () => {
-    await logoutUser();
-    router.push("/");
-  };
-
   return (
-    <>
-      <Sidebar className="border-r bg-white/90 backdrop-blur">
-        <SidebarHeader className="flex items-center justify-start pt-4">
-          <Link
-            href={"/"}
-            className="text-TextPrimary flex h-12 items-center gap-2 text-lg font-semibold"
+    <Sidebar collapsible="icon" className="border-r border-gray-200 bg-white">
+      {/* HEADER */}
+      <SidebarHeader className="h-20 justify-center">
+        <div
+          className={`flex items-center px-4 transition-all duration-300 ${
+            isExpanded ? "justify-between" : "justify-center"
+          }`}
+        >
+          {isExpanded && (
+            <Link
+              href="/dashboard"
+              className="animate-in fade-in flex items-center duration-500"
+            >
+              <Image
+                alt="logo"
+                src={logo}
+                width={100}
+                priority
+                className="object-contain"
+              />
+            </Link>
+          )}
+
+          <SidebarTrigger
+            className={`rounded-lg transition-colors hover:bg-gray-100 ${
+              isExpanded ? "h-9 w-9" : "h-10 w-10"
+            }`}
           >
-            <Image alt="logo cetha" src={logo} height={60} />
-          </Link>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel className="text-sm ">Menu Utama</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {mainMenu.map((item, i) => (
-                  <SidebarMenuItem key={i}>
-                    <SidebarMenuButton asChild variant={"default"}>
-                      <Link
-                        href={item.href}
-                        className="hover:bg-accent/50 flex !hover:text-primaryBlue items-center gap-3 rounded-md px-3 !py-6 text-sm font-medium transition-all duration-150"
-                      >
-                        <item.icon className="text-muted-foreground  !h-6 !w-6" />
-                        <span className="text-gray-600 font-medium">{item.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+            <Menu className="h-5 w-5 text-gray-600" />
+          </SidebarTrigger>
+        </div>
+      </SidebarHeader>
 
-                {isAdmin && (
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild variant={"default"}>
-                      <Link
-                        href="/admin"
-                        className="hover:bg-accent/50 flex !hover:text-primaryBlue items-center gap-3 rounded-md px-3 !py-6 text-sm font-medium transition-all duration-150"
-                      >
-                        <Settings2 className="text-muted-foreground !h-6 !w-6" />
-                        <span className="text-gray-600 font-medium">Buka Admin</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                )}
+      {/* CONTENT */}
+      <SidebarContent className="scrollbar-none px-2">
+        <SidebarGroupLabel
+          className={`mb-2 px-2 text-xs font-bold tracking-wider text-gray-400 uppercase transition-opacity ${
+            isExpanded ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          Main Navigation
+        </SidebarGroupLabel>
 
-                <div className="p-2.5">
-                  <div className="overflow-hidden rounded-md border border-gray-200 bg-white shadow-xs">
-                    <div className="relative h-20 w-full bg-gradient-to-br from-blue-50 to-blue-100">
-                      <Image
-                        src={cardImg}
-                        alt="CV Review"
-                        fill
-                        className="object-cover"
+        <SidebarGroupContent>
+          <SidebarMenu className="gap-0.5">
+            {mainMenu.map((item) => {
+              const isActive = pathname === item.href;
+
+              return (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    tooltip={item.title}
+                    isActive={isActive}
+                  >
+                    <Link
+                      href={item.href}
+                      className={`group relative flex h-10 items-center rounded-xl transition-all duration-200 ${
+                        isExpanded ? "gap-3 px-3" : "justify-center"
+                      } ${
+                        isActive
+                          ? "bg-blue-600 text-white shadow-lg ring-1 shadow-blue-200 ring-blue-600"
+                          : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                      }`}
+                    >
+                      <item.icon
+                        className={`!h-5 !w-5 shrink-0 transition-colors ${
+                          isActive
+                            ? "text-white"
+                            : "text-gray-400 group-hover:text-gray-600"
+                        }`}
                       />
-                    </div>
-                    <div className="p-2">
-                      <h3 className="mb-3 text-xs font-semibold text-gray-800">
-                        Temukan pekerjaan impian sesuai dengan CV kamu
-                      </h3>
-                      <div>
-                        <Link
-                          href="/dashboard/rekomendasi-pekerjaan"
-                          className="bg-primaryBlue block w-full rounded-lg px-3 py-1.5 text-center text-sm font-medium text-white transition-colors hover:bg-blue-700"
-                        >
-                          Coba sekarang
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-          {/* <SidebarGroup>
-            <SidebarGroupLabel className="text-sm ">Lainnya</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                <SidebarMenuItem>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <SidebarMenuButton className="hover:bg-accent/50 flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium">
-                        <div className="flex items-center gap-2">
-                          <Settings2 className="text-muted-foreground !h-6 !w-6" />
-                          <span className="text-gray-600 font-medium">Pengaturan</span>
-                        </div>
-                        <ChevronDown className="h-4 w-4" />
-                      </SidebarMenuButton>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="min-w-[--radix-popper-anchor-width]">
-                      {lainnyaMenu.map((item, i) => (
-                        <DropdownMenuItem key={i} asChild>
-                          <Link
-                            href={item.href}
-                            className="flex items-center gap-2 text-sm"
-                          >
-                            <item.icon className="h-4 w-4" />
-                            {item.title}
-                          </Link>
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+
+                      {isExpanded && (
+                        <span className="text-sm font-semibold">
+                          {item.title}
+                        </span>
+                      )}
+
+                      {isActive && isExpanded && (
+                        <div className="absolute right-3 h-2 w-1 rounded-full bg-blue-200/50" />
+                      )}
+                    </Link>
+                  </SidebarMenuButton>
                 </SidebarMenuItem>
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup> */}
-        </SidebarContent>
-        <SidebarFooter>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="hover:bg-accent/50 flex w-full items-center justify-between rounded-md px-2 py-2 text-sm transition-all duration-150 focus:outline-none">
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-8 w-8">
-                    <UserAvatar />
-                  </Avatar>
-                  <div className="flex flex-col items-start">
-                    <span className="text-sm font-medium">{username}</span>
-                    <span className="text-muted-foreground text-xs">
-                      {email}
-                    </span>
-                  </div>
-                </div>
-                <ChevronsUpDown size={16} className="text-muted-foreground" />
-              </button>
-            </DropdownMenuTrigger>
+              );
+            })}
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarContent>
 
-            <DropdownMenuContent side="right" align="end" className="w-56">
-              <DropdownMenuLabel className="font-normal">
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium">{username}</p>
-                  <p className="text-muted-foreground text-xs">{email}</p>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Akun</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => setOpenDialog(true)}>
-                <LogOut className="mr-2 h-4 w-4 text-red-500" />
-                <span className="text-red-500">Logout</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </SidebarFooter>
-      </Sidebar>
+      {/* FOOTER */}
+      <SidebarFooter className="p-4">
+        {isExpanded ? (
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-5 text-white shadow-xl shadow-blue-200/40">
+            {/* soft glow background */}
+            <div className="absolute -top-6 -right-6 h-20 w-20 rounded-full bg-white/10 blur-2xl" />
+            <div className="absolute -bottom-6 -left-6 h-20 w-20 rounded-full bg-indigo-400/20 blur-2xl" />
 
-      {/* === Dialog Konfirmasi Logout === */}
-      <LogoutAlert
-        openDialog={openDialog}
-        setOpenDialog={setOpenDialog}
-        handleLogout={handleLogout}
-      />
-    </>
+            <div className="relative z-10">
+              {/* header */}
+              <div className="mb-3 flex items-center gap-2">
+                <Image src={favicon} alt="favicon" className="h-7 w-7" />
+
+                <span className="text-xs font-bold tracking-[0.18em] text-blue-100 uppercase">
+                  Cetha Plus
+                </span>
+              </div>
+
+              {/* description */}
+              <p className="mb-4 text-[13px] leading-relaxed font-medium text-blue-50/90">
+                Akses semua fitur AI tanpa batas dan dapatkan konsultasi karir
+                eksklusif.
+              </p>
+
+              {/* CTA */}
+              <Link
+                href="/upgrade"
+                className="inline-flex w-full items-center justify-center rounded-xl bg-white px-4 py-2 text-xs font-semibold text-blue-700 shadow-sm transition-all hover:-translate-y-[1px] hover:shadow-md active:translate-y-0"
+              >
+                Upgrade Sekarang
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <SidebarMenuButton
+            asChild
+            tooltip="Upgrade"
+            className="group relative right-2"
+          >
+            <Link
+              href="/upgrade"
+              className={`relative flex items-center rounded-xl transition-all duration-200 ${
+                isExpanded ? "h-10 gap-3 px-3" : "h-10 w-10 justify-center"
+              } ${
+                pathname === "/upgrade"
+                  ? "bg-blue-600 text-white shadow-lg ring-1 shadow-blue-200 ring-blue-600"
+                  : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+              }`}
+            >
+              <Gift
+                className={`!h-5 !w-5 shrink-0 transition-colors ${
+                  pathname === "/upgrade"
+                    ? "text-white"
+                    : "text-gray-400 group-hover:text-gray-600"
+                }`}
+              />
+
+              {isExpanded && (
+                <span className="text-sm font-semibold">Upgrade</span>
+              )}
+
+              {pathname === "/upgrade" && isExpanded && (
+                <div className="absolute right-3 h-2 w-1 rounded-full bg-blue-200/50" />
+              )}
+            </Link>
+          </SidebarMenuButton>
+        )}
+
+        {/* ADMIN */}
+        {isAdmin && (
+          <div className="mt-4 pt-2">
+            <SidebarMenuButton asChild tooltip="Admin Panel">
+              <Link
+                href="/admin"
+                className={`group flex h-12 items-center rounded-xl transition-all ${
+                  isExpanded ? "gap-3 px-3" : "justify-center"
+                } ${
+                  pathname === "/admin"
+                    ? "bg-orange-100 font-semibold text-orange-700"
+                    : "text-gray-500 hover:bg-orange-50 hover:text-orange-600"
+                }`}
+              >
+                <Settings2
+                  className={`!h-5 !w-5 ${
+                    pathname === "/admin"
+                      ? "text-orange-600"
+                      : "text-gray-400 group-hover:text-orange-500"
+                  }`}
+                />
+
+                {isExpanded && (
+                  <span className="text-sm font-semibold">Admin Panel</span>
+                )}
+              </Link>
+            </SidebarMenuButton>
+          </div>
+        )}
+      </SidebarFooter>
+    </Sidebar>
   );
 }

@@ -2,96 +2,80 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Zap, ShieldCheck, Clock, Ticket } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Brain, ArrowUpRight } from "lucide-react";
 
 export default function UserQuotaWidget() {
-    const [data, setData] = useState<any>(null);
-    const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchQuota = async () => {
-            try {
-                const res = await fetch("/api/user/subscription");
-                if (res.ok) {
-                    const json = await res.json();
-                    setData(json.data);
-                }
-            } catch (error) {
-                console.error("Error fetching quota:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+  useEffect(() => {
+    const fetchQuota = async () => {
+      try {
+        const res = await fetch("/api/user/subscription");
+        if (res.ok) {
+          const json = await res.json();
+          setData(json.data);
+        }
+      } catch (error) {
+        console.error("Error fetching quota:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        fetchQuota();
-    }, []);
+    fetchQuota();
+  }, []);
 
-    if (loading) {
-        return (
-            <Card className="rounded-xl shadow-sm border border-gray-100 mb-6 bg-white animate-pulse">
-                <CardContent className="h-32 p-6 flex items-center justify-center">
-                    <div className="h-6 w-6 border-b-2 border-primaryBlue rounded-full animate-spin"></div>
-                </CardContent>
-            </Card>
-        );
-    }
-
-    if (!data) return null;
-
-    const isFree = data.subscriptionStatus !== "active";
-    const remaining = data.quota?.remaining_quota || 0;
-    const activeTierName = isFree ? "Free Account" : data.activeTierName;
-
+  if (loading) {
     return (
-        <Card className="rounded-xl shadow-sm border border-gray-200 mb-6 overflow-hidden">
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50/50 p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
-
-                <div className="flex gap-4 items-start">
-                    <div className={`p-3 rounded-xl flex items-center justify-center text-white shadow-sm shrink-0 ${isFree ? 'bg-gray-400' : 'bg-primaryBlue'}`}>
-                        {isFree ? <Clock size={24} /> : <ShieldCheck size={24} />}
-                    </div>
-                    <div>
-                        <div className="flex items-center gap-2 mb-1">
-                            <h3 className="font-bold text-gray-900 leading-none">Paket Langganan</h3>
-                            <Badge variant="outline" className={`text-[10px] uppercase font-bold px-2 py-0 border ${isFree ? 'bg-gray-100 text-gray-600 border-gray-200' : 'bg-blue-100 text-primaryBlue border-blue-200'}`}>
-                                {activeTierName}
-                            </Badge>
-                        </div>
-                        <p className="text-sm text-gray-500">
-                            {isFree
-                                ? "Upgrade untuk mendapatkan lebih banyak fitur dan prioritas review CV."
-                                : "Kamu menikmati pengalaman premium dan akses prioritas. Terus berkarya!"}
-                        </p>
-                    </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                    <div className="flex items-center gap-3 pr-4 sm:border-r border-gray-100 w-full sm:w-auto">
-                        <div className="bg-orange-100 text-accentOrange p-2 rounded-lg">
-                            <Ticket size={20} />
-                        </div>
-                        <div className="flex flex-col">
-                            <span className="text-xs text-gray-500 font-medium">Sisa Kuota AI</span>
-                            <span className="font-bold text-xl text-gray-900 leading-none flex items-center gap-1">
-                                {remaining} <span className="text-sm font-medium text-gray-500">Sesi</span>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className="w-full sm:w-auto">
-                        <Button asChild className="w-full bg-primaryBlue hover:bg-blue-700 text-white gap-2 rounded-lg shadow-sm">
-                            <Link href="/id/daftar-harga">
-                                <Zap size={16} className={`${isFree ? "animate-pulse text-yellow-300" : ""}`} />
-                                {isFree ? "Mulai Berlangganan" : "Beli Kuota Tambahan"}
-                            </Link>
-                        </Button>
-                    </div>
-                </div>
-
+      <div className="bg-primaryBlue border-primaryBlue/20 group relative flex flex-col justify-between rounded-3xl border p-5 text-white transition-all duration-300 hover:shadow-sm">
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 animate-pulse items-center justify-center rounded-xl bg-black/5">
+              <Brain size={21} strokeWidth={2.5} className="opacity-50" />
             </div>
-        </Card>
+            <div>
+              <div className="mb-2 h-3.5 w-16 animate-pulse rounded bg-white/20"></div>
+              <div className="h-6 w-20 animate-pulse rounded bg-white/20"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     );
+  }
+
+  if (!data) return null;
+
+  const remaining = data.quota?.remaining_quota ?? 0;
+
+  return (
+    <div className="bg-primaryBlue border-primaryBlue/20 group relative flex flex-col justify-between rounded-3xl border p-5 text-white transition-all duration-300 hover:shadow-sm">
+      {/* Top */}
+      <div className="flex items-start justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-black/10 shadow-inner">
+            <Brain size={21} strokeWidth={2.5} className="text-white" />
+          </div>
+
+          <div>
+            <p className="text-sm font-medium opacity-80">AI Credits</p>
+            <p className="text-xl font-black tracking-tight">
+              {remaining}{" "}
+              <span className="text-sm font-medium opacity-60">
+                Kredit Tersisa
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <Link
+          href="/daftar-harga"
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 opacity-60 backdrop-blur-sm transition-all group-hover:bg-white/20 group-hover:opacity-100"
+          title="Upgrade Plan"
+        >
+          <ArrowUpRight size={16} />
+        </Link>
+      </div>
+    </div>
+  );
 }
