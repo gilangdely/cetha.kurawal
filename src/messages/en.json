@@ -187,18 +187,90 @@
 
   "CvUpgrade": {
     "badge": "Upgrade Your CV",
-    "title": "Improve Your CV, Boost Your Opportunities",
-    "description": "Our AI reviews your CV, provides detailed feedback, and helps make it more attractive to recruiters.",
-    "cta": "Try it now",
-    "imageAlt": "CV upgrade illustration"
+
+    "hero": {
+      "title": "Enhance Your Professional Profile with AI",
+      "description": "Optimize your resume with AI to highlight your strengths and best experiences in today’s competitive job market."
+    },
+
+    "step1": {
+      "title": "1. Upload Your CV",
+      "description": "Upload your CV and receive AI-powered analysis and improvement recommendations within seconds."
+    },
+
+    "step2": {
+      "title": "2. View Your CV Score and Strengths",
+      "description": "AI analyzes your CV quality based on impact, structure, and recruiter appeal to identify strong areas and opportunities for improvement.",
+      "impactLabel": "Work Experience Impact",
+      "impactDescription": "Your work experience already demonstrates clear and relevant impact for your target role.",
+      "overallScore": "Overall Score",
+      "aboveAverage": "Above average candidate"
+    },
+
+    "step3": {
+      "title": "3. Get CV Suggestions & Improvements",
+      "description": "AI analyzes your CV and provides specific recommendations to strengthen content quality, role relevance, and your chances of passing screening stages.",
+      "improvements": [
+        {
+          "point": "Add measurable results to your work experience",
+          "explanation": "Some of your work experiences are still descriptive. Add concrete metrics such as sales growth, process efficiency, or user growth to demonstrate real impact and strengthen your competitiveness."
+        },
+        {
+          "point": "Clarify your professional summary at the top",
+          "explanation": "Your professional summary is still too general. Use 2–3 concise sentences highlighting your core expertise, key experience, and unique value proposition so recruiters immediately understand your positioning."
+        }
+      ]
+    },
+
+    "cta": {
+      "title": "Ready to Upgrade Your CV?",
+      "description": "Get in-depth AI analysis and recommendations to improve structure, wording, and recruiter appeal.",
+      "button": "Start CV Review Now",
+      "footnote": "Fast process • Professional insights • Ready to send to recruiters"
+    }
   },
 
-  "ImproveLinkedin": {
-    "badge": "Improve Your LinkedIn",
-    "title": "Make Your LinkedIn Profile Stand Out",
-    "description": "Our AI helps improve your headline, summary, and skills so your profile looks more professional and appealing to recruiters.",
-    "cta": "Try it now",
-    "imageAlt": "LinkedIn optimization illustration"
+
+  "ArticleAndVideo": {
+    "badge": "Articles & Videos",
+    "title": "Learn Smarter. Get Hired Faster.",
+    "description": "Discover practical guides and career strategy videos to improve your CV quality and increase your chances of getting hired.",
+    "cta": "View All Articles"
+  },
+
+  "LinkedinImproveSection": {
+    "badge": "LinkedIn Improve",
+    "title": "Enhance Your Professional Profile with AI",
+    "description": "Optimize your LinkedIn profile with AI to highlight your strengths, experience, and professional positioning in today’s competitive job market.",
+    "cta": "Try Now",
+
+    "tooltip": {
+      "title": "AI LinkedIn Insight",
+      "description": "We thoroughly analyze your LinkedIn profile and provide strategic recommendations to improve your headline, summary, and professional positioning to make your profile more appealing to recruiters."
+    }
+  },
+
+  "CtaSection": {
+    "cvPanel": {
+      "badge": "Advance Your Career",
+      "title": "AI-Powered CV & Career Review",
+      "description": "Get professional insights for your CV, LinkedIn profile, and career direction within seconds.",
+      "primaryCta": "Start Career Review",
+      "secondaryCta": "View Examples"
+    },
+    "linkedinPanel": {
+      "badge": "Build Your Personal Brand",
+      "title": "Optimize Your LinkedIn Profile",
+      "description": "Improve your headline, summary, and work experience to attract recruiters and hiring managers.",
+      "primaryCta": "Review LinkedIn",
+      "secondaryCta": "View Examples"
+    },
+    "mobile": {
+      "badge": "Advance Your Career",
+      "title": "AI-Based Career Review",
+      "description": "Get instant insights for your professional profile and career direction.",
+      "primaryCta": "Start Review"
+    }
   },
 
   "Footer": {

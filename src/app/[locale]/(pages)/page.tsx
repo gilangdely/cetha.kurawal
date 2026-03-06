@@ -3,10 +3,12 @@
 import HeroSection from "@/components/sections/HeroSection";
 import AdventagesSection from "@/components/sections/AdvantagesSection";
 import HowItWorksSection from "@/components/sections/HowItWorksSection";
-import CvUpgradeSection from "@/components/sections/CvUpgradeSection";
+import UpgradeCvSection from "@/components/sections/UpgradeCvSection";
 import ImproveLinkedinSection from "@/components/sections/ImproveLinkedinSection";
 import CtaSection from "@/components/sections/CtaSection";
 import JobMatchSection from "@/components/sections/JobMatchSection";
+import ArticlesAndVideoSection from "@/components/sections/ArticlesAndVideoSection";
+import LinkedinImproveSection from "@/components/sections/LinkedinImproveSection";
 
 export default function HomePage() {
   return (
@@ -14,8 +16,11 @@ export default function HomePage() {
       <HeroSection />
       <AdventagesSection />
       <HowItWorksSection />
-      <CvUpgradeSection />
-      <ImproveLinkedinSection />
+      <UpgradeCvSection />
+      <ArticlesAndVideoSection />
+      {/* <CvUpgradeSection /> */}
+      {/* <ImproveLinkedinSection /> */}
+      <LinkedinImproveSection />
       <CtaSection />
       {/* <JobMatchSection /> */}
     </main>

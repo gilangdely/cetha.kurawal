@@ -5,7 +5,16 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import CtaSection from "@/components/sections/CtaSection";
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
-import { ChevronRight, Goal, FileText } from "lucide-react";
+import {
+  ChevronRight,
+  Goal,
+  FileText,
+  Globe,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Phone,
+} from "lucide-react";
 
 import iyanImage from "@/assets/img/iyan.jpg";
 import firmanImage from "@/assets/img/firman.jpg";
@@ -80,210 +89,230 @@ const stats = [
 
 export default function AboutUsPage() {
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-col items-center pt-20 lg:pt-0">
-      <section className="w-full">
-        {/* Hero Section */}
-        <div className="flex w-full items-center py-12 lg:min-h-screen lg:py-0">
-          <div className="flex w-full items-center gap-10 px-6 lg:gap-14 lg:px-0">
-            {/* Text Section */}
-            <motion.div
-              className="w-full flex-1 space-y-4"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              viewport={{ once: true }}
+    <main className="mx-auto flex w-full max-w-7xl flex-col items-center px-6 pt-20 lg:pt-0">
+      <div className="flex w-full flex-col items-center justify-center py-16 lg:pt-28">
+        <div className="flex max-w-2xl flex-col items-center text-center">
+          {/* Badge */}
+          <div className="border-primaryBlue/30 bg-primaryBlue/5 text-primaryBlue rounded-full border px-4 py-1.5 text-sm font-medium tracking-wide">
+            Tim Profesional Kami
+          </div>
+
+          {/* Title */}
+          <div className="mt-4 max-w-2xl">
+            <h2 className="text-TextPrimary text-2xl font-semibold md:text-3xl">
+              Bersama Membangun Solusi Inovatif untuk Masa Depan
+            </h2>
+
+            {/* Description */}
+            <p className="text-TextSecondary mt-2 text-base md:text-lg">
+              Kami bekerja dengan visi yang jelas dan komitmen tinggi untuk
+              membantu Anda tumbuh dan unggul secara profesional.
+            </p>
+          </div>
+
+          <div className="mt-6 flex flex-row gap-3">
+            <a
+              href="https://kurawal.space/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group border-primaryBlue text-primaryBlue hover:border-primaryBlueHover hover:bg-primaryBlue/5 hover:text-primaryBlueHover focus-visible:ring-primaryBlue flex w-full items-center justify-center gap-2 rounded-full border-2 px-4 py-1.5 whitespace-nowrap transition-all duration-200 ease-out focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:w-fit"
             >
-              <motion.span
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-                className="hidden items-center gap-2 text-sm lg:flex"
-              >
-                <Link
-                  href="/"
-                  className="text-gray-500 transition-colors hover:text-gray-700"
-                >
-                  Home
-                </Link>
-                <ChevronRight size={16} className="text-gray-400" />
-                <span className="text-accentOrange font-medium">About Us</span>
-              </motion.span>
-
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-                className="text-TextPrimary text-2xl font-semibold leading-snug md:text-3xl lg:text-4xl"
-              >
-                Crafting{" "}
-                <span className="text-accentOrange">Careers Together</span>
-              </motion.h2>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-                className="text-TextSecondary mt-3 lg:text-lg"
-              >
-                Di Cetha, kami percaya bahwa setiap orang berhak memiliki
-                peluang karier terbaik. Dengan tim yang berdedikasi, kami
-                membantu kamu membuat CV standout dan memaksimalkan profil
-                profesional.
-              </motion.p>
-
-              <div className="mt-5 grid grid-cols-2 gap-4 sm:gap-6">
-                {stats.map((stat, index) => (
-                  <motion.div
-                    key={index}
-                    className="flex items-center gap-3"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      duration: 0.6,
-                      delay: 0.4 + index * 0.1,
-                      ease: "easeOut",
-                    }}
-                    viewport={{ once: true }}
-                  >
-                    <div className="border-primaryBlue flex items-center justify-center rounded-full border-2 p-2 sm:h-11 sm:w-11">
-                      <stat.icon size={26} className="text-primaryBlue" />
-                    </div>
-                    <div className="text-start">
-                      <p className="text-TextPrimary text-xs font-semibold sm:text-base">
-                        {stat.name}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Illustration - Hidden below lg */}
-            <motion.div
-              className="hidden flex-1 justify-center lg:flex lg:justify-end"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-              viewport={{ once: true }}
-            >
-              <Image
-                className="w-full object-contain"
-                draggable={false}
-                src={illustration}
-                alt="illustration about us"
-                priority
+              <Globe
+                size={16}
+                className="shrink-0 transition-transform duration-200 group-hover:rotate-6"
               />
-            </motion.div>
+              <span>Kunjungi Profile Kami</span>
+            </a>
+
+            <div className="group bg-primaryBlue hover:bg-primaryBlueHover focus-visible:ring-primaryBlue flex w-full items-center justify-center gap-2 rounded-full px-4 py-1.5 font-semibold whitespace-nowrap text-white shadow-sm transition-all duration-200 ease-out hover:shadow-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.98] md:w-fit">
+              Hubungi Kami
+            </div>
           </div>
         </div>
-
-        {/* Team Section */}
-        <div className="flex flex-col-reverse items-center gap-10 px-6 py-16 md:flex-row md:gap-16 lg:py-20">
-          {/* Left Section - Team Cards */}
-          <motion.div
-            className="flex flex-1 flex-row justify-center gap-4 overflow-x-auto sm:gap-6 md:overflow-visible"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            {profiles.map((profile, i) => (
-              <motion.div
-                key={profile.id}
-                className="group relative flex flex-col items-center overflow-hidden rounded-xl border border-gray-300 bg-white shadow-sm transition-all duration-300 hover:shadow-lg"
-                whileHover={{ scale: 1.05 }}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.5,
-                  delay: i * 0.1,
-                  ease: "easeOut",
-                }}
-                viewport={{ once: true, margin: "-50px" }}
-              >
+        <div className="mt-10 grid w-full max-w-3xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {profiles.map((profile) => (
+            <div key={profile.id} className="relative">
+              {/* Image */}
+              <div className="overflow-hidden rounded-2xl">
                 <Image
                   src={profile.foto}
                   alt={profile.nama}
-                  className="h-44 w-36 rounded-xl object-cover grayscale transition-all duration-300 group-hover:grayscale-0 sm:h-52 sm:w-40 md:h-56 md:w-44 lg:h-60 lg:w-48"
+                  className="h-80 w-full object-cover grayscale"
                 />
-                <div className="absolute bottom-0 left-0 w-full translate-y-full bg-gradient-to-t from-black/70 to-transparent p-2 text-white transition-transform duration-500 ease-out group-hover:translate-y-0 sm:p-3 md:p-4">
-                  <h3 className="text-sm font-semibold sm:text-base md:text-lg">
-                    {profile.nama}
-                  </h3>
-                  <p className="text-[10px] opacity-80 sm:text-xs md:text-sm">
-                    {profile.role}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+              </div>
 
-          {/* Right Section - Team Description */}
-          <motion.div
-            className="flex-1 space-y-4 text-center md:text-left"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            <div className="border-primaryBlue mx-auto w-fit rounded-full border-2 px-2 py-1 md:mx-0 lg:px-3 lg:py-1.5">
-              <p className="text-primaryBlue lg:font-medium">Kenali Tim Kami</p>
+              {/* Card Overlay */}
+              <div className="absolute bottom-[10px] left-1/2 w-[85%] -translate-x-1/2 rounded-lg bg-white p-2 shadow-lg">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {profile.nama}
+                </h3>
+                <p className="mt-0.5 text-sm text-gray-500">{profile.role}</p>
+              </div>
             </div>
-            <div className="mt-4 max-w-3xl flex-col">
-              <h2 className="text-TextPrimary text-2xl font-semibold md:text-3xl">
-                Tim Kami
-              </h2>
-              <p className="text-TextSecondary mt-2 text-base lg:text-lg">
-                Kami bangga dengan dedikasi dan inovasi tim kami. Dengan
-                semangat dan keahlian yang dimiliki, kami terus menghadirkan
-                solusi kreatif yang membantu masyarakat Indonesia.
-              </p>
-            </div>
-          </motion.div>
+          ))}
         </div>
+      </div>
 
-        {/* Testimonials Section */}
-        <div className="mx-auto w-full px-4 py-16 sm:px-6 lg:py-20">
-          <motion.div
-            className="flex flex-col items-center text-center"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            <div className="border-primaryBlue rounded-full border-2 px-2 py-1 lg:px-3 lg:py-1.5">
-              <p className="text-primaryBlue lg:font-medium">
-                Apa kata pengguna Cetha
-              </p>
+      {/* Testimonials Section */}
+      <div className="mx-auto w-full px-4 py-16 sm:px-6 lg:py-20">
+        <motion.div
+          className="flex flex-col items-center text-center"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <div className="border-primaryBlue rounded-full border-2 px-2 py-1 lg:px-3 lg:py-1.5">
+            <p className="text-primaryBlue lg:font-medium">
+              Apa kata pengguna Cetha
+            </p>
+          </div>
+          <div className="mt-4 max-w-3xl flex-col text-center">
+            <h2 className="text-TextPrimary text-2xl font-semibold md:text-3xl">
+              Cara Cetha Bantu Kamu Dapat <br className="hidden md:block" />
+              Kerjaan Impian
+            </h2>
+            <p className="text-TextSecondary mt-2 text-base lg:text-lg">
+              Ikuti langkah sederhana ini untuk optimalkan CV, tingkatkan profil
+              LinkedIn, dan temukan lowongan yang paling cocok untukmu.
+            </p>
+          </div>
+        </motion.div>
+
+        <div className="py-10">
+          <InfiniteMovingCards
+            items={testimonials}
+            direction="right"
+            speed="slow"
+          />
+          <InfiniteMovingCards
+            items={testimonials}
+            direction="left"
+            speed="slow"
+          />
+        </div>
+      </div>
+
+      {/* Get in touch */}
+      <div className="py-8 md:py-12">
+        <div className="flex w-full justify-center">
+          <div className="flex max-w-2xl flex-col items-center text-center">
+            {/* Badge */}
+            <div className="border-primaryBlue/30 bg-primaryBlue/5 text-primaryBlue w-fit rounded-full border px-4 py-1.5 text-sm font-medium tracking-wide">
+              Tim Profesional Kami
             </div>
-            <div className="mt-4 max-w-3xl flex-col text-center">
+
+            {/* Title */}
+            <div className="mt-4 max-w-2xl">
               <h2 className="text-TextPrimary text-2xl font-semibold md:text-3xl">
-                Cara Cetha Bantu Kamu Dapat <br className="hidden md:block" />
-                Kerjaan Impian
+                Bersama Membangun Solusi Inovatif untuk Masa Depan
               </h2>
-              <p className="text-TextSecondary mt-2 text-base lg:text-lg">
-                Ikuti langkah sederhana ini untuk optimalkan CV, tingkatkan
-                profil LinkedIn, dan temukan lowongan yang paling cocok untukmu.
+
+              {/* Description */}
+              <p className="text-TextSecondary mt-2 text-base md:text-lg">
+                Kami bekerja dengan visi yang jelas dan komitmen tinggi untuk
+                membantu Anda tumbuh dan unggul secara profesional.
               </p>
             </div>
-          </motion.div>
+          </div>
+        </div>
+        <div className="mx-auto mt-10 grid w-full max-w-5xl gap-12 px-6 md:grid-cols-2">
+          {/* LEFT - FORM */}
+          <div>
+            <form className="space-y-4 p-4">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="text-sm font-medium text-gray-700">
+                    Nama Depan
+                  </label>
+                  <input
+                    type="text"
+                    className="focus:border-primaryBlue focus:ring-primaryBlue mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-1 focus:outline-none"
+                    placeholder="Nama depan"
+                  />
+                </div>
 
-          <div className="py-10">
-            <InfiniteMovingCards
-              items={testimonials}
-              direction="right"
-              speed="slow"
-            />
-            <InfiniteMovingCards
-              items={testimonials}
-              direction="left"
-              speed="slow"
-            />
+                <div>
+                  <label className="text-sm font-medium text-gray-700">
+                    Nama Belakang
+                  </label>
+                  <input
+                    type="text"
+                    className="focus:border-primaryBlue focus:ring-primaryBlue mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-1 focus:outline-none"
+                    placeholder="Nama belakang"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-700">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  className="focus:border-primaryBlue focus:ring-primaryBlue mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-1 focus:outline-none"
+                  placeholder="email@email.com"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-700">
+                  Pesan
+                </label>
+                <textarea
+                  rows={4}
+                  className="focus:border-primaryBlue focus:ring-primaryBlue mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-1 focus:outline-none"
+                  placeholder="Tulis pesan Anda..."
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="bg-primaryBlue hover:bg-primaryBlueHover w-full rounded-lg py-3 font-semibold text-white transition-all duration-200"
+              >
+                Kirim Pesan
+              </button>
+            </form>
           </div>
 
-          <CtaSection />
+          {/* RIGHT - CONTACT INFO */}
+          <div className="flex flex-col gap-8 p-4">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Hubungi Kami
+              </h3>
+              <p className="mt-1 text-gray-600">
+                Tim kami siap membantu melalui kontak berikut:
+              </p>
+
+              <div className="mt-2 flex items-center gap-3 text-gray-700">
+                <Phone size={18} />
+                <span>+62 812 3456 7890</span>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Kirim Email
+              </h3>
+              <div className="mt-2 flex items-center gap-3 text-gray-700">
+                <Mail size={18} />
+                <span>info@domainkamu.com</span>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">Alamat</h3>
+              <div className="mt-2 flex items-start gap-3 text-gray-700">
+                <MapPin size={18} />
+                <span>
+                  Universitas Amikom Purwokerto, Purwokerto, Indonesia
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
-      </section>
+      </div>
     </main>
   );
 }

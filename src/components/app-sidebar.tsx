@@ -39,6 +39,7 @@ import {
   ChevronsUpDown,
   Settings2,
   FileSearch,
+  FileText,
   Linkedin,
   Newspaper,
 } from "lucide-react";
@@ -60,6 +61,11 @@ const mainMenu = [
     title: "CV Review",
     icon: FileSearch,
     href: "/dashboard/review-cv",
+  },
+  {
+    title: "CV Builder",
+    icon: FileText,
+    href: "/dashboard/cv-builder",
   },
   {
     title: "Improve LinkedIn",
