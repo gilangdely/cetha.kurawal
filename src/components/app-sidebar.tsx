@@ -21,6 +21,7 @@ import {
 import {
   Home,
   FileSearch,
+  FileText,
   Linkedin,
   Briefcase,
   Newspaper,
@@ -37,6 +38,11 @@ import faviconBlue from "@/assets/icons/favicon-blue-new.svg";
 const mainMenu = [
   { title: "Dashboard", icon: Home, href: "/dashboard" },
   { title: "CV Review", icon: FileSearch, href: "/dashboard/review-cv" },
+  {
+    title: "CV Builder",
+    icon: FileText,
+    href: "/dashboard/cv-builder",
+  },
   {
     title: "Improve LinkedIn",
     icon: Linkedin,

@@ -12,10 +12,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "i.pravatar.cc",
       },
+      {
+        protocol: "https",
+        hostname: "www.google.com",
+      },
     ],
   },
 };
- 
+
 const withNextIntl = createNextIntlPlugin();
 
 export default withNextIntl(nextConfig);
