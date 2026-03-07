@@ -70,6 +70,11 @@ const UploadCv = () => {
     const file = event.target.files?.[0];
     if (!file) return;
 
+    if (file.type !== "application/pdf") {
+      toast.warning("Saat ini hanya file dengan format PDF yang didukung.");
+      return;
+    }
+
     setSelectedFile(file);
     generatePreview(file);
   };
@@ -81,6 +86,11 @@ const UploadCv = () => {
 
     const file = event.dataTransfer.files?.[0];
     if (!file) return;
+
+    if (file.type !== "application/pdf") {
+      toast.warning("Saat ini hanya file dengan format PDF yang didukung.");
+      return;
+    }
 
     setSelectedFile(file);
     generatePreview(file);
@@ -148,9 +158,9 @@ const UploadCv = () => {
   };
 
   return (
-    <div className="w-full pt-6">
+    <div className="w-full mx-auto mt-4">
       <div
-        className={`relative flex h-50 items-center justify-center rounded-2xl border-3 border-dashed ${uploadEnabled ? "cursor-pointer border-gray-400" : "cursor-not-allowed border-gray-300 bg-gray-100 opacity-60"}`}
+        className={`relative flex h-96 items-center justify-center rounded-2xl border-3 border-dashed ${uploadEnabled ? "cursor-pointer border-gray-400" : "cursor-not-allowed border-gray-300 bg-gray-100 opacity-60"}`}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onClick={() => {
@@ -179,7 +189,7 @@ const UploadCv = () => {
               id="insertFile"
               type="file"
               className="hidden"
-              accept=".pdf,.doc,.docx"
+              accept=".pdf"
               onChange={handleFileChange}
               disabled={!uploadEnabled}
             />
@@ -255,13 +265,13 @@ const UploadCv = () => {
 
       <div className="mt-4">
         <p className="text-TextSecondary font-medium">
-          File yang dapat terbaca: DOC, DOCX, PDF
+          File yang dapat terbaca:  PDF
         </p>
       </div>
 
       {/* Button Upload */}
       <div className="mx-auto w-full pt-10 pb-12 md:pt-4">
-        <div className="flex justify-end lg:justify-start">
+        <div className="flex justify-start ">
           <button
             onClick={handleUpload}
             disabled={uploading || (!isLoggedIn && uploadCount >= 5)}
