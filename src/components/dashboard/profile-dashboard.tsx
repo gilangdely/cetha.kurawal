@@ -10,7 +10,7 @@ import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
 import Link from "next/link";
 
-interface ProfilDashboardProps {
+interface ProfileDashboardProps {
   username: string | null;
   email: string | null;
   skills: string[];
@@ -29,14 +29,14 @@ interface UserData {
   skills?: string[];
 }
 
-export default function ProfilDashboard({
+export default function ProfileDashboard({
   username,
   email,
   skills,
   role = "-",
   onEditProfile,
   onViewCV,
-}: ProfilDashboardProps) {
+}: ProfileDashboardProps) {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();

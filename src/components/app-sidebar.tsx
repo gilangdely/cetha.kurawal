@@ -176,6 +176,36 @@ export function AppSidebar() {
 
       {/* FOOTER */}
       <SidebarFooter className="p-4">
+        {/* ADMIN */}
+        {isAdmin && (
+          <div className="relative right-2">
+            <SidebarMenuButton asChild tooltip="Admin Panel">
+              <Link
+                href="/admin"
+                className={`group flex h-12 items-center rounded-xl transition-all ${
+                  isExpanded ? "gap-3" : "justify-center"
+                } ${
+                  pathname === "/admin"
+                    ? "bg-orange-100 font-semibold text-orange-700"
+                    : "text-gray-500 hover:bg-orange-50 hover:text-orange-600"
+                }`}
+              >
+                <Settings2
+                  className={`!h-5 !w-5 ${
+                    pathname === "/admin"
+                      ? "text-orange-600"
+                      : "text-gray-400 group-hover:text-orange-500"
+                  }`}
+                />
+
+                {isExpanded && (
+                  <span className="text-sm font-semibold">Admin Panel</span>
+                )}
+              </Link>
+            </SidebarMenuButton>
+          </div>
+        )}
+
         {isExpanded ? (
           <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-5 text-white shadow-xl shadow-blue-200/40">
             {/* soft glow background */}
@@ -240,36 +270,6 @@ export function AppSidebar() {
               )}
             </Link>
           </SidebarMenuButton>
-        )}
-
-        {/* ADMIN */}
-        {isAdmin && (
-          <div className="mt-4 pt-2">
-            <SidebarMenuButton asChild tooltip="Admin Panel">
-              <Link
-                href="/admin"
-                className={`group flex h-12 items-center rounded-xl transition-all ${
-                  isExpanded ? "gap-3 px-3" : "justify-center"
-                } ${
-                  pathname === "/admin"
-                    ? "bg-orange-100 font-semibold text-orange-700"
-                    : "text-gray-500 hover:bg-orange-50 hover:text-orange-600"
-                }`}
-              >
-                <Settings2
-                  className={`!h-5 !w-5 ${
-                    pathname === "/admin"
-                      ? "text-orange-600"
-                      : "text-gray-400 group-hover:text-orange-500"
-                  }`}
-                />
-
-                {isExpanded && (
-                  <span className="text-sm font-semibold">Admin Panel</span>
-                )}
-              </Link>
-            </SidebarMenuButton>
-          </div>
         )}
       </SidebarFooter>
     </Sidebar>

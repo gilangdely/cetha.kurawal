@@ -17,11 +17,12 @@ import {
 } from "lucide-react";
 import TargetKarir from "@/components/dashboard/target-karir";
 import PencapaianTerbaru from "@/components/dashboard/pencapaian";
-import ProfilDashboard from "@/components/dashboard/profil-dashboard";
+import ProfilDashboard from "@/components/dashboard/profile-dashboard";
 import ActivityHistory from "@/components/activity-history";
 import UserQuotaWidget from "@/components/dashboard/user-quota-widget";
 import HeaderDashboard from "@/components/header-dashboard";
 import BentoGridDashboard from "@/components/bento-grid-dashboard";
+import ProfileDashboard from "@/components/dashboard/profile-dashboard";
 
 export default function DashboardPage() {
   const [username, setUsername] = useState<string | null>(null);
@@ -103,7 +104,7 @@ export default function DashboardPage() {
           <div className="space-y-8 lg:col-span-4">
             <div className="sticky top-20 space-y-8">
               {/* Profile - The Glassmorphism Touch */}
-              <ProfilDashboard
+              <ProfileDashboard
                 username={username}
                 email={email}
                 skills={["React", "AI Prompting", "TypeScript", "UI/UX"]}

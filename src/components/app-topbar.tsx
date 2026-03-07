@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { auth } from "@/app/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/app/lib/firebase";
 import { logoutUser } from "@/app/lib/auth";
 import {
   Bell,
@@ -38,24 +40,36 @@ const AppTopbar = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        setUsername(
-          user.displayName || user.email?.split("@")[0] || "Pengguna",
-        );
         setEmail(user.email || "m@example.com");
 
         try {
+          const userRef = doc(db, "users", user.uid);
+          const snap = await getDoc(userRef);
+
+          if (snap.exists()) {
+            const data = snap.data();
+
+            setUsername(
+              data.username ||
+                user.displayName ||
+                user.email?.split("@")[0] ||
+                "Pengguna",
+            );
+          }
+
           const res = await fetch("/api/me");
           if (res.ok) {
             const data = await res.json();
             setIsAdmin(data.role === "admin");
           }
         } catch (e) {
-          console.error("Failed to fetch user role status");
+          console.error("Failed to fetch user data", e);
         }
       } else {
         setIsAdmin(false);
       }
     });
+
     return () => unsubscribe();
   }, []);
 
@@ -150,9 +164,14 @@ const AppTopbar = () => {
 
               <DropdownMenuSeparator className="block lg:hidden" />
 
-              <DropdownMenuItem className="cursor-pointer py-2.5">
-                <User className="mr-3 h-4 w-4 text-gray-500" />
-                <span>Profil Saya</span>
+              <DropdownMenuItem asChild className="cursor-pointer py-2.5">
+                <button
+                  onClick={() => router.push("/dashboard/my-profile")}
+                  className="flex w-full items-center gap-2"
+                >
+                  <User className="mr-3 h-4 w-4 text-gray-500" />
+                  <span>Profil Saya</span>
+                </button>
               </DropdownMenuItem>
 
               <DropdownMenuItem className="cursor-pointer py-2.5">
