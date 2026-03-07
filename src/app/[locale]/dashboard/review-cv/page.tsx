@@ -43,7 +43,7 @@ export default function ReviewCVDashboard() {
           Unggah file CV dalam format PDF untuk mendapatkan penilaian otomatis.
           File akan disimpan aman di cloud.
         </p>
-        {/* <UploadCv /> */}
+        <UploadCv />
       </div>
     </div>
   );

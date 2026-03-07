@@ -48,29 +48,6 @@ export default function ProfilDashboard({
       ? [userData.role]
       : [];
 
-  // === PALETTE WARNA UNTUK CHIP ===
-  const chipColors = [
-    "bg-red-50 text-red-600 border-red-100",
-    "bg-amber-50 text-amber-600 border-amber-100",
-    "bg-green-50 text-green-600 border-green-100",
-    "bg-blue-50 text-blue-600 border-blue-100",
-    "bg-indigo-50 text-indigo-600 border-indigo-100",
-    "bg-purple-50 text-purple-600 border-purple-100",
-    "bg-pink-50 text-pink-600 border-pink-100",
-    "bg-orange-50 text-orange-600 border-orange-100",
-    "bg-teal-50 text-teal-600 border-teal-100",
-    "bg-cyan-50 text-cyan-600 border-cyan-100",
-  ];
-
-  // Fungsi hash sederhana → warna sama setiap skill/role
-  const getChipColor = (str: string) => {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return chipColors[Math.abs(hash % chipColors.length)];
-  };
-
   useEffect(() => {
     const load = async () => {
       if (!user) {

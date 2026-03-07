@@ -54,7 +54,7 @@ export default function DashboardPage() {
         {/* --- MAIN CONTENT AREA --- */}
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
           {/* LEFT COLUMN: The Focus Zone */}
-          <div className="space-y-10 lg:col-span-8">
+          <div className="space-y-8 lg:col-span-8">
             {/* AI Recommendation Card (The "Main Attraction") */}
             <section className="relative overflow-hidden rounded-[2.5rem] bg-slate-900 p-8 text-white shadow-2xl md:p-12">
               <div className="relative z-10 flex flex-col items-center gap-10 md:flex-row">
@@ -90,37 +90,13 @@ export default function DashboardPage() {
             </section>
 
             {/* Career Progress Grid */}
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-              <div className="space-y-4">
-                <h4 className="flex items-center gap-2 px-2 text-xl font-bold">
-                  <Target size={20} className="text-indigo-600" /> Focus Target
-                </h4>
-                <div className="rounded-[2rem] border border-slate-200 bg-white p-2 shadow-sm">
-                  <TargetKarir />
-                </div>
-              </div>
-              <div className="space-y-4">
-                <h4 className="flex items-center gap-2 px-2 text-xl font-bold">
-                  <Award size={20} className="text-orange-500" /> Recent W's
-                </h4>
-                <div className="rounded-[2rem] border border-slate-200 bg-white p-2 shadow-sm">
-                  <PencapaianTerbaru />
-                </div>
-              </div>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <TargetKarir />
+              <PencapaianTerbaru />
             </div>
 
             {/* History Section */}
-            <div className="space-y-4 pt-4">
-              <div className="flex items-center justify-between px-2">
-                <h4 className="text-xl font-bold">Activity Feed</h4>
-                <button className="text-sm font-bold text-indigo-600 underline-offset-4 hover:underline">
-                  View All
-                </button>
-              </div>
-              <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
-                <ActivityHistory />
-              </div>
-            </div>
+            <ActivityHistory />
           </div>
 
           {/* RIGHT COLUMN: Sidebar */}

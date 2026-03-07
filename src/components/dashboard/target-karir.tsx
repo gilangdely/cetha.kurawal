@@ -1,4 +1,4 @@
-import { Target, PlusCircle, Pencil } from "lucide-react";
+import { Target, PlusCircle, Pencil, Plus } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
   collection,
@@ -20,10 +20,11 @@ interface Task {
 }
 
 interface StoredTarget {
-  id: string; // Firestore document ID
+  id: string;
   label: string;
   progress: number;
   tasks?: Task[];
+  completed?: number;
 }
 
 export default function TargetKarir() {
@@ -157,6 +158,17 @@ export default function TargetKarir() {
     setIsAddingTarget(true);
   };
 
+  // Progress Text
+  const getProgressText = (tasks?: Task[]) => {
+    const total = tasks?.length || 0;
+    const done = tasks?.filter((t) => t.checked).length || 0;
+
+    if (total === 0) return "Belum ada langkah";
+    if (done === total) return "Semua target tercapai";
+
+    return `${done}/${total} langkah selesai`;
+  };
+
   // Live update progress ketika task di-checklist di modal edit
   const handleTasksLiveUpdate = async (updatedTasks: Task[]) => {
     if (!editTarget?.id) return;
@@ -208,73 +220,107 @@ export default function TargetKarir() {
   }
 
   return (
-    <div className="hover:border-primaryBlue/40 hover:ring-primaryBlue/20 overflow-hidden rounded-2xl border-2 border-gray-200 bg-white transition-all duration-300 hover:ring-1 lg:col-span-7">
-      <div className="p-4">
-        <div className="mb-6 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Target className="text-rose-400" size={28} />
-            <h3 className="text-lg font-semibold text-gray-800">
-              Target Karir
-            </h3>
-          </div>
-          <button
-            onClick={openAdd}
-            className="hover:text-primaryBlue/80 text-gray-500"
-          >
-            <PlusCircle size={28} />
-          </button>
+    <div className="space-y-5 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+      {/* Header Section */}
+      <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h4 className="text-xl font-bold tracking-tight text-slate-900">
+          Target Karir
+        </h4>
 
-          <EditTargetKarir
-            open={isAddingTarget}
-            onOpenChange={setIsAddingTarget}
-            showTrigger={false}
-            onSave={handleSaveNewTarget}
-            initialTitle={editTarget?.label}
-            initialTasks={editTarget?.tasks || []}
-            onTasksChange={handleTasksLiveUpdate}
+        <button
+          onClick={openAdd}
+          title="Tambah Target"
+          className="group flex items-center justify-center rounded-lg bg-slate-900 p-2 text-white transition-all duration-200 hover:-translate-y-[1px] hover:bg-slate-800 hover:shadow-md active:scale-95"
+        >
+          <Plus
+            size={16}
+            className="transition-transform duration-200 group-hover:rotate-90"
           />
-        </div>
+        </button>
 
-        <div className="space-y-4">
-          {targets.length > 0 ? (
-            targets.map((item) => (
-              <div key={item.id} className="group">
-                <div className="mb-1 flex items-center justify-between">
-                  <span className="text-sm font-medium">{item.label}</span>
-                  <div className="flex items-center gap-3">
-                    <span className="text-sm font-medium text-blue-600">
-                      {item.progress}%
-                    </span>
-                    <button
-                      onClick={() => openEdit(item)}
-                      className="hidden items-center rounded-md border border-gray-300 p-1 text-gray-500 group-hover:inline-flex hover:bg-gray-100"
-                    >
-                      <Pencil size={14} />
-                    </button>
+        <EditTargetKarir
+          open={isAddingTarget}
+          onOpenChange={setIsAddingTarget}
+          showTrigger={false}
+          onSave={handleSaveNewTarget}
+          initialTitle={editTarget?.label}
+          initialTasks={editTarget?.tasks || []}
+          onTasksChange={handleTasksLiveUpdate}
+        />
+      </div>
+
+      {/* Main Container */}
+      <div className="flex flex-col gap-3">
+        {targets.length > 0 ? (
+          targets.map((item) => (
+            <div
+              key={item.id}
+              className="group rounded-xl border border-slate-200 bg-white p-4 transition-all duration-200 hover:border-slate-300 hover:shadow-md"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3">
+                  {/* icon */}
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 text-white shadow-sm">
+                    <Target size={16} />
+                  </div>
+
+                  <div>
+                    <h5 className="text-sm font-semibold text-slate-800">
+                      {item.label}
+                    </h5>
+
+                    {/* tambahan info */}
+                    <p className="text-xs text-slate-400">
+                      {getProgressText(item.tasks)}
+                    </p>
                   </div>
                 </div>
-                <div className="h-2 w-full rounded-full bg-gray-200">
-                  <div
-                    className="h-2 rounded-full bg-blue-600 transition-all"
-                    style={{ width: `${item.progress}%` }}
-                  />
+
+                <div className="group flex items-center gap-2">
+                  <span className="order-2 flex items-center justify-center rounded-full border border-indigo-100 bg-indigo-50 px-2 py-0.5 text-xs font-semibold text-indigo-600 transition-all duration-300 ease-in-out group-hover:order-1">
+                    {item.progress}%
+                  </span>
+
+                  <button
+                    onClick={() => openEdit(item)}
+                    className="order-1 flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition-all duration-300 ease-in-out group-hover:translate-x-0 group-hover:opacity-100 hover:bg-slate-100 hover:text-slate-700 xl:translate-x-1 xl:opacity-0"
+                  >
+                    <Pencil size={14} />
+                  </button>
                 </div>
               </div>
-            ))
-          ) : (
-            <div className="flex flex-col items-center justify-center py-8 text-center">
-              <p className="mb-4 text-gray-500">
-                Belum ada target karir yang ditambahkan
-              </p>
-              <button
-                onClick={openAdd}
-                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-              >
-                Tambah Target
-              </button>
+
+              {/* progress */}
+              <div className="relative mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-100">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-blue-500 via-violet-500 to-pink-500 transition-all duration-500"
+                  style={{ width: `${item.progress}%` }}
+                />
+              </div>
             </div>
-          )}
-        </div>
+          ))
+        ) : (
+          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-slate-50 py-10 text-center">
+            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-sm">
+              <Target size={22} className="text-slate-300" />
+            </div>
+
+            <p className="text-sm font-semibold text-slate-700">
+              Belum ada target karir
+            </p>
+
+            <p className="mt-1 mb-4 text-xs text-slate-400">
+              Mulai susun langkah kecil menuju tujuan besar
+            </p>
+
+            <button
+              onClick={openAdd}
+              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-500"
+            >
+              Tambah Target
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
