@@ -1,0 +1,9 @@
+onlyBuiltDependencies:
+  - '@firebase/util'
+  - '@parcel/watcher'
+  - '@swc/core'
+  - bufferutil
+  - msw
+  - protobufjs
+  - sharp
+  - unrs-resolver
