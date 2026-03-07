@@ -1,15 +1,19 @@
-// filepath: d:\Projectan\cetha\src\components\dashboard\activity-history.tsx
-// Buat file baru ini untuk komponen Riwayat Aktivitas yang reusable.
-// Import ke dashboard utama: import ActivityHistory from "./activity-history";
-// Lalu ganti snippet lama dengan <ActivityHistory />
 "use client";
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Clock, BookOpenText, Briefcase, ChevronRight } from "lucide-react";
 import { db } from "@/app/lib/firebase";
-import { collection, query, where, orderBy, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
+} from "firebase/firestore";
 import { auth } from "@/app/lib/firebase";
 import { toast } from "sonner";
+import Link from "next/link";
 
 interface CvReview {
   id: string;
@@ -56,15 +60,11 @@ export default function ActivityHistory() {
         console.error("Error fetching activities:", error);
         toast.error("Gagal memuat riwayat");
         setLoading(false);
-      }
+      },
     );
 
     return () => unsubscribe();
   }, []);
-
-  const handleViewAll = () => {
-    router.push("/dashboard/riwayat"); // Buat halaman riwayat khusus jika perlu, atau gunakan existing
-  };
 
   const handleItemClick = (review: CvReview) => {
     // Redirect ke halaman hasil dengan param ID untuk load data spesifik
@@ -74,88 +74,128 @@ export default function ActivityHistory() {
   // Skeleton loading untuk 2 item
   if (loading) {
     return (
-      <div className="rounded-xl bg-white p-6 shadow-md lg:col-span-5">
-        <div className="mb-4 flex items-center justify-between">
-          <div className="flex items-center">
-            <div className="h-6 w-6 animate-pulse rounded bg-gray-200"></div>
-            <div className="h-5 w-32 ml-2 animate-pulse rounded bg-gray-200"></div>
+      <div className="space-y-4 pt-4">
+        {/* Header Skeleton */}
+        <div className="flex items-center justify-between px-2">
+          <div className="flex items-center gap-2">
+            <div className="h-6 w-6 animate-pulse rounded-md bg-slate-200"></div>
+            <div className="h-6 w-40 animate-pulse rounded-md bg-slate-200"></div>
           </div>
-          <div className="h-4 w-16 animate-pulse rounded bg-gray-200"></div>
+          <div className="h-4 w-16 animate-pulse rounded-md bg-slate-200"></div>
         </div>
-        <div className="space-y-4">
-          {[1, 2].map((i) => (
-            <div key={i} className="flex items-start gap-3">
-              <div className="h-10 w-10 animate-pulse rounded-md bg-gray-200"></div>
-              <div className="space-y-2">
-                <div className="h-4 w-32 rounded bg-gray-200"></div>
-                <div className="h-3 w-64 rounded bg-gray-200"></div>
+        {/* Box Skeleton */}
+        <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm md:p-8">
+          <div className="flex flex-col gap-4">
+            {[1, 2].map((i) => (
+              <div
+                key={i}
+                className="flex flex-col gap-4 rounded-3xl border border-slate-100 p-4 sm:flex-row sm:items-center"
+              >
+                <div className="h-14 w-14 shrink-0 animate-pulse rounded-2xl bg-slate-100"></div>
+                <div className="w-full space-y-3">
+                  <div className="h-4 w-1/3 animate-pulse rounded-md bg-slate-100"></div>
+                  <div className="h-3 w-2/3 animate-pulse rounded-md bg-slate-100"></div>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="rounded-xl bg-white p-6 shadow-md lg:col-span-5">
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center">
-          <Clock className="mr-2 inline text-blue-600" />
-          <h3 className="text-lg font-semibold text-gray-800">
-            Riwayat Aktivitas
-          </h3>
-        </div>
+    <div className="space-y-5 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h4 className="flex items-center gap-2 text-xl font-bold tracking-tight text-slate-900">
+          Riwayat Review CV
+        </h4>
+
         {activities.length > 0 && (
-          <button
-            onClick={handleViewAll}
-            className="text-sm font-medium text-gray-400 hover:text-blue-500 flex items-center gap-1"
+          <Link
+            href="/dashboard/riwayat"
+            title="Lihat semua aktivitas"
+            className="group flex items-center gap-1.5 rounded-md bg-slate-900 px-2.5 py-2 text-xs font-semibold text-white transition-all duration-200 hover:-translate-y-[1px] hover:bg-slate-800 hover:shadow-sm active:scale-95"
           >
-            Lihat Semua <ChevronRight size={14} className="transition-transform hover:translate-x-0.5" />
-          </button>
+            Lihat Semua
+            <ChevronRight
+              size={14}
+              className="transition-transform duration-200 group-hover:translate-x-1"
+            />
+          </Link>
         )}
       </div>
-      <div className="space-y-4">
+
+      {/* Content */}
+      <div className="flex flex-col gap-3">
         {activities.length > 0 ? (
           activities.slice(0, 4).map((activity) => (
             <div
               key={activity.id}
-              className="flex items-start gap-3 cursor-pointer hover:bg-gray-50 p-3 rounded-lg transition-colors"
               onClick={() => handleItemClick(activity)}
+              className="group cursor-pointer rounded-xl border border-slate-200 bg-white p-4 transition-all duration-200 hover:border-slate-300 hover:shadow-md"
             >
-              <div className="flex aspect-square items-center justify-center rounded-md bg-blue-50 p-2 text-blue-500 flex-shrink-0">
-                <BookOpenText size={20} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-medium text-gray-800 truncate">{activity.fileName}</p>
-                <p className="text-sm text-gray-500">
-                  {new Date(activity.createdAt).toLocaleDateString("id-ID", {
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric",
-                    hour: "numeric",
-                    minute: "numeric",
-                  })}
-                  {" • "}
-                  {/* Snippet dari result: Ambil potongan deskripsi atau summary dari AI result */}
-                  {activity.result?.summary || activity.result?.description || "Lihat insight lengkap review CV kamu"}
-                </p>
+              <div className="flex items-start justify-between">
+                <div className="flex min-w-0 items-center gap-3">
+                  {/* icon */}
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 text-white shadow-sm">
+                    <BookOpenText size={16} />
+                  </div>
+
+                  {/* text */}
+                  <div className="min-w-0">
+                    <h5 className="truncate text-sm font-semibold text-slate-800">
+                      {activity.fileName}
+                    </h5>
+
+                    <p className="mt-0.5 truncate text-xs text-slate-500">
+                      {new Date(activity.createdAt).toLocaleDateString(
+                        "id-ID",
+                        {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        },
+                      )}{" "}
+                      —{" "}
+                      {activity.result?.summary ||
+                        activity.result?.description ||
+                        "Lihat insight review CV"}
+                    </p>
+                  </div>
+                </div>
+
+                {/* action */}
+                <div className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition-all duration-200 group-hover:bg-indigo-600 group-hover:text-white">
+                  <ChevronRight size={16} strokeWidth={2.5} />
+                </div>
               </div>
             </div>
           ))
         ) : (
-          <div className="text-center py-8 text-gray-500">
-            <BookOpenText size={40} className="mx-auto mb-2 opacity-50" />
-            <p>Belum ada aktivitas review CV</p>
-            <p className="text-xs mt-1">Coba upload CV pertama kamu!</p>
+          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-slate-50 py-10 text-center">
+            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-sm">
+              <BookOpenText size={22} className="text-slate-300" />
+            </div>
+
+            <p className="text-sm font-semibold text-slate-700">
+              Belum ada aktivitas review CV
+            </p>
+
+            <p className="mt-1 mb-4 text-xs text-slate-400">
+              Mulai review CV untuk mendapatkan insight pengembangan karir
+            </p>
+
+            <Link
+              href="/dashboard/review-cv"
+              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-500"
+            >
+              Mulai Review CV
+            </Link>
           </div>
         )}
       </div>
-      {activities.length === 0 && (
-        <p className="mt-6 text-sm text-gray-400">
-          Coba fitur Review CV di Cetha buat ningkatin karir kamu ✨
-        </p>
-      )}
     </div>
   );
 }

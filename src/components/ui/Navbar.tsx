@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { db } from "@/app/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronDown,
@@ -15,7 +17,7 @@ import {
   Settings,
 } from "lucide-react";
 
-import logo from "@/assets/icons/cetha-logo.svg";
+import logo from "@/assets/icons/cetha-new-logo.svg";
 import { Avatar } from "@radix-ui/react-avatar";
 import UserAvatar from "../user-avatar";
 import { logoutUser } from "@/app/lib/auth";
@@ -77,17 +79,30 @@ const Navbar = () => {
   ];
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        setUsername(
-          user.displayName || user.email?.split("@")[0] || "Pengguna",
-        );
         setEmail(user.email || "m@example.com");
         setIsLoggedIn(true);
+
+        try {
+          const ref = doc(db, "users", user.uid);
+          const snap = await getDoc(ref);
+
+          if (snap.exists()) {
+            const data = snap.data();
+            setUsername(data.username || "Pengguna");
+          } else {
+            setUsername(user.displayName || "Pengguna");
+          }
+        } catch (error) {
+          console.error("Gagal mengambil profile:", error);
+          setUsername(user.displayName || "Pengguna");
+        }
       } else {
         setIsLoggedIn(false);
       }
     });
+
     return () => unsubscribe();
   }, []);
 
@@ -150,7 +165,7 @@ const Navbar = () => {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-3 py-3">
         {/* Logo */}
         <Link href="/" className="z-10 flex items-center">
-          <Image alt="Cetha Logo" src={logo} height={52} />
+          <Image alt="Cetha Logo" src={logo} height={36} />
         </Link>
 
         {/* Desktop Nav */}

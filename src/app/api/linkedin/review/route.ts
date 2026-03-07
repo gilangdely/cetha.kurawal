@@ -4,22 +4,54 @@ import { NextResponse } from "next/server";
 // 🔹 Inisialisasi Gemini AI
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API || "");
 const model = genAI.getGenerativeModel({
-  model: "gemini-2.0-flash-001",
+  model: "gemma-3-27b-it",
 });
+
+function parseJsonSafe(text: string): any {
+  // Strategi 1: ambil dari blok markdown code fence
+  const fenceMatch = text.match(/```(?:json)?\s*(\{[\s\S]*?\})\s*```/);
+  if (fenceMatch && fenceMatch[1]) {
+    try {
+      return JSON.parse(fenceMatch[1]);
+    } catch (e) {
+      // Lanjut ke strategi berikutnya
+    }
+  }
+
+  // Strategi 2: ambil objek { ... } terluar
+  const start = text.indexOf("{");
+  const end = text.lastIndexOf("}");
+  if (start !== -1 && end !== -1 && end > start) {
+    const candidate = text.substring(start, end + 1);
+    try {
+      return JSON.parse(candidate);
+    } catch (e) {
+      throw new Error(`Ditemukan struktur JSON tapi gagal di-parse: ${e}`);
+    }
+  }
+
+  throw new Error(`Tidak ditemukan JSON valid dalam respons model.\nCuplikan respons: ${text.substring(0, 300)}`);
+}
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const {
-      name,
-      headline,
-      about,
-      location,
-      followerCount,
-      connectionsCount,
-      experience,
-      education,
-    } = body;
+    const data = body.data || body; // Support raw linkedin payload or formatted payload
+
+    const name = data.name || data.fullName || (data.firstName ? `${data.firstName} ${data.lastName}` : "");
+    const headline = data.headline;
+    const about = data.about || data.summary || "";
+    
+    let locationStr = data.location || "Tidak tersedia";
+    if (data.location && typeof data.location === "object") {
+      locationStr = data.location.fullLocation || data.location.city || data.location.countryName || "Tidak tersedia";
+    }
+
+    const followerCount = data.followerCount;
+    const connectionsCount = data.connectionsCount;
+    
+    const experienceList = data.experience || data.CurrentPositions || [];
+    const educationList = data.education || [];
 
     if (!name || !headline) {
       return NextResponse.json(
@@ -32,21 +64,21 @@ export async function POST(req: Request) {
       );
     }
 
-    const formattedExperience = Array.isArray(experience)
-      ? experience
+    const formattedExperience = Array.isArray(experienceList)
+      ? experienceList
           .slice(0, 3)
           .map(
             (exp: any, i: number) => ({
-              title: exp.title || "Tidak diketahui",
-              company: exp.companyName || "-",
+              title: exp.title || exp.name || "Tidak diketahui",
+              company: exp.companyName || exp.company || exp.name || "-",
               duration: exp.duration || "Durasi tidak diketahui",
               description: exp.description || "Tidak ada deskripsi",
             })
           )
       : [];
 
-    const formattedEducation = Array.isArray(education)
-      ? education
+    const formattedEducation = Array.isArray(educationList)
+      ? educationList
           .slice(0, 2)
           .map((edu: any, i: number) => ({
             degree: edu.degree || "Tidak diketahui",
@@ -83,7 +115,7 @@ DATA PROFIL:
 Nama: ${name}
 Headline: ${headline}
 About: ${about || "Tidak tersedia"}
-Lokasi: ${location || "Tidak tersedia"}
+Lokasi: ${locationStr}
 Follower: ${followerCount || 0}
 Connections: ${connectionsCount || 0}
 
@@ -100,15 +132,12 @@ Jawab hanya dengan JSON valid.
     const result = await model.generateContent(prompt);
     const text = result?.response?.text() || "{}";
 
-    // 🔹 Bersihkan hasil agar bisa di-parse JSON
-    const cleanJson = text.replace(/```json|```/g, "").trim();
-
     let parsed;
     try {
-      parsed = JSON.parse(cleanJson);
-    } catch (e) {
-      console.warn("⚠️ Hasil bukan JSON valid, fallback ke teks.");
-      parsed = { rawText: text };
+      parsed = parseJsonSafe(text);
+    } catch (e: any) {
+      console.warn("⚠️ Gagal parse JSON:", e.message);
+      parsed = { rawText: text }; // Fallback
     }
 
     return NextResponse.json({

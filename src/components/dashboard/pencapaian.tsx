@@ -1,7 +1,6 @@
-// filepath: d:\Projectan\cetha\src\components\dashboard\pencapaian.tsx
 "use client";
 import { useState, useEffect } from "react";
-import { CircleStar, Pencil, PlusCircle, Eye, X, Trash2 } from "lucide-react";
+import { Pencil, Plus, Eye, X, Trash2, Award } from "lucide-react";
 import EditPencapaian, { Achievement } from "./edit-pencapaian";
 import {
   Sheet,
@@ -9,9 +8,18 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { db } from "@/app/lib/firebase";
+import { db, auth } from "@/app/lib/firebase";
 import { toast } from "sonner";
-import { collection, query, orderBy, onSnapshot, doc, deleteDoc, where } from "firebase/firestore";
+import {
+  collection,
+  query,
+  orderBy,
+  onSnapshot,
+  doc,
+  deleteDoc,
+  where,
+} from "firebase/firestore";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,7 +30,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { auth } from "@/app/lib/firebase";
 
 interface PencapaianTerbaruProps {
   className?: string;
@@ -35,15 +42,14 @@ export default function PencapaianTerbaru({
   const [openEditor, setOpenEditor] = useState(false);
   const [editItem, setEditItem] = useState<Achievement | null>(null);
   const [previewItem, setPreviewItem] = useState<Achievement | null>(null);
-  const [showAll, setShowAll] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // === State untuk AlertDialog delete ===
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<Achievement | null>(null);
 
   useEffect(() => {
     const user = auth.currentUser;
+
     if (!user) {
       toast.error("Anda harus login untuk melihat pencapaian");
       setLoading(false);
@@ -52,8 +58,8 @@ export default function PencapaianTerbaru({
 
     const q = query(
       collection(db, "pencapaian"),
-      where("userId", "==", user?.uid), // Ganti dengan ID user yang sesuai
-      orderBy("createdAt", "desc")
+      where("userId", "==", user.uid),
+      orderBy("createdAt", "desc"),
     );
 
     const unsubscribe = onSnapshot(
@@ -67,270 +73,286 @@ export default function PencapaianTerbaru({
         setAchievements(data);
         setLoading(false);
       },
-      (error) => {
-        console.error("Error fetching achievements:", error);
+      () => {
         toast.error("Gagal memuat pencapaian");
         setLoading(false);
-      }
+      },
     );
 
     return () => unsubscribe();
   }, []);
 
-  // === Fungsi buka dialog delete ===
   const openDeleteDialog = (item: Achievement) => {
     setItemToDelete(item);
     setDeleteDialogOpen(true);
   };
 
-  // === Fungsi hapus sebenarnya ===
   const confirmDelete = async () => {
     if (!itemToDelete?.id) return;
 
     try {
       await deleteDoc(doc(db, "pencapaian", itemToDelete.id));
-      toast.success("Pencapaian telah dihapus");
-    } catch (error) {
-      toast.error("Gagal menghapus pencapaian");
+      toast.success("Pencapaian dihapus");
+    } catch {
+      toast.error("Gagal menghapus");
     } finally {
       setDeleteDialogOpen(false);
       setItemToDelete(null);
     }
   };
 
-
-  const handleSave = (a: Achievement) => {
-    if (editItem) {
-      setAchievements((prev) =>
-        prev.map((item) => (item.id === a.id ? a : item)),
-      );
-      setEditItem(null);
-    } else {
-      setAchievements((prev) => [...prev, a]);
-    }
-  };
   const openAdd = () => {
     const user = auth.currentUser;
     if (!user) {
-      toast.error("Anda harus login untuk menambah pencapaian");
+      toast.error("Anda harus login");
       return;
     }
+
     setEditItem(null);
     setOpenEditor(true);
   };
 
   const openEdit = (item: Achievement) => {
     const user = auth.currentUser;
+
     if (!user || item.userId !== user.uid) {
-      toast.error("Anda tidak memiliki izin untuk mengedit ini");
+      toast.error("Tidak memiliki izin");
       return;
     }
+
     setEditItem(item);
     setOpenEditor(true);
   };
+
   const openPreview = (item: Achievement) => {
     setPreviewItem(item);
   };
 
-  const visible = showAll ? achievements : achievements.slice(0, 3);
-
   return (
     <>
-      <div className={`rounded-xl bg-white p-6 shadow-md ${className}`}>
-        <div className="mb-6 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <CircleStar className="text-orange-300" size={28} />
-            <h3 className="text-lg font-semibold text-gray-800">
-              Pencapaian Terbaru
-            </h3>
-          </div>
-          <div className="flex items-center gap-2">
-            {achievements.length > 3 && (
-              <button
-                onClick={() => setShowAll((s) => !s)}
-                className="rounded-md border border-gray-300 px-3 py-2 text-xs font-medium text-gray-600 hover:bg-gray-100"
-              >
-                {showAll ? "Ringkas" : "Lihat Semua"}
-              </button>
-            )}
-            <button
-              onClick={openAdd}
-              className="text-gray-500 hover:text-primaryBlue/80"
-              title="Tambah Pencapaian"
-            >
-              <PlusCircle size={20} />
-            </button>
-          </div>
+      <div
+        className={`space-y-5 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm ${className}`}
+      >
+        {/* HEADER */}
+        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+          <h4 className="flex items-center gap-2 text-xl font-bold tracking-tight text-slate-900">
+            Pencapaian
+          </h4>
+
+          <button
+            onClick={openAdd}
+            title="Tambah Pencapaian"
+            className="group flex items-center justify-center rounded-lg bg-slate-900 p-2 text-white transition-all duration-200 hover:-translate-y-[1px] hover:bg-slate-800 hover:shadow-md active:scale-95"
+          >
+            <Plus
+              size={16}
+              className="transition-transform duration-200 group-hover:rotate-90"
+            />
+          </button>
+
           <EditPencapaian
             open={openEditor}
             onOpenChange={(open) => {
               setOpenEditor(open);
               if (!open) setEditItem(null);
             }}
-            onSave={() => {
-              toast.success(editItem ? "Diperbarui!" : "Ditambahkan!");
-            }}
+            onSave={() =>
+              toast.success(editItem ? "Diperbarui" : "Ditambahkan")
+            }
             initialData={editItem || undefined}
             showTrigger={false}
           />
         </div>
 
-        <div className="space-y-3">
+        {/* LIST */}
+        <div className="flex flex-col gap-3">
           {loading ? (
-            // Skeleton loading
-            <>
-              {[1, 2, 3].map((i) => (
-                <div
-                  key={i}
-                  className="flex items-center justify-between rounded-md border border-gray-100 px-3 py-3"
-                >
-                  <div className="h-4 w-3/4 animate-pulse rounded bg-gray-200"></div>
-                  <div className="h-4 w-10 animate-pulse rounded bg-gray-200"></div>
+            [1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-4"
+              >
+                <div className="h-9 w-9 animate-pulse rounded-lg bg-slate-100" />
+                <div className="flex-1 space-y-2">
+                  <div className="h-3 w-1/3 animate-pulse rounded bg-slate-100" />
+                  <div className="h-3 w-1/2 animate-pulse rounded bg-slate-100" />
                 </div>
-              ))}
-            </>
-          ) : visible.length > 0 ? (
-            visible.map((item) => (
+              </div>
+            ))
+          ) : achievements.length > 0 ? (
+            achievements.map((item) => (
               <div
                 key={item.id}
-                className="group flex items-center justify-between rounded-md border border-gray-100 px-3 py-2 transition hover:bg-gray-50"
+                className="group rounded-xl border border-slate-200 bg-white p-4 transition-all duration-200 hover:shadow-md"
               >
-                <button
-                  onClick={() => openPreview(item)}
-                  className="flex-1 text-left"
-                >
-                  <p className="truncate text-sm font-medium text-gray-800">
-                    <span className="mr-1 text-orange-400">★</span>
-                    {item.title}
-                  </p>
-                  <p className="mt-0.5 text-[11px] text-gray-500 capitalize">
-                    {item.category.replace("_", " ")}
-                    {item.date
-                      ? ` • ${new Date(item.date).toLocaleDateString("id-ID", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}`
-                      : ""}
-                  </p>
-                </button>
-
-                <div className="flex items-center gap-1">
+                <div className="flex items-start justify-between">
                   <button
                     onClick={() => openPreview(item)}
-                    className="invisible rounded-md border border-gray-300 p-1 text-gray-500 group-hover:visible hover:bg-gray-100"
-                    title="Preview"
+                    className="flex flex-1 items-center gap-3 text-left"
                   >
-                    <Eye size={14} />
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-orange-400 to-orange-600 text-white shadow-sm">
+                      <Award size={16} />
+                    </div>
+
+                    <div className="min-w-0">
+                      <h5 className="truncate text-sm font-semibold text-slate-800">
+                        {item.title}
+                      </h5>
+
+                      <p className="truncate text-xs text-slate-400 capitalize">
+                        {item.category.replace("_", " ")}
+                        {item.date
+                          ? ` • ${new Date(item.date).toLocaleDateString(
+                              "id-ID",
+                              {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric",
+                              },
+                            )}`
+                          : ""}
+                      </p>
+                    </div>
                   </button>
-                  <button
-                    onClick={() => openEdit(item)}
-                    className="invisible rounded-md border border-gray-300 p-1 text-gray-500 group-hover:visible hover:bg-gray-100"
-                    title="Edit"
-                  >
-                    <Pencil size={14} />
-                  </button>
-                  <button
-                    onClick={() => openDeleteDialog(item)}
-                    className="invisible rounded-md border border-red-300 p-1 text-red-600 group-hover:visible hover:bg-red-50"
-                    title="Hapus"
-                  >
-                    <Trash2 size={14} />
-                  </button>
+
+                  {/* ACTIONS */}
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => openPreview(item)}
+                      className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition-all duration-200 hover:bg-blue-500 hover:text-white xl:opacity-0 xl:group-hover:opacity-100"
+                    >
+                      <Eye size={14} />
+                    </button>
+
+                    <button
+                      onClick={() => openEdit(item)}
+                      className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition-all duration-200 hover:bg-orange-500 hover:text-white xl:opacity-0 xl:group-hover:opacity-100"
+                    >
+                      <Pencil size={14} />
+                    </button>
+
+                    <button
+                      onClick={() => openDeleteDialog(item)}
+                      className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition-all duration-200 hover:bg-red-500 hover:text-white xl:opacity-0 xl:group-hover:opacity-100"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))
           ) : (
-            <div className="flex flex-col items-center justify-center rounded-md border border-dashed border-gray-200 py-8 text-center">
-              <CircleStar className="mb-3 text-gray-300" size={40} />
-              <p className="mb-4 text-sm text-gray-500">
-                Belum ada pencapaian ditambahkan
+            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-gradient-to-b from-slate-50 to-white py-12 text-center">
+              {/* Icon */}
+              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-900/5">
+                <Award size={24} className="text-orange-400" />
+              </div>
+
+              {/* Badge motivasi */}
+              <span className="mb-2 rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-500">
+                Mulai dari langkah kecil
+              </span>
+
+              {/* Title */}
+              <p className="text-base font-semibold text-slate-800">
+                Belum ada pencapaian
               </p>
+
+              {/* Motivational text */}
+              <p className="mt-1 mb-5 max-w-xs text-xs leading-relaxed text-slate-400">
+                Setiap progress layak dicatat. Tambahkan pencapaianmu dan bangun
+                perjalanan kariermu sedikit demi sedikit.
+              </p>
+
+              {/* CTA */}
               <button
                 onClick={openAdd}
-                className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-700"
+                className="group flex items-center gap-2 rounded-lg bg-orange-500 px-4 py-2 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-[1px] hover:bg-orange-600 hover:shadow-md active:scale-95"
               >
-                Tambah Pencapaian Pertama
+                Tambah Pencapaian
+                <Plus
+                  size={16}
+                  className="transition-transform duration-200 group-hover:rotate-90"
+                />
               </button>
             </div>
           )}
         </div>
-
-        {/* Preview Sheet */}
-        <Sheet
-          open={!!previewItem}
-          onOpenChange={(open) => !open && setPreviewItem(null)}
-        >
-          {previewItem && (
-            <SheetContent className="px-5">
-              <SheetHeader>
-                <SheetTitle className="text-base font-semibold">
-                  {previewItem.title}
-                </SheetTitle>
-              </SheetHeader>
-              <div className="mt-4 space-y-4 text-sm">
-                <div className="flex flex-wrap gap-2 text-xs text-gray-500">
-                  <span className="rounded bg-gray-100 px-2 py-0.5 capitalize">
-                    {previewItem.category.replace("_", " ")}
-                  </span>
-                  {previewItem.date && (
-                    <span className="rounded bg-gray-100 px-2 py-0.5">
-                      {new Date(previewItem.date).toLocaleDateString("id-ID", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </span>
-                  )}
-                </div>
-
-                {previewItem.description ? (
-                  <p className="leading-relaxed text-gray-700 whitespace-pre-wrap">
-                    {previewItem.description}
-                  </p>
-                ) : (
-                  <p className="italic text-gray-400">Tidak ada deskripsi.</p>
-                )}
-
-                <div className="flex gap-2 pt-4">
-                  <button
-                    onClick={() => {
-                      setPreviewItem(null);
-                      openEdit(previewItem);
-                    }}
-                    className="flex items-center gap-1.5 rounded-md border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-100"
-                  >
-                    <Pencil size={14} /> Edit
-                  </button>
-                  <button
-                    onClick={() => setPreviewItem(null)}
-                    className="flex items-center gap-1.5 rounded-md border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100"
-                  >
-                    <X size={14} /> Tutup
-                  </button>
-                </div>
-              </div>
-            </SheetContent>
-          )}
-        </Sheet>
       </div>
 
-      {/* === AlertDialog Konfirmasi Hapus (shadcn) === */}
+      {/* PREVIEW */}
+      <Sheet
+        open={!!previewItem}
+        onOpenChange={(open) => !open && setPreviewItem(null)}
+      >
+        {previewItem && (
+          <SheetContent className="px-5">
+            <SheetHeader>
+              <SheetTitle>{previewItem.title}</SheetTitle>
+            </SheetHeader>
+
+            <div className="mt-4 space-y-4 text-sm">
+              <div className="flex flex-wrap gap-2 text-xs text-gray-500">
+                <span className="rounded bg-gray-100 px-2 py-0.5 capitalize">
+                  {previewItem.category.replace("_", " ")}
+                </span>
+
+                {previewItem.date && (
+                  <span className="rounded bg-gray-100 px-2 py-0.5">
+                    {new Date(previewItem.date).toLocaleDateString("id-ID")}
+                  </span>
+                )}
+              </div>
+
+              {previewItem.description ? (
+                <p className="leading-relaxed whitespace-pre-wrap text-gray-700">
+                  {previewItem.description}
+                </p>
+              ) : (
+                <p className="text-gray-400 italic">Tidak ada deskripsi.</p>
+              )}
+
+              <div className="flex gap-2 pt-4">
+                <button
+                  onClick={() => {
+                    setPreviewItem(null);
+                    openEdit(previewItem);
+                  }}
+                  className="flex items-center gap-1.5 rounded-md border border-gray-300 px-3 py-1.5 text-xs hover:bg-gray-100"
+                >
+                  <Pencil size={14} /> Edit
+                </button>
+
+                <button
+                  onClick={() => setPreviewItem(null)}
+                  className="flex items-center gap-1.5 rounded-md border border-gray-300 px-3 py-1.5 text-xs hover:bg-gray-100"
+                >
+                  <X size={14} /> Tutup
+                </button>
+              </div>
+            </div>
+          </SheetContent>
+        )}
+      </Sheet>
+
+      {/* DELETE DIALOG */}
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Yakin ingin menghapus?</AlertDialogTitle>
+            <AlertDialogTitle>Hapus pencapaian?</AlertDialogTitle>
             <AlertDialogDescription>
-              Pencapaian <strong>“{itemToDelete?.title}”</strong> akan dihapus secara permanen dan tidak bisa dikembalikan.
+              Pencapaian <strong>{itemToDelete?.title}</strong> akan dihapus
+              permanen.
             </AlertDialogDescription>
           </AlertDialogHeader>
+
           <AlertDialogFooter>
             <AlertDialogCancel>Batal</AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmDelete}
-              className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+              className="bg-red-600 hover:bg-red-700"
             >
-              Hapus Permanen
+              Hapus
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

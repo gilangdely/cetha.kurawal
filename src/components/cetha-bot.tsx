@@ -75,7 +75,7 @@ export default function CethaBot() {
     if (!username) return null;
 
     return (
-        <div className="fixed right-8 bottom-8 z-50 flex flex-col items-end">
+        <div className="fixed right-4 bottom-8 z-50 flex flex-col items-end">
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
@@ -205,7 +205,7 @@ export default function CethaBot() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex h-18 w-18 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg"
+                className="flex h-14 lg:h-16 w-14 lg:w-16  items-center justify-center rounded-full bg-blue-600 text-white shadow-lg"
             >
                 <BotMessageSquare size={35} className="-scale-x-100 transform" />
             </motion.button>

@@ -1,25 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
-import CtaSection from "@/components/sections/CtaSection";
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
-import {
-  ChevronRight,
-  Goal,
-  FileText,
-  Globe,
-  Mail,
-  MapPin,
-  MessageCircle,
-  Phone,
-} from "lucide-react";
+import { Goal, FileText, Globe, Mail, MapPin, Phone } from "lucide-react";
 
 import iyanImage from "@/assets/img/iyan.jpg";
 import firmanImage from "@/assets/img/firman.jpg";
 import gilangImage from "@/assets/img/gilang.jpg";
-import illustration from "@/assets/img/illustration-about-us.jpg";
 
 const profiles = [
   { id: 1, foto: iyanImage, nama: "Agus Priyanto", role: "Frontend Developer" },
