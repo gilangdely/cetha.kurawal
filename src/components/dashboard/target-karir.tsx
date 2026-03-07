@@ -300,24 +300,38 @@ export default function TargetKarir() {
             </div>
           ))
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-slate-50 py-10 text-center">
-            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-sm">
-              <Target size={22} className="text-slate-300" />
+          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-gradient-to-b from-slate-50 to-white py-12 text-center">
+            {/* Icon */}
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-900/5">
+              <Target size={24} className="text-indigo-500" />
             </div>
 
-            <p className="text-sm font-semibold text-slate-700">
+            {/* Badge motivasi */}
+            <span className="mb-2 rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-600">
+              Mulai dari langkah kecil
+            </span>
+
+            {/* Title */}
+            <p className="text-base font-semibold text-slate-800">
               Belum ada target karir
             </p>
 
-            <p className="mt-1 mb-4 text-xs text-slate-400">
-              Mulai susun langkah kecil menuju tujuan besar
+            {/* Motivational text */}
+            <p className="mt-1 mb-5 max-w-xs text-xs leading-relaxed text-slate-400">
+              Setiap langkah kecil sangat berarti. Mulailah susun tujuan besarmu
+              dan wujudkan karier yang kamu impikan.
             </p>
 
+            {/* CTA */}
             <button
               onClick={openAdd}
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-500"
+              className="group flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-[1px] hover:bg-indigo-500 hover:shadow-md active:scale-95"
             >
               Tambah Target
+              <Plus
+                size={16}
+                className="transition-transform duration-200 group-hover:rotate-90"
+              />
             </button>
           </div>
         )}

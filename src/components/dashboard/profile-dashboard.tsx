@@ -1,146 +1,161 @@
-// filepath: d:\Projectan\cetha\src\components\dashboard\profil-dashboard.tsx
 "use client";
+
 import { useRouter } from "next/navigation";
 import { Avatar } from "@radix-ui/react-avatar";
 import UserAvatar from "@/components/user-avatar";
-import { Edit, Rocket, Mail } from "lucide-react";
+import { Edit, Mail } from "lucide-react";
 import { useEffect, useState } from "react";
-import { auth } from "@/app/lib/firebase";
-import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "@/app/lib/firebase";
+import { auth, db } from "@/app/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
 import Link from "next/link";
-
-interface ProfileDashboardProps {
-  username: string | null;
-  email: string | null;
-  skills: string[];
-  role?: string[] | string;
-  onEditProfile?: () => void;
-  onViewCV?: () => void;
-}
 
 interface UserData {
   username?: string;
   email?: string;
   photoURL?: string;
-  createdAt?: any;
-  lastLogin?: any;
-  role?: string[] | string;
+  role?: string[];
   skills?: string[];
 }
 
-export default function ProfileDashboard({
-  username,
-  email,
-  skills,
-  role = "-",
-  onEditProfile,
-  onViewCV,
-}: ProfileDashboardProps) {
+export default function ProfileDashboard() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
+
   const router = useRouter();
   const user = auth.currentUser;
 
-  const roles = Array.isArray(userData?.role)
-    ? userData.role
-    : userData?.role
-      ? [userData.role]
-      : [];
-
   useEffect(() => {
-    const load = async () => {
+    const loadUser = async () => {
       if (!user) {
         setLoading(false);
         return;
       }
+
       const ref = doc(db, "users", user.uid);
       const snap = await getDoc(ref);
+
       if (snap.exists()) {
-        setUserData(snap.data() as UserData);
-      } else {
-        const seed: UserData = {
-          username: user.displayName || user.email?.split("@")[0],
-          email: user.email || "",
-          photoURL: user.photoURL || "",
-          createdAt: serverTimestamp(),
-          lastLogin: serverTimestamp(),
-          role: ["mahasiswa"],
-          skills: ["React", "TypeScript", "Node.js"],
+        const data = snap.data();
+
+        const normalized: UserData = {
+          ...data,
+          role: Array.isArray(data.role)
+            ? data.role
+            : data.role
+              ? [data.role]
+              : [],
+          skills: Array.isArray(data.skills)
+            ? data.skills
+            : data.skills
+              ? [data.skills]
+              : [],
         };
-        await setDoc(ref, seed);
-        setUserData(seed);
+
+        setUserData(normalized);
       }
+
       setLoading(false);
     };
-    load();
+
+    loadUser();
   }, [user]);
 
-  const displaySkills =
-    (userData?.skills || []).length > 0 ? userData!.skills! : skills;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-6">
+        <div className="border-primaryBlue h-8 w-8 animate-spin rounded-full border-t-2 border-b-2"></div>
+      </div>
+    );
+  }
+
+  const roles = userData?.role || [];
+  const skills = userData?.skills || [];
 
   return (
-    <div className="relative flex w-full flex-col items-center overflow-hidden rounded-3xl bg-gradient-to-b from-white to-slate-50 p-5 transition-all duration-300 hover:shadow-sm">
-      {/* Gradient Accent */}
+    <div className="relative flex w-full flex-col items-center overflow-hidden rounded-3xl bg-gradient-to-b from-white to-slate-50 p-5 shadow-sm">
+      {/* Accent */}
       <div className="bg-primaryBlue/30 absolute -top-20 -right-20 h-40 w-40 rounded-full blur-3xl" />
       <div className="absolute -bottom-20 -left-20 h-40 w-40 rounded-full bg-indigo-400/20 blur-3xl" />
 
+      {/* Avatar */}
       <div className="flex flex-col items-center text-center">
-        {/* Avatar Section */}
         <div className="relative mb-2 inline-block">
           <Avatar className="flex h-22 w-22 items-center justify-center overflow-hidden rounded-full border-4 border-white bg-slate-100 shadow-sm">
             <UserAvatar className="h-full w-full object-cover text-slate-400" />
           </Avatar>
+
           <div className="absolute right-1 bottom-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-emerald-500 shadow-sm">
             <div className="h-1 w-1 rounded-full bg-white" />
           </div>
         </div>
 
         {/* User Info */}
-        <h2 className="text-2xl font-semibold tracking-tight text-gray-900">
-          {username || "Explorer"}
+        <h2 className="text-2xl font-semibold text-gray-900">
+          {userData?.username || "Explorer"}
         </h2>
-        <div className="mt-0.5 flex items-center justify-center gap-1 text-slate-500">
+
+        <div className="mt-0.5 flex items-center gap-1 text-slate-500">
           <Mail size={14} className="text-slate-400" />
-          <p className="text-sm font-medium">{email || "No email provided"}</p>
+          <p className="text-sm font-medium">{userData?.email || "No email"}</p>
         </div>
 
-        {/* Edit Button */}
+        {/* Edit */}
         <Link
-          href="/dashboard/profile"
-          className="absolute top-4 right-4 flex w-fit items-center justify-center gap-2 rounded-full border border-slate-200 bg-white p-2 text-sm font-semibold text-slate-700 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 active:scale-[0.98]"
+          href="/dashboard/my-profile"
+          className="absolute top-4 right-4 flex items-center justify-center rounded-full border border-slate-200 bg-white p-2 text-slate-700 shadow-sm transition hover:bg-slate-50"
         >
-          <Edit size={16} className="text-slate-500" />
+          <Edit size={16} />
         </Link>
       </div>
 
-      {/* Skills Section */}
+      {/* ROLE */}
       <div className="z-10 mt-4 w-full border-t border-slate-100 pt-4">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="flex items-center gap-2 text-sm font-bold text-gray-900">
-            Top Skills
-          </h3>
-          <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-bold tracking-wider text-slate-500 uppercase">
-            {displaySkills.length} Skills
+        <div className="mb-3 flex items-center justify-between">
+          <p className="text-sm font-bold text-gray-900">
+            Status kamu saat ini
+          </p>
+          <span className="z-10 rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-bold tracking-wider text-slate-500 uppercase">
+            {roles.length} role
           </span>
         </div>
 
-        <div className="flex cursor-default flex-wrap gap-2">
-          {displaySkills.length > 0 ? (
-            displaySkills.map((skill) => (
+        <div className="flex flex-wrap gap-2">
+          {roles.length > 0 ? (
+            roles.map((r) => (
+              <span
+                key={r}
+                className="text-primaryBlue border-primaryBlue/40 rounded-xl border bg-white px-3 py-1.5 text-xs font-semibold transition hover:scale-105"
+              >
+                {r}
+              </span>
+            ))
+          ) : (
+            <p className="text-xs text-gray-400">Belum ada role</p>
+          )}
+        </div>
+      </div>
+
+      {/* SKILLS */}
+      <div className="z-10 mt-4 w-full">
+        <div className="mb-3 flex items-center justify-between">
+          <p className="text-sm font-bold text-gray-900">Top Skills</p>
+          <span className="z-10 rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-bold tracking-wider text-slate-500 uppercase">
+            {skills.length} Role
+          </span>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {skills.length > 0 ? (
+            skills.map((skill) => (
               <span
                 key={skill}
-                className="text-primaryBlue border-primaryBlue/40 inline-block rounded-xl border bg-white px-3 py-1.5 text-xs font-semibold"
+                className="text-primaryBlue border-primaryBlue/40 rounded-xl border bg-white px-3 py-1.5 text-xs font-semibold transition hover:scale-105"
               >
                 {skill}
               </span>
             ))
           ) : (
-            <div className="w-full rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-center">
-              <p className="text-xs font-medium text-slate-500">
-                No skills added yet.
-              </p>
-            </div>
+            <p className="text-xs text-gray-400">Belum ada skill</p>
           )}
         </div>
       </div>

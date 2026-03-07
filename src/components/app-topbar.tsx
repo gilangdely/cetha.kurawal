@@ -174,11 +174,6 @@ const AppTopbar = () => {
                 </button>
               </DropdownMenuItem>
 
-              <DropdownMenuItem className="cursor-pointer py-2.5">
-                <Settings className="mr-3 h-4 w-4 text-gray-500" />
-                <span>Pengaturan Akun</span>
-              </DropdownMenuItem>
-
               <DropdownMenuSeparator />
 
               <DropdownMenuItem

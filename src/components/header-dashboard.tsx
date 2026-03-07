@@ -1,4 +1,7 @@
-import { auth } from "@/app/lib/firebase";
+"use client";
+
+import { auth, db } from "@/app/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 const DAILY_SUBTITLES = [
@@ -54,16 +57,31 @@ const getDailySubtitle = () => {
 };
 
 const HeaderDashboard = () => {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("Explorer");
   const [greeting, setGreeting] = useState(getGreeting());
 
   useEffect(() => {
-    const user = auth.currentUser;
-    if (user) {
-      setUsername(user.displayName || "Explorer");
-    }
+    const loadUser = async () => {
+      const user = auth.currentUser;
+      if (!user) return;
 
-    // Update greeting setiap menit
+      try {
+        const ref = doc(db, "users", user.uid);
+        const snap = await getDoc(ref);
+
+        if (snap.exists()) {
+          const data = snap.data();
+          setUsername(data.username || "Explorer");
+        } else {
+          setUsername(user.displayName || "Explorer");
+        }
+      } catch (error) {
+        console.error("Gagal mengambil user:", error);
+      }
+    };
+
+    loadUser();
+
     const interval = setInterval(() => {
       setGreeting(getGreeting());
     }, 60000);
@@ -73,12 +91,10 @@ const HeaderDashboard = () => {
 
   return (
     <div className="space-y-1">
-      {/* Title */}
       <h1 className="text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
         {greeting}, {username}! <span className="text-slate-400">🚀</span>
       </h1>
 
-      {/* Subtitle — berganti setiap hari */}
       <p className="max-w-xl text-base text-slate-500">{getDailySubtitle()}</p>
     </div>
   );

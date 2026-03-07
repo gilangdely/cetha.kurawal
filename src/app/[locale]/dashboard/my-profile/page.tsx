@@ -3,6 +3,7 @@
 import ActivityHistory from "@/components/activity-history";
 import PencapaianTerbaru from "@/components/dashboard/pencapaian";
 import Profile from "@/components/dashboard/profile";
+import TargetKarir from "@/components/dashboard/target-karir";
 
 export default function ProfilePage() {
   return (
@@ -19,6 +20,7 @@ export default function ProfilePage() {
           <div className="space-y-4 lg:col-span-4">
             <PencapaianTerbaru />
             <ActivityHistory />
+            <TargetKarir />
           </div>
         </div>
       </div>

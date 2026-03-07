@@ -104,11 +104,7 @@ export default function DashboardPage() {
           <div className="space-y-8 lg:col-span-4">
             <div className="sticky top-20 space-y-8">
               {/* Profile - The Glassmorphism Touch */}
-              <ProfileDashboard
-                username={username}
-                email={email}
-                skills={["React", "AI Prompting", "TypeScript", "UI/UX"]}
-              />
+              <ProfileDashboard />
             </div>
           </div>
         </div>

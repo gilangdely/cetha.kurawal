@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { db } from "@/app/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronDown,
@@ -77,17 +79,30 @@ const Navbar = () => {
   ];
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        setUsername(
-          user.displayName || user.email?.split("@")[0] || "Pengguna",
-        );
         setEmail(user.email || "m@example.com");
         setIsLoggedIn(true);
+
+        try {
+          const ref = doc(db, "users", user.uid);
+          const snap = await getDoc(ref);
+
+          if (snap.exists()) {
+            const data = snap.data();
+            setUsername(data.username || "Pengguna");
+          } else {
+            setUsername(user.displayName || "Pengguna");
+          }
+        } catch (error) {
+          console.error("Gagal mengambil profile:", error);
+          setUsername(user.displayName || "Pengguna");
+        }
       } else {
         setIsLoggedIn(false);
       }
     });
+
     return () => unsubscribe();
   }, []);
 
