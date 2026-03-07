@@ -155,10 +155,10 @@ const UploadJobs = () => {
   };
 
   return (
-    <div className="w-full pt-6">
+    <div className="w-full mt-4">
       {/* Upload Area */}
       <div
-        className={`relative flex h-50 items-center justify-center rounded-2xl border-3 border-dashed ${uploadEnabled
+        className={`relative flex h-96 items-center justify-center rounded-2xl border-3 border-dashed ${uploadEnabled
           ? "cursor-pointer border-gray-400"
           : "cursor-not-allowed border-gray-300 bg-gray-100 opacity-60"
           }`}

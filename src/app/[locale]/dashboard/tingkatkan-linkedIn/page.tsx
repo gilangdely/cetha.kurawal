@@ -118,7 +118,7 @@ export default function ImproveLinkedInDashboard() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Gagal mengambil data profil LinkedIn.");
 
-      const { overview, details, experience, education } = data;
+      const { overview, details, experience, education } = data.data || data;
       setProfile({ overview, details, experience, education });
 
       // 2️⃣ Pilih data penting untuk dikirim ke AI
@@ -223,7 +223,7 @@ export default function ImproveLinkedInDashboard() {
       </div>
 
       {/* Profile Display */}
-       {profile && <LinkedInProfileDisplay profile={profile} />}
+      {profile && <LinkedInProfileDisplay profile={profile} />}
       {aiResult && (
         <LinkedInAnalysisResult
           result={typeof aiResult === "string" ? JSON.parse(aiResult) : aiResult}

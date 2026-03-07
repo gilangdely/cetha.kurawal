@@ -25,7 +25,7 @@ export default function RekomendasiPekerjaanDashboard() {
         </BreadcrumbList>
       </Breadcrumb>
       <div className="mt-6 mb-8">
-        <h2 className="text-TextPrimary text-3xl font-semibold">
+        <h2 className="text-TextPrimary text-2xl md:text-3xl lg:text-4xl font-semibold">
           Temukan{" "}
           <span className="text-accentOrange">Pekerjaan yang Tepat</span>{" "}
           untukmu
@@ -35,15 +35,9 @@ export default function RekomendasiPekerjaanDashboard() {
           pengalamanmu, langsung dari analisis CV kamu.
         </p>
       </div>
-      <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
-        <h3 className="text-TextPrimary mb-4 text-xl font-medium">
-          Upload CV Kamu
-        </h3>
-        <p className="text-TextSecondary mb-6 text-sm">
-          Unggah file CV dalam format PDF untuk mendapatkan penilaian otomatis.
-        </p>
-        <UploadJobs />
-      </div>
+
+      <UploadJobs />
+
     </div>
   );
 }
