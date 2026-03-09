@@ -29,6 +29,7 @@ import {
   Menu,
   Sparkles,
   Gift,
+  Tag,
 } from "lucide-react";
 
 import logo from "@/assets/icons/cetha-new-logo.svg";
@@ -174,36 +175,59 @@ export function AppSidebar() {
         </SidebarGroupContent>
       </SidebarContent>
 
-      {/* FOOTER */}
+      {/* Footer */}
       <SidebarFooter className="p-4">
-        {/* ADMIN */}
-        {isAdmin && (
-          <div className="relative right-2">
-            <SidebarMenuButton asChild tooltip="Admin Panel">
-              <Link
-                href="/admin"
-                className={`group flex h-12 items-center rounded-xl transition-all ${
-                  isExpanded ? "gap-3" : "justify-center"
-                } ${
-                  pathname === "/admin"
-                    ? "bg-orange-100 font-semibold text-orange-700"
-                    : "text-gray-500 hover:bg-orange-50 hover:text-orange-600"
-                }`}
-              >
-                <Settings2
-                  className={`!h-5 !w-5 ${
-                    pathname === "/admin"
-                      ? "text-orange-600"
-                      : "text-gray-400 group-hover:text-orange-500"
-                  }`}
-                />
+        <SidebarMenuButton asChild tooltip="Lihat Harga">
+          <Link
+            href="/dashboard/my-profile/subscription"
+            className={`group flex h-12 items-center rounded-xl transition-all ${
+              isExpanded ? "gap-3" : "relative right-2 justify-center"
+            } ${
+              pathname === "/dashboard/my-profile/subscription"
+                ? "bg-blue-100 font-semibold text-blue-700"
+                : "text-gray-500 hover:bg-blue-50 hover:text-blue-600"
+            }`}
+          >
+            <Tag
+              className={`!h-5 !w-5 ${
+                pathname === "/dashboard/my-profile/subscription"
+                  ? "text-blue-600"
+                  : "text-gray-400 group-hover:text-blue-500"
+              }`}
+            />
 
-                {isExpanded && (
-                  <span className="text-sm font-semibold">Admin Panel</span>
-                )}
-              </Link>
-            </SidebarMenuButton>
-          </div>
+            {isExpanded && (
+              <span className="text-sm font-semibold">Lihat Harga</span>
+            )}
+          </Link>
+        </SidebarMenuButton>
+
+        {/* Admin Panel */}
+        {isAdmin && (
+          <SidebarMenuButton asChild tooltip="Admin Panel">
+            <Link
+              href="/admin"
+              className={`group flex h-12 items-center rounded-xl transition-all ${
+                isExpanded ? "gap-3" : "relative right-2 justify-center"
+              } ${
+                pathname === "/admin"
+                  ? "bg-orange-100 font-semibold text-orange-700"
+                  : "text-gray-500 hover:bg-orange-50 hover:text-orange-600"
+              }`}
+            >
+              <Settings2
+                className={`!h-5 !w-5 ${
+                  pathname === "/admin"
+                    ? "text-orange-600"
+                    : "text-gray-400 group-hover:text-orange-500"
+                }`}
+              />
+
+              {isExpanded && (
+                <span className="text-sm font-semibold">Admin Panel</span>
+              )}
+            </Link>
+          </SidebarMenuButton>
         )}
 
         {isExpanded ? (
@@ -224,8 +248,7 @@ export function AppSidebar() {
 
               {/* description */}
               <p className="mb-4 text-[13px] leading-relaxed font-medium text-blue-50/90">
-                Akses semua fitur AI tanpa batas dan dapatkan konsultasi karir
-                eksklusif.
+                Jangan biarkan token menghalangi karirmu yang cemerlang
               </p>
 
               {/* CTA */}
@@ -233,7 +256,7 @@ export function AppSidebar() {
                 href="/upgrade"
                 className="inline-flex w-full items-center justify-center rounded-xl bg-white px-4 py-2 text-xs font-semibold text-blue-700 shadow-sm transition-all hover:-translate-y-[1px] hover:shadow-md active:translate-y-0"
               >
-                Upgrade Sekarang
+                Tambah token
               </Link>
             </div>
           </div>

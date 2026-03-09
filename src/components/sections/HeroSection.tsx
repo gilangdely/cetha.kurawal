@@ -39,7 +39,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <h2 className="text-TextPrimary text-2xl font-bold lg:text-4xl">
+          <h2 className="text-TextPrimary text-2xl leading-tight font-bold lg:text-4xl">
             <span className="text-accentOrange">{t("headlineHighlight")}</span>{" "}
             {t("headlineText")}
           </h2>

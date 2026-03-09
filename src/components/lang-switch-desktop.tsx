@@ -25,17 +25,19 @@ export default function LangSwitchDesktop() {
 
     const segments = pathname.split("/");
     segments[1] = nextLocale;
+
     router.push(segments.join("/"));
     setOpen(false);
   };
 
-  /* Close on outside click */
+  /* Close when click outside */
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         setOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
@@ -45,14 +47,9 @@ export default function LangSwitchDesktop() {
       {/* Trigger */}
       <button
         onClick={() => setOpen((p) => !p)}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        className="group flex items-center gap-1.5 rounded-full border border-transparent bg-transparent px-3 py-2.5 text-sm font-medium text-gray-700 transition-all hover:border-gray-300 hover:bg-white hover:shadow-sm data-[scrolled=true]:border-gray-300 data-[scrolled=true]:bg-white data-[scrolled=true]:shadow-sm dark:text-gray-200 dark:hover:bg-gray-800 dark:data-[scrolled=true]:bg-gray-800"
+        className="flex h-12 items-center gap-1.5 rounded-lg px-2 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
       >
-        <Globe
-          size={16}
-          className="group-hover:text-primaryBlue text-gray-600 transition-colors dark:text-gray-300"
-        />
+        <Globe size={16} className="text-gray-600" />
 
         <span>{activeLanguage.code.toUpperCase()}</span>
 
@@ -66,46 +63,36 @@ export default function LangSwitchDesktop() {
 
       {/* Dropdown */}
       <div
-        className={`absolute right-0 z-50 mt-3 w-48 origin-top-right transition-all duration-200 ${
+        className={`absolute right-0 z-50 mt-2 w-48 origin-top-right transition-all duration-200 ${
           open
             ? "scale-100 opacity-100"
             : "pointer-events-none scale-95 opacity-0"
         }`}
       >
-        <div className="overflow-hidden rounded-xl border bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
-          <ul role="listbox" className="p-1">
-            {languages.map((lang) => {
-              const isActive = lang.code === locale;
+        <div className="flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md">
+          {languages.map((lang) => {
+            const isActive = lang.code === locale;
 
-              return (
-                <li key={lang.code}>
-                  <button
-                    role="option"
-                    aria-selected={isActive}
-                    disabled={isActive}
-                    onClick={() => switchLanguage(lang.code)}
-                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm transition ${
-                      isActive
-                        ? "cursor-default bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-gray-100"
-                        : "text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700/50"
-                    } `}
-                  >
-                    <span className="flex items-center gap-3">
-                      <span className="text-lg">{lang.flag}</span>
-                      <span className="font-medium">{lang.label}</span>
-                    </span>
+            return (
+              <button
+                key={lang.code}
+                disabled={isActive}
+                onClick={() => switchLanguage(lang.code)}
+                className={`flex items-center justify-between px-4 py-2 text-sm transition ${
+                  isActive
+                    ? "cursor-default bg-gray-50 text-gray-900"
+                    : "text-gray-700 hover:bg-gray-50"
+                }`}
+              >
+                <span className="flex items-center gap-3">
+                  <span className="text-lg">{lang.flag}</span>
+                  <span className="font-medium">{lang.label}</span>
+                </span>
 
-                    {isActive && (
-                      <Check
-                        size={16}
-                        className="text-blue-600 dark:text-blue-400"
-                      />
-                    )}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
+                {isActive && <Check size={16} className="text-primaryBlue" />}
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

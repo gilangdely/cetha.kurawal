@@ -14,6 +14,7 @@ import {
   ChevronDown,
   LogOut,
   Menu,
+  Settings2,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -26,16 +27,20 @@ import {
 import { Avatar } from "./ui/avatar";
 import UserAvatar from "./user-avatar";
 import LogoutAlert from "./logout-alert";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { SidebarTrigger } from "./ui/sidebar";
+import Link from "next/link";
 
 const AppTopbar = () => {
   const router = useRouter();
+  const pathname = usePathname();
 
   const [username, setUsername] = useState("Cetha");
   const [email, setEmail] = useState("m@example.com");
   const [openDialog, setOpenDialog] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+
+  const showSearch = pathname.includes("/dashboard/tips-karir");
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -103,22 +108,21 @@ const AppTopbar = () => {
         {/* BAGIAN KANAN: Search & Actions */}
         <div className="flex items-center gap-2 md:gap-4">
           {/* Search Bar (Hidden on mobile) */}
-          <div className="relative hidden md:block">
-            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Cari Artikel atau Video..."
-              className="h-9 w-64 rounded-full border border-gray-200 bg-gray-50 pr-4 pl-10 text-sm transition-all focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 focus:outline-none"
-            />
-          </div>
+          {showSearch && (
+            <div className="relative hidden md:block">
+              <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Cari Artikel atau Video..."
+                className="h-9 w-64 rounded-full border border-gray-200 bg-gray-50 pr-4 pl-10 text-sm transition-all focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 focus:outline-none"
+              />
+            </div>
+          )}
 
           {/* Action Icons */}
           <div className="flex items-center gap-1">
             <button className="rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700">
               <Bell className="h-5 w-5" />
-            </button>
-            <button className="hidden rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 sm:block">
-              <Settings className="h-5 w-5" />
             </button>
           </div>
 
@@ -165,13 +169,23 @@ const AppTopbar = () => {
               <DropdownMenuSeparator className="block lg:hidden" />
 
               <DropdownMenuItem asChild className="cursor-pointer py-2.5">
-                <button
-                  onClick={() => router.push("/dashboard/my-profile")}
+                <Link
+                  href={"/dashboard/my-profile"}
                   className="flex w-full items-center gap-2"
                 >
                   <User className="mr-3 h-4 w-4 text-gray-500" />
                   <span>Profil Saya</span>
-                </button>
+                </Link>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem asChild className="cursor-pointer py-2.5">
+                <Link
+                  href={"/dashboard/my-profile/settings"}
+                  className="flex w-full items-center gap-2"
+                >
+                  <Settings2 className="mr-3 h-4 w-4 text-gray-500" />
+                  <span>Pengaturan</span>
+                </Link>
               </DropdownMenuItem>
 
               <DropdownMenuSeparator />

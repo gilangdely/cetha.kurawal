@@ -12,6 +12,7 @@ import {
 } from "firebase/firestore";
 import { db, auth } from "@/app/lib/firebase";
 import EditTargetKarir from "./edit-target-karir";
+import { TargetKarirSkeleton } from "../target-karir-skeleton";
 
 interface Task {
   id: number;
@@ -212,11 +213,7 @@ export default function TargetKarir() {
   }
 
   if (loading) {
-    return (
-      <div className="rounded-xl bg-white p-6 text-center shadow-md">
-        Loading target karir...
-      </div>
-    );
+    return <TargetKarirSkeleton />;
   }
 
   return (

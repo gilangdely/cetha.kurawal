@@ -30,6 +30,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { PencapaianSkeleton } from "../pencapaian-skeleton";
 
 interface PencapaianTerbaruProps {
   className?: string;
@@ -167,18 +168,7 @@ export default function PencapaianTerbaru({
         {/* LIST */}
         <div className="flex flex-col gap-3">
           {loading ? (
-            [1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-4"
-              >
-                <div className="h-9 w-9 animate-pulse rounded-lg bg-slate-100" />
-                <div className="flex-1 space-y-2">
-                  <div className="h-3 w-1/3 animate-pulse rounded bg-slate-100" />
-                  <div className="h-3 w-1/2 animate-pulse rounded bg-slate-100" />
-                </div>
-              </div>
-            ))
+            <PencapaianSkeleton />
           ) : achievements.length > 0 ? (
             achievements.map((item) => (
               <div

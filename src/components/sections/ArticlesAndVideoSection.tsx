@@ -1,31 +1,67 @@
 import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import {
+  collection,
+  query,
+  where,
+  orderBy,
+  limit,
+  getDocs,
+} from "firebase/firestore";
+import { db } from "@/app/lib/firebase";
 
 const ArticlesAndVideoSection = () => {
   const t = useTranslations("ArticleAndVideo");
 
-  const articles = [
-    {
-      date: "10 Jan 2026",
-      title: "Cara Membuat CV yang Menarik",
-      description:
-        "Pelajari struktur, pemilihan kata, dan strategi penulisan CV agar lebih profesional dan menarik perhatian recruiter.",
-    },
-    {
-      date: "12 Jan 2026",
-      title: "Strategi Lolos Screening ATS",
-      description:
-        "Pahami cara kerja Applicant Tracking System dan optimalkan CV Anda agar lolos seleksi otomatis.",
-    },
-    {
-      date: "15 Jan 2026",
-      title: "Tips Personal Branding di LinkedIn",
-      description:
-        "Bangun profil LinkedIn yang kuat untuk meningkatkan visibilitas dan peluang karier Anda.",
-    },
-  ];
+  const [video, setVideo] = useState<any>(null);
+  const [articles, setArticles] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchContents = async () => {
+      try {
+        const contentsRef = collection(db, "contents");
+
+        // VIDEO TERBARU
+        const videoQuery = query(
+          contentsRef,
+          where("status", "==", "published"),
+          where("type", "==", "video"),
+          orderBy("publishedAt", "desc"),
+          limit(1),
+        );
+
+        const videoSnap = await getDocs(videoQuery);
+
+        if (!videoSnap.empty) {
+          setVideo(videoSnap.docs[0].data());
+        }
+
+        // 3 ARTIKEL TERBARU
+        const articleQuery = query(
+          contentsRef,
+          where("status", "==", "published"),
+          where("type", "==", "article"),
+          orderBy("publishedAt", "desc"),
+          limit(3),
+        );
+
+        const articleSnap = await getDocs(articleQuery);
+
+        const articleList = articleSnap.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setArticles(articleList);
+      } catch (error) {
+        console.error("Error fetching contents:", error);
+      }
+    };
+
+    fetchContents();
+  }, []);
 
   return (
     <section className="mx-auto w-full max-w-7xl px-6 py-8 md:py-12">
@@ -51,18 +87,22 @@ const ArticlesAndVideoSection = () => {
         <div className="w-full md:flex-1">
           <div className="p-1">
             <div className="aspect-video w-full overflow-hidden rounded-2xl bg-gray-300 shadow-sm">
-              {/* <img src="" className="h-full w-full object-cover" /> */}
+              {video && (
+                <iframe
+                  src={video.youtubeUrl}
+                  className="h-full w-full"
+                  allowFullScreen
+                />
+              )}
             </div>
 
-            {/* Meta */}
             <div className="mt-4">
               <p className="text-xs font-medium text-neutral-500">
-                02 Aug · 3 min
+                {video?.publishedAt?.toDate().toLocaleDateString()}
               </p>
 
               <h3 className="mt-2 text-lg leading-snug font-semibold text-neutral-900">
-                How to Cross the Atlantic Ocean While Working Full-Time: Luz
-                Coloste's Story
+                {video?.title}
               </h3>
             </div>
           </div>
@@ -74,27 +114,25 @@ const ArticlesAndVideoSection = () => {
         {/* Artikel */}
         <div className="w-full md:flex-1">
           <div className="space-y-2 md:space-y-4">
-            {articles.map((article, i) => (
+            {articles.map((article) => (
               <div
-                key={i}
+                key={article.id}
                 className="flex flex-col gap-4 rounded-2xl bg-white p-4 transition hover:shadow-sm md:flex-row md:p-2"
               >
-                <div className="h-40 w-full flex-shrink-0 overflow-hidden rounded-xl bg-gray-300 md:h-32 md:w-48">
-                  {/* <img className="h-full w-full object-cover" /> */}
-                </div>
+                <div className="h-40 w-full flex-shrink-0 overflow-hidden rounded-xl bg-gray-300 md:h-32 md:w-48" />
 
                 <div className="flex flex-col justify-between">
                   <div>
                     <p className="text-xs font-medium text-neutral-500">
-                      {article.date}
+                      {article.publishedAt?.toDate().toLocaleDateString()}
                     </p>
 
-                    <h3 className="mt-1 text-lg leading-snug font-semibold text-neutral-900">
+                    <h3 className="mt-1 text-base leading-snug font-semibold text-neutral-900">
                       {article.title}
                     </h3>
 
-                    <p className="mt-2 text-sm leading-relaxed text-neutral-600">
-                      {article.description}
+                    <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-neutral-600">
+                      {article.excerpt}
                     </p>
                   </div>
                 </div>
