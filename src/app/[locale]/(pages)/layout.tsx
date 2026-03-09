@@ -17,6 +17,9 @@ export default function Layout(props: { children: ReactNode }) {
 
   const isExcluded = ["/hasil", "/hasil-rekomendasi"].includes(pathname);
 
+  const isCheckout =
+    pathname.includes("/daftar-harga/") && pathname.includes("/checkout");
+
   if (loading) {
     return (
       <>
@@ -36,11 +39,11 @@ export default function Layout(props: { children: ReactNode }) {
 
   return (
     <>
-      <Navbar />
+      {isCheckout ? <> </> : <Navbar />}
       {props.children}
       <Toaster />
-      <CethaBot />
-      <Footer />
+      {isCheckout ? <> </> : <CethaBot />}
+      {isCheckout ? <> </> : <Footer />}
     </>
   );
 }

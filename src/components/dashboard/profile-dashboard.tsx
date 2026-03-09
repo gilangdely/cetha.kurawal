@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { auth, db } from "@/app/lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import Link from "next/link";
+import { ProfileDashboardSkeleton } from "../profile-dashboard-skeleton";
 
 interface UserData {
   username?: string;
@@ -61,11 +62,7 @@ export default function ProfileDashboard() {
   }, [user]);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center p-6">
-        <div className="border-primaryBlue h-8 w-8 animate-spin rounded-full border-t-2 border-b-2"></div>
-      </div>
-    );
+    return <ProfileDashboardSkeleton />;
   }
 
   const roles = userData?.role || [];

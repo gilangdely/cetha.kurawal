@@ -12,7 +12,7 @@ import CethaBot from "@/components/cetha-bot";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { auth } from "@/app/lib/firebase";
-import DashboardSkeleton from "@/components/dashboard-skeleton";
+import { DashboardSkeleton } from "@/components/dashboard-skeleton";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [authChecked, setAuthChecked] = useState(false);

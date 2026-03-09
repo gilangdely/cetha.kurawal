@@ -3,45 +3,20 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { auth } from "@/app/lib/firebase";
-import {
-  TrendingUp,
-  Lightbulb,
-  Target,
-  Briefcase,
-  Award,
-  Zap,
-  Sparkles,
-  ArrowUpRight,
-  LayoutDashboard,
-  Star,
-} from "lucide-react";
+import { Zap } from "lucide-react";
 import TargetKarir from "@/components/dashboard/target-karir";
 import PencapaianTerbaru from "@/components/dashboard/pencapaian";
-import ProfilDashboard from "@/components/dashboard/profile-dashboard";
 import ActivityHistory from "@/components/activity-history";
-import UserQuotaWidget from "@/components/dashboard/user-quota-widget";
 import HeaderDashboard from "@/components/header-dashboard";
 import BentoGridDashboard from "@/components/bento-grid-dashboard";
 import ProfileDashboard from "@/components/dashboard/profile-dashboard";
 
 export default function DashboardPage() {
-  const [username, setUsername] = useState<string | null>(null);
-  const [email, setEmail] = useState<string | null>(null);
-  const router = useRouter();
-
   const steps = [
     "Mastering System Design 2026",
     "Simulasi AI Behavioral Interview",
     "Optimasi Portfolio Next.js 16",
   ];
-
-  useEffect(() => {
-    const user = auth.currentUser;
-    if (user) {
-      setUsername(user.displayName || "Explorer");
-      setEmail(user.email || "");
-    }
-  }, []);
 
   return (
     <div className="min-h-screen p-2 text-gray-900 selection:bg-indigo-100 selection:text-indigo-700 lg:p-4">
