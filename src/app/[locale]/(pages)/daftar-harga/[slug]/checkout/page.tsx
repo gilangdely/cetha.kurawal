@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle, ChevronLeft, Loader2, Copy } from "lucide-react";
+import { CheckoutSkeleton } from "@/components/checkout-skeleton";
 
 import { Button } from "@/components/ui/button";
 import { UploadPaymentProof } from "@/components/UploadPaymentProof";
@@ -133,16 +134,7 @@ export default function CheckoutPage() {
   };
 
   if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center pt-20">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="border-primaryBlue h-8 w-8 animate-spin rounded-full border-b-2" />
-          <p className="font-medium text-gray-500">
-            Bentar ya, nyiapin tagihan kamu...
-          </p>
-        </div>
-      </div>
-    );
+    return <CheckoutSkeleton />;
   }
 
   if (!tier) return null;

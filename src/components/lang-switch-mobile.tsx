@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import { useState } from "react";
 import { ChevronDown, ChevronUp, Check, Globe } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function LangSwitchMobile() {
   const router = useRouter();
@@ -25,33 +25,41 @@ export default function LangSwitchMobile() {
 
     const segments = pathname.split("/");
     segments[1] = nextLocale;
+
     router.push(segments.join("/"));
     setOpen(false);
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="relative mt-2">
+      {/* Button */}
       <button
         onClick={() => setOpen((p) => !p)}
-        className="flex w-full items-center justify-between rounded-full bg-white px-4 py-2.5 font-medium text-gray-700 border shadow-sm transition hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200"
+        className="flex w-full items-center justify-between rounded-xl border border-gray-200 bg-white/90 px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-gray-50"
       >
         <div className="flex items-center gap-2">
-          <Globe size={18} />
-          <span>{activeLanguage.code.toUpperCase()}</span>
+          <Globe size={18} className="text-gray-500" />
+          <span className="font-medium">
+            {activeLanguage.code.toUpperCase()}
+          </span>
         </div>
 
-        {open ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+        {open ? (
+          <ChevronUp size={18} className="text-gray-500" />
+        ) : (
+          <ChevronDown size={18} className="text-gray-500" />
+        )}
       </button>
 
-      {/* Accordion Content */}
+      {/* Dropdown */}
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="mt-2 ml-4 flex flex-col border-l border-gray-200 pl-4 dark:border-gray-700"
+            initial={{ opacity: 0, y: -6, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -6, scale: 0.97 }}
+            transition={{ duration: 0.18 }}
+            className="mt-2 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg"
           >
             {languages.map((lang) => {
               const isActive = lang.code === locale;
@@ -61,14 +69,13 @@ export default function LangSwitchMobile() {
                   key={lang.code}
                   disabled={isActive}
                   onClick={() => switchLanguage(lang.code)}
-                  className={`flex items-center justify-between rounded-lg px-2 py-2 text-sm transition ${
+                  className={`flex w-full items-center justify-between px-4 py-2.5 text-sm transition ${
                     isActive
-                      ? "text-primaryBlue cursor-default"
-                      : "hover:text-primaryBlue text-gray-600 dark:text-gray-300"
-                  } `}
+                      ? "text-primaryBlue cursor-default bg-gray-50"
+                      : "hover:text-primaryBlue text-gray-600 hover:bg-gray-50"
+                  }`}
                 >
                   <span className="flex items-center gap-2">
-                    <span className="text-lg">{lang.flag}</span>
                     <span className="font-medium">{lang.label}</span>
                   </span>
 
