@@ -29,7 +29,7 @@ Lupakan kebingungan saat membuat CV! Cukup unggah CV Anda (format .pdf), dan AI 
 2. **Validasi File:** Komponen memvalidasi format file (harus PDF) dan menampilkan *preview* untuk pengguna.
 3. **Pengiriman Data:** File dikirim ke *endpoint* API internal Next.js di `/api/upload` menggunakan *FormData*.
 4. **Pengecekan Kuota:** API memverifikasi status login dan kuota unggahan pengguna melalui *QuotaService*.
-5. **Pemrosesan AI:** Jika kuota tersedia, file diteruskan ke server AI (Gradio API via Hugging Face di `firmanaziz/CV3`) untuk dianalisis.
+5. **Pemrosesan AI:** Jika kuota tersedia, file diteruskan ke server AI Gradio API via Hugging Face untuk dianalisis.
 6. **Hasil & Konsumsi Kuota:** Setelah mendapatkan hasil berupa skor, analisis, dan rekomendasi, *QuotaService* mencatat penggunaan kuota, dan data JSON dikembalikan ke *frontend*.
 7. **Penyimpanan State:** Hasil tes disimpan pada *global state management* (`useDataReviewStore`) dan diarahkan ke halaman Hasil Review.
 
@@ -55,7 +55,7 @@ Dapatkan rekomendasi pekerjaan yang paling sesuai dengan keahlian dan pengalaman
 2. **Validasi File:** Sistem memvalidasi bahwa format file yang diunggah harus PDF.
 3. **Pengiriman Data:** File dikirim ke *endpoint* API internal Next.js di `/api/jobrecommend` menggunakan *FormData*.
 4. **Pengecekan Kuota:** API memverifikasi status login dan kuota unggahan pengguna melalui *QuotaService*.
-5. **Pemrosesan AI:** Jika kuota tersedia, file diteruskan ke server AI (Gradio API via Hugging Face di `firmanaziz/jobrecommendation-json`) dan memanggil fungsi `analyze_career_path`.
+5. **Pemrosesan AI:** Jika kuota tersedia, file diteruskan ke Gradio API via Hugging Face.
 6. **Hasil & Konsumsi Kuota:** Setelah hasil rekomendasi pekerjaan JSON diterima, *QuotaService* mencatat penggunaan kuota untuk "Job Recommendation", dan data JSON dikembalikan ke *frontend*.
 
 ### 4. 🎓 Pusat Pembelajaran (Learning Hub)
@@ -67,16 +67,21 @@ Kesiapan karir bukan hanya tentang dokumen. Kami menyediakan pustaka konten yang
 
 ## 🚀 Fitur
 ### 1. Review CV
-<img width="1902" height="891" alt="image" src="https://github.com/user-attachments/assets/31573c92-d9e7-451c-a2b4-9d2d8d9b52b3" />
+<img width="1880" height="1022" alt="Screenshot 2026-03-10 141543" src="https://github.com/user-attachments/assets/a5d67efb-fbba-40b8-9900-10e2438995d6" />
+
 
 ### 2.  Improve profil linkedIn
 <img width="1899" height="893" alt="image" src="https://github.com/user-attachments/assets/1ed51728-6e7d-4eed-beca-c8718ac5e804" />
 
 ### 3. Job Match
-<img width="1901" height="887" alt="image" src="https://github.com/user-attachments/assets/77f832e4-af46-4a6e-894f-a3ff5ba71aac" />
+<img width="1884" height="1029" alt="Screenshot 2026-03-10 142013" src="https://github.com/user-attachments/assets/91d52869-5835-4013-a27e-41df27dd7ce7" />
 
 ### 4. Dashboard Karir
-<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/4bacea02-3ffa-49ce-81b2-b208b15fb07d" />
+<img width="1884" height="1020" alt="Screenshot 2026-03-10 141528" src="https://github.com/user-attachments/assets/dd4f64a0-a950-4e82-a2db-b870b2f329b5" />
+
+### 5. CV Builder
+<img width="1881" height="1022" alt="Screenshot 2026-03-10 141947" src="https://github.com/user-attachments/assets/d0b14620-7cbb-48f6-a6c7-25c15fc7eee7" />
+
 
 
 ---
