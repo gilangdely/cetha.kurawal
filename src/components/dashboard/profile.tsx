@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import PencapaianTerbaru from "@/components/dashboard/pencapaian";
-import { Edit, Pencil } from "lucide-react";
+import { Edit, Pencil, X } from "lucide-react";
 
 interface UserData {
   username?: string;
@@ -32,6 +32,7 @@ interface UserData {
   lastLogin?: any;
   role?: string[];
   skills?: string[];
+  dreamJob?: string;
 }
 
 const Profile = () => {
@@ -56,6 +57,7 @@ const Profile = () => {
 
         const normalized: UserData = {
           ...data,
+          dreamJob: data.dreamJob || "",
           role: Array.isArray(data.role)
             ? data.role
             : data.role
@@ -78,6 +80,7 @@ const Profile = () => {
           lastLogin: serverTimestamp(),
           role: ["mahasiswa"],
           skills: ["React", "TypeScript", "Node.js"],
+          dreamJob: "",
         };
         await setDoc(ref, seed);
         setUserData(seed);
@@ -97,7 +100,7 @@ const Profile = () => {
         username: userData.username || "",
         role: userData.role || [],
         skills: userData.skills || [],
-        // lastLogin bisa di-update juga kalau mau
+        dreamJob: userData.dreamJob || "",
       });
       console.log("Profile berhasil disimpan ke Firestore!");
       setEditOpen(false);
@@ -220,6 +223,27 @@ const Profile = () => {
                         />
                       </div>
 
+                      {/* DREAM JOB */}
+                      <div className="space-y-2">
+                        <div>
+                          <p className="text-xs font-semibold tracking-wide text-gray-600 uppercase">
+                            Pekerjaan Impian
+                          </p>
+                          <p className="text-xs text-gray-400">
+                            Pekerjaan yang ingin kamu capai di masa depan
+                          </p>
+                        </div>
+
+                        <input
+                          value={userData.dreamJob || ""}
+                          onChange={(e) =>
+                            handleChangeField("dreamJob", e.target.value)
+                          }
+                          className="focus:border-primaryBlue focus:ring-primaryBlue/20 w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm transition outline-none focus:ring-2"
+                          placeholder="Contoh: Frontend Engineer di perusahaan teknologi"
+                        />
+                      </div>
+
                       {/* ROLE */}
                       <div className="space-y-3">
                         <div>
@@ -256,7 +280,7 @@ const Profile = () => {
                                 onClick={() => removeItem("role", i)}
                                 className="text-primaryBlue/70 hover:text-red-500"
                               >
-                                ×
+                                <X size={14} />
                               </button>
                             </span>
                           ))}
@@ -299,7 +323,7 @@ const Profile = () => {
                                 onClick={() => removeItem("skills", i)}
                                 className="text-primaryBlue/70 hover:text-red-500"
                               >
-                                ×
+                                <X size={14} />
                               </button>
                             </span>
                           ))}

@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { auth } from "@/app/lib/firebase";
 import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
+import { motion } from "framer-motion";
 import {
   Sidebar,
   SidebarHeader,
@@ -27,14 +28,13 @@ import {
   Newspaper,
   Settings2,
   Menu,
-  Sparkles,
   Gift,
   Tag,
+  ArrowUpRight,
 } from "lucide-react";
 
 import logo from "@/assets/icons/cetha-new-logo.svg";
 import favicon from "@/assets/icons/favicon-white-new.svg";
-import faviconBlue from "@/assets/icons/favicon-blue-new.svg";
 
 const mainMenu = [
   { title: "Dashboard", icon: Home, href: "/dashboard" },
@@ -58,9 +58,12 @@ const mainMenu = [
 ];
 
 export function AppSidebar() {
-  const { state } = useSidebar();
   const pathname = usePathname();
+
+  const { state } = useSidebar();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   const isExpanded = state === "expanded";
 
@@ -82,6 +85,39 @@ export function AppSidebar() {
 
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    const fetchQuota = async () => {
+      try {
+        const res = await fetch("/api/user/subscription");
+        if (res.ok) {
+          const json = await res.json();
+          setData(json.data);
+        }
+      } catch (error) {
+        console.error("Error fetching quota:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuota();
+  }, []);
+
+  const remaining = data?.quota?.remaining_quota ?? 0;
+
+  // Pesan berdasarkan token
+  let message = "";
+
+  if (remaining <= 2) {
+    message =
+      "Tokenmu hampir habis. Tambahkan token agar AI tetap bisa digunakan.";
+  } else if (remaining <= 10) {
+    message =
+      "Tokenmu mulai menipis. Gunakan dengan bijak atau tambahkan token.";
+  } else if (remaining > 40) {
+    message = "Tokenmu masih aman. Gunakan AI untuk meningkatkan kariermu.";
+  }
 
   return (
     <Sidebar collapsible="icon" className="border-r border-gray-200 bg-white">
@@ -231,35 +267,42 @@ export function AppSidebar() {
         )}
 
         {isExpanded ? (
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-5 text-white shadow-xl shadow-blue-200/40">
-            {/* soft glow background */}
-            <div className="absolute -top-6 -right-6 h-20 w-20 rounded-full bg-white/10 blur-2xl" />
-            <div className="absolute -bottom-6 -left-6 h-20 w-20 rounded-full bg-indigo-400/20 blur-2xl" />
+          !loading &&
+          data && (
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+              layout
+              className="relative mt-3 overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-5 text-white shadow-xl shadow-blue-200/40"
+            >
+              <div className="absolute -top-6 -right-6 h-20 w-20 rounded-full bg-white/10 blur-2xl" />
+              <div className="absolute -bottom-6 -left-6 h-20 w-20 rounded-full bg-indigo-400/20 blur-2xl" />
 
-            <div className="relative z-10">
-              {/* header */}
-              <div className="mb-3 flex items-center gap-2">
-                <Image src={favicon} alt="favicon" className="h-7 w-7" />
+              <div className="relative z-10">
+                <div className="mb-3 flex items-center gap-2">
+                  <Image src={favicon} alt="favicon" className="h-7 w-7" />
+                  <span className="text-xs font-bold tracking-[0.18em] text-blue-100 uppercase">
+                    Cetha Plus+
+                  </span>
+                </div>
 
-                <span className="text-xs font-bold tracking-[0.18em] text-blue-100 uppercase">
-                  Cetha Plus
-                </span>
+                {message && (
+                  <p className="mb-4 text-sm leading-relaxed text-white/90">
+                    {message}
+                  </p>
+                )}
+
+                <Link
+                  href="/upgrade"
+                  className="inline-flex w-full items-center justify-center rounded-xl bg-white px-4 py-2 text-xs font-semibold text-blue-700 shadow-sm transition-all hover:-translate-y-[1px] hover:shadow-md active:translate-y-0"
+                >
+                  Tambah Token
+                  <ArrowUpRight size={14} className="ml-1" />
+                </Link>
               </div>
-
-              {/* description */}
-              <p className="mb-4 text-[13px] leading-relaxed font-medium text-blue-50/90">
-                Jangan biarkan token menghalangi karirmu yang cemerlang
-              </p>
-
-              {/* CTA */}
-              <Link
-                href="/upgrade"
-                className="inline-flex w-full items-center justify-center rounded-xl bg-white px-4 py-2 text-xs font-semibold text-blue-700 shadow-sm transition-all hover:-translate-y-[1px] hover:shadow-md active:translate-y-0"
-              >
-                Tambah token
-              </Link>
-            </div>
-          </div>
+            </motion.div>
+          )
         ) : (
           <SidebarMenuButton
             asChild

@@ -30,6 +30,7 @@ import LogoutAlert from "./logout-alert";
 import { usePathname, useRouter } from "next/navigation";
 import { SidebarTrigger } from "./ui/sidebar";
 import Link from "next/link";
+import { toast } from "sonner";
 
 const AppTopbar = () => {
   const router = useRouter();
@@ -80,6 +81,9 @@ const AppTopbar = () => {
 
   const handleLogout = async () => {
     await logoutUser();
+
+    toast.success("Logout Berhasil");
+
     router.push("/");
   };
 

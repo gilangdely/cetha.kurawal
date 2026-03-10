@@ -11,12 +11,14 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
+import ArticlesAndVideoSkeleton from "../articles-video-skeleton";
 
 const ArticlesAndVideoSection = () => {
   const t = useTranslations("ArticleAndVideo");
 
   const [video, setVideo] = useState<any>(null);
   const [articles, setArticles] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchContents = async () => {
@@ -33,7 +35,6 @@ const ArticlesAndVideoSection = () => {
         );
 
         const videoSnap = await getDocs(videoQuery);
-
         if (!videoSnap.empty) {
           setVideo(videoSnap.docs[0].data());
         }
@@ -48,15 +49,15 @@ const ArticlesAndVideoSection = () => {
         );
 
         const articleSnap = await getDocs(articleQuery);
-
         const articleList = articleSnap.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-
         setArticles(articleList);
       } catch (error) {
         console.error("Error fetching contents:", error);
+      } finally {
+        setLoading(false); // <- pastikan loading di-set false
       }
     };
 
@@ -65,6 +66,7 @@ const ArticlesAndVideoSection = () => {
 
   return (
     <section className="mx-auto w-full max-w-7xl px-6 py-8 md:py-12">
+      {/* HEADER & BADGE tetap tampil normal */}
       <div className="flex flex-col items-center text-center">
         <div className="border-primaryBlue/40 bg-primaryBlue/5 mx-auto w-fit rounded-full border px-3 py-1">
           <p className="text-primaryBlue text-sm font-medium tracking-wide">
@@ -82,38 +84,41 @@ const ArticlesAndVideoSection = () => {
         </div>
       </div>
 
-      <div className="mt-10 flex flex-col gap-8 md:flex-row md:gap-8">
-        {/* Video */}
-        <div className="w-full md:flex-1">
-          <div className="p-1">
-            <div className="aspect-video w-full overflow-hidden rounded-2xl bg-gray-300 shadow-sm">
-              {video && (
-                <iframe
-                  src={video.youtubeUrl}
-                  className="h-full w-full"
-                  allowFullScreen
-                />
-              )}
-            </div>
+      {/* LOADING SKELETON */}
+      {loading ? (
+        <ArticlesAndVideoSkeleton />
+      ) : (
+        <div className="mt-10 flex flex-col gap-8 md:flex-row md:gap-8">
+          {/* VIDEO */}
+          <div className="w-full md:flex-1">
+            <div className="p-1">
+              <div className="aspect-video w-full overflow-hidden rounded-2xl bg-gray-300 shadow-sm">
+                {video && (
+                  <iframe
+                    src={video.youtubeUrl}
+                    className="h-full w-full"
+                    allowFullScreen
+                  />
+                )}
+              </div>
 
-            <div className="mt-4">
-              <p className="text-xs font-medium text-neutral-500">
-                {video?.publishedAt?.toDate().toLocaleDateString()}
-              </p>
+              <div className="mt-4">
+                <p className="text-xs font-medium text-neutral-500">
+                  {video?.publishedAt?.toDate().toLocaleDateString()}
+                </p>
 
-              <h3 className="mt-2 text-lg leading-snug font-semibold text-neutral-900">
-                {video?.title}
-              </h3>
+                <h3 className="mt-2 text-lg leading-snug font-semibold text-neutral-900">
+                  {video?.title}
+                </h3>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Divider Mobile Only */}
-        <div className="block h-px w-full bg-neutral-200 md:hidden" />
+          {/* Divider Mobile Only */}
+          <div className="block h-px w-full bg-neutral-200 md:hidden" />
 
-        {/* Artikel */}
-        <div className="w-full md:flex-1">
-          <div className="space-y-2 md:space-y-4">
+          {/* ARTICLES */}
+          <div className="w-full space-y-4 md:flex-1">
             {articles.map((article) => (
               <div
                 key={article.id}
@@ -138,25 +143,25 @@ const ArticlesAndVideoSection = () => {
                 </div>
               </div>
             ))}
-          </div>
 
-          {/* Desktop Divider */}
-          <hr className="my-6 hidden border-neutral-200 md:block" />
+            {/* Desktop Divider */}
+            <hr className="my-6 hidden border-neutral-200 md:block" />
 
-          <div className="mt-4">
-            <Link
-              href="/tips-karir"
-              className="group border-primaryBlue bg-primaryBlue hover:bg-primaryBlueHover inline-flex w-full items-center justify-between rounded-xl border px-6 py-4 text-white transition-all duration-300 hover:shadow-md"
-            >
-              <span className="text-base font-semibold tracking-tight">
-                {t("cta")}
-              </span>
+            <div className="mt-4">
+              <Link
+                href="/tips-karir"
+                className="group border-primaryBlue bg-primaryBlue hover:bg-primaryBlueHover inline-flex w-full items-center justify-between rounded-xl border px-6 py-4 text-white transition-all duration-300 hover:shadow-md"
+              >
+                <span className="text-base font-semibold tracking-tight">
+                  {t("cta")}
+                </span>
 
-              <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
+                <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </section>
   );
 };

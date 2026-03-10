@@ -26,6 +26,7 @@ import { useRouter } from "next/navigation";
 import LangSwitchDesktop from "../lang-switch-desktop";
 import LangSwitchMobile from "../lang-switch-mobile";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 
 const Navbar = () => {
   const router = useRouter();
@@ -127,6 +128,9 @@ const Navbar = () => {
       await logoutUser();
       setOpenAvatarMenu(false);
       setIsMobileMenuOpen(false);
+
+      toast.success("Logout berhasil");
+
       router.push("/");
     } catch (error) {
       console.error("Logout error:", error);
@@ -284,7 +288,7 @@ const Navbar = () => {
                       <User size={16} /> {t("auth.dashboard")}
                     </Link>
                     <Link
-                      href="/settings"
+                      href="dashboard/my-profile/settings"
                       className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-50"
                       onClick={() => setOpenAvatarMenu(false)}
                     >
@@ -367,7 +371,7 @@ const Navbar = () => {
                           <User size={16} /> {t("auth.dashboard")}
                         </Link>
                         <Link
-                          href="/settings"
+                          href="/dashboard/my-profile/settings"
                           className="flex items-center gap-2 rounded-md px-3 py-2 text-gray-700 hover:bg-gray-50"
                           onClick={closeMobileMenu}
                         >

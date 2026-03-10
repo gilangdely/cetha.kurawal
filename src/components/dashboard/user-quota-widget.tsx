@@ -69,7 +69,7 @@ export default function UserQuotaWidget() {
         </div>
 
         <Link
-          href="/daftar-harga"
+          href="/dashboard/my-profile/subscription"
           className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 opacity-60 backdrop-blur-sm transition-all group-hover:bg-white/20 group-hover:opacity-100"
           title="Upgrade Plan"
         >

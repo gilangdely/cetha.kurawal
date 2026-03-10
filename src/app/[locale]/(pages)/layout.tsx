@@ -41,7 +41,7 @@ export default function Layout(props: { children: ReactNode }) {
     <>
       {isCheckout ? <> </> : <Navbar />}
       {props.children}
-      <Toaster />
+      <Toaster position="top-right" richColors closeButton />
       {isCheckout ? <> </> : <CethaBot />}
       {isCheckout ? <> </> : <Footer />}
     </>
