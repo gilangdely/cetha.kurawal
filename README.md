@@ -71,6 +71,10 @@ Kesiapan karir bukan hanya tentang dokumen. Kami menyediakan pustaka konten yang
 ### 3. Job Match
 <img width="1901" height="887" alt="image" src="https://github.com/user-attachments/assets/77f832e4-af46-4a6e-894f-a3ff5ba71aac" />
 
+### 4. Dashboard Karir
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/4bacea02-3ffa-49ce-81b2-b208b15fb07d" />
+
+
 ---
 
 ## 📁 Struktur Project
@@ -96,16 +100,16 @@ cetha.kurawal/
 
 ## 💻 Teknologi yang Digunakan
 
-Project ini dibangun dengan tumpukan teknologi modern untuk memberikan pengalaman pengguna yang cepat, responsif, dan cerdas:
+Project ini dibangun dengan teknologi modern untuk memberikan pengalaman pengguna yang cepat, responsif, dan cerdas:
 
-* **Frontend:** Next.js
-* **Styling:** Tailwind CSS
-* **Database:** Firestore (Google Firebase)
-* **Artificial Intelligence:** Google Gemini
-* **Cloud Storage:** Cloudinary
-* **Emails:** Resend & Nodemailer
-* **State Management:** Zustand
-* **Components:** Radix UI & Shadcn, Lucide React
+* **Frontend:** [Next.js](https://nextjs.org/)
+* **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+* **Database:** [Firestore (Google Firebase)](https://firebase.google.com/docs/firestore)
+* **Artificial Intelligence:** [Google Gemini](https://ai.google.dev/docs)
+* **Cloud Storage:** [Cloudinary](https://cloudinary.com/documentation)
+* **Emails:** [Resend](https://resend.com/docs) & [Nodemailer](https://nodemailer.com/)
+* **State Management:** [Zustand](https://zustand-demo.pmnd.rs/)
+* **Components:** [Radix UI](https://www.radix-ui.com/docs) & [Shadcn](https://ui.shadcn.com/docs), [Lucide React](https://lucide.dev/)
 
 ---
 
@@ -170,9 +174,9 @@ Pastikan Anda telah menginstal:
 ## 👥 Tim Pengembang
 
 Project ini disusun oleh tim **Kurawal** untuk memberikan solusi cerdas bagi pencari kerja:
-- **Gilang Dely**
-- **Maulana**
-- **Lili**
+- **Gilang Dely Mukti**
+- **Muhammad Agus Priyanto**
+- **Firman Aziz**
 
 ---
 
