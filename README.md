@@ -1,5 +1,9 @@
 # CETHA - Carrer Enhancement Through AI
 
+<a href="https://cetha.kurawal.space">
+  <img width="3192" height="981" alt="Frame 46" src="https://github.com/user-attachments/assets/07b9e21d-15ad-477c-a9b6-2e35633e479f" />
+</a>
+
 ![Version](https://img.shields.io/badge/version-1.0-blue.svg)
 ![Next.js](https://img.shields.io/badge/Next.js-15.x-black.svg)
 ![React](https://img.shields.io/badge/React-19.x-blue.svg)
@@ -186,9 +190,24 @@ Kami sangat senang jika Anda ingin berkontribusi pada Cetha! Berikut adalah cara
 
 1. Fork repository ini.
 2. Buat branch fitur Anda (`git checkout -b feature/FiturKerenAnda`).
-3. Commit perubahan Anda (`git commit -m 'Menambahkan FiturKeren'`).
+3. Commit perubahan Anda dengan pesan yang jelas (`git commit -m 'feat: menambahkan fitur keren'`).
 4. Push ke branch (`git push origin feature/FiturKerenAnda`).
 5. Buat Pull Request.
+
+### 📝 Standar Format Commit
+
+Untuk menjaga kerapian riwayat komit, kami mengikuti konvensi penamaan commit berikut:
+
+| Tipe | Deskripsi | Contoh |
+| :--- | :--- | :--- |
+| `feat:` | Penambahan fitur atau fungsionalitas baru | `feat: menambahkan analisis CV dengan AI` |
+| `add:` | Penambahan file, komponen, atau library baru | `add: menginstal shadcn ui form` |
+| `fix:` | Perbaikan bug atau error | `fix: mengatasi error pada pemuatan PDF` |
+| `docs:` | Pembaruan dokumentasi (README, comments) | `docs: memperbarui cara instalasi` |
+| `style:` | Perubahan formatting (spasi, struktur yang tidak mengubah fungsi) | `style: merapikan indentasi profile` |
+| `refactor:`| Merapikan atau menyusun ulang kode tanpa menambah/mengubah fitur | `refactor: memisahkan logika ke custom hook` |
+| `perf:` | Peningkatan performa kode atau query | `perf: mengoptimalkan pengambilan data Firebase` |
+| `chore:` | Pekerjaan rutin (update package, config, maintenance) | `chore: update next.js version` |
 
 ---
 
