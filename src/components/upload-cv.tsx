@@ -145,8 +145,8 @@ const UploadCv = () => {
       }
 
       const targetRoute = pathname.startsWith("/dashboard")
-        ? "/dashboard/hasil"
-        : "/hasil";
+        ? "/dashboard/result-cv"
+        : "/result-cv";
 
       router.push(targetRoute);
     } catch (err: any) {
@@ -158,7 +158,7 @@ const UploadCv = () => {
   };
 
   return (
-    <div className="w-full mx-auto mt-4">
+    <div className="mx-auto mt-4 w-full">
       <div
         className={`relative flex h-96 items-center justify-center rounded-2xl border-3 border-dashed ${uploadEnabled ? "cursor-pointer border-gray-400" : "cursor-not-allowed border-gray-300 bg-gray-100 opacity-60"}`}
         onDrop={handleDrop}
@@ -265,13 +265,13 @@ const UploadCv = () => {
 
       <div className="mt-4">
         <p className="text-TextSecondary font-medium">
-          File yang dapat terbaca:  PDF
+          File yang dapat terbaca: PDF
         </p>
       </div>
 
       {/* Button Upload */}
       <div className="mx-auto w-full pt-10 pb-12 md:pt-4">
-        <div className="flex justify-start ">
+        <div className="flex justify-start">
           <button
             onClick={handleUpload}
             disabled={uploading || (!isLoggedIn && uploadCount >= 5)}

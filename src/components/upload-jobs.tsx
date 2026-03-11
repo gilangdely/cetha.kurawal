@@ -97,7 +97,7 @@ const UploadJobs = () => {
 
     try {
       setGlobalUploading(true, "job");
-      // Langkah 2: Kirim ke backend untuk review 
+      // Langkah 2: Kirim ke backend untuk review
       const res = await fetch("/api/jobrecommend", {
         method: "POST",
         body: formData,
@@ -109,7 +109,7 @@ const UploadJobs = () => {
         try {
           errData = await res.json();
           errorMessage = errData?.message || errData?.error || errorMessage;
-        } catch (_) { }
+        } catch (_) {}
 
         if (errData?.requireUpgrade) {
           setUpgradeMessage(errorMessage);
@@ -142,8 +142,8 @@ const UploadJobs = () => {
       }
 
       const targetRoute = pathname.startsWith("/dashboard")
-        ? "/dashboard/hasil-rekomendasi"
-        : "/hasil-rekomendasi";
+        ? "/dashboard/job-match-result"
+        : "/job-match-result";
 
       router.push(targetRoute);
     } catch (err: any) {
@@ -155,13 +155,14 @@ const UploadJobs = () => {
   };
 
   return (
-    <div className="w-full mt-4">
+    <div className="mt-4 w-full">
       {/* Upload Area */}
       <div
-        className={`relative flex h-96 items-center justify-center rounded-2xl border-3 border-dashed ${uploadEnabled
-          ? "cursor-pointer border-gray-400"
-          : "cursor-not-allowed border-gray-300 bg-gray-100 opacity-60"
-          }`}
+        className={`relative flex h-96 items-center justify-center rounded-2xl border-3 border-dashed ${
+          uploadEnabled
+            ? "cursor-pointer border-gray-400"
+            : "cursor-not-allowed border-gray-300 bg-gray-100 opacity-60"
+        }`}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onClick={() => {

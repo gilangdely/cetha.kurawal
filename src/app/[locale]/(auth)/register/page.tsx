@@ -26,12 +26,12 @@ export default function RegisterPage() {
 
   const handleRegister = async () => {
     if (!username || !email || !password || !confirmPassword) {
-      toast(t("toast.empty"));
+      toast.warning(t("toast.empty"));
       return;
     }
 
     if (password !== confirmPassword) {
-      toast(t("toast.passwordMismatch"));
+      toast.warning(t("toast.passwordMismatch"));
       return;
     }
 
@@ -42,16 +42,16 @@ export default function RegisterPage() {
 
     try {
       await registerUser(username, email, password, confirmPassword);
-      toast(t("toast.success"));
+      toast.success(t("toast.success"));
       router.push("/login");
     } catch (error: any) {
       console.error("Error registrasi:", error);
 
       if (error.code === "auth/email-already-in-use") {
-        toast(t("toast.emailUsed"));
+        toast.warning(t("toast.emailUsed"));
         setErrorMsg(t("toast.emailUsed"));
       } else {
-        toast(t("toast.failed"));
+        toast.error(t("toast.failed"));
         setErrorMsg(t("toast.failedRetry"));
       }
     } finally {
@@ -65,11 +65,11 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       const user = await loginWithGoogle();
-      toast(`${t("toast.welcome")}, ${user.displayName}`);
+      toast.success(`${t("toast.welcome")}, ${user.displayName}`);
       router.push("/dashboard");
     } catch (error: any) {
       console.error("Error Google register:", error);
-      toast(t("toast.googleFailed"));
+      toast.error(t("toast.googleFailed"));
     } finally {
       setLoading(false);
     }

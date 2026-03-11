@@ -26,7 +26,7 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      toast(t("toast.empty"));
+      toast.warning(t("toast.empty"));
       return;
     }
 
@@ -35,19 +35,19 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await loginUser(email, password);
-      toast(t("toast.success"));
+      toast.success(t("toast.success"));
       router.push("/dashboard");
     } catch (error: any) {
       console.error("Error login:", error);
 
       switch (error.code) {
         case "auth/wrong-password":
-          toast(t("toast.wrongPassword"));
+          toast.warning(t("toast.wrongPassword"));
           setErrorMsg(t("toast.wrongPassword"));
           break;
 
         case "auth/user-not-found":
-          toast(t("toast.userNotFound"));
+          toast.warning(t("toast.userNotFound"));
           setErrorMsg(t("toast.userNotFound"));
           break;
 
@@ -66,10 +66,10 @@ export default function LoginPage() {
 
     try {
       const user = await loginWithGoogle();
-      toast(`${t("toast.welcome")}, ${user.displayName}`);
+      toast.success(`${t("toast.welcome")}, ${user.displayName}`);
       router.push("/dashboard");
     } catch (error: any) {
-      toast(t("toast.googleFail"));
+      toast.error(t("toast.googleFail"));
     } finally {
       setLoading(false);
     }
@@ -82,7 +82,7 @@ export default function LoginPage() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        toast(t("toast.already"));
+        toast.info(t("toast.already"));
         router.push("/dashboard");
       }
     });
@@ -196,7 +196,7 @@ export default function LoginPage() {
                   }`}
                 >
                   <Link
-                    href="/lupa-password"
+                    href="/forget-password"
                     className="text-primaryBlue after:bg-primaryBlueHover hover:text-primaryBlueHover relative inline-block font-medium transition-colors duration-150 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
                   >
                     {t("forgotPassword")}

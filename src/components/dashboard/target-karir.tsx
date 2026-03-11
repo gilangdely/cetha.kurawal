@@ -1,6 +1,15 @@
 import { Target, PlusCircle, Pencil, Plus } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import {
   collection,
   doc,
   setDoc,
@@ -13,6 +22,7 @@ import {
 import { db, auth } from "@/app/lib/firebase";
 import EditTargetKarir from "./edit-target-karir";
 import { TargetKarirSkeleton } from "../target-karir-skeleton";
+import { toast } from "sonner";
 
 interface Task {
   id: number;
@@ -33,6 +43,8 @@ export default function TargetKarir() {
   const [isAddingTarget, setIsAddingTarget] = useState(false);
   const [editTarget, setEditTarget] = useState<StoredTarget | null>(null);
   const [loading, setLoading] = useState(true);
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   // Ambil user ID (bisa null kalau belum login)
   const userId = auth.currentUser?.uid;
@@ -147,6 +159,24 @@ export default function TargetKarir() {
 
     setEditTarget(null);
     setIsAddingTarget(false);
+  };
+
+  const handleDeleteTarget = async (targetId: string) => {
+    if (!userId) return;
+
+    const confirmDelete = confirm("Yakin ingin menghapus target ini?");
+    if (!confirmDelete) return;
+
+    try {
+      // Hapus dari Firestore
+      await deleteDoc(doc(db, "careerTargets", targetId));
+
+      // Hapus dari state lokal (optimistic update)
+      setTargets((prev) => prev.filter((t) => t.id !== targetId));
+    } catch (err: any) {
+      console.error("Gagal menghapus target:", err);
+      alert("Error hapus target: " + err.message);
+    }
   };
 
   const openAdd = () => {
@@ -284,6 +314,17 @@ export default function TargetKarir() {
                   >
                     <Pencil size={14} />
                   </button>
+
+                  <button
+                    onClick={() => {
+                      setDeleteTargetId(item.id);
+                      setIsDeleteDialogOpen(true);
+                    }}
+                    className="order-1 flex h-8 w-8 items-center justify-center rounded-full text-red-500 transition-all duration-300 ease-in-out group-hover:translate-x-0 group-hover:opacity-100 hover:bg-red-100 hover:text-red-700 xl:translate-x-1 xl:opacity-0"
+                    title="Hapus Target"
+                  >
+                    <PlusCircle className="rotate-45" size={14} />
+                  </button>
                 </div>
               </div>
 
@@ -333,6 +374,48 @@ export default function TargetKarir() {
           </div>
         )}
       </div>
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Hapus Target Karir</DialogTitle>
+            <DialogDescription>
+              Apakah kamu yakin ingin menghapus target ini? Tindakan ini tidak
+              bisa dibatalkan.
+            </DialogDescription>
+          </DialogHeader>
+
+          <DialogFooter className="flex justify-end gap-2">
+            <Button
+              variant="outline"
+              onClick={() => setIsDeleteDialogOpen(false)}
+            >
+              Batal
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={async () => {
+                if (deleteTargetId) {
+                  try {
+                    await deleteDoc(doc(db, "careerTargets", deleteTargetId));
+                    toast.success("Target karier berhasil di hapus");
+                    setTargets((prev) =>
+                      prev.filter((t) => t.id !== deleteTargetId),
+                    );
+                  } catch (err: any) {
+                    console.error("Gagal menghapus target:", err);
+                    alert("Error hapus target: " + err.message);
+                  } finally {
+                    setIsDeleteDialogOpen(false);
+                    setDeleteTargetId(null);
+                  }
+                }
+              }}
+            >
+              Hapus
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

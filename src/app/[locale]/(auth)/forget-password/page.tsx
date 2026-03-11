@@ -23,7 +23,7 @@ export default function ForgotPasswordPage() {
 
   const handleResetPassword = async () => {
     if (!email) {
-      toast(t("toast.emptyEmail"));
+      toast.warning(t("toast.emptyEmail"));
       return;
     }
 
@@ -32,19 +32,19 @@ export default function ForgotPasswordPage() {
     setLoading(true);
     try {
       await sendPasswordResetEmail(auth, email);
-      toast(t("toast.success"));
+      toast.success(t("toast.success"));
     } catch (error: any) {
       console.error(error);
 
       switch (error.code) {
         case "auth/user-not-found":
-          toast(t("toast.userNotFound"));
+          toast.warning(t("toast.userNotFound"));
           break;
         case "auth/invalid-email":
-          toast(t("toast.invalidEmail"));
+          toast.warning(t("toast.invalidEmail"));
           break;
         default:
-          toast(t("toast.error"));
+          toast.error(t("toast.error"));
       }
     } finally {
       setLoading(false);

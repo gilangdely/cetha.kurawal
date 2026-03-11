@@ -68,7 +68,7 @@ export default function ActivityHistory() {
 
   const handleItemClick = (review: CvReview) => {
     // Redirect ke halaman hasil dengan param ID untuk load data spesifik
-    router.push(`/dashboard/hasil?id=${review.id}`);
+    router.push(`/dashboard/result-cv?id=${review.id}`);
   };
 
   // Skeleton loading untuk 2 item
@@ -114,7 +114,7 @@ export default function ActivityHistory() {
 
         {activities.length > 0 && (
           <Link
-            href="/dashboard/riwayat"
+            href="/dashboard/history-review-cv"
             title="Lihat semua aktivitas"
             className="group flex items-center gap-1.5 rounded-md bg-slate-900 px-2.5 py-2 text-xs font-semibold text-white transition-all duration-200 hover:-translate-y-[1px] hover:bg-slate-800 hover:shadow-sm active:scale-95"
           >
