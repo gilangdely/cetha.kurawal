@@ -196,7 +196,7 @@ export default function LoginPage() {
                   }`}
                 >
                   <Link
-                    href="/lupa-password"
+                    href="/forget-password"
                     className="text-primaryBlue after:bg-primaryBlueHover hover:text-primaryBlueHover relative inline-block font-medium transition-colors duration-150 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
                   >
                     {t("forgotPassword")}

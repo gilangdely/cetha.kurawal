@@ -54,12 +54,12 @@ const Navbar = () => {
           desc: t("dropdown.reviewCv.desc"),
         },
         {
-          href: "/tingkatkan-linkedIn",
+          href: "/improve-linkedin",
           title: t("dropdown.linkedin.title"),
           desc: t("dropdown.linkedin.desc"),
         },
         {
-          href: "/rekomendasi-pekerjaan",
+          href: "/job-match",
           title: t("dropdown.jobMatch.title"),
           desc: t("dropdown.jobMatch.desc"),
         },
@@ -67,15 +67,15 @@ const Navbar = () => {
     },
     {
       label: t("blog"),
-      href: "/tips-karir",
+      href: "/career-tips",
     },
     {
       label: t("price"),
-      href: "/daftar-harga",
+      href: "/pricing",
     },
     {
       label: t("about"),
-      href: "/tentang-kami",
+      href: "/about-us",
     },
   ];
 

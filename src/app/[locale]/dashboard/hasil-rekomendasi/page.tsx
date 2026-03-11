@@ -4,7 +4,15 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useJobResultStore } from "@/store/jobResultStore";
-import { Briefcase, ChartNoAxesCombined, Handshake, IceCream, Icon, Star, Wallet } from "lucide-react";
+import {
+  Briefcase,
+  ChartNoAxesCombined,
+  Handshake,
+  IceCream,
+  Icon,
+  Star,
+  Wallet,
+} from "lucide-react";
 
 import {
   Breadcrumb,
@@ -35,7 +43,7 @@ export default function HasilRekomendasiDashboardPage() {
   // Redirect kalau tidak ada hasil
   useEffect(() => {
     if (hydrated && !jobResult) {
-      router.push("/dashboard/rekomendasi-pekerjaan");
+      router.push("/dashboard/job-match");
     }
   }, [hydrated, jobResult, router]);
 
@@ -51,7 +59,7 @@ export default function HasilRekomendasiDashboardPage() {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/dashboard/rekomendasi-pekerjaan">
+            <BreadcrumbLink href="/dashboard/job-match">
               Rekomendasi Pekerjaan
             </BreadcrumbLink>
           </BreadcrumbItem>
@@ -114,8 +122,8 @@ export default function HasilRekomendasiDashboardPage() {
           </h3>
 
           <div className="mt-6 rounded-xl border border-gray-100 bg-white shadow-sm">
-            <div className="border-b border-gray-100 bg-gray-50 p-4 rounded-t-xl flex items-center gap-2.5">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-50 text-blue-600">
+            <div className="flex items-center gap-2.5 rounded-t-xl border-b border-gray-100 bg-gray-50 p-4">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-600">
                 <Wallet size={16} />
               </div>
               <h3 className="text-TextPrimary text-lg font-semibold">
@@ -125,15 +133,21 @@ export default function HasilRekomendasiDashboardPage() {
 
             <div className="p-5">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                {Object.entries(jobResult.kisaran_gaji).map(([level, salary]) => (
-                  <div
-                    key={level}
-                    className="rounded-lg border border-blue-100 p-4 text-center transition-all hover:shadow-md"
-                  >
-                    <p className="text-md font-medium text-gray-500 mb-1 capitalize">{level}</p>
-                    <p className="font-semibold text-lg text-blue-700">{salary}</p>
-                  </div>
-                ))}
+                {Object.entries(jobResult.kisaran_gaji).map(
+                  ([level, salary]) => (
+                    <div
+                      key={level}
+                      className="rounded-lg border border-blue-100 p-4 text-center transition-all hover:shadow-md"
+                    >
+                      <p className="text-md mb-1 font-medium text-gray-500 capitalize">
+                        {level}
+                      </p>
+                      <p className="text-lg font-semibold text-blue-700">
+                        {salary}
+                      </p>
+                    </div>
+                  ),
+                )}
               </div>
             </div>
           </div>

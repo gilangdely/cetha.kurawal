@@ -1,75 +1,104 @@
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 export default function AdsDashboardJobFinder() {
   return (
-    <div className="flex flex-col items-center gap-8 py-2 md:flex-row">
+    <div className="flex h-full flex-col items-stretch gap-6 py-1 md:flex-row">
       {/* Left: Text */}
-      <div className="flex-1 space-y-4">
-        <h2 className="text-3xl leading-tight font-bold text-white md:text-4xl">
-          Find Jobs That{" "}
-          <span className="bg-gradient-to-r from-rose-400 to-orange-300 bg-clip-text text-transparent">
-            Match You
-          </span>
-        </h2>
-        <p className="text-sm leading-relaxed text-slate-400 md:text-base">
-          Stop scrolling endlessly. Our AI matches your skills and preferences
-          to the best opportunities — updated daily from thousands of sources.
-        </p>
-        <div className="flex flex-wrap gap-3">
-          {["Remote-friendly", "Salary filters", "Daily alerts"].map((tag) => (
-            <span
-              key={tag}
-              className="rounded-lg border border-rose-500/20 bg-rose-500/10 px-3 py-1 text-xs font-medium text-rose-300"
-            >
-              {tag}
+      <div className="flex flex-1 flex-col justify-between space-y-2.5">
+        <div>
+          <h2 className="text-TextPrimary text-2xl leading-tight font-bold md:text-3xl">
+            Find Jobs That{" "}
+            <span className="bg-gradient-to-r from-red-400 to-red-500 bg-clip-text text-transparent">
+              Match You
             </span>
-          ))}
+          </h2>
+          <p className="text-TextSecondary text-xs leading-relaxed md:text-sm">
+            We provide personalized job recommendations tailored to your unique
+            skills, experience, and interests, helping you discover the best
+            opportunities that match your career goals. Our listings are updated
+            daily from trusted sources to ensure you never miss a relevant
+            opening.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            {["Remote-friendly", "Salary filters", "Daily alerts"].map(
+              (tag) => (
+                <span
+                  key={tag}
+                  className="rounded-lg border border-red-500/10 bg-red-50 px-3 py-1 text-xs font-medium text-red-500"
+                >
+                  {tag}
+                </span>
+              ),
+            )}
+          </div>
         </div>
-        <button className="mt-2 rounded-xl bg-gradient-to-r from-rose-500 to-orange-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-rose-500/20 transition-all hover:scale-105 hover:shadow-rose-500/40">
-          Find Jobs →
-        </button>
+
+        <Link
+          href="/dashboard/job-match"
+          className="group mt-3 flex w-fit items-center gap-2 rounded-xl bg-gradient-to-r from-red-400 to-red-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-red-500/20 transition-all duration-300 hover:scale-105 hover:shadow-red-500/40 hover:brightness-110"
+        >
+          Find Jobs
+          <ArrowRight
+            size={16}
+            className="transition-transform duration-300 ease-out group-hover:translate-x-1.5"
+          />
+        </Link>
       </div>
 
       {/* Right: Mock Job Cards */}
-      <div className="w-full max-w-xs flex-1 space-y-2 md:max-w-sm">
-        {[
-          {
-            role: "Product Designer",
-            company: "Figma",
-            salary: "$120k–$150k",
-            match: 98,
-            color: "text-rose-400",
-          },
-          {
-            role: "UX Researcher",
-            company: "Notion",
-            salary: "$95k–$120k",
-            match: 91,
-            color: "text-orange-400",
-          },
-          {
-            role: "Design Lead",
-            company: "Linear",
-            salary: "$140k–$170k",
-            match: 87,
-            color: "text-amber-400",
-          },
-        ].map((job) => (
-          <div
-            key={job.role}
-            className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur-sm"
-          >
-            <div>
-              <p className="text-sm font-semibold text-white">{job.role}</p>
-              <p className="text-xs text-slate-400">
-                {job.company} · {job.salary}
-              </p>
+      <div className="flex w-full max-w-2xs flex-1 flex-col">
+        <div className="relative flex flex-1 flex-col rounded-xl border border-red-500/10 bg-white p-4 shadow-sm transition hover:shadow-md">
+          {/* subtle gradient accent */}
+          <div className="pointer-events-none absolute -top-6 -right-6 h-16 w-16 rounded-full bg-red-500/10 blur-xl" />
+
+          {[
+            {
+              role: "Product Designer",
+              company: "Figma",
+              salary: "$120k-$150k",
+              match: 98,
+            },
+            {
+              role: "UX Researcher",
+              company: "Notion",
+              salary: "$95k-$120k",
+              match: 91,
+            },
+            {
+              role: "Design Lead",
+              company: "Linear",
+              salary: "$140k-$170k",
+              match: 87,
+            },
+          ].map((job) => (
+            <div
+              key={job.role}
+              className="mb-3 flex items-center justify-between rounded-lg border border-red-500/10 bg-red-50 px-4 py-3"
+            >
+              <div>
+                <p className="text-TextPrimary text-sm font-semibold">
+                  {job.role}
+                </p>
+                <p className="text-TextSecondary text-xs">
+                  {job.company} · {job.salary}
+                </p>
+              </div>
+              <div className="flex flex-col items-end">
+                <span className="text-sm font-bold text-red-500">
+                  {job.match}%
+                </span>
+                <div className="mt-1 h-1.5 w-16 overflow-hidden rounded-full bg-red-100">
+                  <div
+                    className="h-1.5 rounded-full bg-gradient-to-r from-red-400 to-red-500 transition-all duration-500"
+                    style={{ width: `${job.match}%` }}
+                  />
+                </div>
+              </div>
             </div>
-            <span className={`text-sm font-bold ${job.color}`}>
-              {job.match}%
-            </span>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

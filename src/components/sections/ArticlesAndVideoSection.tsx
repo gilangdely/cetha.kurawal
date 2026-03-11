@@ -149,7 +149,7 @@ const ArticlesAndVideoSection = () => {
 
             <div className="mt-4">
               <Link
-                href="/tips-karir"
+                href="/career-tips"
                 className="group border-primaryBlue bg-primaryBlue hover:bg-primaryBlueHover inline-flex w-full items-center justify-between rounded-xl border px-6 py-4 text-white transition-all duration-300 hover:shadow-md"
               >
                 <span className="text-base font-semibold tracking-tight">

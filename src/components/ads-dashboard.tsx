@@ -11,9 +11,9 @@ import AdsDashboardJobFinder from "./ads-dashboard-job-finder";
 
 const slides = [
   { id: "cv-review", Component: AdsDashboardCvReview },
-  //   { id: "cv-builder", Component: AdsDashboardCvBuilder },
-  //   { id: "linkedin", Component: AdsDashboardImproveLinkedin },
-  //   { id: "job-finder", Component: AdsDashboardJobFinder },
+  { id: "cv-builder", Component: AdsDashboardCvBuilder },
+  { id: "linkedin", Component: AdsDashboardImproveLinkedin },
+  { id: "job-finder", Component: AdsDashboardJobFinder },
 ];
 
 const AUTOPLAY_DELAY = 4500;
@@ -37,22 +37,12 @@ export default function AdsCarouselSection() {
     }, TRANSITION_DURATION);
   };
 
-  //   const next = () => {
-  //     const nextIdx = (current + 1) % slides.length;
-  //     goTo(nextIdx, "next");
-  //   };
-
   const next = () => {
     if (slides.length <= 1) return;
 
     const nextIdx = (current + 1) % slides.length;
     goTo(nextIdx, "next");
   };
-
-  //   const prev = () => {
-  //     const prevIdx = (current - 1 + slides.length) % slides.length;
-  //     goTo(prevIdx, "prev");
-  //   };
 
   const prev = () => {
     if (slides.length <= 1) return;
@@ -90,7 +80,7 @@ export default function AdsCarouselSection() {
         }
       `}</style>
 
-      <section className="bg-Background text-TextPrimary relative overflow-hidden rounded-3xl p-6 shadow-sm md:p-8">
+      <section className="bg-Background text-TextPrimary relative h-100 overflow-hidden rounded-3xl p-6 shadow-sm md:p-8">
         {/* Decorative blobs */}
         <div className="bg-primaryBlue/15 pointer-events-none absolute -top-20 -right-20 h-64 w-64 rounded-full blur-3xl" />
         <div className="bg-accentOrange/10 pointer-events-none absolute -bottom-20 -left-20 h-64 w-64 rounded-full blur-3xl" />

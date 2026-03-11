@@ -33,7 +33,7 @@ export default function ResultPage() {
               Coba nilai CV-mu berdasarkan pekerjaan impian mu
             </h3>
             <Link
-              href={"/rekomendasi-pekerjaan"}
+              href={"/job-match"}
               className="bg-primaryBlue block w-full rounded-lg px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-blue-700"
             >
               Coba sekarang

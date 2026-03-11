@@ -70,7 +70,7 @@ export default function CheckoutPage() {
           if (foundTier) {
             setTier(foundTier);
           } else {
-            router.push("/id/daftar-harga");
+            router.push("/pricing");
           }
         }
       } catch (err) {
@@ -149,7 +149,7 @@ export default function CheckoutPage() {
 
         <div className="relative z-10 flex h-full w-full flex-col justify-between p-10 text-white">
           <Link
-            href="/id/daftar-harga"
+            href="/id/pricing"
             className="flex w-fit items-center gap-2 px-3 py-1.5 text-sm opacity-80 transition hover:opacity-100"
           >
             <ChevronLeft size={18} />

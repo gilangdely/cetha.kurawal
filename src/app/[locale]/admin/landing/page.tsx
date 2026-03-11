@@ -3,12 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { mockPages } from "@/lib/admin/mock";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -72,7 +67,7 @@ function fmt(iso?: string) {
 
 export default function AdminLandingPage() {
   const landingPages = mockPages.filter((p) =>
-    ["/", "/daftar-harga", "/tentang-kami", "/review-cv"].some((slug) =>
+    ["/", "/pricing", "/about-us", "/review-cv"].some((slug) =>
       p.slug.includes(slug.replace("/", "")),
     ),
   );
@@ -82,7 +77,7 @@ export default function AdminLandingPage() {
       <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Landing Sections</h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Atur urutan & status section di landing page (dummy mode).
           </p>
         </div>
@@ -94,7 +89,7 @@ export default function AdminLandingPage() {
       <div className="grid gap-3 md:grid-cols-3">
         <Card className="border-blue-100">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-muted-foreground text-sm font-medium">
               Sections Aktif
             </CardTitle>
           </CardHeader>
@@ -102,7 +97,7 @@ export default function AdminLandingPage() {
             <div className="text-2xl font-semibold">
               {sections.filter((s) => s.enabled).length}
             </div>
-            <div className="mt-1 text-xs text-muted-foreground">
+            <div className="text-muted-foreground mt-1 text-xs">
               Semua section utama saat ini aktif.
             </div>
           </CardContent>
@@ -110,7 +105,7 @@ export default function AdminLandingPage() {
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-muted-foreground text-sm font-medium">
               Landing Pages
             </CardTitle>
           </CardHeader>
@@ -118,11 +113,11 @@ export default function AdminLandingPage() {
             {landingPages.map((p) => (
               <div
                 key={p.id}
-                className="flex items-center justify-between rounded-lg border bg-muted/30 px-3 py-2"
+                className="bg-muted/30 flex items-center justify-between rounded-lg border px-3 py-2"
               >
                 <div className="min-w-0">
                   <div className="truncate font-medium">{p.title}</div>
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-muted-foreground text-xs">
                     /{p.slug} • Updated {fmt(p.updatedAt)}
                   </div>
                 </div>
@@ -134,14 +129,14 @@ export default function AdminLandingPage() {
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-muted-foreground text-sm font-medium">
               Catatan
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-2 text-sm text-muted-foreground">
+          <CardContent className="text-muted-foreground space-y-2 text-sm">
             <p>
               Area ini masih{" "}
-              <span className="font-medium text-foreground">dummy</span>.
+              <span className="text-foreground font-medium">dummy</span>.
             </p>
             <p>
               Ke depannya setting di sini bisa terhubung ke Firestore untuk
@@ -171,16 +166,14 @@ export default function AdminLandingPage() {
             <TableBody>
               {sections.map((section, index) => (
                 <TableRow key={section.id}>
-                  <TableCell className="font-mono text-xs text-muted-foreground">
+                  <TableCell className="text-muted-foreground font-mono text-xs">
                     #{index + 1}
                   </TableCell>
-                  <TableCell className="font-medium">
-                    {section.name}
-                  </TableCell>
-                  <TableCell className="font-mono text-xs text-muted-foreground">
+                  <TableCell className="font-medium">{section.name}</TableCell>
+                  <TableCell className="text-muted-foreground font-mono text-xs">
                     {section.key}
                   </TableCell>
-                  <TableCell className="text-xs text-muted-foreground">
+                  <TableCell className="text-muted-foreground text-xs">
                     {section.description}
                   </TableCell>
                   <TableCell className="text-right">
@@ -193,7 +186,7 @@ export default function AdminLandingPage() {
                           )
                         }
                       />
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-muted-foreground text-xs">
                         {section.enabled ? "Aktif" : "Nonaktif"}
                       </span>
                     </div>
@@ -202,13 +195,12 @@ export default function AdminLandingPage() {
               ))}
             </TableBody>
           </Table>
-          <p className="mt-3 text-xs text-muted-foreground">
-            Untuk saat ini perubahan tidak akan disimpan. Ini hanya tampilan awal
-            untuk diskusi struktur CMS landing page.
+          <p className="text-muted-foreground mt-3 text-xs">
+            Untuk saat ini perubahan tidak akan disimpan. Ini hanya tampilan
+            awal untuk diskusi struktur CMS landing page.
           </p>
         </CardContent>
       </Card>
     </div>
   );
 }
-

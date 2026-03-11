@@ -41,7 +41,7 @@ const AppTopbar = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const showSearch = pathname.includes("/dashboard/tips-karir");
+  const showSearch = pathname.includes("/dashboard/career-tips");
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
