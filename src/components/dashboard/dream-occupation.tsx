@@ -14,10 +14,12 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Target } from "lucide-react";
+import { DreamOccupationSkeleton } from "@/components/dream-ocupation-skeleton";
 
 export default function DreamOccupation() {
   const [isDreamJobDialogOpen, setIsDreamJobDialogOpen] = useState(false);
-  const [dreamJob, setDreamJob] = useState("Loading...");
+  const [dreamJob, setDreamJob] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchDreamJob = async () => {
@@ -37,11 +39,15 @@ export default function DreamOccupation() {
       } catch (error) {
         console.error("Error fetching dream job:", error);
         setDreamJob("Gagal memuat");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchDreamJob();
   }, []);
+
+  if (loading) return <DreamOccupationSkeleton />;
 
   return (
     <>
@@ -52,7 +58,6 @@ export default function DreamOccupation() {
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-black/5">
-              {/* Icon Target */}
               <Target size={21} strokeWidth={2.5} />
             </div>
 
@@ -85,7 +90,6 @@ export default function DreamOccupation() {
           <DialogFooter className="flex justify-end">
             <DialogClose asChild>
               <Button
-                onClick={() => setIsDreamJobDialogOpen(false)}
                 variant={"outline"}
                 className="bg-primaryBlue hover:bg-primaryBlueHover text-white transition-all duration-300 hover:text-white"
               >

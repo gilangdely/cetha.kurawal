@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Brain, ArrowUpRight } from "lucide-react";
+import { UserQuotaWidgetSkeleton } from "../user-quota-widget-skeleton";
 
 export default function UserQuotaWidget() {
   const [data, setData] = useState<any>(null);
@@ -27,21 +28,7 @@ export default function UserQuotaWidget() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="bg-primaryBlue border-primaryBlue/20 group relative flex flex-col justify-between rounded-3xl border p-5 text-white transition-all duration-300 hover:shadow-sm">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 animate-pulse items-center justify-center rounded-xl bg-black/5">
-              <Brain size={21} strokeWidth={2.5} className="opacity-50" />
-            </div>
-            <div>
-              <div className="mb-2 h-3.5 w-16 animate-pulse rounded bg-white/20"></div>
-              <div className="h-6 w-20 animate-pulse rounded bg-white/20"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return <UserQuotaWidgetSkeleton />;
   }
 
   if (!data) return null;
