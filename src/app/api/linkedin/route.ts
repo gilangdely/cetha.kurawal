@@ -46,6 +46,8 @@ export async function GET(request: Request) {
     );
 
     if (!overviewRes.ok) {
+      const errorText = await overviewRes.text();
+      console.error(`[LinkdAPI Error] Overview 403/Failure for ${username}:`, errorText);
       return NextResponse.json(
         { success: false, message: `Gagal mengambil data overview (${overviewRes.status}).` },
         { status: overviewRes.status }
@@ -72,6 +74,8 @@ export async function GET(request: Request) {
     );
 
     if (!detailRes.ok) {
+      const errorText = await detailRes.text();
+      console.error(`[LinkdAPI Error] Detail 403/Failure for ${urn}:`, errorText);
       return NextResponse.json(
         { success: false, message: `Gagal mengambil data detail (${detailRes.status}).` },
         { status: detailRes.status }
@@ -90,6 +94,8 @@ export async function GET(request: Request) {
     );
 
     if (!experienceRes.ok) {
+      const errorText = await experienceRes.text();
+      console.error(`[LinkdAPI Error] Experience 403/Failure for ${urn}:`, errorText);
       return NextResponse.json(
         { success: false, message: `Gagal mengambil data pengalaman (${experienceRes.status}).` },
         { status: experienceRes.status }
@@ -108,6 +114,8 @@ export async function GET(request: Request) {
     );
 
     if (!educationRes.ok) {
+      const errorText = await educationRes.text();
+      console.error(`[LinkdAPI Error] Education 403/Failure for ${urn}:`, errorText);
       return NextResponse.json(
         { success: false, message: `Gagal mengambil data pendidikan (${educationRes.status}).` },
         { status: educationRes.status }
@@ -131,8 +139,9 @@ export async function GET(request: Request) {
       }
     });
   } catch (error: any) {
+    console.error(`[LinkdAPI Error] Exception caught:`, error);
     return NextResponse.json(
-      { success: false, message: `Terjadi kesalahan server: ${error.message}` },
+      { success: false, message: `Terjadi kesalahan internal server: ${error.message}` },
       { status: 500 }
     );
   }
