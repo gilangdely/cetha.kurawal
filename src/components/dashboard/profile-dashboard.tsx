@@ -14,7 +14,8 @@ interface UserData {
   username?: string;
   email?: string;
   photoURL?: string;
-  role?: string[];
+  role?: string;
+  pekerjaan?: string[];
   skills?: string[];
 }
 
@@ -40,10 +41,10 @@ export default function ProfileDashboard() {
 
         const normalized: UserData = {
           ...data,
-          role: Array.isArray(data.role)
-            ? data.role
-            : data.role
-              ? [data.role]
+          pekerjaan: Array.isArray(data.pekerjaan)
+            ? data.pekerjaan
+            : data.pekerjaan
+              ? [data.pekerjaan]
               : [],
           skills: Array.isArray(data.skills)
             ? data.skills
@@ -65,7 +66,7 @@ export default function ProfileDashboard() {
     return <ProfileDashboardSkeleton />;
   }
 
-  const roles = userData?.role || [];
+  const pekerjaan = userData?.pekerjaan || [];
   const skills = userData?.skills || [];
 
   return (
@@ -112,13 +113,13 @@ export default function ProfileDashboard() {
             Status kamu saat ini
           </p>
           <span className="z-10 rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-bold tracking-wider text-slate-500 uppercase">
-            {roles.length} role
+            {pekerjaan.length} Pekerjaan
           </span>
         </div>
 
         <div className="flex flex-wrap gap-2">
-          {roles.length > 0 ? (
-            roles.map((r) => (
+          {pekerjaan.length > 0 ? (
+            pekerjaan.map((r) => (
               <span
                 key={r}
                 className="text-primaryBlue border-primaryBlue/40 rounded-xl border bg-white px-3 py-1.5 text-xs font-semibold transition hover:scale-105"
@@ -127,7 +128,7 @@ export default function ProfileDashboard() {
               </span>
             ))
           ) : (
-            <p className="text-xs text-gray-400">Belum ada role</p>
+            <p className="text-xs text-gray-400">Belum ada pekerjaan</p>
           )}
         </div>
       </div>
