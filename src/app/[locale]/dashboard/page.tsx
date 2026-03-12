@@ -1,8 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { auth } from "@/app/lib/firebase";
 import { Zap } from "lucide-react";
 import TargetKarir from "@/components/dashboard/target-karir";
 import PencapaianTerbaru from "@/components/dashboard/pencapaian";
@@ -10,14 +7,9 @@ import ActivityHistory from "@/components/activity-history";
 import HeaderDashboard from "@/components/header-dashboard";
 import BentoGridDashboard from "@/components/bento-grid-dashboard";
 import ProfileDashboard from "@/components/dashboard/profile-dashboard";
+import AdsDashboardSection from "@/components/ads-dashboard";
 
 export default function DashboardPage() {
-  const steps = [
-    "Mastering System Design 2026",
-    "Simulasi AI Behavioral Interview",
-    "Optimasi Portfolio Next.js 16",
-  ];
-
   return (
     <div className="min-h-screen p-2 text-gray-900 selection:bg-indigo-100 selection:text-indigo-700 lg:p-4">
       <div className="mx-auto space-y-6">
@@ -32,38 +24,7 @@ export default function DashboardPage() {
           {/* LEFT COLUMN: The Focus Zone */}
           <div className="space-y-8 lg:col-span-8">
             {/* AI Recommendation Card (The "Main Attraction") */}
-            <section className="relative overflow-hidden rounded-[2.5rem] bg-slate-900 p-8 text-white shadow-2xl md:p-12">
-              <div className="relative z-10 flex flex-col items-center gap-10 md:flex-row">
-                <div className="flex-1 space-y-6">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/20 px-4 py-1.5 text-xs font-bold tracking-widest text-indigo-400 uppercase">
-                    Next Mission
-                  </div>
-                  <h3 className="text-3xl leading-tight font-bold">
-                    Selesaikan Simulasi Interview untuk{" "}
-                    <span className="text-indigo-400">Unlocking</span> Badge
-                    Senior!
-                  </h3>
-                  <div className="flex flex-wrap gap-3">
-                    {steps.map((s, i) => (
-                      <span
-                        key={i}
-                        className="cursor-pointer rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/10"
-                      >
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <button className="group flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-indigo-500 shadow-lg shadow-indigo-500/50 transition-all hover:scale-110 hover:bg-indigo-400">
-                  <Zap
-                    className="fill-white group-hover:animate-pulse"
-                    size={32}
-                  />
-                </button>
-              </div>
-              {/* Decorative Glow */}
-              <div className="absolute top-0 right-0 -mt-20 -mr-20 h-64 w-64 rounded-full bg-indigo-600/20 blur-[100px]" />
-            </section>
+            <AdsDashboardSection />
 
             {/* Career Progress Grid */}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">

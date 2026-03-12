@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { auth } from "@/app/lib/firebase";
 import { DashboardSkeleton } from "@/components/dashboard-skeleton";
+import { Toaster } from "sonner";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [authChecked, setAuthChecked] = useState(false);
@@ -37,7 +38,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen w-full bg-white">
       <SidebarProvider>
-        <LayoutContent>{children}</LayoutContent>
+        <LayoutContent>
+          {children}
+          <Toaster position="top-right" richColors closeButton />
+        </LayoutContent>
       </SidebarProvider>
     </div>
   );

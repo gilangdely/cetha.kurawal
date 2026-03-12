@@ -32,7 +32,7 @@ const LinkedinImproveSection = () => {
 
             <div className="mt-6">
               <Link
-                href="/tingkatkan-linkedIn"
+                href="/improve-linkedin"
                 className="group bg-primaryBlue hover:bg-primaryBlueHover shadow-primaryBlue/30 hover:shadow-primaryBlue/25 inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0"
               >
                 <span>{t("cta")}</span>

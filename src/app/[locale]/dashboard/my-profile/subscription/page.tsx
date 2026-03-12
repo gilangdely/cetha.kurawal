@@ -42,7 +42,7 @@ export default function Page() {
   };
 
   const handleSubscribe = (slug: string) => {
-    router.push(`/id/daftar-harga/${slug}/checkout`);
+    router.push(`/id/pricing/${slug}/checkout`);
   };
 
   return (

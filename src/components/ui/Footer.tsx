@@ -80,12 +80,12 @@ const Footer = () => {
               {[
                 { href: "/review-cv", label: t("navigation.reviewCv") },
                 {
-                  href: "/tingkatkan-linkedIn",
+                  href: "/improve-linkedin",
                   label: t("navigation.reviewLinkedin"),
                 },
-                { href: "/tips-karir", label: t("navigation.blog") },
-                { href: "/daftar-harga", label: t("navigation.pricing") },
-                { href: "/tentang-kami", label: t("navigation.about") },
+                { href: "/career-tips", label: t("navigation.blog") },
+                { href: "/pricing", label: t("navigation.pricing") },
+                { href: "/about-us", label: t("navigation.about") },
               ].map((item, i) => (
                 <motion.li
                   key={i}
@@ -109,9 +109,9 @@ const Footer = () => {
             <ul className="space-y-2">
               {[
                 { href: "/faq", label: t("other.faq") },
-                { href: "/hubungi-kami", label: t("other.contact") },
-                { href: "/kebijakan-privasi", label: t("other.privacy") },
-                { href: "/syarat-ketentuan", label: t("other.terms") },
+                { href: "/about-us", label: t("other.contact") },
+                { href: "/privacy-policy", label: t("other.privacy") },
+                { href: "/terms-and-conditions", label: t("other.terms") },
               ].map((item, i) => (
                 <motion.li
                   key={i}

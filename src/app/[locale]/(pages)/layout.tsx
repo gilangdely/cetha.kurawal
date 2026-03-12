@@ -15,10 +15,10 @@ export default function Layout(props: { children: ReactNode }) {
   const progress = useUploadStore((s) => s.progress);
   const uploadType = useUploadStore((s) => s.uploadType);
 
-  const isExcluded = ["/hasil", "/hasil-rekomendasi"].includes(pathname);
+  const isExcluded = ["/result-cv", "/job-match-result"].includes(pathname);
 
   const isCheckout =
-    pathname.includes("/daftar-harga/") && pathname.includes("/checkout");
+    pathname.includes("/pricing/") && pathname.includes("/checkout");
 
   if (loading) {
     return (
@@ -41,7 +41,7 @@ export default function Layout(props: { children: ReactNode }) {
     <>
       {isCheckout ? <> </> : <Navbar />}
       {props.children}
-      <Toaster />
+      <Toaster position="top-right" richColors closeButton />
       {isCheckout ? <> </> : <CethaBot />}
       {isCheckout ? <> </> : <Footer />}
     </>

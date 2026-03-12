@@ -23,7 +23,7 @@ const Cards = [
     image: icons2,
     titleKey: "cards.linkedin.title",
     descriptionKey: "cards.linkedin.description",
-    link: "/tingkatkan-linkedIn",
+    link: "/improve-linkedin",
   },
   {
     id: 3,
@@ -93,7 +93,7 @@ const AdventagesSection = () => {
             </div>
             <Link
               href={card.link}
-              className="group text-primaryBlue mt-4 w-fit inline-flex items-center gap-2 text-sm font-medium"
+              className="group text-primaryBlue mt-4 inline-flex w-fit items-center gap-2 text-sm font-medium"
             >
               <span className="relative inline-flex items-center gap-2">
                 {t("cta")}
