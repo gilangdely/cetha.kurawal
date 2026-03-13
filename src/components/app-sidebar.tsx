@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -57,15 +57,48 @@ const mainMenu = [
   { title: "Artikel & Video", icon: Newspaper, href: "/dashboard/career-tips" },
 ];
 
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    setMatches(media.matches);
+
+    const listener = () => setMatches(media.matches);
+    media.addEventListener("change", listener);
+
+    return () => media.removeEventListener("change", listener);
+  }, [query]);
+
+  return matches;
+}
+
 export function AppSidebar() {
   const pathname = usePathname();
+  const { state, setOpen } = useSidebar();
 
-  const { state } = useSidebar();
   const [isAdmin, setIsAdmin] = useState(false);
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  const isExpanded = state === "expanded";
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isCvBuilder = pathname.includes("/dashboard/cv-builder");
+
+  const isExpanded = state === "expanded" || isMobile;
+
+  const sidebarMode = isMobile || isCvBuilder ? "offcanvas" : "icon";
+
+  useEffect(() => {
+    if (isMobile || isCvBuilder) {
+      setOpen(false);
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    if (isMobile || isCvBuilder) {
+      setOpen(false);
+    }
+  }, [isMobile, isCvBuilder, setOpen]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -120,7 +153,10 @@ export function AppSidebar() {
   }
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-gray-200 bg-white">
+    <Sidebar
+      collapsible={sidebarMode}
+      className="border-r border-gray-200 bg-white"
+    >
       {/* HEADER */}
       <SidebarHeader className="h-20 justify-center">
         <div

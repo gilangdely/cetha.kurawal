@@ -2,21 +2,30 @@
 
 import { ReactNode } from "react";
 import { redirect } from "next/navigation";
-import { AdminShell } from "@/components/admin/admin-shell";
+import { AdminShell } from "@/components/admin/admin-layout-content";
 import { getCurrentUserProfile } from "@/app/lib/session";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { Toaster } from "sonner";
 
-export default async function AdminLayout({ children }: { children: ReactNode }) {
+export default async function Layout({ children }: { children: ReactNode }) {
   const profile = await getCurrentUserProfile();
 
   if (!profile) {
-    // Return back to appropriate login localized by next middleware
-    redirect("/id/login");
+    redirect("/login");
   }
 
   if (profile.role !== "admin") {
-    // Kick out regular users from admin layouts
-    redirect("/id/403");
+    redirect("/403");
   }
 
-  return <AdminShell>{children}</AdminShell>;
+  return (
+    <div>
+      <SidebarProvider>
+        <AdminShell>
+          {children}
+          <Toaster position="top-right" richColors closeButton />
+        </AdminShell>
+      </SidebarProvider>
+    </div>
+  );
 }
