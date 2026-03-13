@@ -303,6 +303,237 @@
     "copyright": "All rights reserved."
   },
 
+  "FAQPage": {
+    "title": "FAQs",
+    "description": "Everything you need to know about features, services, and how to use the platform.",
+    "categories": {
+      "cvReview": {
+        "label": "CV Review",
+        "items": {
+          "1": {
+            "question": "How do I use the CV Review feature?",
+            "answer": "Go to the dashboard, select CV Review, then upload your CV in PDF or DOCX format. Once uploaded, the system will process it and show your review results."
+          },
+          "2": {
+            "question": "What does CV Review evaluate?",
+            "answer": "The system evaluates CV structure, clarity of work experience, strength of your professional summary, readability, and relevance to recruiter and ATS requirements."
+          },
+          "3": {
+            "question": "What do I get after my CV is reviewed?",
+            "answer": "You will receive a CV score, key insights, highlighted strengths, and specific recommendations to improve weaker sections."
+          },
+          "4": {
+            "question": "Is my CV stored permanently?",
+            "answer": "Your data is processed securely for analysis purposes. Documents are not used outside the review process and your account management context."
+          }
+        }
+      },
+      "cvBuilder": {
+        "label": "CV Builder",
+        "items": {
+          "1": {
+            "question": "How do I start using CV Builder?",
+            "answer": "Open CV Builder from the dashboard, fill in core details such as profile, work experience, education, and skills, then review the live preview."
+          },
+          "2": {
+            "question": "Can I choose different CV templates?",
+            "answer": "Yes. CV Builder provides multiple template styles you can use based on your professional preference."
+          },
+          "3": {
+            "question": "Can I edit my CV content anytime?",
+            "answer": "Yes. You can add, remove, or update CV sections anytime before exporting the final document."
+          },
+          "4": {
+            "question": "What format can I download my CV in?",
+            "answer": "After finishing, you can export your CV as a PDF so it is ready to send to recruiters or apply for jobs."
+          }
+        }
+      },
+      "improveLinkedin": {
+        "label": "Improve LinkedIn",
+        "items": {
+          "1": {
+            "question": "How do I use Improve LinkedIn?",
+            "answer": "Go to the Improve LinkedIn page, enter your LinkedIn profile URL, and the system will analyze it automatically."
+          },
+          "2": {
+            "question": "Which profile parts are analyzed?",
+            "answer": "The feature analyzes your headline, about section, work experience, skills, and overall profile positioning strength."
+          },
+          "3": {
+            "question": "What results do I get after LinkedIn analysis?",
+            "answer": "You will get headline suggestions, summary improvements, better experience-writing recommendations, and insights to make your profile more recruiter-friendly."
+          },
+          "4": {
+            "question": "Do I need to log in to my LinkedIn account on Cetha?",
+            "answer": "No. You only need to provide the LinkedIn profile URL for analysis, without sharing your LinkedIn password."
+          }
+        }
+      },
+      "careerTips": {
+        "label": "Career Tips",
+        "items": {
+          "1": {
+            "question": "Where can I read articles and watch career tip videos?",
+            "answer": "You can open Career Tips or Articles & Videos to access all educational content available on the platform."
+          },
+          "2": {
+            "question": "Can I search specific topics in Career Tips?",
+            "answer": "Yes. The Career Tips page supports category filters and search, so you can quickly find relevant topics."
+          },
+          "3": {
+            "question": "What topics are covered in Career Tips?",
+            "answer": "Topics include CV review, CV building, LinkedIn optimization, interview strategies, and general career development."
+          },
+          "4": {
+            "question": "Is Career Tips content only in article format?",
+            "answer": "No. In addition to articles, video content is also available so you can choose the learning format you prefer."
+          }
+        }
+      }
+    }
+  },
+
+  "AboutUsPage": {
+    "hero": {
+      "badge": "Our Professional Team",
+      "title": "Building Innovative Solutions for the Future Together",
+      "description": "We work with a clear vision and strong commitment to help you grow and excel professionally.",
+      "visitProfile": "Visit Our Profile",
+      "contactButton": "Contact Us"
+    },
+    "profiles": {
+      "1": {
+        "role": "Frontend Developer"
+      },
+      "2": {
+        "role": "Backend Developer"
+      },
+      "3": {
+        "role": "Machine Learning Developer"
+      }
+    },
+    "testimonials": {
+      "badge": "What Cetha Users Say",
+      "titleLine1": "How Cetha Helps You Land",
+      "titleLine2": "Your Dream Job",
+      "description": "Follow these simple steps to optimize your CV, improve your LinkedIn profile, and find the most suitable opportunities.",
+      "items": {
+        "1": {
+          "quote": "Cetha truly helped me build a more professional CV. As a result, I feel much more confident applying for jobs.",
+          "name": "Andi Pratama",
+          "title": "Fresh Graduate"
+        },
+        "2": {
+          "quote": "I love how Cetha recommends job openings based on my LinkedIn profile. Very relevant!",
+          "name": "Siti Rahma",
+          "title": "UI/UX Designer"
+        },
+        "3": {
+          "quote": "The CV optimization process is very easy to understand. In minutes, my CV looked much better.",
+          "name": "Bima Nugraha",
+          "title": "Software Engineer"
+        },
+        "4": {
+          "quote": "The CV analysis feature helped me discover weaknesses I had never noticed before.",
+          "name": "Dewi Lestari",
+          "title": "Marketing Specialist"
+        },
+        "5": {
+          "quote": "I got called for an interview at my dream company after improving my CV with Cetha.",
+          "name": "Rudi Hartono",
+          "title": "Data Analyst"
+        },
+        "6": {
+          "quote": "Super helpful! Cetha gave insights that made my profile much more attractive to recruiters.",
+          "name": "Nadia Putri",
+          "title": "Product Manager"
+        },
+        "7": {
+          "quote": "A great experience! The interface is simple, but the results are excellent.",
+          "name": "Fajar Kurniawan",
+          "title": "Frontend Developer"
+        },
+        "8": {
+          "quote": "With Cetha's help, I became more confident in my job search. Highly recommended.",
+          "name": "Aulia Syah",
+          "title": "HR Specialist"
+        }
+      }
+    },
+    "contact": {
+      "badge": "Our Professional Team",
+      "title": "Building Innovative Solutions for the Future Together",
+      "description": "We work with a clear vision and strong commitment to help you grow and excel professionally.",
+      "form": {
+        "firstNameLabel": "First Name",
+        "firstNamePlaceholder": "First name",
+        "lastNameLabel": "Last Name",
+        "lastNamePlaceholder": "Last name",
+        "emailLabel": "Email",
+        "emailPlaceholder": "email@email.com",
+        "messageLabel": "Message",
+        "messagePlaceholder": "Write your message...",
+        "submitButton": "Send Message"
+      },
+      "info": {
+        "contactTitle": "Contact Us",
+        "contactDescription": "Our team is ready to help through the following channels:",
+        "phone": "+62 812 3456 7890",
+        "emailTitle": "Send Email",
+        "email": "kurawal.creative@gmail.com",
+        "addressTitle": "Address",
+        "address": "Universitas Amikom Purwokerto, Purwokerto, Indonesia"
+      }
+    }
+  },
+
+  "TermsPage": {
+    "title": "Terms & Conditions",
+    "description": "By browsing or using our services, you acknowledge and agree to the following document.",
+    "lastRevision": "Last revised: January 1, 2026",
+    "sections": {
+      "01": {
+        "title": "Service definition",
+        "content": "Cetha is an AI-based platform that provides CV feasibility insights, LinkedIn profile guidance, and career preparation modules. The service is licensed through a web platform for limited public use."
+      },
+      "02": {
+        "title": "Account & access",
+        "content": "This service requires account registration. Users agree to provide valid credentials and maintain password security. We are not responsible for account misuse caused by user negligence."
+      },
+      "03": {
+        "title": "Prohibited use",
+        "content": "Hacking, illegal scraping, commercial content duplication without partnership, AI prompt injection attempts, and excessive spam toward our system are strictly prohibited."
+      },
+      "04": {
+        "title": "User content",
+        "content": "Users retain intellectual property rights over their own CVs. Cetha AI outputs may be used for personal reference, but mass publishing compiled outputs to build similar services is prohibited."
+      },
+      "05": {
+        "title": "AI output disclaimer",
+        "content": "AI analysis results are consultative and not final HR decisions. We do not guarantee that following AI recommendations will result in interview success. Final decisions remain in the hands of recruiters."
+      },
+      "06": {
+        "title": "Limitation of liability",
+        "content": "We are not liable for financial, moral, or social losses resulting from missed job opportunities. All decisions and actions in the job application process are the user's sole responsibility."
+      },
+      "07": {
+        "title": "Service changes",
+        "content": "We may modify feature specifications, disable old features, or apply usage limitations at any time without extensive prior notice, especially for free-tier users."
+      },
+      "08": {
+        "title": "Governing law",
+        "content": "The relationship between the platform and users is governed by the civil jurisdiction of the Republic of Indonesia, according to the region where the server operates."
+      }
+    },
+    "support": {
+      "title": "Questions about these terms?",
+      "description": "Contact our team through the",
+      "cta": "Contact Support",
+      "suffix": "page and we will help clarify everything."
+    }
+  },
+
   "pricingQuota": {
     "badge": "Quota Packages",
     "title": "Pay Once, Use as You Need",
