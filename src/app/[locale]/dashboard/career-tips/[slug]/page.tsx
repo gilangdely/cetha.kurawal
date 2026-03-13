@@ -76,41 +76,15 @@ export default function TipsKarirDetailPage() {
     : "";
   const dateTitle = content.publishedAt
     ? new Date(content.publishedAt._seconds * 1000).toLocaleDateString(
-        "id-ID",
-        { year: "numeric", month: "long", day: "numeric" },
-      )
+      "id-ID",
+      { year: "numeric", month: "long", day: "numeric" },
+    )
     : "Baru saja";
 
   return (
-    <div className="mx-auto w-full max-w-5xl p-4 md:px-10">
-      <Breadcrumb className="mb-6">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/id/dashboard">Dashboard</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/id/dashboard/career-tips">
-              Tips Karier
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage className="max-w-[150px] truncate sm:max-w-[250px] md:max-w-xs">
-              {content.title}
-            </BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+    <div className="mx-auto w-full p-4 md:px-10">
 
-      <Link
-        href="/id/dashboard/career-tips"
-        className="mb-6 inline-flex items-center text-gray-500 transition hover:text-gray-800"
-      >
-        <ArrowLeft size={18} className="mr-1" /> Kembali ke List
-      </Link>
-
-      <article className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
+      <article className="overflow-hidden rounded-2xl bg-white ">
         {/* Header Metadata */}
         <div className="border-b border-gray-100 px-6 py-8 md:px-10 md:py-10">
           <div className="mb-4 flex items-center gap-3">
@@ -149,7 +123,33 @@ export default function TipsKarirDetailPage() {
           )}
         </div>
 
-        {/* Content Renderer Base on Type */}
+        {/* Thumbnail / Cover Image */}
+        {/* {(() => {
+          const ytThumb = content.type === "video" && content.youtubeUrl
+            ? (() => {
+              const m = content.youtubeUrl.match(/(?:youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*)/);
+              return m && m[1]?.length === 11
+                ? `https://img.youtube.com/vi/${m[1]}/hqdefault.jpg`
+                : null;
+            })()
+            : null;
+          const thumbUrl = content.coverImageUrl || ytThumb;
+
+          return thumbUrl ? (
+            <div className="relative aspect-21/9 w-full overflow-hidden px-6 py-8 md:px md:py-12">
+              <Image
+                src={thumbUrl}
+                alt={content.title}
+                fill
+                className="object-cover"
+                sizes="100vw"
+                unoptimized
+              />
+            </div>
+          ) : null;
+        })()} */}
+
+        {/* Content Renderer Based on Type */}
         <div className="px-6 py-8 md:px-10 md:py-12">
           {content.type === "video" && content.youtubeUrl ? (
             <div className="w-full">
