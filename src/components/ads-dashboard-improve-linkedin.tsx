@@ -1,31 +1,31 @@
 import React from "react";
 import { Check, ArrowRight, TrendingUp } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export default function AdsDashboardImproveLinkedin() {
+  const t = useTranslations("DashboardAds3");
   return (
     <div className="flex h-full flex-col items-stretch gap-6 py-1 md:flex-row">
       {/* Left: Text */}
       <div className="flex flex-1 flex-col justify-between space-y-2.5">
         <div>
           <h2 className="text-TextPrimary text-2xl font-bold md:text-3xl">
-            Optimize Your{" "}
+            {t("title")}{" "}
             <span className="bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">
-              LinkedIn
+              {t("titleHighlight")}
             </span>
           </h2>
 
           <p className="text-TextSecondary text-xs leading-relaxed md:text-sm">
-            Transform your LinkedIn profile into a recruiter magnet. Our AI
-            rewrites your headline, about section, and experience for maximum
-            impact.
+            {t("description")}
           </p>
 
           <ul className="text-TextSecondary mt-2.5 space-y-2 text-xs md:text-sm">
             {[
-              "Headline & About rewrite",
-              "Keywords optimization",
-              "Recruiter-ready analysis",
+              t("features.headline"),
+              t("features.keywords"),
+              t("features.analysis"),
             ].map((item) => (
               <li key={item} className="flex items-center gap-2">
                 <span className="flex h-4 w-4 items-center justify-center rounded-full bg-blue-500/15 text-[10px] font-semibold text-blue-500">
@@ -41,7 +41,7 @@ export default function AdsDashboardImproveLinkedin() {
           href={"/dashboard/linkedin-optimizer"}
           className="group mt-6 flex w-fit items-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:shadow-blue-500/40 hover:brightness-110"
         >
-          Optimize Profile
+          {t("cta")}
           <ArrowRight
             size={16}
             className="transition-transform duration-300 ease-out group-hover:translate-x-1.5"
@@ -72,7 +72,7 @@ export default function AdsDashboardImproveLinkedin() {
           <div className="mb-4 space-y-2">
             <div className="flex justify-between text-[10px]">
               <span className="text-TextSecondary font-medium">
-                Profile Strength
+                {t("mock.profileStrength")}
               </span>
               <span className="font-bold text-blue-500">All-Star ⭐</span>
             </div>
@@ -85,13 +85,13 @@ export default function AdsDashboardImproveLinkedin() {
             <div className="rounded-lg border border-blue-500/10 bg-blue-50 p-2 text-center">
               <p className="text-sm font-bold text-blue-500">2.4k</p>
               <p className="text-TextSecondary text-[9px] leading-tight">
-                Views
+                {t("mock.views")}
               </p>
             </div>
             <div className="rounded-lg border border-blue-500/10 bg-blue-50 p-2 text-center">
               <p className="text-sm font-bold text-blue-500">138</p>
               <p className="text-TextSecondary text-[9px] leading-tight">
-                Search
+                {t("mock.search")}
               </p>
             </div>
           </div>
@@ -99,7 +99,7 @@ export default function AdsDashboardImproveLinkedin() {
           <div className="mt-4 flex items-center gap-2 rounded-lg bg-blue-50 px-3 py-2">
             <TrendingUp size={12} className="text-blue-500" />
             <span className="text-TextSecondary text-[10px] font-medium">
-              +12% Visibility this week
+              {t("mock.visibility")}
             </span>
           </div>
         </div>

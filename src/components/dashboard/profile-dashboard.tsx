@@ -9,6 +9,7 @@ import { auth, db } from "@/app/lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import Link from "next/link";
 import { ProfileDashboardSkeleton } from "../profile-dashboard-skeleton";
+import { useTranslations } from "next-intl";
 
 interface UserData {
   username?: string;
@@ -19,6 +20,7 @@ interface UserData {
 }
 
 export default function ProfileDashboard() {
+  const t = useTranslations("profile");
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -88,12 +90,14 @@ export default function ProfileDashboard() {
 
         {/* User Info */}
         <h2 className="text-2xl font-semibold text-gray-900">
-          {userData?.username || "Explorer"}
+          {userData?.username || t("defaultUsername")}
         </h2>
 
         <div className="mt-0.5 flex items-center gap-1 text-slate-500">
           <Mail size={14} className="text-slate-400" />
-          <p className="text-sm font-medium">{userData?.email || "No email"}</p>
+          <p className="text-sm font-medium">
+            {userData?.email || t("noEmail")}
+          </p>
         </div>
 
         {/* Edit */}
@@ -109,10 +113,10 @@ export default function ProfileDashboard() {
       <div className="z-10 mt-4 w-full border-t border-slate-100 pt-4">
         <div className="mb-3 flex items-center justify-between">
           <p className="text-sm font-bold text-gray-900">
-            Status kamu saat ini
+            {t("currentStatus")}
           </p>
           <span className="z-10 rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-bold tracking-wider text-slate-500 uppercase">
-            {roles.length} role
+            {roles.length} {t("roleCount")}
           </span>
         </div>
 
@@ -127,7 +131,7 @@ export default function ProfileDashboard() {
               </span>
             ))
           ) : (
-            <p className="text-xs text-gray-400">Belum ada role</p>
+            <p className="text-xs text-gray-400">{t("noRole")}</p>
           )}
         </div>
       </div>
@@ -135,9 +139,9 @@ export default function ProfileDashboard() {
       {/* SKILLS */}
       <div className="z-10 mt-4 w-full">
         <div className="mb-3 flex items-center justify-between">
-          <p className="text-sm font-bold text-gray-900">Top Skills</p>
+          <p className="text-sm font-bold text-gray-900">{t("skillsTitle")}</p>
           <span className="z-10 rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-bold tracking-wider text-slate-500 uppercase">
-            {skills.length} Role
+            {skills.length} {t("skillsCount")}
           </span>
         </div>
 
@@ -152,7 +156,7 @@ export default function ProfileDashboard() {
               </span>
             ))
           ) : (
-            <p className="text-xs text-gray-400">Belum ada skill</p>
+            <p className="text-xs text-gray-400">{t("noSkill")}</p>
           )}
         </div>
       </div>

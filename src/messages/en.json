@@ -407,5 +407,404 @@
     "title": "Error 404: Page Not Found!",
     "description": "We’ve looked everywhere, but couldn’t find the page you were looking for.",
     "back": "Back to Home"
+  },
+
+  "dashboard": {
+    "sidebar": {
+      "mainNavigation": "Main Navigation",
+
+      "menu": {
+        "dashboard": "Dashboard",
+        "cvReview": "CV Review",
+        "cvBuilder": "CV Builder",
+        "improveLinkedin": "Improve LinkedIn",
+        "findJobs": "Find Jobs AI",
+        "articles": "Articles & Videos"
+      },
+
+      "pricing": "View Pricing",
+      "adminPanel": "Admin Panel",
+      "upgrade": "Upgrade",
+
+      "subscription": {
+        "badge": "Cetha Plus+",
+        "addToken": "Add Tokens"
+      },
+
+      "tokenMessage": {
+        "low": "Your tokens are almost depleted. Add more tokens to keep using AI.",
+        "medium": "Your tokens are running low. Use them wisely or add more tokens.",
+        "safe": "Your tokens are still sufficient. Use AI to boost your career."
+      }
+    },
+
+    "topbar": {
+      "welcomeAdmin": "Welcome back, Admin",
+      "searchPlaceholder": "Search article or video...",
+      "profile": "My Profile",
+      "settings": "Settings",
+      "logout": "Logout",
+      "routes": {
+        "dashboard": "Dashboard",
+        "career-tips": "Career Tips",
+        "cv-builder": "CV Builder",
+        "improve-linkedin": "Improve LinkedIn",
+        "review-cv": "Review CV",
+        "my-profile": "My Profile",
+        "settings": "Settings"
+      }
+    },
+
+    "cvBuilder": {
+      "undo": "Undo",
+      "redo": "Redo",
+      "form": "Form",
+      "preview": "Preview",
+      "exportPdf": "Export PDF"
+    },
+
+    "formCvBuilder": {
+      "sections": {
+        "personal": "Personal Information",
+        "experience": "Work Experience",
+        "education": "Education",
+        "skills": "Skills"
+      },
+      "photo": {
+        "upload": "Upload photo",
+        "optional": "Optional"
+      },
+      "placeholders": {
+        "fullName": "Full name",
+        "jobTitle": "Job title",
+        "email": "Email address",
+        "summary": "Write a short professional summary",
+        "role": "Role",
+        "company": "Company",
+        "startDate": "Start date",
+        "endDate": "End date",
+        "responsibilities": "Responsibilities / Achievements",
+        "university": "University",
+        "degree": "Degree",
+        "fieldOfStudy": "Field of study",
+        "startYear": "Start year",
+        "endYear": "End year",
+        "activities": "Activities / Achievements",
+        "skill": "Skill"
+      },
+      "buttons": {
+        "enhanceSummary": "Enhance Summary",
+        "enhanceDescription": "Enhance Description",
+        "addExperience": "Add Experience",
+        "addEducation": "Add Education",
+        "addSkill": "Add Skill"
+      },
+      "toast": {
+        "fillFirst": "Write key points first so AI can generate content.",
+        "aiSuccess": "Text successfully improved by AI!",
+        "aiError": "Connection error while calling AI.",
+        "uploadingPhoto": "Uploading photo...",
+        "photoSuccess": "Photo uploaded successfully!",
+        "photoError": "Error while uploading photo.",
+        "invalidFormat": "Unsupported file format. Please upload JPG/PNG/WEBP.",
+        "fileTooLarge": "File size exceeds the 2MB limit."
+      }
+    }
+  },
+
+  "DashboardHeader": {
+    "greeting": {
+      "morning": "Good Morning",
+      "afternoon": "Good Afternoon",
+      "evening": "Good Evening",
+      "night": "Good Night"
+    },
+    "fallbackUsername": "Explorer",
+    "subtitles": [
+      "Today is an opportunity to <b>move further</b> than yesterday.",
+      "Your consistency today is a real <b>investment for the future</b>.",
+      "Every small step brings you closer to your <b>big goals</b>.",
+      "Recruiters are looking for someone like <b>you</b> today.",
+      "A strong profile is the <b>gateway</b> to the best opportunities.",
+      "Don't stop — your <b>breakthrough</b> might be just one step away."
+    ]
+  },
+
+  "DashboardStats": {
+    "careerScore": "Career Score",
+    "totalAchievements": "Total Achievements",
+    "achievementsUnit": "Achievements",
+
+    "dreamJob": "Dream Job",
+    "dreamJobEmpty": "No dream job yet",
+    "dreamJobError": "Failed to load",
+    "dreamJobDialogDescription": "Here is your dream job:",
+    "close": "Close",
+
+    "aiCredits": "AI Credits",
+    "remainingCredits": "Credits Remaining",
+    "upgradePlan": "Upgrade Plan"
+  },
+
+  "DashboardAds": {
+    "title": "Get Expert Feedback",
+    "titleHighlight": "on Your CV",
+
+    "description": "Our AI reviews your CV and suggests improvements to help you stand out.",
+
+    "features": {
+      "info": "Information completeness",
+      "format": "Format readability",
+      "experience": "Work experience impact"
+    },
+
+    "cta": "Build Your CV",
+
+    "mock": {
+      "score": "CV Score",
+      "info": "Information Completeness",
+      "format": "Format Readability",
+      "experience": "Experience Impact"
+    },
+
+    "tip": "Add measurable achievements to strengthen your experience section."
+  },
+
+  "DashboardAds2": {
+    "title": "Build a",
+    "titleHighlight": "Job-Winning CV",
+    "titleSuffix": "in Minutes",
+
+    "description": "Use our smart templates and AI-guided prompts to craft a professional CV tailored to the role you want — no design skills needed.",
+
+    "tags": {
+      "templates": "50+ Templates",
+      "ai": "AI-Powered",
+      "pdf": "PDF Export"
+    },
+
+    "cta": "Start Building",
+
+    "mock": {
+      "chooseTemplate": "Choose Template",
+      "templates": {
+        "modern": "Modern",
+        "classic": "Classic",
+        "creative": "Creative",
+        "bold": "Bold"
+      }
+    }
+  },
+
+  "DashboardAds3": {
+    "title": "Optimize Your",
+    "titleHighlight": "LinkedIn",
+
+    "description": "Transform your LinkedIn profile into a recruiter magnet. Our AI rewrites your headline, about section, and experience for maximum impact.",
+
+    "features": {
+      "headline": "Headline & About rewrite",
+      "keywords": "Keywords optimization",
+      "analysis": "Recruiter-ready analysis"
+    },
+
+    "cta": "Optimize Profile",
+
+    "mock": {
+      "profileStrength": "Profile Strength",
+      "views": "Views",
+      "search": "Search",
+      "visibility": "+12% Visibility this week"
+    }
+  },
+
+  "DashboardAds4": {
+    "title": "Find Jobs That",
+    "titleHighlight": "Match You",
+
+    "description": "We provide personalized job recommendations tailored to your unique skills, experience, and interests, helping you discover the best opportunities that match your career goals. Our listings are updated daily from trusted sources to ensure you never miss a relevant opening.",
+
+    "tags": {
+      "remote": "Remote-friendly",
+      "salary": "Salary filters",
+      "alerts": "Daily alerts"
+    },
+
+    "cta": "Find Jobs",
+
+    "mock": {
+      "role1": "Product Designer",
+      "role2": "UX Researcher",
+      "role3": "Design Lead"
+    }
+  },
+  
+  "DashboardCareerTargets": {
+    "loginRequired": "Please log in to save your career targets",
+
+    "header": {
+      "title": "Career Targets",
+      "addTitle": "Add Target"
+    },
+
+    "progress": {
+      "noSteps": "No steps yet",
+      "completed": "All targets completed",
+      "steps": "{done}/{total} steps completed"
+    },
+
+    "emptyState": {
+      "badge": "Start with small steps",
+      "title": "No career targets yet",
+      "description": "Every small step matters. Start planning your goals and build the career you dream of.",
+      "cta": "Add Target"
+    },
+
+    "deleteDialog": {
+      "title": "Delete Career Target",
+      "description": "Are you sure you want to delete this target? This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Delete",
+      "success": "Career target deleted successfully"
+    },
+
+    "editor": {
+      "addTitle": "Add Career Target",
+      "editTitle": "Edit Career Target",
+      "description": "Add career targets and checklist tasks to complete",
+
+      "fields": {
+        "targetTitle": "Target Title",
+        "targetPlaceholder": "Example: Senior Developer Path",
+        "checklist": "Checklist To-Do",
+        "generateTooltip": "Generate automatically from title"
+      },
+
+      "tasks": {
+        "addItem": "Add Item",
+        "addPlaceholder": "Add checklist item"
+      },
+
+      "actions": {
+        "save": "Save Target"
+      }
+    }
+  },
+  
+  "DashboardAchievements": {
+    "errors": {
+      "loginRequired": "You must log in to view achievements",
+      "loginRequiredAction": "You must log in",
+      "loadFailed": "Failed to load achievements",
+      "noPermission": "You do not have permission",
+      "deleteFailed": "Failed to delete"
+    },
+
+    "success": {
+      "added": "Added",
+      "updated": "Updated",
+      "deleted": "Achievement deleted"
+    },
+
+    "header": {
+      "title": "Achievements",
+      "add": "Add Achievement"
+    },
+
+    "emptyState": {
+      "badge": "Start with small steps",
+      "title": "No achievements yet",
+      "description": "Every progress deserves recognition. Add your achievements and build your career journey step by step.",
+      "cta": "Add Achievement"
+    },
+
+    "preview": {
+      "noDescription": "No description.",
+      "edit": "Edit",
+      "close": "Close"
+    },
+
+    "deleteDialog": {
+      "title": "Delete achievement?",
+      "description": "Achievement <strong>{title}</strong> will be permanently deleted.",
+      "cancel": "Cancel",
+      "confirm": "Delete"
+    }
+  },
+
+  "achievementForm": {
+    "titleAdd": "Add Achievement",
+    "titleEdit": "Edit Achievement",
+    "description": "Fill in relevant and impactful achievement details.",
+
+    "fields": {
+      "title": "Title",
+      "category": "Category",
+      "date": "Date",
+      "description": "Description (optional)"
+    },
+
+    "placeholders": {
+      "title": "Example: Released BudgetMate App",
+      "description": "Briefly describe the achievement and its context"
+    },
+
+    "buttons": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "add": "Add",
+      "edit": "Edit"
+    },
+
+    "validation": {
+      "titleRequired": "Title is required",
+      "loginRequired": "You must be logged in to save an achievement"
+    },
+
+    "toast": {
+      "created": "Achievement successfully added!",
+      "updated": "Achievement successfully updated!",
+      "error": "Failed to save to Firebase"
+    },
+
+    "categories": {
+      "kursus": "Course",
+      "proyek": "Project",
+      "kompetisi": "Competition",
+      "open_source": "Open Source",
+      "organisasi": "Organization",
+      "publikasi": "Publication",
+      "kinerja": "Performance",
+      "skill": "Skill",
+      "network": "Networking",
+      "penghargaan": "Award"
+    }
+  },
+  "activityHistory": {
+    "title": "CV Review History",
+    "viewAll": "View All",
+    "loginRequired": "Please log in to see your history",
+    "loadError": "Failed to load history",
+  
+      "defaultInsight": "View CV review insights",
+
+    "empty": {
+      "title": "No CV review activity yet",
+      "description": "Start reviewing your CV to get career development insights",
+      "cta": "Start CV Review"
+    }
+  },
+
+  "profile": {
+    "defaultUsername": "Explorer",
+    "noEmail": "No email",
+
+    "currentStatus": "Your current status",
+    "roleCount": "roles",
+    "noRole": "No roles yet",
+
+    "skillsTitle": "Top Skills",
+    "skillsCount": "skills",
+    "noSkill": "No skills yet"
   }
 }

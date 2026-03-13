@@ -1,6 +1,5 @@
 "use client";
 
-import { Zap } from "lucide-react";
 import TargetKarir from "@/components/dashboard/target-karir";
 import PencapaianTerbaru from "@/components/dashboard/pencapaian";
 import ActivityHistory from "@/components/activity-history";
@@ -11,7 +10,7 @@ import AdsDashboardSection from "@/components/ads-dashboard";
 
 export default function DashboardPage() {
   return (
-    <div className="min-h-screen p-2 text-gray-900 selection:bg-indigo-100 selection:text-indigo-700 lg:p-4">
+    <div className="min-h-screen p-2 text-gray-900 lg:p-4">
       <div className="mx-auto space-y-6">
         {/* Header */}
         <HeaderDashboard />

@@ -23,7 +23,7 @@ import {
 import { UpgradeModal } from "@/components/UpgradeModal";
 import { useTranslations } from "next-intl";
 
-interface EditTargetKarirProps {
+interface AddTargetKarirProps {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   showTrigger?: boolean;
@@ -38,7 +38,7 @@ interface EditTargetKarirProps {
   ) => void; // baru
 }
 
-export default function EditTargetKarir({
+export default function AddTargetKarir({
   open,
   onOpenChange,
   showTrigger = true,
@@ -46,7 +46,7 @@ export default function EditTargetKarir({
   initialTitle,
   initialTasks,
   onTasksChange,
-}: EditTargetKarirProps) {
+}: AddTargetKarirProps) {
   const t = useTranslations("DashboardCareerTargets.editor");
   const [tasks, setTasks] = useState(initialTasks || []);
   const [showInput, setShowInput] = useState(false);
@@ -141,7 +141,7 @@ export default function EditTargetKarir({
 
       <SheetContent className="px-4">
         <SheetHeader className="px-0">
-          <SheetTitle>{t("editTitle")}</SheetTitle>
+          <SheetTitle>{t("addTitle")}</SheetTitle>
           <SheetDescription>{t("description")}</SheetDescription>
         </SheetHeader>
 

@@ -1,21 +1,44 @@
 "use client";
 
-import { ArrowUpRight, Zap, Briefcase } from "lucide-react";
+import { ArrowUpRight, Zap, Briefcase, Trophy } from "lucide-react";
 import UserQuotaWidget from "@/components/dashboard/user-quota-widget";
 import DreamOccupation from "@/components/dashboard/dream-occupation";
+import { useState, useEffect } from "react";
+import { db, auth } from "@/app/lib/firebase";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { useTranslations } from "next-intl";
 
 const BentoGridDashboard = () => {
+  const t = useTranslations("DashboardStats");
+  const [totalAchievements, setTotalAchievements] = useState(0);
+
+  useEffect(() => {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const q = query(
+      collection(db, "pencapaian"),
+      where("userId", "==", user.uid),
+    );
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      setTotalAchievements(snapshot.size);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   const stats = [
     {
-      label: "Career Score",
+      label: t("careerScore"),
       value: "82 / 100",
       icon: Zap,
       theme: "bg-white border border-slate-200 text-slate-900",
     },
     {
-      label: "Total Pencapaian",
-      value: "14 Jobs",
-      icon: Briefcase,
+      label: t("totalAchievements"),
+      value: `${totalAchievements} ${t("achievementsUnit")}`,
+      icon: Trophy,
       theme: "bg-white border border-slate-200 text-slate-900",
     },
   ];

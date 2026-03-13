@@ -5,8 +5,10 @@ import { CvPreview } from "@/components/cv-preview";
 import { FileDown, LayoutTemplate, PenLine, Undo2, Redo2 } from "lucide-react";
 import FormBuildCv from "@/components/form-build-cv";
 import { useCvBuilderStore } from "@/store/buildCvStore";
+import { useTranslations } from "next-intl";
 
 export default function CvBuilderPage() {
+  const t = useTranslations("dashboard.cvBuilder");
   const undo = useCvBuilderStore((state) => state.undo);
   const redo = useCvBuilderStore((state) => state.redo);
   const pastStates = useCvBuilderStore((state) => state.pastStates);
@@ -28,7 +30,7 @@ export default function CvBuilderPage() {
           <button
             onClick={() => undo()}
             disabled={pastStates.length === 0}
-            title="Undo"
+            title={t("undo")}
             className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-gray-100 disabled:opacity-40 disabled:hover:bg-transparent"
           >
             <Undo2 size={17} />
@@ -36,7 +38,7 @@ export default function CvBuilderPage() {
           <button
             onClick={() => redo()}
             disabled={futureStates.length === 0}
-            title="Redo"
+            title={t("redo")}
             className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-gray-100 disabled:opacity-40 disabled:hover:bg-transparent"
           >
             <Redo2 size={17} />
@@ -54,7 +56,7 @@ export default function CvBuilderPage() {
             }`}
           >
             <PenLine size={13} />
-            Form
+            {t("form")}
           </button>
           <button
             onClick={() => setMobileTab("preview")}
@@ -65,7 +67,7 @@ export default function CvBuilderPage() {
             }`}
           >
             <LayoutTemplate size={13} />
-            Preview
+            {t("preview")}
           </button>
         </div>
 
@@ -75,7 +77,7 @@ export default function CvBuilderPage() {
           className="bg-primaryBlue hover:bg-primaryBlueHover flex items-center gap-2 rounded-xl px-3 py-1.5 text-sm font-semibold text-white transition-all"
         >
           <FileDown size={16} />
-          <span className="hidden sm:inline">Export PDF</span>
+          <span className="hidden sm:inline">{t("exportPdf")}</span>
         </button>
       </div>
 

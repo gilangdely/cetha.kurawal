@@ -406,7 +406,403 @@
     "title": "Error 404: Halaman Tidak Ditemukan!",
     "description": "Kami sudah mencari ke mana pun, tapi tidak menemukan halaman yang kamu maksud.",
     "back": "Kembali ke Halaman Utama"
+  },
+
+  "dashboard": {
+    "sidebar": {
+      "mainNavigation": "Navigasi Utama",
+
+      "menu": {
+        "dashboard": "Dashboard",
+        "cvReview": "Review CV",
+        "cvBuilder": "CV Builder",
+        "improveLinkedin": "Perbaiki LinkedIn",
+        "findJobs": "Cari Pekerjaan AI",
+        "articles": "Artikel & Video"
+      },
+
+      "pricing": "Lihat Harga",
+      "adminPanel": "Admin Panel",
+      "upgrade": "Upgrade",
+
+      "subscription": {
+        "badge": "Cetha Plus+",
+        "addToken": "Tambah Token"
+      },
+
+      "tokenMessage": {
+        "low": "Tokenmu hampir habis. Tambahkan token agar AI tetap bisa digunakan.",
+        "medium": "Tokenmu mulai menipis. Gunakan dengan bijak atau tambahkan token.",
+        "safe": "Tokenmu masih aman. Gunakan AI untuk meningkatkan kariermu."
+      }
+    },
+    
+    "topbar": {
+      "welcomeAdmin": "Selamat datang kembali, Admin",
+      "searchPlaceholder": "Cari artikel atau video...",
+      "profile": "Profil Saya",
+      "settings": "Pengaturan",
+      "logout": "Keluar",
+      "routes": {
+        "dashboard": "Dashboard",
+        "career-tips": "Tips Karier",
+        "cv-builder": "CV Builder",
+        "improve-linkedin": "Optimasi LinkedIn",
+        "review-cv": "Review CV",
+        "my-profile": "Profil Saya",
+        "settings": "Pengaturan"
+      }
+    },
+
+    "cvBuilder": {
+      "undo": "Urungkan",
+      "redo": "Ulangi",
+      "form": "Form",
+      "preview": "Pratinjau",
+      "exportPdf": "Ekspor PDF"
+    },
+
+    "formCvBuilder": {
+      "sections": {
+        "personal": "Informasi Pribadi",
+        "experience": "Pengalaman Kerja",
+        "education": "Pendidikan",
+        "skills": "Keahlian"
+      },
+      "photo": {
+        "upload": "Unggah foto",
+        "optional": "Opsional"
+      },
+      "placeholders": {
+        "fullName": "Nama lengkap",
+        "jobTitle": "Jabatan / Profesi",
+        "email": "Alamat email",
+        "summary": "Tulis ringkasan profesional singkat",
+        "role": "Posisi",
+        "company": "Perusahaan",
+        "startDate": "Tanggal mulai",
+        "endDate": "Tanggal selesai",
+        "responsibilities": "Tanggung jawab / Pencapaian",
+        "university": "Universitas",
+        "degree": "Gelar",
+        "fieldOfStudy": "Bidang studi",
+        "startYear": "Tahun mulai",
+        "endYear": "Tahun selesai",
+        "activities": "Aktivitas / Pencapaian",
+        "skill": "Keahlian"
+      },
+      "buttons": {
+        "enhanceSummary": "Tingkatkan Ringkasan",
+        "enhanceDescription": "Tingkatkan Deskripsi",
+        "addExperience": "Tambah Pengalaman",
+        "addEducation": "Tambah Pendidikan",
+        "addSkill": "Tambah Keahlian"
+      },
+      "toast": {
+        "fillFirst": "Isi poin inti terlebih dahulu agar AI bisa bekerja.",
+        "aiSuccess": "Teks berhasil diperbarui dengan AI!",
+        "aiError": "Terjadi kesalahan koneksi saat memanggil AI.",
+        "uploadingPhoto": "Mengunggah foto...",
+        "photoSuccess": "Foto berhasil diunggah!",
+        "photoError": "Terjadi kesalahan saat mengunggah foto.",
+        "invalidFormat": "Format file tidak didukung. Harap unggah gambar (JPG/PNG/WEBP).",
+        "fileTooLarge": "Ukuran file melebihi batas maksimum 2 MB."
+      }
+    }
+  },
+
+  "DashboardHeader": {
+    "greeting": {
+      "morning": "Selamat Pagi",
+      "afternoon": "Selamat Siang",
+      "evening": "Selamat Sore",
+      "night": "Selamat Malam"
+    },
+    "fallbackUsername": "Explorer",
+    "subtitles": [
+      "Hari ini adalah kesempatan untuk <b>melangkah lebih jauh</b> dari kemarin.",
+      "Konsistensimu hari ini adalah <b>investasi masa depan</b> yang nyata.",
+      "Setiap langkah kecil membawamu lebih dekat ke <b>tujuan besarmu</b>.",
+      "Rekruter sedang mencari seseorang seperti <b>kamu</b> hari ini.",
+      "Profil yang kuat adalah <b>pintu masuk</b> ke peluang terbaik.",
+      "Jangan berhenti — <b>breakthrough</b>-mu mungkin tinggal selangkah lagi."
+    ]
+  },
+
+  "DashboardStats": {
+    "careerScore": "Career Score",
+    "totalAchievements": "Total Pencapaian",
+    "achievementsUnit": "Pencapaian",
+
+    "dreamJob": "Pekerjaan Impian",
+    "dreamJobEmpty": "Belum ada pekerjaan impian",
+    "dreamJobError": "Gagal memuat",
+    "dreamJobDialogDescription": "Berikut adalah pekerjaan impianmu:",
+    "close": "Tutup",
+
+    "aiCredits": "AI Credits",
+    "remainingCredits": "Kredit Tersisa",
+    "upgradePlan": "Upgrade Paket"
+  },
+
+  "DashboardAds": {
+    "title": "Dapatkan Feedback Ahli",
+    "titleHighlight": "untuk CV Anda",
+
+    "description": "AI kami meninjau CV Anda dan memberikan saran untuk membantu Anda lebih menonjol.",
+
+    "features": {
+      "info": "Kelengkapan informasi",
+      "format": "Keterbacaan format",
+      "experience": "Dampak pengalaman kerja"
+    },
+
+    "cta": "Bangun CV Anda",
+
+    "mock": {
+      "score": "Skor CV",
+      "info": "Kelengkapan Informasi",
+      "format": "Keterbacaan Format",
+      "experience": "Dampak Pengalaman"
+    },
+
+    "tip": "Tambahkan pencapaian yang terukur untuk memperkuat bagian pengalaman Anda."
+  },
+  
+  "DashboardAds2": {
+    "title": "Buat",
+    "titleHighlight": "CV yang Menarik Perhatian",
+    "titleSuffix": "dalam Hitungan Menit",
+    "description": "Gunakan template pintar dan panduan AI untuk membuat CV profesional yang sesuai dengan pekerjaan impianmu — tanpa perlu keahlian desain.",
+
+    "tags": {
+      "templates": "50+ Template",
+      "ai": "Didukung AI",
+      "pdf": "Ekspor PDF"
+    },
+
+    "cta": "Mulai Membuat",
+
+    "mock": {
+      "chooseTemplate": "Pilih Template",
+      "templates": {
+        "modern": "Modern",
+        "classic": "Klasik",
+        "creative": "Kreatif",
+        "bold": "Berani"
+      }
+    }
+  },
+
+  "DashboardAds3": {
+    "title": "Optimalkan Profil",
+    "titleHighlight": "LinkedIn",
+    "description": "Ubah profil LinkedIn Anda menjadi magnet bagi recruiter. AI kami menulis ulang headline, bagian about, dan pengalaman untuk dampak maksimal.",
+
+    "features": {
+      "headline": "Penulisan ulang Headline & About",
+      "keywords": "Optimasi kata kunci",
+      "analysis": "Analisis siap dilihat recruiter"
+    },
+
+    "cta": "Optimalkan Profil",
+
+    "mock": {
+      "profileStrength": "Kekuatan Profil",
+      "views": "Dilihat",
+      "search": "Pencarian",
+      "visibility": "+12% Visibilitas minggu ini"
+    }
+  },
+
+  "DashboardAds4": {
+      "title": "Temukan Pekerjaan yang",
+      "titleHighlight": "Cocok Untukmu",
+
+      "description": "Kami memberikan rekomendasi pekerjaan yang dipersonalisasi sesuai dengan keterampilan, pengalaman, dan minatmu, sehingga kamu dapat menemukan peluang terbaik yang selaras dengan tujuan kariermu. Lowongan diperbarui setiap hari dari sumber terpercaya agar kamu tidak melewatkan kesempatan yang relevan.",
+
+      "tags": {
+        "remote": "Ramah Remote",
+        "salary": "Filter Gaji",
+        "alerts": "Notifikasi Harian"
+      },
+
+      "cta": "Cari Pekerjaan",
+
+      "mock": {
+        "role1": "Product Designer",
+        "role2": "UX Researcher",
+        "role3": "Design Lead"
+      }
+  },
+
+  "DashboardCareerTargets": {
+    "loginRequired": "Silakan login untuk menyimpan target karir",
+
+    "header": {
+      "title": "Target Karir",
+      "addTitle": "Tambah Target"
+    },
+
+    "progress": {
+      "noSteps": "Belum ada langkah",
+      "completed": "Semua target tercapai",
+      "steps": "{done}/{total} langkah selesai"
+    },
+
+    "emptyState": {
+      "badge": "Mulai dari langkah kecil",
+      "title": "Belum ada target karir",
+      "description": "Setiap langkah kecil sangat berarti. Mulailah susun tujuan besarmu dan wujudkan karier yang kamu impikan.",
+      "cta": "Tambah Target"
+    },
+
+    "deleteDialog": {
+      "title": "Hapus Target Karir",
+      "description": "Apakah kamu yakin ingin menghapus target ini? Tindakan ini tidak bisa dibatalkan.",
+      "cancel": "Batal",
+      "confirm": "Hapus",
+      "success": "Target karier berhasil dihapus"
+    },
+
+    "editor": {
+      "addTitle": "Tambah Target Karir",
+      "editTitle": "Edit Target Karir",
+      "description": "Tambah target karir dan checklist yang perlu diselesaikan",
+
+      "fields": {
+        "targetTitle": "Judul Target",
+        "targetPlaceholder": "Contoh: Senior Developer Path",
+        "checklist": "Checklist To-Do",
+        "generateTooltip": "Generate otomatis dari judul"
+      },
+
+      "tasks": {
+        "addItem": "Tambah Item",
+        "addPlaceholder": "Tambah item checklist"
+      },
+
+      "actions": {
+        "save": "Simpan Target"
+      }
+    }
+  },
+
+  "DashboardAchievements": {
+    "errors": {
+      "loginRequired": "Anda harus login untuk melihat pencapaian",
+      "loginRequiredAction": "Anda harus login",
+      "loadFailed": "Gagal memuat pencapaian",
+      "noPermission": "Tidak memiliki izin",
+      "deleteFailed": "Gagal menghapus"
+    },
+
+    "success": {
+      "added": "Ditambahkan",
+      "updated": "Diperbarui",
+      "deleted": "Pencapaian dihapus"
+    },
+
+    "header": {
+      "title": "Pencapaian",
+      "add": "Tambah Pencapaian"
+    },
+
+    "emptyState": {
+      "badge": "Mulai dari langkah kecil",
+      "title": "Belum ada pencapaian",
+      "description": "Setiap progress layak dicatat. Tambahkan pencapaianmu dan bangun perjalanan kariermu sedikit demi sedikit.",
+      "cta": "Tambah Pencapaian"
+    },
+
+    "preview": {
+      "noDescription": "Tidak ada deskripsi.",
+      "edit": "Edit",
+      "close": "Tutup"
+    },
+
+    "deleteDialog": {
+      "title": "Hapus pencapaian?",
+      "description": "Pencapaian <strong>{title}</strong> akan dihapus permanen.",
+      "cancel": "Batal",
+      "confirm": "Hapus"
+    }
+  },
+  
+  "achievementForm": {
+    "titleAdd": "Tambah Pencapaian",
+    "titleEdit": "Edit Pencapaian",
+    "description": "Isi data pencapaian yang relevan dan berdampak.",
+
+    "fields": {
+      "title": "Judul",
+      "category": "Kategori",
+      "date": "Tanggal",
+      "description": "Deskripsi (opsional)"
+    },
+
+    "placeholders": {
+      "title": "Contoh: Merilis Aplikasi BudgetMate",
+      "description": "Ringkas pencapaian dan konteksnya"
+    },
+
+    "buttons": {
+      "save": "Simpan",
+      "cancel": "Batal",
+      "add": "Tambah",
+      "edit": "Edit"
+    },
+
+    "validation": {
+      "titleRequired": "Judul wajib diisi",
+      "loginRequired": "Anda harus login untuk menyimpan pencapaian"
+    },
+
+    "toast": {
+      "created": "Pencapaian berhasil ditambahkan!",
+      "updated": "Pencapaian berhasil diperbarui!",
+      "error": "Gagal menyimpan ke Firebase"
+    },
+
+    "categories": {
+      "kursus": "Kursus",
+      "proyek": "Proyek",
+      "kompetisi": "Kompetisi",
+      "open_source": "Open Source",
+      "organisasi": "Organisasi",
+      "publikasi": "Publikasi",
+      "kinerja": "Kinerja",
+      "skill": "Skill",
+      "network": "Networking",
+      "penghargaan": "Penghargaan"
+    }
+  },
+  
+  "activityHistory": {
+    "title": "Riwayat Review CV",
+    "viewAll": "Lihat Semua",
+    "loginRequired": "Login dulu untuk melihat riwayat",
+    "loadError": "Gagal memuat riwayat",
+
+    "defaultInsight": "Lihat insight review CV",
+
+    "empty": {
+      "title": "Belum ada aktivitas review CV",
+      "description": "Mulai review CV untuk mendapatkan insight pengembangan karir",
+      "cta": "Mulai Review CV"
+    }
+  },
+  
+  "profile": {
+    "defaultUsername": "Explorer",
+    "noEmail": "Tidak ada email",
+
+    "currentStatus": "Status kamu saat ini",
+    "roleCount": "role",
+    "noRole": "Belum ada role",
+
+    "skillsTitle": "Top Skills",
+    "skillsCount": "skill",
+    "noSkill": "Belum ada skill"
   }
-
-
 }

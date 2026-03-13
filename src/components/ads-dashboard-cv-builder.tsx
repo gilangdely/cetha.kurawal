@@ -1,29 +1,30 @@
 import { ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import React from "react";
 
 export default function AdsDashboardCvBuilder() {
+  const t = useTranslations("DashboardAds2");
+
   return (
     <div className="flex h-full flex-col items-stretch gap-6 py-1 md:flex-row">
       {/* Left: Text */}
       <div className="flex flex-1 flex-col justify-between space-y-3">
         <div>
           <h2 className="text-2xl font-bold text-gray-900 md:text-3xl">
-            Build a{" "}
+            {t("title")}{" "}
             <span className="bg-gradient-to-r from-violet-500 to-purple-400 bg-clip-text text-transparent">
-              Job-Winning CV
+              {t("titleHighlight")}
             </span>{" "}
-            in Minutes
+            {t("titleSuffix")}
           </h2>
 
           <p className="mt-1 text-sm leading-relaxed text-gray-600 md:text-base">
-            Use our smart templates and AI-guided prompts to craft a
-            professional CV tailored to the role you want — no design skills
-            needed.
+            {t("description")}
           </p>
 
           <div className="mt-2 mb-3 flex flex-wrap gap-3">
-            {["50+ Templates", "AI-Powered", "PDF Export"].map((tag) => (
+            {[t("tags.templates"), t("tags.ai"), t("tags.pdf")].map((tag) => (
               <span
                 key={tag}
                 className="rounded-lg border border-violet-300/50 bg-violet-100/30 px-3 py-1 text-xs font-medium text-violet-600"
@@ -38,7 +39,7 @@ export default function AdsDashboardCvBuilder() {
           href={"/dashboard/cv-builder"}
           className="group mt-3 flex w-fit items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/20 transition-all duration-300 hover:shadow-violet-500/40 hover:brightness-110"
         >
-          Start Building
+          {t("cta")}
           <ArrowRight
             size={16}
             className="transition-transform duration-300 ease-out group-hover:translate-x-1.5"
@@ -53,11 +54,16 @@ export default function AdsDashboardCvBuilder() {
           <div className="pointer-events-none absolute -top-8 -right-8 h-20 w-20 rounded-full bg-violet-100/40 blur-2xl" />
 
           <p className="mb-3 text-[11px] font-semibold tracking-widest text-gray-500 uppercase">
-            Choose Template
+            {t("mock.chooseTemplate")}
           </p>
 
           <div className="mb-4 grid grid-cols-2 gap-2">
-            {["Modern", "Classic", "Creative", "Bold"].map((t, i) => (
+            {[
+              t("mock.templates.modern"),
+              t("mock.templates.classic"),
+              t("mock.templates.creative"),
+              t("mock.templates.bold"),
+            ].map((t, i) => (
               <div
                 key={t}
                 className={`cursor-pointer rounded-lg border p-2 text-center text-xs transition-all duration-200 ${
