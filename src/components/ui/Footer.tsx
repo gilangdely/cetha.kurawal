@@ -109,8 +109,8 @@ const Footer = () => {
             <ul className="space-y-2">
               {[
                 { href: "/faq", label: t("other.faq") },
-                { href: "/about-us", label: t("other.contact") },
-                { href: "/privacy-policy", label: t("other.privacy") },
+                { href: "/about-us#contact-us", label: t("other.contact") },
+                // { href: "/privacy-policy", label: t("other.privacy") },
                 { href: "/terms-and-conditions", label: t("other.terms") },
               ].map((item, i) => (
                 <motion.li

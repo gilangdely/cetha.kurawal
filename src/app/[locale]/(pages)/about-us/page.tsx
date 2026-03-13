@@ -3,98 +3,64 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
-import { Goal, FileText, Globe, Mail, MapPin, Phone } from "lucide-react";
+import { Globe, Mail, MapPin, Phone } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import iyanImage from "@/assets/img/iyan.jpg";
 import firmanImage from "@/assets/img/firman.jpg";
 import gilangImage from "@/assets/img/gilang.jpg";
+import Link from "next/link";
 
 const profiles = [
-  { id: 1, foto: iyanImage, nama: "Agus Priyanto", role: "Frontend Developer" },
-  { id: 2, foto: gilangImage, nama: "Gilang Dely", role: "Backend Developer" },
+  {
+    id: 1,
+    foto: iyanImage,
+    nama: "Agus Priyanto",
+    roleKey: "profiles.1.role",
+  },
+  {
+    id: 2,
+    foto: gilangImage,
+    nama: "Gilang Dely",
+    roleKey: "profiles.2.role",
+  },
   {
     id: 3,
     foto: firmanImage,
     nama: "Firman Zamzami",
-    role: "Machine Learning Developer",
+    roleKey: "profiles.3.role",
   },
 ];
 
-const testimonials = [
-  {
-    quote:
-      "Cetha benar-benar membantu saya menyusun CV yang lebih profesional. Hasilnya, saya lebih percaya diri melamar pekerjaan.",
-    name: "Andi Pratama",
-    title: "Fresh Graduate",
-  },
-  {
-    quote:
-      "Saya suka cara Cetha memberikan rekomendasi lowongan sesuai profil LinkedIn saya. Sangat relevan!",
-    name: "Siti Rahma",
-    title: "UI/UX Designer",
-  },
-  {
-    quote:
-      "Proses optimasi CV sangat mudah dipahami. Dalam hitungan menit, CV saya terlihat jauh lebih menarik.",
-    name: "Bima Nugraha",
-    title: "Software Engineer",
-  },
-  {
-    quote:
-      "Fitur analisis CV membantu saya menemukan kekurangan yang tidak pernah saya sadari sebelumnya.",
-    name: "Dewi Lestari",
-    title: "Marketing Specialist",
-  },
-  {
-    quote:
-      "Saya berhasil dipanggil interview di perusahaan impian setelah memperbaiki CV lewat Cetha.",
-    name: "Rudi Hartono",
-    title: "Data Analyst",
-  },
-  {
-    quote:
-      "Sangat terbantu! Cetha memberikan insight yang membuat profil saya lebih menarik di mata recruiter.",
-    name: "Nadia Putri",
-    title: "Product Manager",
-  },
-  {
-    quote: "Pengalaman yang menyenangkan! Antarmuka simpel, hasilnya maksimal.",
-    name: "Fajar Kurniawan",
-    title: "Frontend Developer",
-  },
-  {
-    quote:
-      "Dengan bantuan Cetha, saya bisa lebih percaya diri dalam mencari pekerjaan. Sangat direkomendasikan.",
-    name: "Aulia Syah",
-    title: "HR Specialist",
-  },
-];
-
-const stats = [
-  { icon: Goal, name: "100+ Pengguna" },
-  { icon: FileText, name: "CV Lebih keren" },
-];
+const testimonialIds = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
 export default function AboutUsPage() {
+  const t = useTranslations("AboutUsPage");
+
+  const testimonials = testimonialIds.map((id) => ({
+    quote: t(`testimonials.items.${id}.quote`),
+    name: t(`testimonials.items.${id}.name`),
+    title: t(`testimonials.items.${id}.title`),
+  }));
+
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-col items-center px-6 pt-20 lg:pt-0">
       <div className="flex w-full flex-col items-center justify-center py-16 lg:pt-28">
         <div className="flex max-w-2xl flex-col items-center text-center">
           {/* Badge */}
           <div className="border-primaryBlue/30 bg-primaryBlue/5 text-primaryBlue rounded-full border px-4 py-1.5 text-sm font-medium tracking-wide">
-            Tim Profesional Kami
+            {t("hero.badge")}
           </div>
 
           {/* Title */}
           <div className="mt-4 max-w-2xl">
             <h2 className="text-TextPrimary text-2xl font-semibold md:text-3xl">
-              Bersama Membangun Solusi Inovatif untuk Masa Depan
+              {t("hero.title")}
             </h2>
 
             {/* Description */}
             <p className="text-TextSecondary mt-2 text-base md:text-lg">
-              Kami bekerja dengan visi yang jelas dan komitmen tinggi untuk
-              membantu Anda tumbuh dan unggul secara profesional.
+              {t("hero.description")}
             </p>
           </div>
 
@@ -109,12 +75,21 @@ export default function AboutUsPage() {
                 size={16}
                 className="shrink-0 transition-transform duration-200 group-hover:rotate-6"
               />
-              <span>Kunjungi Profile Kami</span>
+              <span>{t("hero.visitProfile")}</span>
             </a>
 
-            <div className="group bg-primaryBlue hover:bg-primaryBlueHover focus-visible:ring-primaryBlue flex w-full items-center justify-center gap-2 rounded-full px-4 py-1.5 font-semibold whitespace-nowrap text-white shadow-sm transition-all duration-200 ease-out hover:shadow-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.98] md:w-fit">
-              Hubungi Kami
-            </div>
+            <Link
+              href="#contact-us"
+              onClick={(event) => {
+                event.preventDefault();
+                document
+                  .getElementById("contact-us")
+                  ?.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+              className="group bg-primaryBlue hover:bg-primaryBlueHover focus-visible:ring-primaryBlue flex w-full items-center justify-center gap-2 rounded-full px-4 py-1.5 font-semibold whitespace-nowrap text-white shadow-sm transition-all duration-200 ease-out hover:shadow-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.98] md:w-fit"
+            >
+              {t("hero.contactButton")}
+            </Link>
           </div>
         </div>
         <div className="mt-10 grid w-full max-w-3xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -134,7 +109,9 @@ export default function AboutUsPage() {
                 <h3 className="text-lg font-semibold text-gray-900">
                   {profile.nama}
                 </h3>
-                <p className="mt-0.5 text-sm text-gray-500">{profile.role}</p>
+                <p className="mt-0.5 text-sm text-gray-500">
+                  {t(profile.roleKey)}
+                </p>
               </div>
             </div>
           ))}
@@ -150,19 +127,16 @@ export default function AboutUsPage() {
           transition={{ duration: 0.6, ease: "easeOut" }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          <div className="border-primaryBlue rounded-full border-2 px-2 py-1 lg:px-3 lg:py-1.5">
-            <p className="text-primaryBlue lg:font-medium">
-              Apa kata pengguna Cetha
-            </p>
+          <div className="border-primaryBlue/30 bg-primaryBlue/5 text-primaryBlue w-fit rounded-full border px-4 py-1.5 text-sm font-medium tracking-wide">
+            {t("testimonials.badge")}
           </div>
           <div className="mt-4 max-w-3xl flex-col text-center">
             <h2 className="text-TextPrimary text-2xl font-semibold md:text-3xl">
-              Cara Cetha Bantu Kamu Dapat <br className="hidden md:block" />
-              Kerjaan Impian
+              {t("testimonials.titleLine1")} <br className="hidden md:block" />
+              {t("testimonials.titleLine2")}
             </h2>
             <p className="text-TextSecondary mt-2 text-base lg:text-lg">
-              Ikuti langkah sederhana ini untuk optimalkan CV, tingkatkan profil
-              LinkedIn, dan temukan lowongan yang paling cocok untukmu.
+              {t("testimonials.description")}
             </p>
           </div>
         </motion.div>
@@ -182,24 +156,23 @@ export default function AboutUsPage() {
       </div>
 
       {/* Get in touch */}
-      <div className="py-8 md:py-12">
+      <div id="contact-us" className="py-8 md:py-12">
         <div className="flex w-full justify-center">
           <div className="flex max-w-2xl flex-col items-center text-center">
             {/* Badge */}
             <div className="border-primaryBlue/30 bg-primaryBlue/5 text-primaryBlue w-fit rounded-full border px-4 py-1.5 text-sm font-medium tracking-wide">
-              Tim Profesional Kami
+              {t("contact.badge")}
             </div>
 
             {/* Title */}
             <div className="mt-4 max-w-2xl">
               <h2 className="text-TextPrimary text-2xl font-semibold md:text-3xl">
-                Bersama Membangun Solusi Inovatif untuk Masa Depan
+                {t("contact.title")}
               </h2>
 
               {/* Description */}
               <p className="text-TextSecondary mt-2 text-base md:text-lg">
-                Kami bekerja dengan visi yang jelas dan komitmen tinggi untuk
-                membantu Anda tumbuh dan unggul secara profesional.
+                {t("contact.description")}
               </p>
             </div>
           </div>
@@ -211,46 +184,46 @@ export default function AboutUsPage() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <label className="text-sm font-medium text-gray-700">
-                    Nama Depan
+                    {t("contact.form.firstNameLabel")}
                   </label>
                   <input
                     type="text"
                     className="focus:border-primaryBlue focus:ring-primaryBlue mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-1 focus:outline-none"
-                    placeholder="Nama depan"
+                    placeholder={t("contact.form.firstNamePlaceholder")}
                   />
                 </div>
 
                 <div>
                   <label className="text-sm font-medium text-gray-700">
-                    Nama Belakang
+                    {t("contact.form.lastNameLabel")}
                   </label>
                   <input
                     type="text"
                     className="focus:border-primaryBlue focus:ring-primaryBlue mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-1 focus:outline-none"
-                    placeholder="Nama belakang"
+                    placeholder={t("contact.form.lastNamePlaceholder")}
                   />
                 </div>
               </div>
 
               <div>
                 <label className="text-sm font-medium text-gray-700">
-                  Email
+                  {t("contact.form.emailLabel")}
                 </label>
                 <input
                   type="email"
                   className="focus:border-primaryBlue focus:ring-primaryBlue mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-1 focus:outline-none"
-                  placeholder="email@email.com"
+                  placeholder={t("contact.form.emailPlaceholder")}
                 />
               </div>
 
               <div>
                 <label className="text-sm font-medium text-gray-700">
-                  Pesan
+                  {t("contact.form.messageLabel")}
                 </label>
                 <textarea
                   rows={4}
                   className="focus:border-primaryBlue focus:ring-primaryBlue mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-1 focus:outline-none"
-                  placeholder="Tulis pesan Anda..."
+                  placeholder={t("contact.form.messagePlaceholder")}
                 />
               </div>
 
@@ -258,7 +231,7 @@ export default function AboutUsPage() {
                 type="submit"
                 className="bg-primaryBlue hover:bg-primaryBlueHover w-full rounded-lg py-3 font-semibold text-white transition-all duration-200"
               >
-                Kirim Pesan
+                {t("contact.form.submitButton")}
               </button>
             </form>
           </div>
@@ -267,35 +240,35 @@ export default function AboutUsPage() {
           <div className="flex flex-col gap-8 p-4">
             <div>
               <h3 className="text-lg font-semibold text-gray-900">
-                Hubungi Kami
+                {t("contact.info.contactTitle")}
               </h3>
               <p className="mt-1 text-gray-600">
-                Tim kami siap membantu melalui kontak berikut:
+                {t("contact.info.contactDescription")}
               </p>
 
               <div className="mt-2 flex items-center gap-3 text-gray-700">
                 <Phone size={18} />
-                <span>+62 812 3456 7890</span>
+                <span>{t("contact.info.phone")}</span>
               </div>
             </div>
 
             <div>
               <h3 className="text-lg font-semibold text-gray-900">
-                Kirim Email
+                {t("contact.info.emailTitle")}
               </h3>
               <div className="mt-2 flex items-center gap-3 text-gray-700">
                 <Mail size={18} />
-                <span>info@domainkamu.com</span>
+                <span>{t("contact.info.email")}</span>
               </div>
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-gray-900">Alamat</h3>
+              <h3 className="text-lg font-semibold text-gray-900">
+                {t("contact.info.addressTitle")}
+              </h3>
               <div className="mt-2 flex items-start gap-3 text-gray-700">
                 <MapPin size={18} />
-                <span>
-                  Universitas Amikom Purwokerto, Purwokerto, Indonesia
-                </span>
+                <span>{t("contact.info.address")}</span>
               </div>
             </div>
           </div>
