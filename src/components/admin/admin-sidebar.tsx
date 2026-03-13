@@ -1,12 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Link } from "@/i18n/navigation";
-import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
-import { auth } from "@/app/lib/firebase";
-import { logoutUser } from "@/app/lib/auth";
-
+import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import {
   Sidebar,
   SidebarHeader,
@@ -19,148 +17,188 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
-
 import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
+  LayoutDashboard,
+  Newspaper,
+  FileText,
+  Blocks,
+  Settings,
+  LayoutTemplate,
+  Menu,
+} from "lucide-react";
 
-import { LayoutDashboard, Newspaper, FileText, Blocks, Settings, LogOut, LayoutTemplate, ChevronsUpDown } from "lucide-react";
-import logo from "@/assets/icons/cetha-logo.svg";
+import logo from "@/assets/icons/cetha-new-logo.svg";
 
-import { Avatar } from "@/components/ui/avatar";
-import UserAvatar from "@/components/user-avatar";
-import LogoutAlert from "@/components/logout-alert";
-
-const nav = [
-  { label: "Admin Dashboard", href: "/admin", icon: LayoutDashboard },
-  { label: "Pilihan Tier Langganan", href: "/admin/subscription-tiers", icon: Blocks },
-  { label: "Verifikasi Pembayaran", href: "/admin/subscriptions", icon: FileText },
-  { label: "Kelola Konten & Tips", href: "/admin/contents", icon: Newspaper },
-  { label: "Pengaturan Situs", href: "/admin/settings", icon: Settings },
+const adminMenu = [
+  { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
+  { title: "Plans", href: "/admin/subscription-tiers", icon: Blocks },
+  { title: "Payments", href: "/admin/subscriptions", icon: FileText },
+  { title: "Content", href: "/admin/contents", icon: Newspaper },
+  { title: "Site Settings", href: "/admin/settings", icon: Settings },
 ];
+
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    setMatches(media.matches);
+
+    const listener = () => setMatches(media.matches);
+    media.addEventListener("change", listener);
+
+    return () => media.removeEventListener("change", listener);
+  }, [query]);
+
+  return matches;
+}
 
 export function AdminSidebar() {
   const pathname = usePathname();
-  const router = useRouter();
-  const [username, setUsername] = useState("Admin Cetha");
-  const [email, setEmail] = useState("admin@cetha.id");
-  const [openDialog, setOpenDialog] = useState(false);
+  const { state, setOpen } = useSidebar();
+
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const prevMobile = useRef(isMobile);
+
+  const isExpanded = state === "expanded" || isMobile;
+
+  const sidebarMode = isMobile ? "offcanvas" : "icon";
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        setUsername(user.displayName || user.email?.split("@")[0] || "Admin");
-        setEmail(user.email || "admin@cetha.id");
+    if (prevMobile.current !== isMobile) {
+      if (isMobile) {
+        setOpen(false);
       }
-    });
-    return () => unsubscribe();
-  }, []);
+    }
 
-  const handleLogout = async () => {
-    await logoutUser();
-    router.push("/");
-  };
+    prevMobile.current = isMobile;
+  }, [isMobile, setOpen]);
 
   return (
-    <>
-      <Sidebar className="border-r bg-white/90 backdrop-blur">
-        <SidebarHeader className="flex items-center justify-start pt-4">
-          <Link href={"/admin"} className="text-TextPrimary flex h-12 items-center gap-2 text-lg font-semibold">
-            <Image alt="logo cetha" src={logo} height={60} />
-            <span className="text-[10px] font-bold bg-accentOrange text-white px-2 py-0.5 rounded ml-1 tracking-wider uppercase shadow-sm">ADMIN</span>
+    <Sidebar
+      collapsible={sidebarMode}
+      className="border-r border-gray-200 bg-white"
+    >
+      {/* HEADER */}
+      <SidebarHeader className="h-20 justify-center">
+        <div
+          className={`flex items-center px-4 transition-all duration-300 ${
+            isExpanded ? "justify-between" : "justify-center"
+          }`}
+        >
+          {isExpanded && (
+            <Link
+              href="/admin"
+              className="animate-in fade-in flex items-center duration-500"
+            >
+              <Image
+                alt="logo"
+                src={logo}
+                width={100}
+                priority
+                className="object-contain"
+              />
+              <span className="bg-accentOrange ml-1 rounded px-2 py-0.5 text-[10px] font-bold tracking-wider text-white uppercase shadow-sm">
+                ADMIN
+              </span>
+            </Link>
+          )}
+
+          <SidebarTrigger
+            className={`rounded-lg transition-colors hover:bg-gray-100 ${
+              isExpanded ? "h-9 w-9" : "h-10 w-10"
+            }`}
+          >
+            <Menu className="h-5 w-5 text-gray-600" />
+          </SidebarTrigger>
+        </div>
+      </SidebarHeader>
+
+      {/* CONTENT */}
+      <SidebarContent className="scrollbar-none px-2">
+        <SidebarGroupLabel
+          className={`mb-2 px-2 text-xs font-bold tracking-wider text-gray-400 uppercase transition-opacity ${
+            isExpanded ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          Manajemen Situs
+        </SidebarGroupLabel>
+
+        <SidebarGroupContent>
+          <SidebarMenu className="gap-0.5">
+            {adminMenu.map((item) => {
+              const isActive = pathname === item.href;
+
+              return (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    tooltip={item.title}
+                    isActive={isActive}
+                  >
+                    <Link
+                      href={item.href}
+                      className={`group relative flex h-10 items-center rounded-xl transition-all duration-200 ${
+                        isExpanded ? "gap-3 px-3" : "justify-center"
+                      } ${
+                        isActive
+                          ? "bg-blue-600 text-white shadow-lg ring-1 shadow-blue-200 ring-blue-600"
+                          : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                      }`}
+                    >
+                      <item.icon
+                        className={`!h-5 !w-5 shrink-0 transition-colors ${
+                          isActive
+                            ? "text-white"
+                            : "text-gray-400 group-hover:text-gray-600"
+                        }`}
+                      />
+
+                      {isExpanded && (
+                        <span className="text-sm font-semibold">
+                          {item.title}
+                        </span>
+                      )}
+
+                      {isActive && isExpanded && (
+                        <div className="absolute right-3 h-2 w-1 rounded-full bg-blue-200/50" />
+                      )}
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              );
+            })}
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarContent>
+
+      {/* Footer */}
+      <SidebarFooter className="p-4">
+        <SidebarMenuButton asChild tooltip="Web User UI">
+          <Link
+            href="/dashboard"
+            className={`group flex h-10 items-center rounded-xl transition-all ${
+              isExpanded ? "gap-3" : "relative right-2 justify-center"
+            } ${
+              pathname === "/dashboard"
+                ? "bg-orange-100 font-semibold text-orange-700"
+                : "text-gray-500 hover:bg-orange-50 hover:text-orange-600"
+            }`}
+          >
+            <LayoutTemplate
+              className={`!h-5 !w-5 ${
+                pathname === "/dashboard"
+                  ? "text-orange-600"
+                  : "text-gray-400 group-hover:text-orange-500"
+              }`}
+            />
+
+            {isExpanded && (
+              <span className="text-sm font-semibold">Web User UI</span>
+            )}
           </Link>
-        </SidebarHeader>
-
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel className="text-sm">Manajemen Situs</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {nav.map((item, i) => {
-                  const active = item.href === "/admin" ? pathname.endsWith("/admin") : pathname.includes(item.href);
-
-                  return (
-                    <SidebarMenuItem key={i}>
-                      <SidebarMenuButton asChild variant={"default"}>
-                        <Link
-                          href={item.href}
-                          className={`hover:bg-accent/50 flex !hover:text-primaryBlue items-center gap-3 rounded-md px-3 !py-6 text-sm font-medium transition-all duration-150 ${active ? "text-primaryBlue font-semibold bg-blue-50/50" : "text-gray-600"}`}
-                        >
-                          <item.icon className={`${active ? "text-primaryBlue" : "text-muted-foreground"} !h-6 !w-6`} />
-                          <span>{item.label}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  );
-                })}
-
-                <div className="mt-8 px-2">
-                  <div className="border border-dashed border-gray-200 rounded-xl p-4 bg-gray-50/50 mb-2">
-                    <p className="text-xs text-gray-500 font-medium mb-3 text-center">Beralih ke mode Pengguna Biasa</p>
-                    <SidebarMenuItem>
-                      <SidebarMenuButton asChild variant={"default"}>
-                        <Link
-                          href="/dashboard"
-                          className="flex justify-center items-center gap-2 rounded-lg bg-white border border-gray-200 px-3 !py-5 text-sm font-medium text-gray-700 transition hover:bg-gray-100 shadow-sm"
-                        >
-                          <LayoutTemplate className="text-gray-500 !h-4 !w-4" />
-                          <span>Web User UI</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  </div>
-                </div>
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
-
-        <SidebarFooter>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="hover:bg-accent/50 mb-2 flex w-full items-center justify-between rounded-md px-2 py-2 text-sm transition-all duration-150 focus:outline-none">
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-8 w-8 ring-2 ring-accentOrange ring-offset-1">
-                    <UserAvatar />
-                  </Avatar>
-                  <div className="flex flex-col items-start w-[120px]">
-                    <span className="text-sm font-semibold text-gray-900 truncate w-full text-left">{username}</span>
-                    <span className="text-muted-foreground text-xs truncate w-full text-left">{email}</span>
-                  </div>
-                </div>
-                <ChevronsUpDown size={16} className="text-muted-foreground" />
-              </button>
-            </DropdownMenuTrigger>
-
-            <DropdownMenuContent side="right" align="end" className="w-56 rounded-xl shadow-lg border-gray-100">
-              <DropdownMenuLabel className="font-normal bg-gray-50/50 pb-3">
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-semibold">{username}</p>
-                  <p className="text-muted-foreground text-xs">{email}</p>
-                  <p className="text-[10px] uppercase font-bold text-accentOrange mt-1">Administrator</p>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => router.push("/id/settings")} className="cursor-pointer py-2">
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Pengaturan Akun</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => setOpenDialog(true)} className="cursor-pointer py-2 focus:bg-red-50 focus:text-red-600 group">
-                <LogOut className="mr-2 h-4 w-4 text-red-500 group-hover:text-red-600" />
-                <span className="text-red-500 font-medium group-hover:text-red-600">Keluar Sistem</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </SidebarFooter>
-      </Sidebar>
-
-      <LogoutAlert openDialog={openDialog} setOpenDialog={setOpenDialog} handleLogout={handleLogout} />
-    </>
+        </SidebarMenuButton>
+      </SidebarFooter>
+    </Sidebar>
   );
 }

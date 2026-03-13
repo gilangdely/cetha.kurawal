@@ -28,20 +28,68 @@ import { Avatar } from "./ui/avatar";
 import UserAvatar from "./user-avatar";
 import LogoutAlert from "./logout-alert";
 import { usePathname, useRouter } from "next/navigation";
-import { SidebarTrigger } from "./ui/sidebar";
+import { SidebarTrigger, useSidebar } from "./ui/sidebar";
 import Link from "next/link";
 import { toast } from "sonner";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+  BreadcrumbPage,
+} from "./ui/breadcrumb";
+
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    setMatches(media.matches);
+
+    const listener = () => setMatches(media.matches);
+    media.addEventListener("change", listener);
+
+    return () => media.removeEventListener("change", listener);
+  }, [query]);
+
+  return matches;
+}
 
 const AppTopbar = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const { state, setOpen } = useSidebar();
 
   const [username, setUsername] = useState("Cetha");
   const [email, setEmail] = useState("m@example.com");
   const [openDialog, setOpenDialog] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
+  const isSidebarOpen = state === "expanded";
+
   const showSearch = pathname.includes("/dashboard/career-tips");
+
+  const pathSegments = pathname
+    .split("/")
+    .filter(
+      (segment) => segment !== "" && segment !== "id" && segment !== "en",
+    );
+
+  const isCvBuilder = pathSegments[1] === "cv-builder";
+
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+
+  const handleSidebarToggle = () => {
+    setOpen(!isSidebarOpen);
+  };
+
+  const formatSegment = (segment: string) => {
+    // Mengganti dash dengan spasi dan kapitalisasi huruf pertama tiap kata
+    return segment
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  };
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -89,15 +137,42 @@ const AppTopbar = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-gray-200 bg-white px-6">
+      <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-gray-200 bg-white px-6 print:hidden">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <SidebarTrigger className="flex h-9 w-9 items-center justify-center rounded-lg transition-colors hover:bg-gray-100 lg:hidden">
+            <SidebarTrigger
+              onClick={handleSidebarToggle}
+              className="flex h-9 w-9 items-center justify-center rounded-lg transition-colors hover:bg-gray-100 md:hidden"
+            >
               <Menu className="h-5 w-5 text-gray-600" />
             </SidebarTrigger>
-            <h1 className="text-lg font-bold tracking-tight text-gray-900 lg:text-xl">
-              Dashboard
-            </h1>
+            <Breadcrumb>
+              <BreadcrumbList>
+                {pathSegments.map((segment, index) => {
+                  const href = "/" + pathSegments.slice(0, index + 1).join("/");
+
+                  return (
+                    <React.Fragment key={index}>
+                      <BreadcrumbItem>
+                        {index === pathSegments.length - 1 ? (
+                          <BreadcrumbPage>
+                            {formatSegment(segment)}
+                          </BreadcrumbPage>
+                        ) : (
+                          <BreadcrumbLink asChild>
+                            <Link href={href}>{formatSegment(segment)}</Link>
+                          </BreadcrumbLink>
+                        )}
+                      </BreadcrumbItem>
+
+                      {index < pathSegments.length - 1 && (
+                        <BreadcrumbSeparator />
+                      )}
+                    </React.Fragment>
+                  );
+                })}
+              </BreadcrumbList>
+            </Breadcrumb>
           </div>
           {isAdmin && (
             <>
@@ -159,7 +234,7 @@ const AppTopbar = () => {
               sideOffset={20} // Memberi jarak agar tidak menempel ke trigger
               className="z-50 !w-54 !min-w-[12rem] transition-all"
             >
-              <DropdownMenuLabel className="blocl font-normal lg:hidden">
+              <DropdownMenuLabel className="block font-normal lg:hidden">
                 <div className="flex flex-col space-y-1">
                   <p className="truncate text-sm leading-none font-medium text-gray-900">
                     {username}

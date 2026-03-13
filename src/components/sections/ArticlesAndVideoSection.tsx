@@ -118,13 +118,23 @@ const ArticlesAndVideoSection = () => {
           <div className="block h-px w-full bg-neutral-200 md:hidden" />
 
           {/* ARTICLES */}
-          <div className="w-full space-y-4 md:flex-1">
+          <div className="w-full space-y-3 md:flex-1">
             {articles.map((article) => (
               <div
                 key={article.id}
                 className="flex flex-col gap-4 rounded-2xl bg-white p-4 transition hover:shadow-sm md:flex-row md:p-2"
               >
-                <div className="h-40 w-full flex-shrink-0 overflow-hidden rounded-xl bg-gray-300 md:h-32 md:w-48" />
+                <div className="h-40 w-full flex-shrink-0 overflow-hidden rounded-xl md:h-32 md:w-48">
+                  {article.coverImageUrl ? (
+                    <img
+                      src={article.coverImageUrl}
+                      alt={article.title}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="h-full w-full bg-gray-300" />
+                  )}
+                </div>
 
                 <div className="flex flex-col justify-between">
                   <div>
