@@ -24,8 +24,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Textarea } from "./ui/textarea";
+import { useTranslations } from "next-intl";
 
 export default function CvBuildAccordion() {
+  const t = useTranslations("dashboard.formCvBuilder");
+
   const {
     data,
     updatePersonalInfo,
@@ -49,7 +52,9 @@ export default function CvBuildAccordion() {
   const [cropImageSrc, setCropImageSrc] = useState("");
   const [showCropModal, setShowCropModal] = useState(false);
 
-  const [generatingIds, setGeneratingIds] = useState<Record<string, boolean>>({});
+  const [generatingIds, setGeneratingIds] = useState<Record<string, boolean>>(
+    {},
+  );
 
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [upgradeMessage, setUpgradeMessage] = useState("");
@@ -61,7 +66,7 @@ export default function CvBuildAccordion() {
     onSuccess: (result: string) => void,
   ) => {
     if (!currentText.trim()) {
-      toast.error("Isi poin inti terlebih dahulu agar AI bisa bekerja.");
+      toast.error(t("toast.fillFirst"));
       return;
     }
 
@@ -77,22 +82,20 @@ export default function CvBuildAccordion() {
 
       if (!res.ok || !responseData?.success) {
         if (responseData?.requireUpgrade) {
-          setUpgradeMessage(responseData.message || "Kuota kamu habis.");
+          setUpgradeMessage(responseData.message || t("toast.aiError"));
           setShowUpgradeModal(true);
           return;
         }
         throw new Error(
-          responseData?.error ||
-            responseData?.message ||
-            "Gagal generate text menggunakan AI.",
+          responseData?.error || responseData?.message || t("toast.aiError"),
         );
       }
 
       onSuccess(responseData.result);
-      toast.success("Teks berhasil diperbarui dengan AI!");
+      toast.success(t("toast.aiSuccess"));
     } catch (e: any) {
       console.error(e);
-      toast.error(e.message || "Terjadi kesalahan koneksi saat memanggil AI.");
+      toast.error(e.message || t("toast.aiError"));
     } finally {
       setGeneratingIds((prev) => ({ ...prev, [id]: false }));
     }
@@ -106,13 +109,11 @@ export default function CvBuildAccordion() {
     event.target.value = "";
 
     if (!file.type.startsWith("image/")) {
-      toast.error(
-        "Format file tidak didukung. Harap upload gambar (JPG/PNG/WEBP).",
-      );
+      toast.error(t("toast.fileFormatError"));
       return;
     }
     if (file.size > 2 * 1024 * 1024) {
-      toast.error("Ukuran file melebihi batas maksimum 2 MB.");
+      toast.error(t("toast.fileSizeError"));
       return;
     }
 
@@ -126,7 +127,7 @@ export default function CvBuildAccordion() {
       setShowCropModal(false);
       setCropImageSrc(""); // Release memory
       setIsUploadingPhoto(true);
-      toast.info("Mengunggah foto...");
+      toast.info(t("toast.uploadingPhoto"));
 
       const formData = new FormData();
       formData.append("file", blob, "profile.jpg");
@@ -147,14 +148,14 @@ export default function CvBuildAccordion() {
         },
       );
 
-      if (!res.ok) throw new Error("Gagal mengunggah foto");
+      if (!res.ok) throw new Error(t("toast.uploadError"));
 
       const result = await res.json();
       setPhoto(result.secure_url);
-      toast.success("Foto berhasil diunggah!");
+      toast.success(t("toast.uploadSuccess"));
     } catch (error) {
       console.error(error);
-      toast.error("Terjadi kesalahan saat mengunggah foto.");
+      toast.error(t("toast.uploadError"));
     } finally {
       setIsUploadingPhoto(false);
     }
@@ -203,7 +204,7 @@ export default function CvBuildAccordion() {
           <AccordionTrigger className="px-4 py-3 text-sm font-medium hover:no-underline">
             <div className="flex items-center gap-2 text-gray-800">
               <User size={16} />
-              Personal Information
+              {t("sections.personal")}
             </div>
           </AccordionTrigger>
 
@@ -230,22 +231,20 @@ export default function CvBuildAccordion() {
                 ) : (
                   <label className="flex cursor-pointer flex-col items-center text-gray-400">
                     <ImagePlus size={20} />
-                    <span className="text-xs">Upload photo</span>
-                    <input
-                      type="file"
-                      hidden
-                      onChange={handlePhotoSelected}
-                    />
+                    <span className="text-xs">{t("photo.upload")}</span>
+                    <input type="file" hidden onChange={handlePhotoSelected} />
                   </label>
                 )}
               </div>
 
-              <p className="text-center text-xs text-gray-400">Optional</p>
+              <p className="text-center text-xs text-gray-400">
+                {t("photo.optional")}
+              </p>
             </div>
 
             {/* Name */}
             <Input
-              placeholder="Full name"
+              placeholder={t("placeholders.fullName")}
               value={data.personalInfo.fullName}
               className="h-9"
               onChange={(e) => updatePersonalInfo("fullName", e.target.value)}
@@ -253,7 +252,7 @@ export default function CvBuildAccordion() {
 
             {/* Job title */}
             <Input
-              placeholder="Job title"
+              placeholder={t("placeholders.jobTitle")}
               value={data.personalInfo.jobTitle}
               className="h-9"
               onChange={(e) => updatePersonalInfo("jobTitle", e.target.value)}
@@ -261,7 +260,7 @@ export default function CvBuildAccordion() {
 
             {/* Email */}
             <Input
-              placeholder="Email address"
+              placeholder={t("placeholders.email")}
               value={data.personalInfo.email}
               className="h-9"
               onChange={(e) => updatePersonalInfo("email", e.target.value)}
@@ -270,12 +269,10 @@ export default function CvBuildAccordion() {
             {/* Summary */}
             <div className="space-y-3">
               <Textarea
-                placeholder="Write a short professional summary"
+                placeholder={t("placeholders.summary")}
                 value={data.personalInfo.summary}
                 className="min-h-[110px]"
-                onChange={(e) =>
-                  updatePersonalInfo("summary", e.target.value)
-                }
+                onChange={(e) => updatePersonalInfo("summary", e.target.value)}
               />
 
               <Button
@@ -295,21 +292,18 @@ export default function CvBuildAccordion() {
                 ) : (
                   <> </>
                 )}
-                Enhance Summary
+                {t("buttons.enhanceSummary")}
               </Button>
             </div>
           </AccordionContent>
         </AccordionItem>
 
         {/* Experiences */}
-        <AccordionItem
-          value="experience"
-          className="border-b last:border-b-0"
-        >
+        <AccordionItem value="experience" className="border-b last:border-b-0">
           <AccordionTrigger className="px-4 py-3 text-sm font-medium hover:no-underline">
             <div className="flex items-center gap-2 text-gray-800">
               <Briefcase size={16} />
-              Work Experience
+              {t("sections.experience")}
             </div>
           </AccordionTrigger>
 
@@ -323,7 +317,7 @@ export default function CvBuildAccordion() {
                   <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                     {/* Role */}
                     <Input
-                      placeholder="Role"
+                      placeholder={t("placeholders.role")}
                       className="h-9"
                       value={exp.role}
                       onChange={(e) =>
@@ -333,7 +327,7 @@ export default function CvBuildAccordion() {
 
                     {/* Company */}
                     <Input
-                      placeholder="Company"
+                      placeholder={t("placeholders.company")}
                       className="h-9"
                       value={exp.company}
                       onChange={(e) =>
@@ -343,7 +337,7 @@ export default function CvBuildAccordion() {
 
                     {/* Start Date */}
                     <Input
-                      placeholder="Start date"
+                      placeholder={t("placeholders.startDate")}
                       className="h-9"
                       value={exp.startDate}
                       onChange={(e) =>
@@ -353,7 +347,7 @@ export default function CvBuildAccordion() {
 
                     {/* End Date */}
                     <Input
-                      placeholder="End date"
+                      placeholder={t("placeholders.endDate")}
                       className="h-9"
                       value={exp.endDate}
                       onChange={(e) =>
@@ -364,7 +358,7 @@ export default function CvBuildAccordion() {
                     {/* Description */}
                     <div className="col-span-1 space-y-3 md:col-span-2">
                       <Textarea
-                        placeholder="Responsibilities / Achievements"
+                        placeholder={t("placeholders.responsibilities")}
                         className="min-h-[100px]"
                         value={exp.description}
                         onChange={(e) =>
@@ -395,7 +389,7 @@ export default function CvBuildAccordion() {
                         ) : (
                           <Sparkles size={16} />
                         )}
-                        Enhance Description
+                        {t("buttons.enhanceDescription")}
                       </Button>
                     </div>
                   </div>
@@ -410,7 +404,7 @@ export default function CvBuildAccordion() {
               onClick={handleAddExperience}
             >
               <Plus size={16} />
-              Add Experience
+              {t("buttons.addExperience")}
             </Button>
           </AccordionContent>
         </AccordionItem>
@@ -420,7 +414,7 @@ export default function CvBuildAccordion() {
           <AccordionTrigger className="px-4 py-3 text-sm font-medium hover:no-underline">
             <div className="flex items-center gap-2 text-gray-800">
               <GraduationCap size={16} />
-              Education
+              {t("sections.education")}
             </div>
           </AccordionTrigger>
 
@@ -433,7 +427,7 @@ export default function CvBuildAccordion() {
                 <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
                   <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                     <Input
-                      placeholder="University"
+                      placeholder={t("placeholders.university")}
                       className="h-9"
                       value={edu.institution}
                       onChange={(e) =>
@@ -442,7 +436,7 @@ export default function CvBuildAccordion() {
                     />
 
                     <Input
-                      placeholder="Degree"
+                      placeholder={t("placeholders.degree")}
                       className="h-9"
                       value={edu.degree}
                       onChange={(e) =>
@@ -451,21 +445,17 @@ export default function CvBuildAccordion() {
                     />
 
                     <Input
-                      placeholder="Field of study"
+                      placeholder={t("placeholders.fieldOfStudy")}
                       className="h-9"
                       value={edu.fieldOfStudy}
                       onChange={(e) =>
-                        updateEducation(
-                          edu.id,
-                          "fieldOfStudy",
-                          e.target.value,
-                        )
+                        updateEducation(edu.id, "fieldOfStudy", e.target.value)
                       }
                     />
 
                     <div className="flex gap-2">
                       <Input
-                        placeholder="Start year"
+                        placeholder={t("placeholders.startDate")}
                         className="h-9"
                         value={edu.startDate}
                         onChange={(e) =>
@@ -474,7 +464,7 @@ export default function CvBuildAccordion() {
                       />
 
                       <Input
-                        placeholder="End year"
+                        placeholder={t("placeholders.endDate")}
                         className="h-9"
                         value={edu.endDate}
                         onChange={(e) =>
@@ -485,15 +475,11 @@ export default function CvBuildAccordion() {
 
                     <div className="col-span-1 space-y-3 md:col-span-2">
                       <Textarea
-                        placeholder="Activities / Achievements"
+                        placeholder={t("placeholders.activitiesAchievements")}
                         className="min-h-[90px]"
                         value={edu.description || ""}
                         onChange={(e) =>
-                          updateEducation(
-                            edu.id,
-                            "description",
-                            e.target.value,
-                          )
+                          updateEducation(edu.id, "description", e.target.value)
                         }
                       />
 
@@ -516,7 +502,7 @@ export default function CvBuildAccordion() {
                         ) : (
                           <Sparkles size={16} />
                         )}
-                        Enhance Description
+                        {t("buttons.enhanceDescription")}
                       </Button>
                     </div>
                   </div>
@@ -531,7 +517,7 @@ export default function CvBuildAccordion() {
               onClick={handleAddEducation}
             >
               <Plus size={16} />
-              Add Education
+              {t("buttons.addEducation")}
             </Button>
           </AccordionContent>
         </AccordionItem>
@@ -541,7 +527,7 @@ export default function CvBuildAccordion() {
           <AccordionTrigger className="px-4 py-3 text-sm font-medium hover:no-underline">
             <div className="flex items-center gap-2 text-gray-800">
               <Star size={16} />
-              Skills
+              {t("sections.skills")}
             </div>
           </AccordionTrigger>
 
@@ -569,7 +555,7 @@ export default function CvBuildAccordion() {
               onClick={handleAddSkill}
             >
               <Plus size={16} />
-              Add Skill
+              {t("buttons.addSkill")}
             </Button>
           </AccordionContent>
         </AccordionItem>

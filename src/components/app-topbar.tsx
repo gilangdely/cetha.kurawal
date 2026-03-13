@@ -9,8 +9,6 @@ import {
   Bell,
   Search,
   User,
-  Settings,
-  HelpCircle,
   ChevronDown,
   LogOut,
   Menu,
@@ -39,6 +37,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "./ui/breadcrumb";
+import { useTranslations } from "next-intl";
 
 function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(false);
@@ -60,6 +59,7 @@ const AppTopbar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { state, setOpen } = useSidebar();
+  const t = useTranslations("dashboard.topbar");
 
   const [username, setUsername] = useState("Cetha");
   const [email, setEmail] = useState("m@example.com");
@@ -68,27 +68,24 @@ const AppTopbar = () => {
 
   const isSidebarOpen = state === "expanded";
 
-  const showSearch = pathname.includes("/dashboard/career-tips");
-
   const pathSegments = pathname
     .split("/")
     .filter(
       (segment) => segment !== "" && segment !== "id" && segment !== "en",
     );
 
-  const isCvBuilder = pathSegments[1] === "cv-builder";
-
-  const isDesktop = useMediaQuery("(min-width: 768px)");
-
   const handleSidebarToggle = () => {
     setOpen(!isSidebarOpen);
   };
 
   const formatSegment = (segment: string) => {
-    // Mengganti dash dengan spasi dan kapitalisasi huruf pertama tiap kata
-    return segment
-      .replace(/-/g, " ")
-      .replace(/\b\w/g, (char) => char.toUpperCase());
+    try {
+      return t(`routes.${segment}`);
+    } catch {
+      return segment
+        .replace(/-/g, " ")
+        .replace(/\b\w/g, (char) => char.toUpperCase());
+    }
   };
 
   useEffect(() => {
@@ -130,7 +127,7 @@ const AppTopbar = () => {
   const handleLogout = async () => {
     await logoutUser();
 
-    toast.success("Logout Berhasil");
+    toast.success(t("logoutSuccess"));
 
     router.push("/");
   };
@@ -146,6 +143,7 @@ const AppTopbar = () => {
             >
               <Menu className="h-5 w-5 text-gray-600" />
             </SidebarTrigger>
+
             <Breadcrumb>
               <BreadcrumbList>
                 {pathSegments.map((segment, index) => {
@@ -174,38 +172,24 @@ const AppTopbar = () => {
               </BreadcrumbList>
             </Breadcrumb>
           </div>
+
           {isAdmin && (
             <>
               <div className="hidden h-6 w-[1px] bg-gray-200 lg:block" />
               <span className="hidden text-sm text-gray-500 lg:block">
-                Welcome back, Admin
+                {t("welcomeAdmin")}
               </span>
             </>
           )}
         </div>
 
-        {/* BAGIAN KANAN: Search & Actions */}
         <div className="flex items-center gap-2 md:gap-4">
-          {/* Search Bar (Hidden on mobile) */}
-          {showSearch && (
-            <div className="relative hidden md:block">
-              <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Cari Artikel atau Video..."
-                className="h-9 w-64 rounded-full border border-gray-200 bg-gray-50 pr-4 pl-10 text-sm transition-all focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 focus:outline-none"
-              />
-            </div>
-          )}
-
-          {/* Action Icons */}
           <div className="flex items-center gap-1">
             <button className="rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700">
               <Bell className="h-5 w-5" />
             </button>
           </div>
 
-          {/* User Profile */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="ml-2 flex items-center gap-3 border-l border-gray-200 pl-4 transition-opacity outline-none hover:opacity-80">
@@ -228,20 +212,15 @@ const AppTopbar = () => {
               </button>
             </DropdownMenuTrigger>
 
-            {/* Konten Dropdown */}
             <DropdownMenuContent
               align="end"
-              sideOffset={20} // Memberi jarak agar tidak menempel ke trigger
-              className="z-50 !w-54 !min-w-[12rem] transition-all"
+              sideOffset={20}
+              className="z-50 !w-54 !min-w-[12rem]"
             >
               <DropdownMenuLabel className="block font-normal lg:hidden">
                 <div className="flex flex-col space-y-1">
-                  <p className="truncate text-sm leading-none font-medium text-gray-900">
-                    {username}
-                  </p>
-                  <p className="text-muted-foreground mt-0.5 truncate text-xs leading-none">
-                    {email}
-                  </p>
+                  <p className="truncate text-sm font-medium">{username}</p>
+                  <p className="text-muted-foreground text-xs">{email}</p>
                 </div>
               </DropdownMenuLabel>
 
@@ -253,7 +232,7 @@ const AppTopbar = () => {
                   className="flex w-full items-center gap-2"
                 >
                   <User className="mr-3 h-4 w-4 text-gray-500" />
-                  <span>Profil Saya</span>
+                  <span>{t("profile")}</span>
                 </Link>
               </DropdownMenuItem>
 
@@ -263,7 +242,7 @@ const AppTopbar = () => {
                   className="flex w-full items-center gap-2"
                 >
                   <Settings2 className="mr-3 h-4 w-4 text-gray-500" />
-                  <span>Pengaturan</span>
+                  <span>{t("settings")}</span>
                 </Link>
               </DropdownMenuItem>
 
@@ -274,12 +253,13 @@ const AppTopbar = () => {
                 onClick={() => setOpenDialog(true)}
               >
                 <LogOut className="mr-3 h-4 w-4" />
-                <span>Keluar</span>
+                <span>{t("logout")}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </header>
+
       <LogoutAlert
         openDialog={openDialog}
         setOpenDialog={setOpenDialog}

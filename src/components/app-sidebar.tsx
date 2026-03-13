@@ -7,6 +7,7 @@ import Image from "next/image";
 import { auth } from "@/app/lib/firebase";
 import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import {
   Sidebar,
   SidebarHeader,
@@ -37,24 +38,16 @@ import logo from "@/assets/icons/cetha-new-logo.svg";
 import favicon from "@/assets/icons/favicon-white-new.svg";
 
 const mainMenu = [
-  { title: "Dashboard", icon: Home, href: "/dashboard" },
-  { title: "CV Review", icon: FileSearch, href: "/dashboard/review-cv" },
+  { title: "dashboard", icon: Home, href: "/dashboard" },
+  { title: "cvReview", icon: FileSearch, href: "/dashboard/review-cv" },
+  { title: "cvBuilder", icon: FileText, href: "/dashboard/cv-builder" },
   {
-    title: "CV Builder",
-    icon: FileText,
-    href: "/dashboard/cv-builder",
-  },
-  {
-    title: "Improve LinkedIn",
+    title: "improveLinkedin",
     icon: Linkedin,
     href: "/dashboard/improve-linkedin",
   },
-  {
-    title: "Find Jobs AI",
-    icon: Briefcase,
-    href: "/dashboard/job-match",
-  },
-  { title: "Artikel & Video", icon: Newspaper, href: "/dashboard/career-tips" },
+  { title: "findJobs", icon: Briefcase, href: "/dashboard/job-match" },
+  { title: "articles", icon: Newspaper, href: "/dashboard/career-tips" },
 ];
 
 function useMediaQuery(query: string) {
@@ -76,6 +69,7 @@ function useMediaQuery(query: string) {
 export function AppSidebar() {
   const pathname = usePathname();
   const { state, setOpen } = useSidebar();
+  const t = useTranslations("dashboard.sidebar");
 
   const [isAdmin, setIsAdmin] = useState(false);
   const [data, setData] = useState<any>(null);
@@ -139,17 +133,14 @@ export function AppSidebar() {
 
   const remaining = data?.quota?.remaining_quota ?? 0;
 
-  // Pesan berdasarkan token
   let message = "";
 
   if (remaining <= 2) {
-    message =
-      "Tokenmu hampir habis. Tambahkan token agar AI tetap bisa digunakan.";
-  } else if (remaining <= 10) {
-    message =
-      "Tokenmu mulai menipis. Gunakan dengan bijak atau tambahkan token.";
-  } else if (remaining > 40) {
-    message = "Tokenmu masih aman. Gunakan AI untuk meningkatkan kariermu.";
+    message = t("tokenMessage.low");
+  } else if (remaining <= 20) {
+    message = t("tokenMessage.medium");
+  } else if (remaining >= 40) {
+    message = t("tokenMessage.safe");
   }
 
   return (
@@ -196,7 +187,7 @@ export function AppSidebar() {
             isExpanded ? "opacity-100" : "opacity-0"
           }`}
         >
-          Main Navigation
+          {t("mainNavigation")}
         </SidebarGroupLabel>
 
         <SidebarGroupContent>
@@ -208,7 +199,7 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    tooltip={item.title}
+                    tooltip={t(`menu.${item.title}`)}
                     isActive={isActive}
                   >
                     <Link
@@ -231,7 +222,7 @@ export function AppSidebar() {
 
                       {isExpanded && (
                         <span className="text-sm font-semibold">
-                          {item.title}
+                          {t(`menu.${item.title}`)}
                         </span>
                       )}
 
@@ -249,7 +240,7 @@ export function AppSidebar() {
 
       {/* Footer */}
       <SidebarFooter className="p-4">
-        <SidebarMenuButton asChild tooltip="Lihat Harga">
+        <SidebarMenuButton asChild tooltip={t("pricing")}>
           <Link
             href="/dashboard/my-profile/subscription"
             className={`group flex h-10 items-center rounded-xl transition-all ${
@@ -269,14 +260,13 @@ export function AppSidebar() {
             />
 
             {isExpanded && (
-              <span className="text-sm font-semibold">Lihat Harga</span>
+              <span className="text-sm font-semibold">{t("pricing")}</span>
             )}
           </Link>
         </SidebarMenuButton>
 
-        {/* Admin Panel */}
         {isAdmin && (
-          <SidebarMenuButton asChild tooltip="Admin Panel">
+          <SidebarMenuButton asChild tooltip={t("adminPanel")}>
             <Link
               href="/admin"
               className={`group flex h-10 items-center rounded-xl transition-all ${
@@ -296,7 +286,7 @@ export function AppSidebar() {
               />
 
               {isExpanded && (
-                <span className="text-sm font-semibold">Admin Panel</span>
+                <span className="text-sm font-semibold">{t("adminPanel")}</span>
               )}
             </Link>
           </SidebarMenuButton>
@@ -312,7 +302,6 @@ export function AppSidebar() {
               layout
               className="relative mt-2 overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-3 text-white shadow-lg shadow-blue-200/30"
             >
-              {/* Background glow */}
               <div className="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-white/10 blur-xl" />
               <div className="absolute -bottom-4 -left-4 h-16 w-16 rounded-full bg-indigo-400/20 blur-xl" />
 
@@ -320,7 +309,7 @@ export function AppSidebar() {
                 <div className="mb-2 flex items-center gap-2">
                   <Image src={favicon} alt="favicon" className="h-6 w-6" />
                   <span className="text-[10px] font-bold tracking-[0.12em] text-blue-100 uppercase">
-                    Cetha Plus+
+                    {t("subscription.badge")}
                   </span>
                 </div>
 
@@ -334,7 +323,7 @@ export function AppSidebar() {
                   href="/dashboard/my-profile/subscription"
                   className="inline-flex w-full items-center justify-center rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-blue-700 shadow transition-all hover:-translate-y-[1px] hover:shadow-md active:translate-y-0"
                 >
-                  Tambah Token
+                  {t("subscription.addToken")}
                   <ArrowUpRight size={12} className="ml-1" />
                 </Link>
               </div>
@@ -343,7 +332,7 @@ export function AppSidebar() {
         ) : (
           <SidebarMenuButton
             asChild
-            tooltip="Upgrade"
+            tooltip={t("upgrade")}
             className="group relative right-2"
           >
             <Link
@@ -365,7 +354,7 @@ export function AppSidebar() {
               />
 
               {isExpanded && (
-                <span className="text-sm font-semibold">Upgrade</span>
+                <span className="text-sm font-semibold">{t("upgrade")}</span>
               )}
 
               {pathname === "/upgrade" && isExpanded && (

@@ -120,7 +120,8 @@ const ArticlesAndVideoSection = () => {
           {/* ARTICLES */}
           <div className="w-full space-y-3 md:flex-1">
             {articles.map((article) => (
-              <div
+              <Link
+                href={`/career-tips/${article.slug}`}
                 key={article.id}
                 className="flex flex-col gap-4 rounded-2xl bg-white p-4 transition hover:shadow-sm md:flex-row md:p-2"
               >
@@ -151,7 +152,7 @@ const ArticlesAndVideoSection = () => {
                     </p>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
 
             {/* Desktop Divider */}

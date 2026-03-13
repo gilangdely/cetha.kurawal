@@ -31,6 +31,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { PencapaianSkeleton } from "../pencapaian-skeleton";
+import { useTranslations } from "next-intl";
 
 interface PencapaianTerbaruProps {
   className?: string;
@@ -39,6 +40,7 @@ interface PencapaianTerbaruProps {
 export default function PencapaianTerbaru({
   className = "",
 }: PencapaianTerbaruProps) {
+  const t = useTranslations("DashboardAchievements");
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [openEditor, setOpenEditor] = useState(false);
   const [editItem, setEditItem] = useState<Achievement | null>(null);
@@ -52,7 +54,7 @@ export default function PencapaianTerbaru({
     const user = auth.currentUser;
 
     if (!user) {
-      toast.error("Anda harus login untuk melihat pencapaian");
+      toast.error(t("errors.loginRequired"));
       setLoading(false);
       return;
     }
@@ -75,7 +77,7 @@ export default function PencapaianTerbaru({
         setLoading(false);
       },
       () => {
-        toast.error("Gagal memuat pencapaian");
+        toast.error(t("errors.loadFailed"));
         setLoading(false);
       },
     );
@@ -93,9 +95,9 @@ export default function PencapaianTerbaru({
 
     try {
       await deleteDoc(doc(db, "pencapaian", itemToDelete.id));
-      toast.success("Pencapaian dihapus");
+      toast.success(t("success.deleted"));
     } catch {
-      toast.error("Gagal menghapus");
+      toast.error(t("errors.deleteFailed"));
     } finally {
       setDeleteDialogOpen(false);
       setItemToDelete(null);
@@ -105,7 +107,7 @@ export default function PencapaianTerbaru({
   const openAdd = () => {
     const user = auth.currentUser;
     if (!user) {
-      toast.error("Anda harus login");
+      toast.error(t("errors.loginRequiredAction"));
       return;
     }
 
@@ -117,7 +119,7 @@ export default function PencapaianTerbaru({
     const user = auth.currentUser;
 
     if (!user || item.userId !== user.uid) {
-      toast.error("Tidak memiliki izin");
+      toast.error(t("errors.noPermission"));
       return;
     }
 
@@ -137,12 +139,12 @@ export default function PencapaianTerbaru({
         {/* HEADER */}
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <h4 className="flex items-center gap-2 text-xl font-bold tracking-tight text-slate-900">
-            Pencapaian
+            {t("header.title")}
           </h4>
 
           <button
             onClick={openAdd}
-            title="Tambah Pencapaian"
+            title={t("header.add")}
             className="group flex items-center justify-center rounded-lg bg-slate-900 p-2 text-white transition-all duration-200 hover:-translate-y-[1px] hover:bg-slate-800 hover:shadow-md active:scale-95"
           >
             <Plus
@@ -240,18 +242,17 @@ export default function PencapaianTerbaru({
 
               {/* Badge motivasi */}
               <span className="mb-2 rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-500">
-                Mulai dari langkah kecil
+                {t("emptyState.badge")}
               </span>
 
               {/* Title */}
               <p className="text-base font-semibold text-slate-800">
-                Belum ada pencapaian
+                {t("emptyState.title")}
               </p>
 
               {/* Motivational text */}
               <p className="mt-1 mb-5 max-w-xs text-xs leading-relaxed text-slate-400">
-                Setiap progress layak dicatat. Tambahkan pencapaianmu dan bangun
-                perjalanan kariermu sedikit demi sedikit.
+                {t("emptyState.description")}
               </p>
 
               {/* CTA */}
@@ -259,7 +260,7 @@ export default function PencapaianTerbaru({
                 onClick={openAdd}
                 className="group flex items-center gap-2 rounded-lg bg-orange-500 px-4 py-2 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-[1px] hover:bg-orange-600 hover:shadow-md active:scale-95"
               >
-                Tambah Pencapaian
+                {t("emptyState.cta")}
                 <Plus
                   size={16}
                   className="transition-transform duration-200 group-hover:rotate-90"
@@ -299,7 +300,9 @@ export default function PencapaianTerbaru({
                   {previewItem.description}
                 </p>
               ) : (
-                <p className="text-gray-400 italic">Tidak ada deskripsi.</p>
+                <p className="text-gray-400 italic">
+                  {t("preview.noDescription")}
+                </p>
               )}
 
               <div className="flex gap-2 pt-4">
@@ -310,14 +313,14 @@ export default function PencapaianTerbaru({
                   }}
                   className="flex items-center gap-1.5 rounded-md border border-gray-300 px-3 py-1.5 text-xs hover:bg-gray-100"
                 >
-                  <Pencil size={14} /> Edit
+                  <Pencil size={14} /> {t("preview.edit")}
                 </button>
 
                 <button
                   onClick={() => setPreviewItem(null)}
                   className="flex items-center gap-1.5 rounded-md border border-gray-300 px-3 py-1.5 text-xs hover:bg-gray-100"
                 >
-                  <X size={14} /> Tutup
+                  <X size={14} /> {t("preview.close")}
                 </button>
               </div>
             </div>
@@ -329,20 +332,22 @@ export default function PencapaianTerbaru({
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Hapus pencapaian?</AlertDialogTitle>
+            <AlertDialogTitle>{t("deleteDialog.title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Pencapaian <strong>{itemToDelete?.title}</strong> akan dihapus
-              permanen.
+              {t.rich("deleteDialog.description", {
+                strong: (chunks) => <strong>{chunks}</strong>,
+                title: itemToDelete?.title ?? "",
+              })}
             </AlertDialogDescription>
           </AlertDialogHeader>
 
           <AlertDialogFooter>
-            <AlertDialogCancel>Batal</AlertDialogCancel>
+            <AlertDialogCancel>{t("deleteDialog.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmDelete}
               className="bg-red-600 hover:bg-red-700"
             >
-              Hapus
+              {t("deleteDialog.confirm")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
