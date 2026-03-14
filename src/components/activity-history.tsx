@@ -14,6 +14,7 @@ import {
 import { auth } from "@/app/lib/firebase";
 import { toast } from "sonner";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 interface CvReview {
   id: string;
@@ -26,6 +27,7 @@ interface CvReview {
 }
 
 export default function ActivityHistory() {
+  const t = useTranslations("activityHistory");
   const [activities, setActivities] = useState<CvReview[]>([]); // Gunakan CvReview untuk riwayat CV
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -33,7 +35,7 @@ export default function ActivityHistory() {
   useEffect(() => {
     const user = auth.currentUser;
     if (!user) {
-      toast.error("Login dulu untuk melihat riwayat");
+      toast.error(t("loginRequired"));
       setLoading(false);
       return;
     }
@@ -58,7 +60,7 @@ export default function ActivityHistory() {
       },
       (error) => {
         console.error("Error fetching activities:", error);
-        toast.error("Gagal memuat riwayat");
+        toast.error(t("loadError"));
         setLoading(false);
       },
     );
@@ -109,16 +111,16 @@ export default function ActivityHistory() {
       {/* Header */}
       <div className="flex items-center justify-between border-b border-slate-100 pb-3">
         <h4 className="flex items-center gap-2 text-xl font-bold tracking-tight text-slate-900">
-          Riwayat Review CV
+          {t("title")}
         </h4>
 
         {activities.length > 0 && (
           <Link
             href="/dashboard/history-review-cv"
-            title="Lihat semua aktivitas"
+            title={t("viewAll")}
             className="group flex items-center gap-1.5 rounded-md bg-slate-900 px-2.5 py-2 text-xs font-semibold text-white transition-all duration-200 hover:-translate-y-[1px] hover:bg-slate-800 hover:shadow-sm active:scale-95"
           >
-            Lihat Semua
+            {t("viewAll")}
             <ChevronRight
               size={14}
               className="transition-transform duration-200 group-hover:translate-x-1"
@@ -161,7 +163,7 @@ export default function ActivityHistory() {
                       —{" "}
                       {activity.result?.summary ||
                         activity.result?.description ||
-                        "Lihat insight review CV"}
+                        t("defaultInsight")}
                     </p>
                   </div>
                 </div>
@@ -180,18 +182,18 @@ export default function ActivityHistory() {
             </div>
 
             <p className="text-sm font-semibold text-slate-700">
-              Belum ada aktivitas review CV
+              {t("empty.title")}
             </p>
 
             <p className="mt-1 mb-4 text-xs text-slate-400">
-              Mulai review CV untuk mendapatkan insight pengembangan karir
+              {t("empty.description")}
             </p>
 
             <Link
               href="/dashboard/review-cv"
               className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-500"
             >
-              Mulai Review CV
+              {t("empty.cta")}
             </Link>
           </div>
         )}

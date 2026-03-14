@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import Image from "next/image";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
@@ -31,7 +31,6 @@ const UploadJobs = () => {
   const [upgradeMessage, setUpgradeMessage] = useState("");
 
   const router = useRouter();
-  const pathname = usePathname();
   const setJobResult = useJobResultStore((state) => state.setJobResult);
 
   useEffect(() => {
@@ -109,7 +108,7 @@ const UploadJobs = () => {
         try {
           errData = await res.json();
           errorMessage = errData?.message || errData?.error || errorMessage;
-        } catch (_) {}
+        } catch (_) { }
 
         if (errData?.requireUpgrade) {
           setUpgradeMessage(errorMessage);
@@ -141,11 +140,7 @@ const UploadJobs = () => {
         localStorage.setItem(`upload-job-count-${ip}`, String(newCount));
       }
 
-      const targetRoute = pathname.startsWith("/dashboard")
-        ? "/dashboard/job-match-result"
-        : "/job-match-result";
-
-      router.push(targetRoute);
+      router.push("/job-match-result");
     } catch (err: any) {
       console.error("❌ Upload gagal:", err.message || err);
       toast.error(err.message || "Gagal mengunggah atau menganalisis CV");
@@ -158,11 +153,10 @@ const UploadJobs = () => {
     <div className="mt-4 w-full">
       {/* Upload Area */}
       <div
-        className={`relative flex h-96 items-center justify-center rounded-2xl border-3 border-dashed ${
-          uploadEnabled
+        className={`relative flex h-96 items-center justify-center rounded-2xl border-3 border-dashed ${uploadEnabled
             ? "cursor-pointer border-gray-400"
             : "cursor-not-allowed border-gray-300 bg-gray-100 opacity-60"
-        }`}
+          }`}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onClick={() => {

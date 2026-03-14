@@ -2,63 +2,47 @@
   "login": {
     "title": "Hai, senang melihatmu lagi!",
     "subtitle": "Login dan lanjutkan upgrade CV serta kariermu sekarang.",
-
     "emailLabel": "Email",
     "emailPlaceholder": "Masukan email kamu",
-
     "passwordLabel": "Password",
     "passwordPlaceholder": "Masukan password kamu",
-
     "forgotPassword": "Lupa password?",
     "loginButton": "Login",
     "loginLoading": "Memproses...",
     "googleLogin": "Login dengan Google",
-
     "noAccount": "Belum ada akun?",
     "register": "Daftar",
     "back": "Kembali",
-
     "or": "atau",
-
     "toast": {
-      "welcome" : "Selamat datang",
+      "welcome": "Selamat datang",
       "empty": "Email dan Password wajib diisi",
       "success": "Login berhasil",
       "already": "Kamu sudah login, diarahkan ke dashboard",
       "wrongPassword": "Password salah",
-      "userNotFound": "Email belum terdaftar",
+      "user Found": "Email belum terdaftar",
       "invalid": "Email atau password tidak cocok",
       "googleFail": "Gagal login dengan Google"
     }
   },
-
   "register": {
     "title": "Daftar Akun Baru",
     "subtitle": "Buat profilmu dan mulai upgrade CV serta kariermu.",
-
     "usernameLabel": "Username",
     "usernamePlaceholder": "Masukan username kamu",
-
     "emailLabel": "Email",
     "emailPlaceholder": "Masukan email kamu",
-
     "passwordLabel": "Password",
     "passwordPlaceholder": "Masukan password kamu",
-
     "confirmPasswordLabel": "Konfirmasi Password",
     "confirmPasswordPlaceholder": "Ulangi password kamu",
-
     "registerButton": "Buat Akun",
     "registerLoading": "Memproses...",
-
     "googleRegister": "Daftar dengan Google",
-
     "alreadyHaveAccount": "Sudah punya akun?",
     "login": "Login",
-
     "back": "Kembali",
     "or": "atau",
-
     "toast": {
       "empty": "Semua field harus diisi",
       "passwordMismatch": "Password dan konfirmasi password tidak sama",
@@ -70,22 +54,16 @@
       "welcome": "Selamat datang"
     }
   },
-
   "forgotPassword": {
     "back": "Kembali",
-
     "title": "Lupa password?",
     "subtitle": "Masukkan email untuk menerima link reset password.",
-
     "emailLabel": "Email",
     "emailPlaceholder": "Masukan email kamu",
-
     "sendButton": "Kirim Link Reset",
     "sendLoading": "Mengirim...",
-
     "rememberPassword": "Sudah ingat password?",
     "backToLogin": "Kembali ke Login",
-
     "toast": {
       "emptyEmail": "Email wajib diisi",
       "success": "Link reset password telah dikirim. Cek inbox atau folder spam.",
@@ -94,7 +72,6 @@
       "error": "Terjadi kesalahan, silakan coba lagi"
     }
   },
-
   "Hero": {
     "headlineHighlight": "Upgrade CV, upgrade karier.",
     "headlineText": "Platform pintar buat kamu yang mau naik level dan dapet kerja lebih cepat.",
@@ -108,12 +85,10 @@
     },
     "imageAlt": "Ilustrasi membangun CV"
   },
-
   "Advantages": {
     "badge": "Kenapa Cetha",
     "title": "Cara Pintar Untuk Mencapai Karier Impianmu",
     "description": "Cetha bantu kamu bikin CV standout, optimalkan profil LinkedIn, dan dapatkan rekomendasi kerja sesuai skill semuanya di satu platform.",
-
     "cards": {
       "cv": {
         "title": "Review CV Instan",
@@ -128,15 +103,12 @@
         "description": "AI mencarikan pekerjaan sesuai skill, pengalaman, dan lokasi. Jadi kamu hanya lihat lowongan yang relevan."
       }
     },
-
     "cta": "Coba sekarang"
   },
-
   "HowItWorks": {
     "badge": "Cara Kerja Cetha",
     "title": "Cara Cetha Bantu Kamu Dapat Kerjaan Impian",
     "description": "Ikuti langkah mudah ini untuk optimalkan CV, profil LinkedIn, dan temukan lowongan yang paling cocok.",
-
     "steps": {
       "register": {
         "title": "Daftar & Buat Profil",
@@ -156,15 +128,24 @@
         "title": "Review CV dengan AI",
         "description": "Upload CV kamu, AI langsung menganalisis dan beri saran perbaikan agar CV lebih menarik & lolos ATS.",
         "features": [
-          { "highlight": "Analisis otomatis oleh AI.", "text": "" },
-          { "highlight": "Saran perbaikan berbasis data ATS.", "text": "" }
+          {
+            "highlight": "Analisis otomatis oleh AI.",
+            "text": ""
+          },
+          {
+            "highlight": "Saran perbaikan berbasis data ATS.",
+            "text": ""
+          }
         ]
       },
       "linkedin": {
         "title": "Optimalkan Profil LinkedIn",
         "description": "Masukkan URL LinkedIn kamu dan dapatkan tips untuk headline, summary, dan skill agar profil lebih standout.",
         "features": [
-          { "highlight": "Rekomendasi headline profesional.", "text": "" },
+          {
+            "highlight": "Rekomendasi headline profesional.",
+            "text": ""
+          },
           {
             "highlight": "Optimasi skill & summary.",
             "text": "agar mudah ditemukan recruiter."
@@ -175,7 +156,10 @@
         "title": "Dapatkan Rekomendasi Pekerjaan",
         "description": "Lihat rekomendasi lowongan yang cocok dengan skill & pengalamanmu.",
         "features": [
-          { "highlight": "Lowongan hanya yang relevan.", "text": "" },
+          {
+            "highlight": "Lowongan hanya yang relevan.",
+            "text": ""
+          },
           {
             "highlight": "Personalisasi sesuai lokasi & pengalaman.",
             "text": ""
@@ -184,20 +168,16 @@
       }
     }
   },
-
   "CvUpgrade": {
     "badge": "Tingkatkan CV",
-
     "hero": {
       "title": "Tingkatkan Profil Profesional Anda dengan AI",
       "description": "Optimalkan resume Anda dengan AI untuk menonjolkan kekuatan dan pengalaman terbaik Anda di pasar kerja yang kompetitif."
     },
-
     "step1": {
       "title": "1. Unggah CV Anda",
       "description": "Unggah CV Anda dan dapatkan analisis serta rekomendasi perbaikan berbasis AI dalam hitungan detik."
     },
-
     "step2": {
       "title": "2. Lihat Skor dan Kekuatan CV Anda",
       "description": "AI menganalisis kualitas CV Anda berdasarkan dampak pengalaman, struktur penulisan, dan daya tarik terhadap recruiter untuk menunjukkan area yang sudah kuat dan yang masih bisa ditingkatkan.",
@@ -206,7 +186,6 @@
       "overallScore": "Skor Keseluruhan",
       "aboveAverage": "Di atas rata-rata kandidat"
     },
-
     "step3": {
       "title": "3. Dapatkan Saran & Perbaikan CV",
       "description": "AI menganalisis CV Anda dan memberikan rekomendasi spesifik untuk meningkatkan kekuatan konten, relevansi terhadap posisi, serta peluang lolos tahap screening.",
@@ -221,7 +200,6 @@
         }
       ]
     },
-
     "cta": {
       "title": "Siap Tingkatkan CV Anda?",
       "description": "Dapatkan analisis mendalam dan rekomendasi berbasis AI untuk meningkatkan struktur, wording, dan daya tarik CV Anda di mata recruiter.",
@@ -229,26 +207,43 @@
       "footnote": "Proses cepat • Insight profesional • Siap kirim ke recruiter"
     }
   },
-
-  "ArticleAndVideo": {
-    "badge": "Artikel & Video",
-    "title": "Belajar Lebih Cerdas. Dapatkan Pekerjaan Lebih Cepat.",
-    "description": "Temukan panduan praktis dan video strategi karier untuk meningkatkan kualitas CV dan memperbesar peluang Anda diterima kerja.",
-    "cta": "Lihat Semua Artikel"
+  "careerTipsPage": {
+    "hero": {
+      "title": "Kami membangun proyek yang membantu kamu mencapai tujuan kariermu",
+      "description": "Jelajahi kumpulan artikel dan video untuk membantu kamu mempersiapkan diri menghadapi dunia kerja."
+    },
+    "search": {
+      "placeholder": "Cari konten",
+      "button": "Cari"
+    },
+    "tabs": {
+      "all": "Semua",
+      "article": "Artikel",
+      "video": "Video"
+    },
+    "content": {
+      "readArticle": "Baca Artikel",
+      "watchVideo": "Tonton Video"
+    },
+    "empty": {
+      "notFound": "Konten tidak ditemukan.",
+      "noContent": "Belum ada konten diterbitkan."
+    },
+    "error": {
+      "title": "Terjadi Kesalahan"
+    },
+    "loadMore": "Muat Lebih Banyak"
   },
-
   "LinkedinImproveSection": {
     "badge": "LinkedIn Improve",
     "title": "Tingkatkan Profil Profesional Anda dengan AI",
     "description": "Optimalkan profil LinkedIn Anda dengan AI untuk menonjolkan kekuatan, pengalaman, dan positioning terbaik Anda di pasar kerja yang kompetitif.",
     "cta": "Coba Sekarang",
-
     "tooltip": {
       "title": "AI LinkedIn Insight",
       "description": "Kami menganalisis profil LinkedIn Anda secara menyeluruh dan memberikan rekomendasi strategis untuk meningkatkan headline, summary, serta positioning profesional agar lebih menarik bagi recruiter."
     }
   },
-
   "CtaSection": {
     "cvPanel": {
       "badge": "Tingkatkan Karier Anda",
@@ -271,10 +266,8 @@
       "primaryCta": "Mulai Review"
     }
   },
-
   "Footer": {
     "description": "Review CV cerdas berbasis AI untuk masa depan karier Anda.",
-
     "navigation": {
       "title": "Navigasi",
       "reviewCv": "Review CV",
@@ -283,7 +276,6 @@
       "pricing": "Harga",
       "about": "Tentang Kami"
     },
-
     "other": {
       "title": "Lainnya",
       "faq": "FAQ",
@@ -291,24 +283,247 @@
       "privacy": "Kebijakan Privasi",
       "terms": "Syarat & Ketentuan"
     },
-
     "contact": {
       "title": "Kontak Kami",
       "phone": "+62 123-456-789",
       "email": "kurawal.creative@gmail.com",
       "location": "Purwokerto, Indonesia"
     },
-
     "copyright": "All rights reserved."
   },
-
+  "FAQPage": {
+    "title": "FAQs",
+    "description": "Semua yang perlu kamu tahu tentang fitur, layanan, dan cara penggunaan platform.",
+    "categories": {
+      "cvReview": {
+        "label": "CV Review",
+        "items": {
+          "1": {
+            "question": "Bagaimana cara memakai fitur CV Review?",
+            "answer": "Masuk ke dashboard, pilih menu CV Review, lalu unggah file CV dalam format PDF atau DOCX. Setelah file masuk, sistem akan memproses analisis otomatis dan menampilkan hasil review."
+          },
+          "2": {
+            "question": "Apa saja yang dinilai dalam CV Review?",
+            "answer": "Sistem menilai struktur CV, kejelasan pengalaman, kekuatan ringkasan profesional, keterbacaan, dan relevansi isi CV terhadap kebutuhan recruiter maupun sistem ATS."
+          },
+          "3": {
+            "question": "Apa yang saya dapat setelah CV direview?",
+            "answer": "Kamu akan melihat skor CV, insight utama, kekuatan dokumen, serta rekomendasi perbaikan yang lebih spesifik pada bagian yang masih lemah."
+          },
+          "4": {
+            "question": "Apakah CV saya disimpan permanen?",
+            "answer": "Data diproses secara aman untuk kebutuhan analisis. Dokumen tidak digunakan di luar proses review dan pengelolaan akunmu di platform."
+          }
+        }
+      },
+      "cvBuilder": {
+        "label": "CV Builder",
+        "items": {
+          "1": {
+            "question": "Bagaimana cara mulai menggunakan CV Builder?",
+            "answer": "Buka menu CV Builder di dashboard, isi data dasar seperti profil, pengalaman kerja, pendidikan, dan skill, lalu lihat hasilnya langsung di panel preview."
+          },
+          "2": {
+            "question": "Apakah saya bisa memilih template CV?",
+            "answer": "Ya. CV Builder menyediakan beberapa tampilan template yang bisa dipakai sesuai gaya profesional yang kamu butuhkan."
+          },
+          "3": {
+            "question": "Apakah saya bisa mengedit isi CV kapan saja?",
+            "answer": "Bisa. Kamu dapat menambah, menghapus, atau memperbarui bagian CV kapan saja sebelum mengekspor hasil akhirnya."
+          },
+          "4": {
+            "question": "Dalam format apa CV bisa diunduh?",
+            "answer": "Setelah selesai, CV dapat diekspor menjadi PDF agar siap dikirim ke recruiter atau digunakan untuk melamar kerja."
+          }
+        }
+      },
+      "improveLinkedin": {
+        "label": "Improve LinkedIn",
+        "items": {
+          "1": {
+            "question": "Bagaimana cara memakai fitur Improve LinkedIn?",
+            "answer": "Masuk ke halaman Improve LinkedIn, masukkan URL profil LinkedIn kamu, lalu sistem akan membaca profil tersebut dan memberi evaluasi otomatis."
+          },
+          "2": {
+            "question": "Bagian profil apa saja yang dianalisis?",
+            "answer": "Fitur ini menganalisis headline, bagian about, pengalaman kerja, skill, dan kekuatan positioning profil secara keseluruhan."
+          },
+          "3": {
+            "question": "Apa hasil yang diberikan setelah analisis LinkedIn?",
+            "answer": "Kamu akan mendapatkan saran headline, perbaikan ringkasan profil, rekomendasi penulisan pengalaman, dan insight agar profil lebih menarik untuk recruiter."
+          },
+          "4": {
+            "question": "Apakah saya harus login ke akun LinkedIn di Cetha?",
+            "answer": "Tidak. Kamu cukup memasukkan URL profil LinkedIn yang ingin dianalisis, tanpa perlu memberikan password akun LinkedIn."
+          }
+        }
+      },
+      "careerTips": {
+        "label": "Career Tips",
+        "items": {
+          "1": {
+            "question": "Di mana saya bisa membaca artikel dan menonton video tips karier?",
+            "answer": "Kamu bisa membuka menu Career Tips atau Artikel & Video untuk melihat semua konten edukatif yang tersedia di platform."
+          },
+          "2": {
+            "question": "Apakah saya bisa mencari topik tertentu di Career Tips?",
+            "answer": "Ya. Halaman Career Tips mendukung filter kategori serta fitur pencarian agar kamu lebih cepat menemukan topik yang relevan."
+          },
+          "3": {
+            "question": "Apa saja topik yang dibahas di Career Tips?",
+            "answer": "Topiknya mencakup review CV, pembuatan CV, optimasi LinkedIn, strategi interview, dan pengembangan karier secara umum."
+          },
+          "4": {
+            "question": "Apakah konten Career Tips hanya berupa artikel?",
+            "answer": "Tidak. Selain artikel, tersedia juga video agar kamu bisa memilih format belajar yang paling nyaman."
+          }
+        }
+      }
+    }
+  },
+  "AboutUsPage": {
+    "hero": {
+      "badge": "Tim Profesional Kami",
+      "title": "Bersama Membangun Solusi Inovatif untuk Masa Depan",
+      "description": "Kami bekerja dengan visi yang jelas dan komitmen tinggi untuk membantu Anda tumbuh dan unggul secara profesional.",
+      "visitProfile": "Kunjungi Profile Kami",
+      "contactButton": "Hubungi Kami"
+    },
+    "profiles": {
+      "1": {
+        "role": "Frontend Developer"
+      },
+      "2": {
+        "role": "Backend Developer"
+      },
+      "3": {
+        "role": "Machine Learning Developer"
+      }
+    },
+    "testimonials": {
+      "badge": "Apa kata pengguna Cetha",
+      "titleLine1": "Cara Cetha Bantu Kamu Dapat",
+      "titleLine2": "Kerjaan Impian",
+      "description": "Ikuti langkah sederhana ini untuk optimalkan CV, tingkatkan profil LinkedIn, dan temukan lowongan yang paling cocok untukmu.",
+      "items": {
+        "1": {
+          "quote": "Cetha benar-benar membantu saya menyusun CV yang lebih profesional. Hasilnya, saya lebih percaya diri melamar pekerjaan.",
+          "name": "Andi Pratama",
+          "title": "Fresh Graduate"
+        },
+        "2": {
+          "quote": "Saya suka cara Cetha memberikan rekomendasi lowongan sesuai profil LinkedIn saya. Sangat relevan!",
+          "name": "Siti Rahma",
+          "title": "UI/UX Designer"
+        },
+        "3": {
+          "quote": "Proses optimasi CV sangat mudah dipahami. Dalam hitungan menit, CV saya terlihat jauh lebih menarik.",
+          "name": "Bima Nugraha",
+          "title": "Software Engineer"
+        },
+        "4": {
+          "quote": "Fitur analisis CV membantu saya menemukan kekurangan yang tidak pernah saya sadari sebelumnya.",
+          "name": "Dewi Lestari",
+          "title": "Marketing Specialist"
+        },
+        "5": {
+          "quote": "Saya berhasil dipanggil interview di perusahaan impian setelah memperbaiki CV lewat Cetha.",
+          "name": "Rudi Hartono",
+          "title": "Data Analyst"
+        },
+        "6": {
+          "quote": "Sangat terbantu! Cetha memberikan insight yang membuat profil saya lebih menarik di mata recruiter.",
+          "name": "Nadia Putri",
+          "title": "Product Manager"
+        },
+        "7": {
+          "quote": "Pengalaman yang menyenangkan! Antarmuka simpel, hasilnya maksimal.",
+          "name": "Fajar Kurniawan",
+          "title": "Frontend Developer"
+        },
+        "8": {
+          "quote": "Dengan bantuan Cetha, saya bisa lebih percaya diri dalam mencari pekerjaan. Sangat direkomendasikan.",
+          "name": "Aulia Syah",
+          "title": "HR Specialist"
+        }
+      }
+    },
+    "contact": {
+      "badge": "Tim Profesional Kami",
+      "title": "Bersama Membangun Solusi Inovatif untuk Masa Depan",
+      "description": "Kami bekerja dengan visi yang jelas dan komitmen tinggi untuk membantu Anda tumbuh dan unggul secara profesional.",
+      "form": {
+        "firstNameLabel": "Nama Depan",
+        "firstNamePlaceholder": "Nama depan",
+        "lastNameLabel": "Nama Belakang",
+        "lastNamePlaceholder": "Nama belakang",
+        "emailLabel": "Email",
+        "emailPlaceholder": "email@email.com",
+        "messageLabel": "Pesan",
+        "messagePlaceholder": "Tulis pesan Anda...",
+        "submitButton": "Kirim Pesan"
+      },
+      "info": {
+        "contactTitle": "Hubungi Kami",
+        "contactDescription": "Tim kami siap membantu melalui kontak berikut:",
+        "phone": "+62 812 3456 7890",
+        "emailTitle": "Kirim Email",
+        "email": "kurawal.creative@gmail.com",
+        "addressTitle": "Alamat",
+        "address": "Universitas Amikom Purwokerto, Purwokerto, Indonesia"
+      }
+    }
+  },
+  "TermsPage": {
+    "title": "Syarat & Ketentuan",
+    "description": "Dengan menelusuri atau mengoperasikan layanan kami, Anda menyatakan persetujuan atas dokumen berikut.",
+    "lastRevision": "Revisi terakhir: 1 Januari 2026",
+    "sections": {
+      "01": {
+        "title": "Definisi layanan",
+        "content": "Cetha adalah platform berbasis kecerdasan buatan yang memberi wawasan analisis kelayakan CV, bimbingan profil LinkedIn, dan modul persiapan karier. Produk layanan dilisensikan melalui platform web untuk publik terbatas."
+      },
+      "02": {
+        "title": "Akun & akses",
+        "content": "Layanan ini mengharuskan registrasi akun. Pengguna setuju memberikan kredensial yang valid dan menjaga keamanan sandinya. Kami tidak bertanggung jawab atas penyalahgunaan akun akibat kelalaian pengguna."
+      },
+      "03": {
+        "title": "Penggunaan yang dilarang",
+        "content": "Dilarang melakukan peretasan, scraping ilegal, penggandaan konten komersial tanpa kemitraan, rekayasa prompt injection pada AI, maupun spam berlebihan terhadap sistem kami."
+      },
+      "04": {
+        "title": "Konten pengguna",
+        "content": "Pengguna memegang hak kekayaan intelektual atas CV miliknya sendiri. Output AI Cetha boleh digunakan sebagai referensi pribadi, namun dilarang menerbitkan kompilasi output secara massal untuk membuat layanan serupa."
+      },
+      "05": {
+        "title": "Disclaimer hasil AI",
+        "content": "Hasil analisis AI bersifat konsultatif, bukan keputusan HR yang mutlak. Kami tidak menjamin bahwa mengikuti rekomendasi AI akan menghasilkan kelulusan interview. Keputusan akhir sepenuhnya ada di tangan rekruiter."
+      },
+      "06": {
+        "title": "Batasan tanggung jawab",
+        "content": "Kami tidak bertanggung jawab atas kerugian finansial, moral, atau sosial akibat kehilangan peluang kerja. Seluruh keputusan dan tindakan dalam proses melamar kerja sepenuhnya menjadi tanggung jawab pengguna."
+      },
+      "07": {
+        "title": "Perubahan layanan",
+        "content": "Kami dapat sewaktu-waktu mengubah spesifikasi fitur, menonaktifkan fitur lama, atau menerapkan batasan penggunaan tanpa pemberitahuan ekstensif, terutama bagi pengguna paket gratis."
+      },
+      "08": {
+        "title": "Hukum yang berlaku",
+        "content": "Hubungan antara platform dan pengguna tunduk pada yurisdiksi hukum perdata Republik Indonesia, sesuai wilayah di mana server beroperasi."
+      }
+    },
+    "support": {
+      "title": "Ada pertanyaan tentang ketentuan ini?",
+      "description": "Hubungi tim kami melalui halaman",
+      "cta": "Contact Support",
+      "suffix": "dan kami akan membantu menjelaskan."
+    }
+  },
   "pricingQuota": {
     "badge": "Paket Kuota",
     "title": "Bayar Sekali, Gunakan Sesuai Kebutuhan",
     "description": "Dapatkan kuota review untuk menganalisis CV dan mendapatkan rekomendasi kerja sesuai kebutuhanmu.",
-
     "popular": "Paling Populer",
-
     "plans": {
       "beginner": {
         "tier": "Pemula",
@@ -350,7 +565,6 @@
       }
     }
   },
-
   "authCarousel": {
     "quotes": [
       {
@@ -370,13 +584,11 @@
       }
     ]
   },
-
   "navbar": {
     "features": "Fitur",
     "blog": "Blog & Tips",
     "price": "Harga",
     "about": "Tentang Kami",
-
     "dropdown": {
       "reviewCv": {
         "title": "Review CV Instan",
@@ -391,7 +603,6 @@
         "desc": "Rekomendasi pekerjaan terbaik sesuai CV kamu"
       }
     },
-
     "auth": {
       "login": "Masuk",
       "dashboard": "Dashboard",
@@ -401,12 +612,355 @@
       "greeting": "Hai"
     }
   },
-  
   "NotFound": {
     "title": "Error 404: Halaman Tidak Ditemukan!",
     "description": "Kami sudah mencari ke mana pun, tapi tidak menemukan halaman yang kamu maksud.",
     "back": "Kembali ke Halaman Utama"
+  },
+  "dashboard": {
+    "sidebar": {
+      "mainNavigation": "Navigasi Utama",
+      "menu": {
+        "dashboard": "Dashboard",
+        "cvReview": "Review CV",
+        "cvBuilder": "CV Builder",
+        "improveLinkedin": "Perbaiki LinkedIn",
+        "findJobs": "Cari Pekerjaan AI",
+        "articles": "Artikel & Video"
+      },
+      "pricing": "Lihat Harga",
+      "adminPanel": "Admin Panel",
+      "upgrade": "Upgrade",
+      "subscription": {
+        "badge": "Cetha Plus+",
+        "addToken": "Tambah Token"
+      },
+      "tokenMessage": {
+        "exhausted": "Tokenmu habis. Tambahkan token agar AI tetap bisa digunakan.",
+        "low": "Tokenmu hampir habis. Tambahkan token agar AI tetap bisa digunakan.",
+        "medium": "Tokenmu mulai menipis. Gunakan dengan bijak atau tambahkan token.",
+        "safe": "Tokenmu masih aman. Gunakan AI untuk meningkatkan kariermu."
+      }
+    },
+    "topbar": {
+      "welcomeAdmin": "Selamat datang kembali, Admin",
+      "searchPlaceholder": "Cari artikel atau video...",
+      "profile": "Profil Saya",
+      "settings": "Pengaturan",
+      "logout": "Keluar",
+      "routes": {
+        "dashboard": "Dashboard",
+        "career-tips": "Tips Karier",
+        "cv-builder": "CV Builder",
+        "improve-linkedin": "Optimasi LinkedIn",
+        "review-cv": "Review CV",
+        "my-profile": "Profil Saya",
+        "settings": "Pengaturan"
+      },
+      "messages": {
+        "logoutSuccess": "Berhasil logout"
+      }
+    },
+    "cvBuilder": {
+      "undo": "Urungkan",
+      "redo": "Ulangi",
+      "form": "Form",
+      "preview": "Pratinjau",
+      "exportPdf": "Ekspor PDF"
+    },
+    "formCvBuilder": {
+      "sections": {
+        "personal": "Informasi Pribadi",
+        "experience": "Pengalaman Kerja",
+        "education": "Pendidikan",
+        "skills": "Keahlian"
+      },
+      "photo": {
+        "upload": "Unggah foto",
+        "optional": "Opsional",
+        "showOnCV": "Tampilkan Foto di CV",
+        "showOnCVDescription": "Aktifkan untuk menampilkan foto profil pada pratinjau CV."
+      },
+      "placeholders": {
+        "fullName": "Nama lengkap",
+        "jobTitle": "Jabatan / Profesi",
+        "email": "Alamat email",
+        "summary": "Tulis ringkasan profesional singkat",
+        "role": "Posisi",
+        "company": "Perusahaan",
+        "startDate": "Tanggal mulai",
+        "endDate": "Tanggal selesai",
+        "responsibilities": "Tanggung jawab / Pencapaian",
+        "university": "Universitas",
+        "degree": "Gelar",
+        "fieldOfStudy": "Bidang studi",
+        "startYear": "Tahun mulai",
+        "endYear": "Tahun selesai",
+        "activities": "Aktivitas / Pencapaian",
+        "skill": "Keahlian"
+      },
+      "buttons": {
+        "enhanceSummary": "Tingkatkan Ringkasan",
+        "enhanceDescription": "Tingkatkan Deskripsi",
+        "addExperience": "Tambah Pengalaman",
+        "addEducation": "Tambah Pendidikan",
+        "addSkill": "Tambah Keahlian"
+      },
+      "toast": {
+        "fillFirst": "Isi poin inti terlebih dahulu agar AI bisa bekerja.",
+        "aiSuccess": "Teks berhasil diperbarui dengan AI!",
+        "aiError": "Terjadi kesalahan koneksi saat memanggil AI.",
+        "uploadingPhoto": "Mengunggah foto...",
+        "photoSuccess": "Foto berhasil diunggah!",
+        "photoError": "Terjadi kesalahan saat mengunggah foto.",
+        "invalidFormat": "Format file tidak didukung. Harap unggah gambar (JPG/PNG/WEBP).",
+        "fileTooLarge": "Ukuran file melebihi batas maksimum 2 MB."
+      }
+    }
+  },
+  "DashboardHeader": {
+    "greeting": {
+      "morning": "Selamat Pagi",
+      "afternoon": "Selamat Siang",
+      "evening": "Selamat Sore",
+      "night": "Selamat Malam"
+    },
+    "fallbackUsername": "Explorer",
+    "subtitles": [
+      "Hari ini adalah kesempatan untuk <b>melangkah lebih jauh</b> dari kemarin.",
+      "Konsistensimu hari ini adalah <b>investasi masa depan</b> yang nyata.",
+      "Setiap langkah kecil membawamu lebih dekat ke <b>tujuan besarmu</b>.",
+      "Rekruter sedang mencari seseorang seperti <b>kamu</b> hari ini.",
+      "Profil yang kuat adalah <b>pintu masuk</b> ke peluang terbaik.",
+      "Jangan berhenti — <b>breakthrough</b>-mu mungkin tinggal selangkah lagi."
+    ]
+  },
+  "DashboardStats": {
+    "careerScore": "Career Score",
+    "noScoreYet": "Review CV dulu",
+    "totalAchievements": "Total Pencapaian",
+    "achievementsUnit": "Pencapaian",
+    "dreamJob": "Pekerjaan Impian",
+    "dreamJobEmpty": "Belum ada pekerjaan impian",
+    "dreamJobError": "Gagal memuat",
+    "dreamJobDialogDescription": "Berikut adalah pekerjaan impianmu:",
+    "close": "Tutup",
+    "aiCredits": "AI Credits",
+    "remainingCredits": "Kredit Tersisa",
+    "upgradePlan": "Upgrade Paket"
+  },
+  "DashboardAds": {
+    "title": "Dapatkan Feedback Ahli",
+    "titleHighlight": "untuk CV Anda",
+    "description": "AI kami meninjau CV Anda dan memberikan saran untuk membantu Anda lebih menonjol.",
+    "features": {
+      "info": "Kelengkapan informasi",
+      "format": "Keterbacaan format",
+      "experience": "Dampak pengalaman kerja"
+    },
+    "cta": "Bangun CV Anda",
+    "mock": {
+      "score": "Skor CV",
+      "info": "Kelengkapan Informasi",
+      "format": "Keterbacaan Format",
+      "experience": "Dampak Pengalaman"
+    },
+    "tip": "Tambahkan pencapaian yang terukur untuk memperkuat bagian pengalaman Anda."
+  },
+  "DashboardAds2": {
+    "title": "Buat",
+    "titleHighlight": "CV yang Menarik Perhatian",
+    "titleSuffix": "dalam Hitungan Menit",
+    "description": "Gunakan template pintar dan panduan AI untuk membuat CV profesional yang sesuai dengan pekerjaan impianmu — tanpa perlu keahlian desain.",
+    "tags": {
+      "templates": "50+ Template",
+      "ai": "Didukung AI",
+      "pdf": "Ekspor PDF"
+    },
+    "cta": "Mulai Membuat",
+    "mock": {
+      "chooseTemplate": "Pilih Template",
+      "templates": {
+        "modern": "Modern",
+        "classic": "Klasik",
+        "creative": "Kreatif",
+        "bold": "Berani"
+      }
+    }
+  },
+  "DashboardAds3": {
+    "title": "Optimalkan Profil",
+    "titleHighlight": "LinkedIn",
+    "description": "Ubah profil LinkedIn Anda menjadi magnet bagi recruiter. AI kami menulis ulang headline, bagian about, dan pengalaman untuk dampak maksimal.",
+    "features": {
+      "headline": "Penulisan ulang Headline & About",
+      "keywords": "Optimasi kata kunci",
+      "analysis": "Analisis siap dilihat recruiter"
+    },
+    "cta": "Optimalkan Profil",
+    "mock": {
+      "profileStrength": "Kekuatan Profil",
+      "views": "Dilihat",
+      "search": "Pencarian",
+      "visibility": "+12% Visibilitas minggu ini"
+    }
+  },
+  "DashboardAds4": {
+    "title": "Temukan Pekerjaan yang",
+    "titleHighlight": "Cocok Untukmu",
+    "description": "Kami memberikan rekomendasi pekerjaan yang dipersonalisasi sesuai dengan keterampilan, pengalaman, dan minatmu, sehingga kamu dapat menemukan peluang terbaik yang selaras dengan tujuan kariermu. Lowongan diperbarui setiap hari dari sumber terpercaya agar kamu tidak melewatkan kesempatan yang relevan.",
+    "tags": {
+      "remote": "Ramah Remote",
+      "salary": "Filter Gaji",
+      "alerts": "Notifikasi Harian"
+    },
+    "cta": "Cari Pekerjaan",
+    "mock": {
+      "role1": "Product Designer",
+      "role2": "UX Researcher",
+      "role3": "Design Lead"
+    }
+  },
+  "DashboardCareerTargets": {
+    "loginRequired": "Silakan login untuk menyimpan target karir",
+    "header": {
+      "title": "Target Karir",
+      "addTitle": "Tambah Target"
+    },
+    "progress": {
+      "noSteps": "Belum ada langkah",
+      "completed": "Semua target tercapai",
+      "steps": "{done}/{total} langkah selesai"
+    },
+    "emptyState": {
+      "badge": "Mulai dari langkah kecil",
+      "title": "Belum ada target karir",
+      "description": "Setiap langkah kecil sangat berarti. Mulailah susun tujuan besarmu dan wujudkan karier yang kamu impikan.",
+      "cta": "Tambah Target"
+    },
+    "deleteDialog": {
+      "title": "Hapus Target Karir",
+      "description": "Apakah kamu yakin ingin menghapus target ini? Tindakan ini tidak bisa dibatalkan.",
+      "cancel": "Batal",
+      "confirm": "Hapus",
+      "success": "Target karier berhasil dihapus"
+    },
+    "editor": {
+      "addTitle": "Tambah Target Karir",
+      "editTitle": "Edit Target Karir",
+      "description": "Tambah target karir dan checklist yang perlu diselesaikan",
+      "fields": {
+        "targetTitle": "Judul Target",
+        "targetPlaceholder": "Contoh: Senior Developer Path",
+        "checklist": "Checklist To-Do",
+        "generateTooltip": "Generate otomatis dari judul"
+      },
+      "tasks": {
+        "addItem": "Tambah Item",
+        "addPlaceholder": "Tambah item checklist"
+      },
+      "actions": {
+        "save": "Simpan Target"
+      }
+    }
+  },
+  "DashboardAchievements": {
+    "errors": {
+      "loginRequired": "Anda harus login untuk melihat pencapaian",
+      "loginRequiredAction": "Anda harus login",
+      "loadFailed": "Gagal memuat pencapaian",
+      "noPermission": "Tidak memiliki izin",
+      "deleteFailed": "Gagal menghapus"
+    },
+    "success": {
+      "added": "Ditambahkan",
+      "updated": "Diperbarui",
+      "deleted": "Pencapaian dihapus"
+    },
+    "header": {
+      "title": "Pencapaian",
+      "add": "Tambah Pencapaian"
+    },
+    "emptyState": {
+      "badge": "Mulai dari langkah kecil",
+      "title": "Belum ada pencapaian",
+      "description": "Setiap progress layak dicatat. Tambahkan pencapaianmu dan bangun perjalanan kariermu sedikit demi sedikit.",
+      "cta": "Tambah Pencapaian"
+    },
+    "preview": {
+      "noDescription": "Tidak ada deskripsi.",
+      "edit": "Edit",
+      "close": "Tutup"
+    },
+    "deleteDialog": {
+      "title": "Hapus pencapaian?",
+      "description": "Pencapaian <strong>{title}</strong> akan dihapus permanen.",
+      "cancel": "Batal",
+      "confirm": "Hapus"
+    }
+  },
+  "achievementForm": {
+    "titleAdd": "Tambah Pencapaian",
+    "titleEdit": "Edit Pencapaian",
+    "description": "Isi data pencapaian yang relevan dan berdampak.",
+    "fields": {
+      "title": "Judul",
+      "category": "Kategori",
+      "date": "Tanggal",
+      "description": "Deskripsi (opsional)"
+    },
+    "placeholders": {
+      "title": "Contoh: Merilis Aplikasi BudgetMate",
+      "description": "Ringkas pencapaian dan konteksnya"
+    },
+    "buttons": {
+      "save": "Simpan",
+      "cancel": "Batal",
+      "add": "Tambah",
+      "edit": "Edit"
+    },
+    "validation": {
+      "titleRequired": "Judul wajib diisi",
+      "loginRequired": "Anda harus login untuk menyimpan pencapaian"
+    },
+    "toast": {
+      "created": "Pencapaian berhasil ditambahkan!",
+      "updated": "Pencapaian berhasil diperbarui!",
+      "error": "Gagal menyimpan ke Firebase"
+    },
+    "categories": {
+      "kursus": "Kursus",
+      "proyek": "Proyek",
+      "kompetisi": "Kompetisi",
+      "open_source": "Open Source",
+      "organisasi": "Organisasi",
+      "publikasi": "Publikasi",
+      "kinerja": "Kinerja",
+      "skill": "Skill",
+      "network": "Networking",
+      "penghargaan": "Penghargaan"
+    }
+  },
+  "activityHistory": {
+    "title": "Riwayat Review CV",
+    "viewAll": "Lihat Semua",
+    "loginRequired": "Login dulu untuk melihat riwayat",
+    "loadError": "Gagal memuat riwayat",
+    "defaultInsight": "Lihat insight review CV",
+    "empty": {
+      "title": "Belum ada aktivitas review CV",
+      "description": "Mulai review CV untuk mendapatkan insight pengembangan karir",
+      "cta": "Mulai Review CV"
+    }
+  },
+  "profile": {
+    "defaultUsername": "Explorer",
+    "noEmail": "Tidak ada email",
+    "currentStatus": "Status kamu saat ini",
+    "roleCount": "role",
+    "noRole": "Belum ada role",
+    "skillsTitle": "Top Skills",
+    "skillsCount": "skill",
+    "noSkill": "Belum ada skill"
   }
-
-
 }

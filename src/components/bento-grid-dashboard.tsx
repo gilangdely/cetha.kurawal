@@ -1,21 +1,83 @@
 "use client";
 
-import { ArrowUpRight, Zap, Briefcase } from "lucide-react";
+import { ArrowUpRight, Zap, Briefcase, Trophy } from "lucide-react";
 import UserQuotaWidget from "@/components/dashboard/user-quota-widget";
 import DreamOccupation from "@/components/dashboard/dream-occupation";
+import { useState, useEffect } from "react";
+import { db, auth } from "@/app/lib/firebase";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  orderBy,
+  limit,
+  getDocs,
+} from "firebase/firestore";
+import { useTranslations } from "next-intl";
 
 const BentoGridDashboard = () => {
+  const t = useTranslations("DashboardStats");
+  const [totalAchievements, setTotalAchievements] = useState(0);
+  const [careerScore, setCareerScore] = useState<number | null>(null);
+
+  useEffect(() => {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const q = query(
+      collection(db, "pencapaian"),
+      where("userId", "==", user.uid),
+    );
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      setTotalAchievements(snapshot.size);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Fetch latest CV review score
+  useEffect(() => {
+    const fetchLatestScore = async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      try {
+        const q = query(
+          collection(db, "cvReviews"),
+          where("userId", "==", user.uid),
+          orderBy("createdAt", "desc"),
+          limit(1),
+        );
+
+        const snapshot = await getDocs(q);
+        if (!snapshot.empty) {
+          const data = snapshot.docs[0].data();
+          const result = data.result?.[0];
+          if (result?.skor_keseluruhan != null) {
+            setCareerScore(result.skor_keseluruhan);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch career score:", error);
+      }
+    };
+
+    fetchLatestScore();
+  }, []);
+
   const stats = [
     {
-      label: "Career Score",
-      value: "82 / 100",
+      label: t("careerScore"),
+      value: careerScore != null ? `${careerScore} / 100` : t("noScoreYet"),
       icon: Zap,
       theme: "bg-white border border-slate-200 text-slate-900",
     },
     {
-      label: "Total Pencapaian",
-      value: "14 Jobs",
-      icon: Briefcase,
+      label: t("totalAchievements"),
+      value: `${totalAchievements} ${t("achievementsUnit")}`,
+      icon: Trophy,
       theme: "bg-white border border-slate-200 text-slate-900",
     },
   ];

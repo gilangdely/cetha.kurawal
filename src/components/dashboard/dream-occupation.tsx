@@ -15,8 +15,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Target } from "lucide-react";
 import { DreamOccupationSkeleton } from "@/components/dream-ocupation-skeleton";
+import { useTranslations } from "next-intl";
 
 export default function DreamOccupation() {
+  const t = useTranslations("DashboardStats");
   const [isDreamJobDialogOpen, setIsDreamJobDialogOpen] = useState(false);
   const [dreamJob, setDreamJob] = useState("");
   const [loading, setLoading] = useState(true);
@@ -32,13 +34,13 @@ export default function DreamOccupation() {
 
         if (userSnap.exists()) {
           const data = userSnap.data();
-          setDreamJob(data.dreamJob || "Belum ada pekerjaan impian");
+          setDreamJob(data.dreamJob || t("dreamJobEmpty"));
         } else {
-          setDreamJob("Belum ada pekerjaan impian");
+          setDreamJob(t("dreamJobEmpty"));
         }
       } catch (error) {
         console.error("Error fetching dream job:", error);
-        setDreamJob("Gagal memuat");
+        setDreamJob(t("dreamJobError"));
       } finally {
         setLoading(false);
       }
@@ -62,7 +64,7 @@ export default function DreamOccupation() {
             </div>
 
             <div>
-              <p className="text-sm font-medium opacity-70">Pekerjaan Impian</p>
+              <p className="text-sm font-medium opacity-70">{t("dreamJob")}</p>
               <p className="line-clamp-1 max-w-40 text-xl font-black tracking-tight">
                 {dreamJob}
               </p>
@@ -77,9 +79,9 @@ export default function DreamOccupation() {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Pekerjaan Impian</DialogTitle>
+            <DialogTitle>{t("dreamJob")}</DialogTitle>
             <DialogDescription>
-              Berikut adalah pekerjaan impianmu:
+              {t("dreamJobDialogDescription")}
             </DialogDescription>
           </DialogHeader>
 
@@ -93,7 +95,7 @@ export default function DreamOccupation() {
                 variant={"outline"}
                 className="bg-primaryBlue hover:bg-primaryBlueHover text-white transition-all duration-300 hover:text-white"
               >
-                Tutup
+                {t("close")}
               </Button>
             </DialogClose>
           </DialogFooter>

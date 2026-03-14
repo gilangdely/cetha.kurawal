@@ -1,4 +1,4 @@
-// filepath: d:\Projectan\cetha\src\app\api\generate-target\route.ts
+
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { rateLimit } from "@/app/lib/rate-limit";
@@ -7,7 +7,7 @@ import { getSessionUidFromCookie } from "@/app/lib/session";
 
 // Initialize Gemini model (same key usage as other AI endpoints)
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API || "");
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-001" });
+const model = genAI.getGenerativeModel({ model: "gemma-3-27b-it" });
 
 /**
  * POST /api/generate-target
@@ -67,13 +67,35 @@ Jawab hanya JSON valid.`;
 
     const result = await model.generateContent(prompt);
     const raw = result?.response?.text() || "{}";
-    const cleaned = raw.replace(/```json|```/g, "").trim();
 
+    // Robust JSON parsing for gemma-3-27b-it
     let parsed;
     try {
-      parsed = JSON.parse(cleaned);
+      let cleaned = raw
+        .replace(/```(?:json)?\s*/gi, "") // strip markdown fences
+        .replace(/```/g, "")
+        .replace(/[\x00-\x09\x0B\x0C\x0E-\x1F]/g, "") // strip control chars
+        .trim();
+
+      // Remove trailing commas before } or ]
+      cleaned = cleaned.replace(/,\s*([}\]])/g, "$1");
+
+      // Try direct parse first
+      try {
+        parsed = JSON.parse(cleaned);
+      } catch {
+        // Fallback: try to extract JSON object via regex
+        const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          const extracted = jsonMatch[0].replace(/,\s*([}\]])/g, "$1");
+          parsed = JSON.parse(extracted);
+        } else {
+          throw new Error("No valid JSON object found in AI response");
+        }
+      }
     } catch (e) {
-      parsed = { tasks: [], summary: "Gagal parse JSON AI", raw: raw };
+      console.warn("⚠️ JSON parse failed for generate-target, raw:", raw);
+      parsed = { tasks: [], summary: "Gagal parse JSON AI" };
     }
 
     // Normalisasi ke struktur edit-target-karir
@@ -112,7 +134,7 @@ export function GET() {
   // Simple health/info endpoint
   return NextResponse.json({
     endpoint: "generate-target",
-    model: "gemini-2.0-flash-001",
+    model: "gemma-3-27b-it",
     status: "ok",
   });
 }

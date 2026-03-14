@@ -2,12 +2,7 @@
 import { Link } from "@/i18n/navigation";
 import { mockStats, mockPages } from "@/lib/admin/mock";
 import { StatsCard } from "@/components/admin/stats-card";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 function fmt(iso?: string) {
@@ -26,7 +21,7 @@ export default function AdminDashboardPage() {
       <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Dashboard</h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Ringkasan konten & aktivitas CMS (dummy).
           </p>
         </div>
@@ -70,7 +65,7 @@ export default function AdminDashboardPage() {
             >
               <div className="min-w-0">
                 <div className="truncate font-medium">{p.title}</div>
-                <div className="text-xs text-muted-foreground">
+                <div className="text-muted-foreground text-xs">
                   Updated by {p.updatedBy} • {fmt(p.updatedAt)}
                 </div>
               </div>
@@ -84,4 +79,3 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
-

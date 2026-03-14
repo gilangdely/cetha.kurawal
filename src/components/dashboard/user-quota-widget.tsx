@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Brain, ArrowUpRight } from "lucide-react";
 import { UserQuotaWidgetSkeleton } from "../user-quota-widget-skeleton";
+import { useTranslations } from "next-intl";
 
 export default function UserQuotaWidget() {
+  const t = useTranslations("DashboardStats");
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -45,11 +47,11 @@ export default function UserQuotaWidget() {
           </div>
 
           <div>
-            <p className="text-sm font-medium opacity-80">AI Credits</p>
+            <p className="text-sm font-medium opacity-80">{t("aiCredits")}</p>
             <p className="text-xl font-black tracking-tight">
               {remaining}{" "}
               <span className="text-sm font-medium opacity-60">
-                Kredit Tersisa
+                {t("remainingCredits")}
               </span>
             </p>
           </div>
@@ -58,7 +60,7 @@ export default function UserQuotaWidget() {
         <Link
           href="/dashboard/my-profile/subscription"
           className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 opacity-60 backdrop-blur-sm transition-all group-hover:bg-white/20 group-hover:opacity-100"
-          title="Upgrade Plan"
+          title={t("upgradePlan")}
         >
           <ArrowUpRight size={18} />
         </Link>

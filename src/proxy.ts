@@ -14,7 +14,9 @@ export async function proxy(req: NextRequest) {
     if (!sessionCookie) {
       const url = req.nextUrl.clone();
       const segments = url.pathname.split("/");
-      const currentLocale = routing.locales.includes(segments[1] as any) ? segments[1] : routing.defaultLocale;
+      const currentLocale = routing.locales.includes(segments[1] as any)
+        ? segments[1]
+        : routing.defaultLocale;
 
       url.pathname = `/${currentLocale}/login`;
       return NextResponse.redirect(url);

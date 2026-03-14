@@ -230,12 +230,32 @@
     }
   },
 
-
-  "ArticleAndVideo": {
-    "badge": "Articles & Videos",
-    "title": "Learn Smarter. Get Hired Faster.",
-    "description": "Discover practical guides and career strategy videos to improve your CV quality and increase your chances of getting hired.",
-    "cta": "View All Articles"
+  "careerTipsPage": {
+    "hero": {
+      "title": "We build projects that help you achieve your career goals",
+      "description": "Explore a collection of articles and videos to help you prepare for the professional world."
+    },
+    "search": {
+      "placeholder": "Search content",
+      "button": "Search"
+    },
+    "tabs": {
+      "all": "All",
+      "article": "Article",
+      "video": "Video"
+    },
+    "content": {
+      "readArticle": "Read Article",
+      "watchVideo": "Watch Video"
+    },
+    "empty": {
+      "notFound": "Content not found.",
+      "noContent": "No content has been published yet."
+    },
+    "error": {
+      "title": "An Error Occurred"
+    },
+    "loadMore": "Load More"
   },
 
   "LinkedinImproveSection": {
@@ -301,6 +321,237 @@
     },
 
     "copyright": "All rights reserved."
+  },
+
+  "FAQPage": {
+    "title": "FAQs",
+    "description": "Everything you need to know about features, services, and how to use the platform.",
+    "categories": {
+      "cvReview": {
+        "label": "CV Review",
+        "items": {
+          "1": {
+            "question": "How do I use the CV Review feature?",
+            "answer": "Go to the dashboard, select CV Review, then upload your CV in PDF or DOCX format. Once uploaded, the system will process it and show your review results."
+          },
+          "2": {
+            "question": "What does CV Review evaluate?",
+            "answer": "The system evaluates CV structure, clarity of work experience, strength of your professional summary, readability, and relevance to recruiter and ATS requirements."
+          },
+          "3": {
+            "question": "What do I get after my CV is reviewed?",
+            "answer": "You will receive a CV score, key insights, highlighted strengths, and specific recommendations to improve weaker sections."
+          },
+          "4": {
+            "question": "Is my CV stored permanently?",
+            "answer": "Your data is processed securely for analysis purposes. Documents are not used outside the review process and your account management context."
+          }
+        }
+      },
+      "cvBuilder": {
+        "label": "CV Builder",
+        "items": {
+          "1": {
+            "question": "How do I start using CV Builder?",
+            "answer": "Open CV Builder from the dashboard, fill in core details such as profile, work experience, education, and skills, then review the live preview."
+          },
+          "2": {
+            "question": "Can I choose different CV templates?",
+            "answer": "Yes. CV Builder provides multiple template styles you can use based on your professional preference."
+          },
+          "3": {
+            "question": "Can I edit my CV content anytime?",
+            "answer": "Yes. You can add, remove, or update CV sections anytime before exporting the final document."
+          },
+          "4": {
+            "question": "What format can I download my CV in?",
+            "answer": "After finishing, you can export your CV as a PDF so it is ready to send to recruiters or apply for jobs."
+          }
+        }
+      },
+      "improveLinkedin": {
+        "label": "Improve LinkedIn",
+        "items": {
+          "1": {
+            "question": "How do I use Improve LinkedIn?",
+            "answer": "Go to the Improve LinkedIn page, enter your LinkedIn profile URL, and the system will analyze it automatically."
+          },
+          "2": {
+            "question": "Which profile parts are analyzed?",
+            "answer": "The feature analyzes your headline, about section, work experience, skills, and overall profile positioning strength."
+          },
+          "3": {
+            "question": "What results do I get after LinkedIn analysis?",
+            "answer": "You will get headline suggestions, summary improvements, better experience-writing recommendations, and insights to make your profile more recruiter-friendly."
+          },
+          "4": {
+            "question": "Do I need to log in to my LinkedIn account on Cetha?",
+            "answer": "No. You only need to provide the LinkedIn profile URL for analysis, without sharing your LinkedIn password."
+          }
+        }
+      },
+      "careerTips": {
+        "label": "Career Tips",
+        "items": {
+          "1": {
+            "question": "Where can I read articles and watch career tip videos?",
+            "answer": "You can open Career Tips or Articles & Videos to access all educational content available on the platform."
+          },
+          "2": {
+            "question": "Can I search specific topics in Career Tips?",
+            "answer": "Yes. The Career Tips page supports category filters and search, so you can quickly find relevant topics."
+          },
+          "3": {
+            "question": "What topics are covered in Career Tips?",
+            "answer": "Topics include CV review, CV building, LinkedIn optimization, interview strategies, and general career development."
+          },
+          "4": {
+            "question": "Is Career Tips content only in article format?",
+            "answer": "No. In addition to articles, video content is also available so you can choose the learning format you prefer."
+          }
+        }
+      }
+    }
+  },
+
+  "AboutUsPage": {
+    "hero": {
+      "badge": "Our Professional Team",
+      "title": "Building Innovative Solutions for the Future Together",
+      "description": "We work with a clear vision and strong commitment to help you grow and excel professionally.",
+      "visitProfile": "Visit Our Profile",
+      "contactButton": "Contact Us"
+    },
+    "profiles": {
+      "1": {
+        "role": "Frontend Developer"
+      },
+      "2": {
+        "role": "Backend Developer"
+      },
+      "3": {
+        "role": "Machine Learning Developer"
+      }
+    },
+    "testimonials": {
+      "badge": "What Cetha Users Say",
+      "titleLine1": "How Cetha Helps You Land",
+      "titleLine2": "Your Dream Job",
+      "description": "Follow these simple steps to optimize your CV, improve your LinkedIn profile, and find the most suitable opportunities.",
+      "items": {
+        "1": {
+          "quote": "Cetha truly helped me build a more professional CV. As a result, I feel much more confident applying for jobs.",
+          "name": "Andi Pratama",
+          "title": "Fresh Graduate"
+        },
+        "2": {
+          "quote": "I love how Cetha recommends job openings based on my LinkedIn profile. Very relevant!",
+          "name": "Siti Rahma",
+          "title": "UI/UX Designer"
+        },
+        "3": {
+          "quote": "The CV optimization process is very easy to understand. In minutes, my CV looked much better.",
+          "name": "Bima Nugraha",
+          "title": "Software Engineer"
+        },
+        "4": {
+          "quote": "The CV analysis feature helped me discover weaknesses I had never noticed before.",
+          "name": "Dewi Lestari",
+          "title": "Marketing Specialist"
+        },
+        "5": {
+          "quote": "I got called for an interview at my dream company after improving my CV with Cetha.",
+          "name": "Rudi Hartono",
+          "title": "Data Analyst"
+        },
+        "6": {
+          "quote": "Super helpful! Cetha gave insights that made my profile much more attractive to recruiters.",
+          "name": "Nadia Putri",
+          "title": "Product Manager"
+        },
+        "7": {
+          "quote": "A great experience! The interface is simple, but the results are excellent.",
+          "name": "Fajar Kurniawan",
+          "title": "Frontend Developer"
+        },
+        "8": {
+          "quote": "With Cetha's help, I became more confident in my job search. Highly recommended.",
+          "name": "Aulia Syah",
+          "title": "HR Specialist"
+        }
+      }
+    },
+    "contact": {
+      "badge": "Our Professional Team",
+      "title": "Building Innovative Solutions for the Future Together",
+      "description": "We work with a clear vision and strong commitment to help you grow and excel professionally.",
+      "form": {
+        "firstNameLabel": "First Name",
+        "firstNamePlaceholder": "First name",
+        "lastNameLabel": "Last Name",
+        "lastNamePlaceholder": "Last name",
+        "emailLabel": "Email",
+        "emailPlaceholder": "email@email.com",
+        "messageLabel": "Message",
+        "messagePlaceholder": "Write your message...",
+        "submitButton": "Send Message"
+      },
+      "info": {
+        "contactTitle": "Contact Us",
+        "contactDescription": "Our team is ready to help through the following channels:",
+        "phone": "+62 812 3456 7890",
+        "emailTitle": "Send Email",
+        "email": "kurawal.creative@gmail.com",
+        "addressTitle": "Address",
+        "address": "Universitas Amikom Purwokerto, Purwokerto, Indonesia"
+      }
+    }
+  },
+
+  "TermsPage": {
+    "title": "Terms & Conditions",
+    "description": "By browsing or using our services, you acknowledge and agree to the following document.",
+    "lastRevision": "Last revised: January 1, 2026",
+    "sections": {
+      "01": {
+        "title": "Service definition",
+        "content": "Cetha is an AI-based platform that provides CV feasibility insights, LinkedIn profile guidance, and career preparation modules. The service is licensed through a web platform for limited public use."
+      },
+      "02": {
+        "title": "Account & access",
+        "content": "This service requires account registration. Users agree to provide valid credentials and maintain password security. We are not responsible for account misuse caused by user negligence."
+      },
+      "03": {
+        "title": "Prohibited use",
+        "content": "Hacking, illegal scraping, commercial content duplication without partnership, AI prompt injection attempts, and excessive spam toward our system are strictly prohibited."
+      },
+      "04": {
+        "title": "User content",
+        "content": "Users retain intellectual property rights over their own CVs. Cetha AI outputs may be used for personal reference, but mass publishing compiled outputs to build similar services is prohibited."
+      },
+      "05": {
+        "title": "AI output disclaimer",
+        "content": "AI analysis results are consultative and not final HR decisions. We do not guarantee that following AI recommendations will result in interview success. Final decisions remain in the hands of recruiters."
+      },
+      "06": {
+        "title": "Limitation of liability",
+        "content": "We are not liable for financial, moral, or social losses resulting from missed job opportunities. All decisions and actions in the job application process are the user's sole responsibility."
+      },
+      "07": {
+        "title": "Service changes",
+        "content": "We may modify feature specifications, disable old features, or apply usage limitations at any time without extensive prior notice, especially for free-tier users."
+      },
+      "08": {
+        "title": "Governing law",
+        "content": "The relationship between the platform and users is governed by the civil jurisdiction of the Republic of Indonesia, according to the region where the server operates."
+      }
+    },
+    "support": {
+      "title": "Questions about these terms?",
+      "description": "Contact our team through the",
+      "cta": "Contact Support",
+      "suffix": "page and we will help clarify everything."
+    }
   },
 
   "pricingQuota": {
@@ -407,5 +658,411 @@
     "title": "Error 404: Page Not Found!",
     "description": "We’ve looked everywhere, but couldn’t find the page you were looking for.",
     "back": "Back to Home"
+  },
+
+  "dashboard": {
+    "sidebar": {
+      "mainNavigation": "Main Navigation",
+
+      "menu": {
+        "dashboard": "Dashboard",
+        "cvReview": "CV Review",
+        "cvBuilder": "CV Builder",
+        "improveLinkedin": "Improve LinkedIn",
+        "findJobs": "Find Jobs AI",
+        "articles": "Articles & Videos"
+      },
+
+      "pricing": "View Pricing",
+      "adminPanel": "Admin Panel",
+      "upgrade": "Upgrade",
+
+      "subscription": {
+        "badge": "Cetha Plus+",
+        "addToken": "Add Tokens"
+      },
+
+      "tokenMessage": {
+        "exhausted": "Your tokens are exhausted. Please add more tokens to continue using AI features.",
+        "low": "Your tokens are almost depleted. Add more tokens to keep using AI.",
+        "medium": "Your tokens are running low. Use them wisely or add more tokens.",
+        "safe": "Your tokens are still sufficient. Use AI to boost your career."
+      }
+    },
+
+    "topbar": {
+      "welcomeAdmin": "Welcome back, Admin",
+      "searchPlaceholder": "Search article or video...",
+      "profile": "My Profile",
+      "settings": "Settings",
+      "logout": "Logout",
+      "routes": {
+        "dashboard": "Dashboard",
+        "career-tips": "Career Tips",
+        "cv-builder": "CV Builder",
+        "improve-linkedin": "Improve LinkedIn",
+        "review-cv": "Review CV",
+        "my-profile": "My Profile",
+        "settings": "Settings"
+      },
+       "messages" : {
+        "logoutSuccess": "You have been logged out successfully."
+      }
+    },
+
+    "cvBuilder": {
+      "undo": "Undo",
+      "redo": "Redo",
+      "form": "Form",
+      "preview": "Preview",
+      "exportPdf": "Export PDF"
+    },
+
+    "formCvBuilder": {
+      "sections": {
+        "personal": "Personal Information",
+        "experience": "Work Experience",
+        "education": "Education",
+        "skills": "Skills"
+      },
+      "photo": {
+        "upload": "Upload photo",
+        "optional": "Optional",
+        "showOnCV": "Show Photo on CV",
+        "showOnCVDescription": "Toggle photo visibility in the CV preview."
+      },
+      "placeholders": {
+        "fullName": "Full name",
+        "jobTitle": "Job title",
+        "email": "Email address",
+        "summary": "Write a short professional summary",
+        "role": "Role",
+        "company": "Company",
+        "startDate": "Start date",
+        "endDate": "End date",
+        "responsibilities": "Responsibilities / Achievements",
+        "university": "University",
+        "degree": "Degree",
+        "fieldOfStudy": "Field of study",
+        "startYear": "Start year",
+        "endYear": "End year",
+        "activities": "Activities / Achievements",
+        "skill": "Skill"
+      },
+      "buttons": {
+        "enhanceSummary": "Enhance Summary",
+        "enhanceDescription": "Enhance Description",
+        "addExperience": "Add Experience",
+        "addEducation": "Add Education",
+        "addSkill": "Add Skill"
+      },
+      "toast": {
+        "fillFirst": "Write key points first so AI can generate content.",
+        "aiSuccess": "Text successfully improved by AI!",
+        "aiError": "Connection error while calling AI.",
+        "uploadingPhoto": "Uploading photo...",
+        "photoSuccess": "Photo uploaded successfully!",
+        "photoError": "Error while uploading photo.",
+        "invalidFormat": "Unsupported file format. Please upload JPG/PNG/WEBP.",
+        "fileTooLarge": "File size exceeds the 2MB limit."
+      }
+    }
+  },
+
+  "DashboardHeader": {
+    "greeting": {
+      "morning": "Good Morning",
+      "afternoon": "Good Afternoon",
+      "evening": "Good Evening",
+      "night": "Good Night"
+    },
+    "fallbackUsername": "Explorer",
+    "subtitles": [
+      "Today is an opportunity to <b>move further</b> than yesterday.",
+      "Your consistency today is a real <b>investment for the future</b>.",
+      "Every small step brings you closer to your <b>big goals</b>.",
+      "Recruiters are looking for someone like <b>you</b> today.",
+      "A strong profile is the <b>gateway</b> to the best opportunities.",
+      "Don't stop — your <b>breakthrough</b> might be just one step away."
+    ]
+  },
+
+  "DashboardStats": {
+    "careerScore": "Career Score",
+    "noScoreYet": "Review your CV",
+    "totalAchievements": "Total Achievements",
+    "achievementsUnit": "Achievements",
+
+    "dreamJob": "Dream Job",
+    "dreamJobEmpty": "No dream job yet",
+    "dreamJobError": "Failed to load",
+    "dreamJobDialogDescription": "Here is your dream job:",
+    "close": "Close",
+
+    "aiCredits": "AI Credits",
+    "remainingCredits": "Credits Remaining",
+    "upgradePlan": "Upgrade Plan"
+  },
+
+  "DashboardAds": {
+    "title": "Get Expert Feedback",
+    "titleHighlight": "on Your CV",
+
+    "description": "Our AI reviews your CV and suggests improvements to help you stand out.",
+
+    "features": {
+      "info": "Information completeness",
+      "format": "Format readability",
+      "experience": "Work experience impact"
+    },
+
+    "cta": "Build Your CV",
+
+    "mock": {
+      "score": "CV Score",
+      "info": "Information Completeness",
+      "format": "Format Readability",
+      "experience": "Experience Impact"
+    },
+
+    "tip": "Add measurable achievements to strengthen your experience section."
+  },
+
+  "DashboardAds2": {
+    "title": "Build a",
+    "titleHighlight": "Job-Winning CV",
+    "titleSuffix": "in Minutes",
+
+    "description": "Use our smart templates and AI-guided prompts to craft a professional CV tailored to the role you want — no design skills needed.",
+
+    "tags": {
+      "templates": "50+ Templates",
+      "ai": "AI-Powered",
+      "pdf": "PDF Export"
+    },
+
+    "cta": "Start Building",
+
+    "mock": {
+      "chooseTemplate": "Choose Template",
+      "templates": {
+        "modern": "Modern",
+        "classic": "Classic",
+        "creative": "Creative",
+        "bold": "Bold"
+      }
+    }
+  },
+
+  "DashboardAds3": {
+    "title": "Optimize Your",
+    "titleHighlight": "LinkedIn",
+
+    "description": "Transform your LinkedIn profile into a recruiter magnet. Our AI rewrites your headline, about section, and experience for maximum impact.",
+
+    "features": {
+      "headline": "Headline & About rewrite",
+      "keywords": "Keywords optimization",
+      "analysis": "Recruiter-ready analysis"
+    },
+
+    "cta": "Optimize Profile",
+
+    "mock": {
+      "profileStrength": "Profile Strength",
+      "views": "Views",
+      "search": "Search",
+      "visibility": "+12% Visibility this week"
+    }
+  },
+
+  "DashboardAds4": {
+    "title": "Find Jobs That",
+    "titleHighlight": "Match You",
+
+    "description": "We provide personalized job recommendations tailored to your unique skills, experience, and interests, helping you discover the best opportunities that match your career goals. Our listings are updated daily from trusted sources to ensure you never miss a relevant opening.",
+
+    "tags": {
+      "remote": "Remote-friendly",
+      "salary": "Salary filters",
+      "alerts": "Daily alerts"
+    },
+
+    "cta": "Find Jobs",
+
+    "mock": {
+      "role1": "Product Designer",
+      "role2": "UX Researcher",
+      "role3": "Design Lead"
+    }
+  },
+  
+  "DashboardCareerTargets": {
+    "loginRequired": "Please log in to save your career targets",
+
+    "header": {
+      "title": "Career Targets",
+      "addTitle": "Add Target"
+    },
+
+    "progress": {
+      "noSteps": "No steps yet",
+      "completed": "All targets completed",
+      "steps": "{done}/{total} steps completed"
+    },
+
+    "emptyState": {
+      "badge": "Start with small steps",
+      "title": "No career targets yet",
+      "description": "Every small step matters. Start planning your goals and build the career you dream of.",
+      "cta": "Add Target"
+    },
+
+    "deleteDialog": {
+      "title": "Delete Career Target",
+      "description": "Are you sure you want to delete this target? This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Delete",
+      "success": "Career target deleted successfully"
+    },
+
+    "editor": {
+      "addTitle": "Add Career Target",
+      "editTitle": "Edit Career Target",
+      "description": "Add career targets and checklist tasks to complete",
+
+      "fields": {
+        "targetTitle": "Target Title",
+        "targetPlaceholder": "Example: Senior Developer Path",
+        "checklist": "Checklist To-Do",
+        "generateTooltip": "Generate automatically from title"
+      },
+
+      "tasks": {
+        "addItem": "Add Item",
+        "addPlaceholder": "Add checklist item"
+      },
+
+      "actions": {
+        "save": "Save Target"
+      }
+    }
+  },
+  
+  "DashboardAchievements": {
+    "errors": {
+      "loginRequired": "You must log in to view achievements",
+      "loginRequiredAction": "You must log in",
+      "loadFailed": "Failed to load achievements",
+      "noPermission": "You do not have permission",
+      "deleteFailed": "Failed to delete"
+    },
+
+    "success": {
+      "added": "Added",
+      "updated": "Updated",
+      "deleted": "Achievement deleted"
+    },
+
+    "header": {
+      "title": "Achievements",
+      "add": "Add Achievement"
+    },
+
+    "emptyState": {
+      "badge": "Start with small steps",
+      "title": "No achievements yet",
+      "description": "Every progress deserves recognition. Add your achievements and build your career journey step by step.",
+      "cta": "Add Achievement"
+    },
+
+    "preview": {
+      "noDescription": "No description.",
+      "edit": "Edit",
+      "close": "Close"
+    },
+
+    "deleteDialog": {
+      "title": "Delete achievement?",
+      "description": "Achievement <strong>{title}</strong> will be permanently deleted.",
+      "cancel": "Cancel",
+      "confirm": "Delete"
+    }
+  },
+
+  "achievementForm": {
+    "titleAdd": "Add Achievement",
+    "titleEdit": "Edit Achievement",
+    "description": "Fill in relevant and impactful achievement details.",
+
+    "fields": {
+      "title": "Title",
+      "category": "Category",
+      "date": "Date",
+      "description": "Description (optional)"
+    },
+
+    "placeholders": {
+      "title": "Example: Released BudgetMate App",
+      "description": "Briefly describe the achievement and its context"
+    },
+
+    "buttons": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "add": "Add",
+      "edit": "Edit"
+    },
+
+    "validation": {
+      "titleRequired": "Title is required",
+      "loginRequired": "You must be logged in to save an achievement"
+    },
+
+    "toast": {
+      "created": "Achievement successfully added!",
+      "updated": "Achievement successfully updated!",
+      "error": "Failed to save to Firebase"
+    },
+
+    "categories": {
+      "kursus": "Course",
+      "proyek": "Project",
+      "kompetisi": "Competition",
+      "open_source": "Open Source",
+      "organisasi": "Organization",
+      "publikasi": "Publication",
+      "kinerja": "Performance",
+      "skill": "Skill",
+      "network": "Networking",
+      "penghargaan": "Award"
+    }
+  },
+  "activityHistory": {
+    "title": "CV Review History",
+    "viewAll": "View All",
+    "loginRequired": "Please log in to see your history",
+    "loadError": "Failed to load history",
+  
+      "defaultInsight": "View CV review insights",
+
+    "empty": {
+      "title": "No CV review activity yet",
+      "description": "Start reviewing your CV to get career development insights",
+      "cta": "Start CV Review"
+    }
+  },
+
+  "profile": {
+    "defaultUsername": "Explorer",
+    "noEmail": "No email",
+
+    "currentStatus": "Your current status",
+    "roleCount": "roles",
+    "noRole": "No roles yet",
+
+    "skillsTitle": "Top Skills",
+    "skillsCount": "skills",
+    "noSkill": "No skills yet"
   }
 }

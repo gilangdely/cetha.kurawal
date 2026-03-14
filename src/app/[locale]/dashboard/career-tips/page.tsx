@@ -11,16 +11,8 @@ import {
   ArrowRight,
   PlayCircle,
   LayoutGrid,
+  Search,
 } from "lucide-react";
-
-import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-  BreadcrumbPage,
-} from "@/components/ui/breadcrumb";
 
 interface ContentItem {
   id: string;
@@ -36,6 +28,7 @@ export default function TipsKarirDashboard() {
   const [contents, setContents] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
+  const [search, setSearch] = useState("");
 
   // Tab filtering (all, article, video)
   const [activeTab, setActiveTab] = useState<"all" | "article" | "video">(
@@ -44,6 +37,10 @@ export default function TipsKarirDashboard() {
 
   const [visibleCount, setVisibleCount] = useState(4);
   const initialVisible = 4;
+
+  useEffect(() => {
+    setVisibleCount(initialVisible);
+  }, [search, activeTab]);
 
   useEffect(() => {
     const fetchContents = async () => {
@@ -69,9 +66,18 @@ export default function TipsKarirDashboard() {
     fetchContents();
   }, []);
 
-  const filteredContents = contents.filter((c) =>
-    activeTab === "all" ? true : c.type === activeTab,
-  );
+  const filteredContents = contents.filter((c) => {
+    const matchTab = activeTab === "all" ? true : c.type === activeTab;
+
+    const matchSearch =
+      search.trim() === ""
+        ? true
+        : c.title.toLowerCase().includes(search.toLowerCase()) ||
+        c.excerpt.toLowerCase().includes(search.toLowerCase());
+
+    return matchTab && matchSearch;
+  });
+
   const visibleContents = filteredContents.slice(0, visibleCount);
   const isAllVisible = visibleCount >= filteredContents.length;
 
@@ -85,66 +91,62 @@ export default function TipsKarirDashboard() {
   };
 
   return (
-    <div className="w-full p-4 md:px-10">
-      {/* Breadcrumb */}
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/id/dashboard">Dashboard</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Tips Karier</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-
+    <div className="w-full space-y-6 p-6">
       {/* Header Section */}
-      <div className="mt-6 mb-8">
-        <h2 className="text-TextPrimary text-3xl font-semibold">
-          Jelajahi <span className="text-accentOrange">Tips Karier</span>
-        </h2>
-        <p className="text-TextSecondary mt-2 max-w-2xl text-base">
-          Tingkatkan wawasan kariermu dengan berbagai artikel dan video
-          informatif yang membantu kamu menjadi lebih siap menghadapi dunia
-          kerja.
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-TextPrimary text-3xl font-semibold">
+            Jelajahi <span className="text-accentOrange">Tips Karier</span>
+          </h2>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          <div className="mt-4 flex w-full items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-2 shadow-sm">
+            <Search className="h-4 w-4 text-gray-400" />
+
+            <input
+              type="text"
+              placeholder="Cari artikel atau video..."
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setVisibleCount(initialVisible);
+              }}
+              className="w-full bg-transparent text-sm outline-none"
+            />
+          </div>
+
+          <button
+            onClick={() => handleTabChange("all")}
+            className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition ${activeTab === "all"
+                ? "bg-primaryBlue text-white"
+                : "bg-Background text-TextSecondary border border-gray-200 hover:bg-gray-50"
+              }`}
+          >
+            <LayoutGrid size={18} /> Semua
+          </button>
+          <button
+            onClick={() => handleTabChange("article")}
+            className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition ${activeTab === "article"
+                ? "bg-primaryBlue text-white"
+                : "bg-Background text-TextSecondary border border-gray-200 hover:bg-gray-50"
+              }`}
+          >
+            <Book size={18} /> Artikel
+          </button>
+          <button
+            onClick={() => handleTabChange("video")}
+            className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition ${activeTab === "video"
+                ? "bg-primaryBlue text-white"
+                : "bg-Background text-TextSecondary border border-gray-200 hover:bg-gray-50"
+              }`}
+          >
+            <Video size={18} /> Video
+          </button>
+        </div>
       </div>
 
       {/* Tabs */}
-      <div className="mb-6 flex flex-wrap gap-3">
-        <button
-          onClick={() => handleTabChange("all")}
-          className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition ${
-            activeTab === "all"
-              ? "bg-primaryBlue text-white"
-              : "bg-Background text-TextSecondary border border-gray-200 hover:bg-gray-50"
-          }`}
-        >
-          <LayoutGrid size={18} /> Semua
-        </button>
-        <button
-          onClick={() => handleTabChange("article")}
-          className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition ${
-            activeTab === "article"
-              ? "bg-primaryBlue text-white"
-              : "bg-Background text-TextSecondary border border-gray-200 hover:bg-gray-50"
-          }`}
-        >
-          <Book size={18} /> Artikel
-        </button>
-        <button
-          onClick={() => handleTabChange("video")}
-          className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition ${
-            activeTab === "video"
-              ? "bg-primaryBlue text-white"
-              : "bg-Background text-TextSecondary border border-gray-200 hover:bg-gray-50"
-          }`}
-        >
-          <Video size={18} /> Video
-        </button>
-      </div>
-
       {loading ? (
         <div className="flex items-center justify-center py-20">
           <div className="h-10 w-10 animate-spin rounded-full border-t-2 border-b-2 border-blue-500" />
@@ -160,7 +162,11 @@ export default function TipsKarirDashboard() {
         </div>
       ) : filteredContents.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-gray-200 bg-gray-50 py-20 text-center text-gray-500">
-          <p className="text-lg font-medium">Belum ada konten diterbitkan.</p>
+          <p className="text-lg font-medium">
+            {search
+              ? "Konten tidak ditemukan."
+              : "Belum ada konten diterbitkan."}
+          </p>
         </div>
       ) : (
         <AnimatePresence mode="popLayout">
@@ -170,7 +176,7 @@ export default function TipsKarirDashboard() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="mt-6 grid w-full gap-8 md:grid-cols-2"
+            className="mt-6 grid w-full grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
           >
             {visibleContents.map((item, index) => (
               <motion.div
@@ -184,24 +190,39 @@ export default function TipsKarirDashboard() {
                 }}
                 className="flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition hover:shadow-md"
               >
-                <div className="relative flex h-60 w-full items-center justify-center bg-gray-100">
-                  {item.coverImageUrl ? (
-                    <Image
-                      src={item.coverImageUrl}
-                      alt={item.title}
-                      fill
-                      className="object-cover"
-                      unoptimized
-                    />
-                  ) : item.type === "video" ? (
-                    <div className="text-gray-300">
-                      <Video size={64} />
-                    </div>
-                  ) : (
-                    <div className="text-gray-300">
-                      <Book size={64} />
-                    </div>
-                  )}
+                <div className="relative aspect-[16/9] w-full overflow-hidden bg-gray-100">
+                  {(() => {
+                    // Resolve thumbnail: coverImageUrl > YouTube auto-thumbnail > icon fallback
+                    const ytThumb = item.type === "video" && item.youtubeUrl
+                      ? (() => {
+                        const m = item.youtubeUrl!.match(/(?:youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*)/);
+                        return m && m[1]?.length === 11
+                          ? `https://img.youtube.com/vi/${m[1]}/hqdefault.jpg`
+                          : null;
+                      })()
+                      : null;
+
+                    const thumbUrl = item.coverImageUrl || ytThumb;
+
+                    if (thumbUrl) {
+                      return (
+                        <Image
+                          src={thumbUrl}
+                          alt={item.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width:768px) 100vw, (max-width:1024px) 50vw, 33vw"
+                          unoptimized
+                        />
+                      );
+                    }
+
+                    return (
+                      <div className="flex h-full items-center justify-center text-gray-300">
+                        {item.type === "video" ? <Video size={64} /> : <Book size={64} />}
+                      </div>
+                    );
+                  })()}
                   {/* Video Indicator Overlay */}
                   {item.type === "video" && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black/20 transition hover:bg-black/30">
@@ -215,7 +236,7 @@ export default function TipsKarirDashboard() {
                     <span
                       className={`rounded-full px-3 py-1 text-xs font-bold shadow-sm ${item.type === "article" ? "bg-blue-100 text-blue-700" : "bg-red-100 text-red-700"}`}
                     >
-                      {item.type === "article" ? "Artikel" : "Vidio"}
+                      {item.type === "article" ? "Artikel" : "Video"}
                     </span>
                   </div>
                 </div>

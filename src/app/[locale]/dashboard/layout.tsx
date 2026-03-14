@@ -1,14 +1,7 @@
 "use client";
 
-import {
-  SidebarProvider,
-  SidebarTrigger,
-  useSidebar,
-} from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { LayoutContent } from "@/components/layout-content";
-import { AppSidebar } from "@/components/app-sidebar";
-import { Menu } from "lucide-react";
-import CethaBot from "@/components/cetha-bot";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { auth } from "@/app/lib/firebase";

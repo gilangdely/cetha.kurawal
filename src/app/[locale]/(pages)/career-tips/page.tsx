@@ -1,339 +1,317 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { CareerTipsSkeleton } from "@/components/career-tips-skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
-  ChevronRight,
+  LayoutGrid,
   Book,
   Video,
   ArrowRight,
   MoveDown,
-  MoveUp,
   PlayCircle,
+  Search,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
-import illustration from "@/assets/img/illustration-tips-karir.jpg";
-import article1 from "@/assets/img/article1.jpg";
-import article2 from "@/assets/img/article2.jpg";
-import article3 from "@/assets/img/article3.jpg";
-import article4 from "@/assets/img/article4.jpg";
-
-const allArticles = [
-  {
-    id: 1,
-    img: article1,
-    title: "5 Kesalahan Umum Saat Interview dan Cara Menghindarinya",
-    description:
-      "Pertanyaan ini gampang tapi tricky! Simak cara bikin jawaban yang singkat, menarik, dan bikin HR ingat sama kamu.",
-    href: "#",
-  },
-  {
-    id: 2,
-    img: article2,
-    title: "Bahasa Tubuh yang Menentukan Kesuksesan Interview",
-    description:
-      "Bukan cuma kata-kata, gesture dan ekspresi kamu juga penting. Pelajari bahasa tubuh yang bikin kamu terlihat profesional.",
-    href: "#",
-  },
-  {
-    id: 3,
-    img: article3,
-    title: "Cara Menulis CV Profesional yang Bikin HR Langsung Tertarik",
-    description:
-      "Pelajari format, kata kunci, dan trik menulis CV yang menarik perhatian perusahaan dalam hitungan detik.",
-    href: "#",
-  },
-  {
-    id: 4,
-    img: article4,
-    title: "Tips Membangun Personal Branding di LinkedIn",
-    description:
-      "Bangun reputasi profesional kamu di LinkedIn dengan strategi yang tepat agar dilirik oleh recruiter.",
-    href: "#",
-  },
-];
-
-// Dummy data video
-const allVideos = [
-  {
-    id: 1,
-    title: "Cara Jawab Pertanyaan HR dengan Efektif",
-    description: "Simak tips biar jawabanmu saat interview bikin HR terkesan.",
-    thumbnail: article2,
-    href: "#",
-  },
-  {
-    id: 2,
-    title: "Personal Branding di LinkedIn untuk Pemula",
-    description:
-      "Bangun profil LinkedIn profesional dan mudah ditemukan recruiter.",
-    thumbnail: article4,
-    href: "#",
-  },
-];
+interface ContentItem {
+  id: string;
+  type: "article" | "video";
+  title: string;
+  slug: string;
+  excerpt: string;
+  coverImageUrl: string | null;
+  youtubeUrl: string | null;
+  tags?: string[];
+}
 
 export default function TipsKarirPage() {
-  const [visibleCount, setVisibleCount] = useState(2);
-  const [activeTab, setActiveTab] = useState<"artikel" | "video">("artikel");
-  const initialVisible = 2;
+  const params = useParams();
+  const t = useTranslations("careerTipsPage");
+  const locale = typeof params.locale === "string" ? params.locale : "id";
 
-  const visibleArticles = allArticles.slice(0, visibleCount);
-  const isAllVisible = visibleCount >= allArticles.length;
+  const [contents, setContents] = useState<ContentItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [search, setSearch] = useState("");
+  const [activeTab, setActiveTab] = useState<"all" | "article" | "video">(
+    "all",
+  );
+  const [visibleCount, setVisibleCount] = useState(6);
+  const initialVisible = 6;
+
+  useEffect(() => {
+    const fetchContents = async () => {
+      setLoading(true);
+      setErrorMsg("");
+
+      try {
+        const res = await fetch("/api/contents");
+        const json = await res.json();
+
+        if (res.ok && json.success !== false) {
+          setContents((json.data || []) as ContentItem[]);
+        } else {
+          setErrorMsg(json.error || t("error.fetchFailed"));
+        }
+      } catch (e: unknown) {
+        const message =
+          e instanceof Error ? e.message : t("error.networkFailed");
+        setErrorMsg(message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchContents();
+  }, [t]);
+
+  const filteredContents = useMemo(() => {
+    const normalizedSearch = search.trim().toLowerCase();
+
+    return contents.filter((item) => {
+      const matchTab = activeTab === "all" ? true : item.type === activeTab;
+
+      const matchSearch =
+        normalizedSearch === ""
+          ? true
+          : item.title.toLowerCase().includes(normalizedSearch) ||
+            item.excerpt.toLowerCase().includes(normalizedSearch) ||
+            (item.tags || []).some((tag) =>
+              tag.toLowerCase().includes(normalizedSearch),
+            );
+
+      return matchTab && matchSearch;
+    });
+  }, [activeTab, contents, search]);
+
+  const visibleContents = filteredContents.slice(0, visibleCount);
+  const isAllVisible = visibleCount >= filteredContents.length;
 
   const handleLoadMore = () => {
-    if (visibleCount < allArticles.length) {
-      setVisibleCount(allArticles.length);
-    } else {
-      setVisibleCount(initialVisible);
-    }
+    setVisibleCount((prev) => prev + 6);
   };
 
-  const handleTabChange = (tab: "artikel" | "video") => {
+  const handleTabChange = (tab: "all" | "article" | "video") => {
     setActiveTab(tab);
     setVisibleCount(initialVisible);
   };
 
+  if (loading) {
+    return (
+      <main className="mx-auto flex w-full max-w-7xl items-center px-4 py-16 pt-18 pb-14 md:px-6 lg:min-h-screen lg:pt-28">
+        <section className="w-full space-y-7">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="w-full max-w-2xl space-y-4">
+              <Skeleton className="h-10 w-full max-w-[34rem] rounded-md" />
+              <Skeleton className="h-6 w-full max-w-[28rem] rounded-md" />
+            </div>
+
+            <div className="w-full max-w-md">
+              <div className="flex items-center gap-2 rounded-full border border-gray-200 bg-white p-1.5 shadow-sm">
+                <Skeleton className="ml-2 h-8 w-8 rounded-full" />
+                <Skeleton className="h-10 flex-1 rounded-full" />
+                <Skeleton className="h-10 w-24 rounded-full" />
+              </div>
+            </div>
+          </div>
+
+          <div className="border-b border-gray-200">
+            <div className="scrollbar-hide flex w-full items-center gap-2 overflow-x-auto pb-3">
+              <Skeleton className="h-9 w-20 rounded-full" />
+              <Skeleton className="h-9 w-24 rounded-full" />
+              <Skeleton className="h-9 w-20 rounded-full" />
+            </div>
+          </div>
+
+          <CareerTipsSkeleton count={6} />
+        </section>
+      </main>
+    );
+  }
+
   return (
-    <main className="mx-auto flex w-full max-w-7xl items-center pt-20 lg:pt-0">
-      <section className="w-full">
-        {/* HERO SECTION */}
-        <div className="flex w-full items-center py-12 lg:min-h-screen lg:py-0">
-          <div className="flex w-full items-center gap-10 px-6 lg:px-0">
-            {/* Content Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="w-full flex-1 space-y-4"
-            >
-              <motion.span
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-                className="hidden items-center gap-2 text-sm lg:flex"
-              >
-                <Link
-                  href="/"
-                  className="text-gray-500 transition-colors hover:text-gray-700"
-                >
-                  Home
-                </Link>
-                <ChevronRight size={16} className="text-gray-400" />
-                <span className="text-accentOrange font-medium">
-                  Tips Karir
-                </span>
-              </motion.span>
+    <main className="mx-auto flex w-full max-w-7xl items-center px-4 py-16 pt-18 pb-14 md:px-6 lg:min-h-screen lg:pt-28">
+      <section className="space-y-7">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45 }}
+          className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
+        >
+          <div className="max-w-2xl space-y-4">
+            <h1 className="text-TextPrimary text-2xl font-semibold md:text-3xl lg:text-4xl">
+              {t("hero.title")}
+            </h1>
 
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-                className="text-TextPrimary text-2xl font-semibold md:text-3xl lg:text-4xl"
-              >
-                Tingkatkan Skill & Pengetahuanmu
-              </motion.h2>
+            <p className="text-TextSecondary mt-3 text-base sm:text-lg">
+              {t("hero.description")}
+            </p>
+          </div>
 
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-                className="text-TextSecondary mt-3 text-lg"
-              >
-                Dari tips bikin CV, trik LinkedIn, sampai strategi interview
-                semua ada di blog & video kami untuk bantu kamu siap masuk dunia
-                kerja.
-              </motion.p>
+          <div className="w-full max-w-md">
+            <div className="flex items-center gap-2 rounded-full border border-gray-200 bg-white p-1.5 shadow-sm">
+              <Search size={24} className="ml-3 text-gray-400" />
 
-              {/* Tabs */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-                className="flex gap-4"
-              >
-                <button
-                  onClick={() => handleTabChange("artikel")}
-                  className={`flex items-center gap-2 rounded-full px-3 py-2 transition ${activeTab === "artikel"
-                      ? "bg-primaryBlue text-white"
-                      : "bg-Background text-TextSecondary hover:bg-gray-100"
-                    }`}
-                >
-                  <Book size={18} /> Artikel
-                </button>
-                <button
-                  onClick={() => handleTabChange("video")}
-                  className={`flex items-center gap-2 rounded-full px-3 py-2 transition ${activeTab === "video"
-                      ? "bg-primaryBlue text-white"
-                      : "bg-Background text-TextSecondary hover:bg-gray-100"
-                    }`}
-                >
-                  <Video size={18} /> Video
-                </button>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
-                className="flex w-full gap-2"
-              >
-                <input
-                  type="text"
-                  placeholder="Cari artikel atau tips keren"
-                  className="flex-1 rounded-full border px-4 py-2"
-                />
-                <button className="bg-primaryBlue rounded-full px-2 py-2 font-medium text-white transition-transform hover:scale-105">
-                  <ArrowRight />
-                </button>
-              </motion.div>
-            </motion.div>
-
-            {/* Illustration - Hidden below lg */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-              className="hidden flex-1 lg:block"
-            >
-              <Image
-                className="relative"
-                draggable={false}
-                src={illustration}
-                alt="illustration tips karir"
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setVisibleCount(initialVisible);
+                }}
+                placeholder={t("search.placeholder")}
+                className="w-full bg-transparent p-2 text-sm outline-none"
               />
-            </motion.div>
+
+              <button
+                type="button"
+                className="bg-primaryBlue hover:bg-primaryBlueHover rounded-full px-5 py-2 text-sm font-medium text-white"
+              >
+                {t("search.button")}
+              </button>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="border-b border-gray-200">
+          <div className="scrollbar-hide flex w-full items-center gap-2 overflow-x-auto pb-3">
+            <button
+              onClick={() => handleTabChange("all")}
+              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm ${
+                activeTab === "all"
+                  ? "bg-primaryBlue text-white"
+                  : "text-TextSecondary hover:bg-gray-100"
+              }`}
+            >
+              <LayoutGrid size={16} /> {t("tabs.all")}
+            </button>
+
+            <button
+              onClick={() => handleTabChange("article")}
+              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm ${
+                activeTab === "article"
+                  ? "bg-primaryBlue text-white"
+                  : "text-TextSecondary hover:bg-gray-100"
+              }`}
+            >
+              <Book size={16} /> {t("tabs.article")}
+            </button>
+
+            <button
+              onClick={() => handleTabChange("video")}
+              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm ${
+                activeTab === "video"
+                  ? "bg-primaryBlue text-white"
+                  : "text-TextSecondary hover:bg-gray-100"
+              }`}
+            >
+              <Video size={16} /> {t("tabs.video")}
+            </button>
           </div>
         </div>
 
-        {/* CONTENT SECTION */}
-        <AnimatePresence mode="wait">
-          {activeTab === "artikel" ? (
+        {errorMsg ? (
+          <div className="rounded-2xl border border-dashed border-red-200 bg-red-50 py-20 text-center text-red-600">
+            <div className="mb-2 text-xl font-bold">{t("error.title")}</div>
+            <p className="text-sm font-medium">{errorMsg}</p>
+          </div>
+        ) : filteredContents.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-gray-200 bg-gray-50 py-20 text-center text-gray-500">
+            <p className="text-lg font-medium">
+              {search ? t("empty.notFound") : t("empty.noContent")}
+            </p>
+          </div>
+        ) : (
+          <AnimatePresence mode="popLayout">
             <motion.div
-              key="artikel"
+              key={`${activeTab}-${search}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3"
             >
-              {/* ARTICLES */}
-              <div className="mx-auto grid w-full max-w-7xl gap-8 px-6 py-6 md:grid-cols-2">
-                {visibleArticles.map((article, index) => (
-                  <motion.div
-                    key={article.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      duration: 0.5,
-                      delay: index * 0.1,
-                      ease: "easeOut",
-                    }}
-                    className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition hover:shadow-md"
-                  >
-                    <div className="relative h-80 w-full">
-                      <Image
-                        src={article.img}
-                        alt={article.title}
-                        fill
-                        className="rounded-t-2xl object-cover"
-                      />
-                    </div>
-                    <div className="p-5">
-                      <h3 className="text-TextPrimary mb-2 line-clamp-2 text-lg leading-snug font-semibold">
-                        {article.title}
-                      </h3>
-                      <p className="text-TextSecondary mb-4 line-clamp-3 text-sm leading-relaxed">
-                        {article.description}
-                      </p>
-                      <Link
-                        href={article.href}
-                        className="text-primaryBlue inline-flex items-center text-sm font-medium hover:underline"
-                      >
-                        Baca artikel
-                        <ArrowRight size={16} className="ml-1" />
-                      </Link>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              <div className="mx-auto pt-8 pb-12">
-                <motion.button
-                  onClick={handleLoadMore}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-primaryBlue hover:bg-primaryBlue/90 mx-auto flex items-center gap-2 rounded-full px-4 py-3 text-white transition"
+              {visibleContents.map((item, index) => (
+                <motion.article
+                  key={item.id}
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  className="group flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm"
                 >
-                  {isAllVisible ? (
-                    <>
-                      <MoveUp size={16} /> Tampilkan Lebih Sedikit
-                    </>
-                  ) : (
-                    <>
-                      <MoveDown size={16} /> Muat Lebih Banyak
-                    </>
-                  )}
-                </motion.button>
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="video"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              {/* VIDEOS */}
-              <div className="mx-auto grid w-full max-w-7xl gap-8 px-6 py-6 md:grid-cols-2">
-                {allVideos.map((video, index) => (
-                  <motion.div
-                    key={video.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      duration: 0.5,
-                      delay: index * 0.1,
-                      ease: "easeOut",
-                    }}
-                    className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition hover:shadow-md"
-                  >
-                    <div className="relative h-80 w-full">
+                  <div className="relative aspect-[16/9] w-full overflow-hidden bg-gray-100">
+                    {item.coverImageUrl ? (
                       <Image
-                        src={video.thumbnail}
-                        alt={video.title}
+                        src={item.coverImageUrl}
+                        alt={item.title}
                         fill
-                        className="rounded-t-2xl object-cover"
+                        className="object-cover"
+                        sizes="(max-width:768px)100vw,(max-width:1280px)50vw,33vw"
+                        unoptimized
                       />
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                        <PlayCircle
-                          size={48}
-                          className="text-white opacity-90"
-                        />
+                    ) : (
+                      <div className="flex h-full items-center justify-center text-gray-300">
+                        {item.type === "video" ? (
+                          <Video size={54} />
+                        ) : (
+                          <Book size={54} />
+                        )}
                       </div>
-                    </div>
-                    <div className="p-5">
-                      <h3 className="text-TextPrimary mb-2 line-clamp-2 text-lg leading-snug font-semibold">
-                        {video.title}
-                      </h3>
-                      <p className="text-TextSecondary mb-4 line-clamp-3 text-sm leading-relaxed">
-                        {video.description}
-                      </p>
-                      <Link
-                        href={video.href}
-                        className="text-primaryBlue inline-flex items-center text-sm font-medium hover:underline"
-                      >
-                        Tonton Video
-                        <ArrowRight size={16} className="ml-1" />
-                      </Link>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+                    )}
+
+                    {item.type === "video" && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                        <PlayCircle size={54} className="text-white" />
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex flex-1 flex-col p-5">
+                    <span
+                      className={`mb-3 w-fit rounded-full px-3 py-1 text-xs font-semibold ${item.type === "article" ? "bg-blue-100 text-blue-700" : "bg-red-100 text-red-700"}`}
+                    >
+                      {item.type === "article"
+                        ? t("tabs.article")
+                        : t("tabs.video")}
+                    </span>
+
+                    <h3 className="mb-2 line-clamp-2 text-xl font-semibold">
+                      {item.title}
+                    </h3>
+
+                    <p className="mb-4 line-clamp-2 flex-1 text-sm text-gray-600">
+                      {item.excerpt}
+                    </p>
+
+                    <Link
+                      href={`/${locale}/career-tips/${item.slug}`}
+                      className="text-primaryBlue inline-flex items-center text-sm font-medium hover:underline"
+                    >
+                      {item.type === "article"
+                        ? t("content.readArticle")
+                        : t("content.watchVideo")}
+                      <ArrowRight size={16} className="ml-1" />
+                    </Link>
+                  </div>
+                </motion.article>
+              ))}
             </motion.div>
-          )}
-        </AnimatePresence>
+
+            {!isAllVisible && (
+              <div className="mt-8 flex justify-center">
+                <button
+                  onClick={handleLoadMore}
+                  className="bg-primaryBlue inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium text-white"
+                >
+                  <MoveDown size={16} /> {t("loadMore")}
+                </button>
+              </div>
+            )}
+          </AnimatePresence>
+        )}
       </section>
     </main>
   );

@@ -50,7 +50,7 @@ const HeroSection = () => {
             <div className="mt-3 flex flex-col-reverse items-stretch gap-4 sm:flex-row sm:items-center">
               {/* Secondary CTA */}
               <Link
-                href="/improve-linkedin"
+                href="/faq"
                 className="group border-primaryBlue text-primaryBlue hover:border-primaryBlueHover hover:bg-primaryBlue/5 hover:text-primaryBlueHover focus-visible:ring-primaryBlue flex w-full items-center justify-center rounded-full border-2 px-6 py-2.5 transition-all duration-200 ease-out focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:w-fit"
               >
                 <span className="font-medium whitespace-nowrap">
@@ -60,7 +60,7 @@ const HeroSection = () => {
 
               {/* Primary CTA */}
               <Link
-                href={isLoggedIn ? "/review-cv" : "/login"}
+                href={isLoggedIn ? "/dashboard/review-cv" : "/login"}
                 className="group bg-primaryBlue hover:bg-primaryBlueHover focus-visible:ring-primaryBlue flex w-full items-center justify-center gap-2 rounded-full px-6 py-2.5 font-semibold text-white shadow-sm transition-all duration-200 ease-out hover:shadow-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.98] md:w-fit"
               >
                 <span className="whitespace-nowrap">

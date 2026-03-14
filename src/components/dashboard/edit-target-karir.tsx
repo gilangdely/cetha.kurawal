@@ -20,12 +20,8 @@ import {
   Trash2,
   Loader2,
 } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@radix-ui/react-tooltip";
 import { UpgradeModal } from "@/components/UpgradeModal";
+import { useTranslations } from "next-intl";
 
 interface EditTargetKarirProps {
   open?: boolean;
@@ -51,6 +47,7 @@ export default function EditTargetKarir({
   initialTasks,
   onTasksChange,
 }: EditTargetKarirProps) {
+  const t = useTranslations("DashboardCareerTargets.editor");
   const [tasks, setTasks] = useState(initialTasks || []);
   const [showInput, setShowInput] = useState(false);
   const [newTask, setNewTask] = useState("");
@@ -144,19 +141,19 @@ export default function EditTargetKarir({
 
       <SheetContent className="px-4">
         <SheetHeader className="px-0">
-          <SheetTitle>Edit Target Karir</SheetTitle>
-          <SheetDescription>
-            Tambah target karir dan checklist yang perlu diselesaikan
-          </SheetDescription>
+          <SheetTitle>{t("editTitle")}</SheetTitle>
+          <SheetDescription>{t("description")}</SheetDescription>
         </SheetHeader>
 
         <div className="space-y-6">
           {/* Input Judul */}
           <div className="space-y-3">
-            <label className="text-sm font-medium">Judul Target</label>
+            <label className="text-sm font-medium">
+              {t("fields.targetTitle")}
+            </label>
             <input
               type="text"
-              placeholder="Contoh: Senior Developer Path"
+              placeholder={t("fields.targetPlaceholder")}
               className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -166,16 +163,19 @@ export default function EditTargetKarir({
           {/* Daftar To-do */}
           <div>
             <div className="flex items-center justify-between gap-4">
-              <label className="text-sm font-medium">Checklist To-Do</label>
+              <label className="text-sm font-medium">
+                {t("fields.checklist")}
+              </label>
               <button
                 type="button"
-                title="Generate otomatis dari judul"
+                title={t("fields.generateTooltip")}
                 onClick={handleGenerateTasks}
                 disabled={genLoading || !title.trim()}
-                className={`rounded-md p-2 transition-colors ${genLoading || !title.trim()
+                className={`rounded-md p-2 transition-colors ${
+                  genLoading || !title.trim()
                     ? "cursor-not-allowed bg-gray-100 text-gray-400"
                     : "hover:bg-primaryBlue hover:text-white"
-                  }`}
+                }`}
               >
                 {genLoading ? (
                   <Loader2 className="size-4 animate-spin" />
@@ -205,10 +205,11 @@ export default function EditTargetKarir({
 
                   <div className="flex w-full justify-between">
                     <p
-                      className={`text-sm transition-all ${task.checked
+                      className={`text-sm transition-all ${
+                        task.checked
                           ? "text-gray-400 line-through"
                           : "text-gray-700"
-                        }`}
+                      }`}
                     >
                       {task.label}
                     </p>
@@ -235,7 +236,7 @@ export default function EditTargetKarir({
               >
                 <div className="flex items-center gap-2">
                   <PlusCircle className="inline size-4" />
-                  <p>Tambah Item</p>
+                  <p>{t("tasks.addItem")}</p>
                 </div>
               </Button>
             ) : (
@@ -245,7 +246,7 @@ export default function EditTargetKarir({
                   value={newTask}
                   onChange={(e) => setNewTask(e.target.value)}
                   onKeyDown={handleEnterKey}
-                  placeholder="Tambah item checklist"
+                  placeholder={t("tasks.addPlaceholder")}
                   className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
                   autoFocus
                 />
@@ -278,7 +279,7 @@ export default function EditTargetKarir({
             disabled={!title.trim() || tasks.length === 0}
             onClick={handleSaveTarget}
           >
-            Simpan Target
+            {t("actions.save")}
           </Button>
         </div>
       </SheetContent>

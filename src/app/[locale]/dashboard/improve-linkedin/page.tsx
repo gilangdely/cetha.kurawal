@@ -126,7 +126,9 @@ export default function ImproveLinkedInDashboard() {
 
     try {
       // 1️⃣ Ambil data LinkedIn lengkap
-      const res = await fetch(`/api/linkedin?username=${encodeURIComponent(cleanUsername)}`);
+      const res = await fetch(
+        `/api/apify-linkedin?username=${encodeURIComponent(cleanUsername)}`,
+      );
       const data = await res.json();
 
       if (!res.ok || data.success === false) {
@@ -169,7 +171,8 @@ export default function ImproveLinkedInDashboard() {
       });
 
       const aiData = await aiRes.json();
-      if (!aiRes.ok) throw new Error(aiData.message || "Gagal menganalisis dengan AI.");
+      if (!aiRes.ok)
+        throw new Error(aiData.message || "Gagal menganalisis dengan AI.");
 
       // 4️⃣ Simpan hasil AI ke state
       setAiResult(aiData.result);
@@ -180,8 +183,6 @@ export default function ImproveLinkedInDashboard() {
       setLoading(false);
     }
   };
-
-
 
   return (
     <div className="w-full p-4 md:px-10">
@@ -201,15 +202,17 @@ export default function ImproveLinkedInDashboard() {
       {/* Header */}
       <div className="mt-6 mb-8">
         <h2 className="text-TextPrimary text-3xl font-semibold">
-          Profil <span className="text-accentOrange">LinkedIn Lebih Standout</span>
+          Profil{" "}
+          <span className="text-accentOrange">LinkedIn Lebih Standout</span>
         </h2>
         <p className="text-TextSecondary mt-2 max-w-2xl text-base">
-          Masukkan URL LinkedIn kamu, biarkan AI menganalisis headline, summary, dan skill.
+          Masukkan URL LinkedIn kamu, biarkan AI menganalisis headline, summary,
+          dan skill.
         </p>
       </div>
 
       {/* Input */}
-      <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm mb-10">
+      <div className="mb-10 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
         <h3 className="text-TextPrimary mb-4 text-xl font-medium">
           Masukkan Profil LinkedIn Kamu
         </h3>
@@ -224,9 +227,9 @@ export default function ImproveLinkedInDashboard() {
           <button
             onClick={handleAnalyze}
             disabled={loading}
-            className={`rounded-full px-4 py-3 text-white transition-colors flex items-center justify-center ${loading
-              ? "bg-primaryBlue/70 cursor-not-allowed"
-              : "bg-primaryBlue hover:bg-primaryBlue/90"
+            className={`flex items-center justify-center rounded-full px-4 py-3 text-white transition-colors ${loading
+                ? "bg-primaryBlue/70 cursor-not-allowed"
+                : "bg-primaryBlue hover:bg-primaryBlue/90"
               }`}
           >
             {loading ? <Loader2 className="animate-spin" /> : <ArrowRight />}
@@ -234,7 +237,7 @@ export default function ImproveLinkedInDashboard() {
         </div>
 
         {error && (
-          <div className="mt-4 rounded-lg bg-red-50 border border-red-300 text-red-700 px-4 py-2">
+          <div className="mt-4 rounded-lg border border-red-300 bg-red-50 px-4 py-2 text-red-700">
             {error}
           </div>
         )}
@@ -244,7 +247,9 @@ export default function ImproveLinkedInDashboard() {
       {profile && <LinkedInProfileDisplay profile={profile} />}
       {aiResult && (
         <LinkedInAnalysisResult
-          result={typeof aiResult === "string" ? JSON.parse(aiResult) : aiResult}
+          result={
+            typeof aiResult === "string" ? JSON.parse(aiResult) : aiResult
+          }
           className="mt-6"
         />
       )}

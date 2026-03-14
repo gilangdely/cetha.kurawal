@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { auth } from "@/app/lib/firebase";
 import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import {
   Sidebar,
   SidebarHeader,
@@ -37,35 +38,61 @@ import logo from "@/assets/icons/cetha-new-logo.svg";
 import favicon from "@/assets/icons/favicon-white-new.svg";
 
 const mainMenu = [
-  { title: "Dashboard", icon: Home, href: "/dashboard" },
-  { title: "CV Review", icon: FileSearch, href: "/dashboard/review-cv" },
+  { title: "dashboard", icon: Home, href: "/dashboard" },
+  { title: "cvReview", icon: FileSearch, href: "/dashboard/review-cv" },
+  { title: "cvBuilder", icon: FileText, href: "/dashboard/cv-builder" },
   {
-    title: "CV Builder",
-    icon: FileText,
-    href: "/dashboard/cv-builder",
-  },
-  {
-    title: "Improve LinkedIn",
+    title: "improveLinkedin",
     icon: Linkedin,
     href: "/dashboard/improve-linkedin",
   },
-  {
-    title: "Find Jobs AI",
-    icon: Briefcase,
-    href: "/dashboard/job-match",
-  },
-  { title: "Artikel & Video", icon: Newspaper, href: "/dashboard/career-tips" },
+  { title: "findJobs", icon: Briefcase, href: "/dashboard/job-match" },
+  { title: "articles", icon: Newspaper, href: "/dashboard/career-tips" },
 ];
+
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    setMatches(media.matches);
+
+    const listener = () => setMatches(media.matches);
+    media.addEventListener("change", listener);
+
+    return () => media.removeEventListener("change", listener);
+  }, [query]);
+
+  return matches;
+}
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const { state, setOpen } = useSidebar();
+  const t = useTranslations("dashboard.sidebar");
 
-  const { state } = useSidebar();
   const [isAdmin, setIsAdmin] = useState(false);
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  const isExpanded = state === "expanded";
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isCvBuilder = pathname.includes("/dashboard/cv-builder");
+
+  const isExpanded = state === "expanded" || isMobile;
+
+  const sidebarMode = isMobile || isCvBuilder ? "offcanvas" : "icon";
+
+  useEffect(() => {
+    if (isMobile || isCvBuilder) {
+      setOpen(false);
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    if (isMobile || isCvBuilder) {
+      setOpen(false);
+    }
+  }, [isMobile, isCvBuilder, setOpen]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -106,27 +133,28 @@ export function AppSidebar() {
 
   const remaining = data?.quota?.remaining_quota ?? 0;
 
-  // Pesan berdasarkan token
   let message = "";
 
-  if (remaining <= 2) {
-    message =
-      "Tokenmu hampir habis. Tambahkan token agar AI tetap bisa digunakan.";
-  } else if (remaining <= 10) {
-    message =
-      "Tokenmu mulai menipis. Gunakan dengan bijak atau tambahkan token.";
-  } else if (remaining > 40) {
-    message = "Tokenmu masih aman. Gunakan AI untuk meningkatkan kariermu.";
+  if (remaining == 0) {
+    message = t("tokenMessage.exhausted");
+  } else if (remaining <= 2) {
+    message = t("tokenMessage.low");
+  } else if (remaining <= 20) {
+    message = t("tokenMessage.medium");
+  } else if (remaining >= 40) {
+    message = t("tokenMessage.safe");
   }
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-gray-200 bg-white">
+    <Sidebar
+      collapsible={sidebarMode}
+      className="border-r border-gray-200 bg-white"
+    >
       {/* HEADER */}
       <SidebarHeader className="h-20 justify-center">
         <div
-          className={`flex items-center px-4 transition-all duration-300 ${
-            isExpanded ? "justify-between" : "justify-center"
-          }`}
+          className={`flex items-center px-4 transition-all duration-300 ${isExpanded ? "justify-between" : "justify-center"
+            }`}
         >
           {isExpanded && (
             <Link
@@ -144,9 +172,8 @@ export function AppSidebar() {
           )}
 
           <SidebarTrigger
-            className={`rounded-lg transition-colors hover:bg-gray-100 ${
-              isExpanded ? "h-9 w-9" : "h-10 w-10"
-            }`}
+            className={`rounded-lg transition-colors hover:bg-gray-100 ${isExpanded ? "h-9 w-9" : "h-10 w-10"
+              }`}
           >
             <Menu className="h-5 w-5 text-gray-600" />
           </SidebarTrigger>
@@ -156,11 +183,10 @@ export function AppSidebar() {
       {/* CONTENT */}
       <SidebarContent className="scrollbar-none px-2">
         <SidebarGroupLabel
-          className={`mb-2 px-2 text-xs font-bold tracking-wider text-gray-400 uppercase transition-opacity ${
-            isExpanded ? "opacity-100" : "opacity-0"
-          }`}
+          className={`mb-2 px-2 text-xs font-bold tracking-wider text-gray-400 uppercase transition-opacity ${isExpanded ? "opacity-100" : "opacity-0"
+            }`}
         >
-          Main Navigation
+          {t("mainNavigation")}
         </SidebarGroupLabel>
 
         <SidebarGroupContent>
@@ -172,30 +198,27 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    tooltip={item.title}
+                    tooltip={t(`menu.${item.title}`)}
                     isActive={isActive}
                   >
                     <Link
                       href={item.href}
-                      className={`group relative flex h-10 items-center rounded-xl transition-all duration-200 ${
-                        isExpanded ? "gap-3 px-3" : "justify-center"
-                      } ${
-                        isActive
+                      className={`group relative flex h-10 items-center rounded-xl transition-all duration-200 ${isExpanded ? "gap-3 px-3" : "justify-center"
+                        } ${isActive
                           ? "bg-blue-600 text-white shadow-lg ring-1 shadow-blue-200 ring-blue-600"
                           : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
-                      }`}
+                        }`}
                     >
                       <item.icon
-                        className={`!h-5 !w-5 shrink-0 transition-colors ${
-                          isActive
+                        className={`!h-5 !w-5 shrink-0 transition-colors ${isActive
                             ? "text-white"
                             : "text-gray-400 group-hover:text-gray-600"
-                        }`}
+                          }`}
                       />
 
                       {isExpanded && (
                         <span className="text-sm font-semibold">
-                          {item.title}
+                          {t(`menu.${item.title}`)}
                         </span>
                       )}
 
@@ -213,54 +236,47 @@ export function AppSidebar() {
 
       {/* Footer */}
       <SidebarFooter className="p-4">
-        <SidebarMenuButton asChild tooltip="Lihat Harga">
+        <SidebarMenuButton asChild tooltip={t("pricing")}>
           <Link
             href="/dashboard/my-profile/subscription"
-            className={`group flex h-10 items-center rounded-xl transition-all ${
-              isExpanded ? "gap-3" : "relative right-2 justify-center"
-            } ${
-              pathname === "/dashboard/my-profile/subscription"
+            className={`group flex h-10 items-center rounded-xl transition-all ${isExpanded ? "gap-3" : "relative right-2 justify-center"
+              } ${pathname === "/dashboard/my-profile/subscription"
                 ? "bg-blue-100 font-semibold text-blue-700"
                 : "text-gray-500 hover:bg-blue-50 hover:text-blue-600"
-            }`}
+              }`}
           >
             <Tag
-              className={`!h-5 !w-5 ${
-                pathname === "/dashboard/my-profile/subscription"
+              className={`!h-5 !w-5 ${pathname === "/dashboard/my-profile/subscription"
                   ? "text-blue-600"
                   : "text-gray-400 group-hover:text-blue-500"
-              }`}
+                }`}
             />
 
             {isExpanded && (
-              <span className="text-sm font-semibold">Lihat Harga</span>
+              <span className="text-sm font-semibold">{t("pricing")}</span>
             )}
           </Link>
         </SidebarMenuButton>
 
-        {/* Admin Panel */}
         {isAdmin && (
-          <SidebarMenuButton asChild tooltip="Admin Panel">
+          <SidebarMenuButton asChild tooltip={t("adminPanel")}>
             <Link
               href="/admin"
-              className={`group flex h-10 items-center rounded-xl transition-all ${
-                isExpanded ? "gap-3" : "relative right-2 justify-center"
-              } ${
-                pathname === "/admin"
+              className={`group flex h-10 items-center rounded-xl transition-all ${isExpanded ? "gap-3" : "relative right-2 justify-center"
+                } ${pathname === "/admin"
                   ? "bg-orange-100 font-semibold text-orange-700"
                   : "text-gray-500 hover:bg-orange-50 hover:text-orange-600"
-              }`}
+                }`}
             >
               <Settings2
-                className={`!h-5 !w-5 ${
-                  pathname === "/admin"
+                className={`!h-5 !w-5 ${pathname === "/admin"
                     ? "text-orange-600"
                     : "text-gray-400 group-hover:text-orange-500"
-                }`}
+                  }`}
               />
 
               {isExpanded && (
-                <span className="text-sm font-semibold">Admin Panel</span>
+                <span className="text-sm font-semibold">{t("adminPanel")}</span>
               )}
             </Link>
           </SidebarMenuButton>
@@ -276,7 +292,6 @@ export function AppSidebar() {
               layout
               className="relative mt-2 overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-3 text-white shadow-lg shadow-blue-200/30"
             >
-              {/* Background glow */}
               <div className="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-white/10 blur-xl" />
               <div className="absolute -bottom-4 -left-4 h-16 w-16 rounded-full bg-indigo-400/20 blur-xl" />
 
@@ -284,7 +299,7 @@ export function AppSidebar() {
                 <div className="mb-2 flex items-center gap-2">
                   <Image src={favicon} alt="favicon" className="h-6 w-6" />
                   <span className="text-[10px] font-bold tracking-[0.12em] text-blue-100 uppercase">
-                    Cetha Plus+
+                    {t("subscription.badge")}
                   </span>
                 </div>
 
@@ -298,7 +313,7 @@ export function AppSidebar() {
                   href="/dashboard/my-profile/subscription"
                   className="inline-flex w-full items-center justify-center rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-blue-700 shadow transition-all hover:-translate-y-[1px] hover:shadow-md active:translate-y-0"
                 >
-                  Tambah Token
+                  {t("subscription.addToken")}
                   <ArrowUpRight size={12} className="ml-1" />
                 </Link>
               </div>
@@ -307,29 +322,26 @@ export function AppSidebar() {
         ) : (
           <SidebarMenuButton
             asChild
-            tooltip="Upgrade"
+            tooltip={t("upgrade")}
             className="group relative right-2"
           >
             <Link
               href="/upgrade"
-              className={`relative flex items-center rounded-xl transition-all duration-200 ${
-                isExpanded ? "h-10 gap-3 px-3" : "h-10 w-10 justify-center"
-              } ${
-                pathname === "/upgrade"
+              className={`relative flex items-center rounded-xl transition-all duration-200 ${isExpanded ? "h-10 gap-3 px-3" : "h-10 w-10 justify-center"
+                } ${pathname === "/upgrade"
                   ? "bg-blue-600 text-white shadow-lg ring-1 shadow-blue-200 ring-blue-600"
                   : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
-              }`}
+                }`}
             >
               <Gift
-                className={`!h-5 !w-5 shrink-0 transition-colors ${
-                  pathname === "/upgrade"
+                className={`!h-5 !w-5 shrink-0 transition-colors ${pathname === "/upgrade"
                     ? "text-white"
                     : "text-gray-400 group-hover:text-gray-600"
-                }`}
+                  }`}
               />
 
               {isExpanded && (
-                <span className="text-sm font-semibold">Upgrade</span>
+                <span className="text-sm font-semibold">{t("upgrade")}</span>
               )}
 
               {pathname === "/upgrade" && isExpanded && (

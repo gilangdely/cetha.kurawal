@@ -360,6 +360,33 @@ const Profile = () => {
 
         {/* Info Detail */}
         <div className="space-y-6">
+          {/* Dream Occupation */}
+          <div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <p className="text-base font-semibold text-gray-900">
+                  Cita-cita kamu
+                </p>
+              </div>
+            </div>
+
+            <p className="mb-3 text-xs text-gray-500">
+              Ini adalah cita-cita kamu
+            </p>
+
+            <div className="flex flex-wrap gap-2">
+              {userData?.dreamJob ? (
+                <span className="text-primaryBlue border-primaryBlue/40 rounded-xl border bg-white px-3 py-1.5 text-xs font-semibold transition hover:scale-105">
+                  {userData.dreamJob}
+                </span>
+              ) : (
+                <span className="text-gray-400 italic">
+                  Belum ada cita-cita yang ditambahkan
+                </span>
+              )}
+            </div>
+          </div>
+
           {/* ROLE */}
           <div>
             {/* Header */}
