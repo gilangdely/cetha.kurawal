@@ -128,7 +128,7 @@ const AppTopbar = () => {
   const handleLogout = async () => {
     await logoutUser();
 
-    toast.success(t("logoutSuccess"));
+    toast.success(t("messages.logoutSuccess"));
 
     router.push("/");
   };

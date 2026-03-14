@@ -230,11 +230,32 @@
     }
   },
 
-  "ArticleAndVideo": {
-    "badge": "Artikel & Video",
-    "title": "Belajar Lebih Cerdas. Dapatkan Pekerjaan Lebih Cepat.",
-    "description": "Temukan panduan praktis dan video strategi karier untuk meningkatkan kualitas CV dan memperbesar peluang Anda diterima kerja.",
-    "cta": "Lihat Semua Artikel"
+  "careerTipsPage": {
+    "hero": {
+      "title": "Kami membangun proyek yang membantu kamu mencapai tujuan kariermu",
+      "description": "Jelajahi kumpulan artikel dan video untuk membantu kamu mempersiapkan diri menghadapi dunia kerja."
+    },
+    "search": {
+      "placeholder": "Cari konten",
+      "button": "Cari"
+    },
+    "tabs": {
+      "all": "Semua",
+      "article": "Artikel",
+      "video": "Video"
+    },
+    "content": {
+      "readArticle": "Baca Artikel",
+      "watchVideo": "Tonton Video"
+    },
+    "empty": {
+      "notFound": "Konten tidak ditemukan.",
+      "noContent": "Belum ada konten diterbitkan."
+    },
+    "error": {
+      "title": "Terjadi Kesalahan"
+    },
+    "loadMore": "Muat Lebih Banyak"
   },
 
   "LinkedinImproveSection": {
@@ -662,6 +683,7 @@
       },
 
       "tokenMessage": {
+        "exhausted": "Tokenmu habis. Tambahkan token agar AI tetap bisa digunakan.",
         "low": "Tokenmu hampir habis. Tambahkan token agar AI tetap bisa digunakan.",
         "medium": "Tokenmu mulai menipis. Gunakan dengan bijak atau tambahkan token.",
         "safe": "Tokenmu masih aman. Gunakan AI untuk meningkatkan kariermu."
@@ -682,6 +704,9 @@
         "review-cv": "Review CV",
         "my-profile": "Profil Saya",
         "settings": "Pengaturan"
+      },
+      "messages" : {
+        "logoutSuccess": "Berhasil logout"
       }
     },
 

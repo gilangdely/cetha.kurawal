@@ -37,7 +37,7 @@ export default function AdsDashboardCvBuilder() {
 
         <Link
           href={"/dashboard/cv-builder"}
-          className="group mt-3 flex w-fit items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/20 transition-all duration-300 hover:shadow-violet-500/40 hover:brightness-110"
+          className="group mt-3 flex w-fit items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white transition-all duration-300"
         >
           {t("cta")}
           <ArrowRight
@@ -48,7 +48,7 @@ export default function AdsDashboardCvBuilder() {
       </div>
 
       {/* Right: Mock Template Picker */}
-      <div className="flex w-full max-w-xs flex-1 flex-col">
+      <div className="hidden w-full max-w-xs flex-1 md:flex md:flex-col">
         <div className="border-primaryBlue/10 relative flex-1 rounded-xl border bg-white p-4 shadow-sm transition hover:shadow-md">
           {/* subtle glow */}
           <div className="pointer-events-none absolute -top-8 -right-8 h-20 w-20 rounded-full bg-violet-100/40 blur-2xl" />

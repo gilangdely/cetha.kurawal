@@ -39,7 +39,7 @@ export default function AdsDashboardImproveLinkedin() {
 
         <Link
           href={"/dashboard/linkedin-optimizer"}
-          className="group mt-6 flex w-fit items-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:shadow-blue-500/40 hover:brightness-110"
+          className="group mt-6 flex w-fit items-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition-all duration-300"
         >
           {t("cta")}
           <ArrowRight
@@ -50,11 +50,8 @@ export default function AdsDashboardImproveLinkedin() {
       </div>
 
       {/* Right: Mock Profile Card */}
-      <div className="flex w-full max-w-2xs flex-1 flex-col">
+      <div className="hidden w-full max-w-2xs flex-1 md:flex md:flex-col">
         <div className="border-primaryBlue/10 relative flex-1 rounded-xl border bg-white p-4 shadow-sm transition hover:shadow-md">
-          {/* subtle glow */}
-          <div className="pointer-events-none absolute -top-6 -right-6 h-16 w-16 rounded-full bg-blue-500/10 blur-xl" />
-
           <div className="mb-4 flex items-center gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-600 text-sm font-bold text-white shadow-sm">
               AS

@@ -115,34 +115,14 @@ export default function CareerTipsDetailPage() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 pt-28 pb-16 md:px-6">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className="mb-5"
-      >
-        <Link
-          href={`/${locale}/career-tips`}
-          className="text-TextSecondary hover:text-primaryBlue inline-flex items-center gap-2 text-sm font-medium transition-colors"
-        >
-          <ArrowLeft size={16} /> Kembali ke tips karier
-        </Link>
-      </motion.div>
-
-      <article className="overflow-hidden rounded-[28px] border border-gray-200 bg-white shadow-sm">
+    <div className="mx-auto flex w-full max-w-5xl items-center px-4 py-16 pt-18 pb-14 md:px-6 lg:min-h-screen lg:pt-28">
+      <article className="overflow-hidden">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: "easeOut" }}
-          className="from-primaryBlue/5 border-b border-gray-100 bg-gradient-to-b via-white to-white px-5 py-8 sm:px-8 md:px-10 md:py-10"
+          className="px-5 py-8 sm:px-8 md:px-10 md:py-10"
         >
-          <div className="border-primaryBlue/40 bg-primaryBlue/5 mb-5 w-fit rounded-full border px-3 py-1">
-            <p className="text-primaryBlue text-sm font-medium tracking-wide">
-              Career Tips
-            </p>
-          </div>
-
           <div className="mb-4 flex flex-wrap items-center gap-3">
             <span
               className={`inline-flex items-center rounded-full px-4 py-1.5 text-sm font-semibold ${
@@ -155,7 +135,6 @@ export default function CareerTipsDetailPage() {
             </span>
 
             <span className="inline-flex items-center gap-1.5 text-sm text-gray-500">
-              <CalendarDays size={15} />
               {formatDate(content.publishedAt)}
             </span>
           </div>
@@ -164,12 +143,6 @@ export default function CareerTipsDetailPage() {
             <h1 className="font-careerTips text-3xl font-semibold text-gray-900 sm:text-4xl md:text-5xl">
               {content.title}
             </h1>
-
-            {content.excerpt && (
-              <p className="text-TextSecondary max-w-3xl text-base leading-7 md:text-lg">
-                {content.excerpt}
-              </p>
-            )}
 
             {!!content.tags?.length && (
               <div className="flex flex-wrap gap-2 pt-1">
@@ -186,13 +159,13 @@ export default function CareerTipsDetailPage() {
           </div>
         </motion.div>
 
-        <div className="px-5 py-6 sm:px-8 md:px-10 md:py-10">
+        <div className="px-5 py-3 sm:px-8 md:px-10 md:py-6">
           {content.coverImageUrl && (
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-              className="relative mb-8 aspect-[16/8] w-full overflow-hidden rounded-3xl border border-gray-200 bg-gray-100"
+              className="relative mb-8 aspect-[16/8] w-full overflow-hidden border border-gray-200 bg-gray-100"
             >
               <Image
                 src={content.coverImageUrl}
@@ -234,7 +207,6 @@ export default function CareerTipsDetailPage() {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.16, ease: "easeOut" }}
-              className="rounded-3xl border border-gray-100 bg-white"
             >
               <div
                 className="prose prose-neutral sm:prose-lg prose-headings:text-gray-900 prose-a:text-primaryBlue prose-strong:text-gray-900 max-w-none px-1 leading-relaxed"

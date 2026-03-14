@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { CareerTipsSkeleton } from "@/components/career-tips-skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   LayoutGrid,
   Book,
@@ -15,6 +16,7 @@ import {
   PlayCircle,
   Search,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface ContentItem {
   id: string;
@@ -29,6 +31,7 @@ interface ContentItem {
 
 export default function TipsKarirPage() {
   const params = useParams();
+  const t = useTranslations("careerTipsPage");
   const locale = typeof params.locale === "string" ? params.locale : "id";
 
   const [contents, setContents] = useState<ContentItem[]>([]);
@@ -45,6 +48,7 @@ export default function TipsKarirPage() {
     const fetchContents = async () => {
       setLoading(true);
       setErrorMsg("");
+
       try {
         const res = await fetch("/api/contents");
         const json = await res.json();
@@ -52,11 +56,11 @@ export default function TipsKarirPage() {
         if (res.ok && json.success !== false) {
           setContents((json.data || []) as ContentItem[]);
         } else {
-          setErrorMsg(json.error || "Gagal memuat konten dari server");
+          setErrorMsg(json.error || t("error.fetchFailed"));
         }
       } catch (e: unknown) {
         const message =
-          e instanceof Error ? e.message : "Error jaringan gagal memuat";
+          e instanceof Error ? e.message : t("error.networkFailed");
         setErrorMsg(message);
       } finally {
         setLoading(false);
@@ -64,7 +68,7 @@ export default function TipsKarirPage() {
     };
 
     fetchContents();
-  }, []);
+  }, [t]);
 
   const filteredContents = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
@@ -97,33 +101,62 @@ export default function TipsKarirPage() {
     setVisibleCount(initialVisible);
   };
 
+  if (loading) {
+    return (
+      <main className="mx-auto flex w-full max-w-7xl items-center px-4 py-16 pt-18 pb-14 md:px-6 lg:min-h-screen lg:pt-28">
+        <section className="w-full space-y-7">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="w-full max-w-2xl space-y-4">
+              <Skeleton className="h-10 w-full max-w-[34rem] rounded-md" />
+              <Skeleton className="h-6 w-full max-w-[28rem] rounded-md" />
+            </div>
+
+            <div className="w-full max-w-md">
+              <div className="flex items-center gap-2 rounded-full border border-gray-200 bg-white p-1.5 shadow-sm">
+                <Skeleton className="ml-2 h-8 w-8 rounded-full" />
+                <Skeleton className="h-10 flex-1 rounded-full" />
+                <Skeleton className="h-10 w-24 rounded-full" />
+              </div>
+            </div>
+          </div>
+
+          <div className="border-b border-gray-200">
+            <div className="scrollbar-hide flex w-full items-center gap-2 overflow-x-auto pb-3">
+              <Skeleton className="h-9 w-20 rounded-full" />
+              <Skeleton className="h-9 w-24 rounded-full" />
+              <Skeleton className="h-9 w-20 rounded-full" />
+            </div>
+          </div>
+
+          <CareerTipsSkeleton count={6} />
+        </section>
+      </main>
+    );
+  }
+
   return (
     <main className="mx-auto flex w-full max-w-7xl items-center px-4 py-16 pt-18 pb-14 md:px-6 lg:min-h-screen lg:pt-28">
       <section className="space-y-7">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, ease: "easeOut" }}
+          transition={{ duration: 0.45 }}
           className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
         >
           <div className="max-w-2xl space-y-4">
-            <h1 className="text-TextPrimary text-2xl leading-tight font-semibold md:text-3xl lg:text-4xl">
-              We build projects that help you meet your goals
+            <h1 className="text-TextPrimary text-2xl font-semibold md:text-3xl lg:text-4xl">
+              {t("hero.title")}
             </h1>
+
             <p className="text-TextSecondary mt-3 text-base sm:text-lg">
-              Jelajahi kumpulan artikel dan video untuk bantu kamu siap hadapi
-              dunia kerja.
+              {t("hero.description")}
             </p>
           </div>
 
           <div className="w-full max-w-md">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: 0.1 }}
-              className="flex items-center gap-2 rounded-full border border-gray-200 bg-white p-1.5 shadow-sm"
-            >
+            <div className="flex items-center gap-2 rounded-full border border-gray-200 bg-white p-1.5 shadow-sm">
               <Search size={24} className="ml-3 text-gray-400" />
+
               <input
                 type="text"
                 value={search}
@@ -131,16 +164,17 @@ export default function TipsKarirPage() {
                   setSearch(e.target.value);
                   setVisibleCount(initialVisible);
                 }}
-                placeholder="Search the case"
+                placeholder={t("search.placeholder")}
                 className="w-full bg-transparent p-2 text-sm outline-none"
               />
+
               <button
                 type="button"
-                className="bg-primaryBlue hover:bg-primaryBlueHover rounded-full px-5 py-2 text-sm font-medium text-white transition-all duration-200"
+                className="bg-primaryBlue hover:bg-primaryBlueHover rounded-full px-5 py-2 text-sm font-medium text-white"
               >
-                Search
+                {t("search.button")}
               </button>
-            </motion.div>
+            </div>
           </div>
         </motion.div>
 
@@ -148,54 +182,48 @@ export default function TipsKarirPage() {
           <div className="scrollbar-hide flex w-full items-center gap-2 overflow-x-auto pb-3">
             <button
               onClick={() => handleTabChange("all")}
-              className={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition ${
+              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm ${
                 activeTab === "all"
                   ? "bg-primaryBlue text-white"
                   : "text-TextSecondary hover:bg-gray-100"
               }`}
             >
-              <LayoutGrid size={16} /> All
+              <LayoutGrid size={16} /> {t("tabs.all")}
             </button>
 
             <button
               onClick={() => handleTabChange("article")}
-              className={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition ${
+              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm ${
                 activeTab === "article"
                   ? "bg-primaryBlue text-white"
                   : "text-TextSecondary hover:bg-gray-100"
               }`}
             >
-              <Book size={16} /> Artikel
+              <Book size={16} /> {t("tabs.article")}
             </button>
 
             <button
               onClick={() => handleTabChange("video")}
-              className={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition ${
+              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm ${
                 activeTab === "video"
                   ? "bg-primaryBlue text-white"
                   : "text-TextSecondary hover:bg-gray-100"
               }`}
             >
-              <Video size={16} /> Video
+              <Video size={16} /> {t("tabs.video")}
             </button>
           </div>
         </div>
 
-        {loading ? (
-          <div className="py-8">
-            <CareerTipsSkeleton count={6} />
-          </div>
-        ) : errorMsg ? (
+        {errorMsg ? (
           <div className="rounded-2xl border border-dashed border-red-200 bg-red-50 py-20 text-center text-red-600">
-            <div className="mb-2 text-xl font-bold">Terjadi Kesalahan</div>
+            <div className="mb-2 text-xl font-bold">{t("error.title")}</div>
             <p className="text-sm font-medium">{errorMsg}</p>
           </div>
         ) : filteredContents.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-gray-200 bg-gray-50 py-20 text-center text-gray-500">
             <p className="text-lg font-medium">
-              {search
-                ? "Konten tidak ditemukan."
-                : "Belum ada konten diterbitkan."}
+              {search ? t("empty.notFound") : t("empty.noContent")}
             </p>
           </div>
         ) : (
@@ -204,8 +232,6 @@ export default function TipsKarirPage() {
               key={`${activeTab}-${search}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
               className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3"
             >
               {visibleContents.map((item, index) => (
@@ -213,7 +239,7 @@ export default function TipsKarirPage() {
                   key={item.id}
                   initial={{ opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35, delay: index * 0.05 }}
+                  transition={{ delay: index * 0.05 }}
                   className="group flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm"
                 >
                   <div className="relative aspect-[16/9] w-full overflow-hidden bg-gray-100">
@@ -222,12 +248,12 @@ export default function TipsKarirPage() {
                         src={item.coverImageUrl}
                         alt={item.title}
                         fill
-                        className="object-cover transition duration-300 group-hover:scale-[1.03]"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                        className="object-cover"
+                        sizes="(max-width:768px)100vw,(max-width:1280px)50vw,33vw"
                         unoptimized
                       />
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center text-gray-300">
+                      <div className="flex h-full items-center justify-center text-gray-300">
                         {item.type === "video" ? (
                           <Video size={54} />
                         ) : (
@@ -237,50 +263,36 @@ export default function TipsKarirPage() {
                     )}
 
                     {item.type === "video" && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/20 transition group-hover:bg-black/30">
-                        <PlayCircle
-                          size={54}
-                          className="text-white opacity-90"
-                        />
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                        <PlayCircle size={54} className="text-white" />
                       </div>
                     )}
                   </div>
 
                   <div className="flex flex-1 flex-col p-5">
-                    <div className="mb-3 flex flex-wrap items-center gap-2">
-                      <span
-                        className={`rounded-md px-2.5 py-1 text-xs font-medium ${
-                          item.type === "article"
-                            ? "bg-blue-50 text-blue-700"
-                            : "bg-orange-50 text-orange-700"
-                        }`}
-                      >
-                        {item.type === "article" ? "Artikel" : "Video"}
-                      </span>
-                      {(item.tags || []).slice(0, 2).map((tag) => (
-                        <span
-                          key={`${item.id}-${tag}`}
-                          className="rounded-md bg-gray-100 px-2.5 py-1 text-xs text-gray-600"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                    <span
+                      className={`mb-3 w-fit rounded-full px-3 py-1 text-xs font-semibold ${item.type === "article" ? "bg-blue-100 text-blue-700" : "bg-red-100 text-red-700"}`}
+                    >
+                      {item.type === "article"
+                        ? t("tabs.article")
+                        : t("tabs.video")}
+                    </span>
 
-                    <h3 className="mb-2 line-clamp-2 text-xl font-semibold text-gray-900">
+                    <h3 className="mb-2 line-clamp-2 text-xl font-semibold">
                       {item.title}
                     </h3>
-                    <p className="mb-4 line-clamp-2 flex-1 text-sm leading-relaxed text-gray-600">
+
+                    <p className="mb-4 line-clamp-2 flex-1 text-sm text-gray-600">
                       {item.excerpt}
                     </p>
 
                     <Link
                       href={`/${locale}/career-tips/${item.slug}`}
-                      className="text-primaryBlue mt-auto inline-flex w-fit items-center text-sm font-medium hover:underline"
+                      className="text-primaryBlue inline-flex items-center text-sm font-medium hover:underline"
                     >
                       {item.type === "article"
-                        ? "Baca Artikel"
-                        : "Tonton Video"}
+                        ? t("content.readArticle")
+                        : t("content.watchVideo")}
                       <ArrowRight size={16} className="ml-1" />
                     </Link>
                   </div>
@@ -290,14 +302,12 @@ export default function TipsKarirPage() {
 
             {!isAllVisible && (
               <div className="mt-8 flex justify-center">
-                <motion.button
+                <button
                   onClick={handleLoadMore}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.96 }}
-                  className="bg-primaryBlue hover:bg-primaryBlue/90 inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium text-white"
+                  className="bg-primaryBlue inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium text-white"
                 >
-                  <MoveDown size={16} /> Muat Lebih Banyak
-                </motion.button>
+                  <MoveDown size={16} /> {t("loadMore")}
+                </button>
               </div>
             )}
           </AnimatePresence>

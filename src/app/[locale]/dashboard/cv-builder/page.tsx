@@ -86,7 +86,7 @@ export default function CvBuilderPage() {
         {/* ── DESKTOP: side-by-side ── */}
         <div className="hidden md:flex md:flex-1 md:overflow-hidden md:px-4 md:py-6 lg:px-6 lg:py-8 print:flex print:w-full print:px-0 print:py-0">
           {/* Form sidebar */}
-          <div className="print-hidden w-[300px] shrink-0 overflow-y-auto pr-4 lg:w-[350px]">
+          <div className="print-hidden w-[300px] shrink-0 overflow-y-auto pr-4 lg:w-[450px]">
             <FormBuildCv />
           </div>
 

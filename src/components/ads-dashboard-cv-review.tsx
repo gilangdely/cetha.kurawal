@@ -40,7 +40,7 @@ export default function AdsDashboardCvReview() {
 
         <Link
           href={"/dashboard/cv-builder"}
-          className="group from-primaryBlue to-primaryBlueHover mt-3 flex w-fit items-center gap-2 rounded-xl bg-gradient-to-r px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:shadow-blue-500/40 hover:brightness-110"
+          className="group from-primaryBlue to-primaryBlueHover mt-3 flex w-fit items-center gap-2 rounded-xl bg-gradient-to-r px-5 py-2.5 text-sm font-semibold text-white transition-all duration-300"
         >
           {t("cta")}
           <ArrowRight
@@ -51,11 +51,8 @@ export default function AdsDashboardCvReview() {
       </div>
 
       {/* Right: Mock UI */}
-      <div className="flex w-full max-w-2xs flex-1 flex-col">
+      <div className="hidden w-full max-w-2xs flex-1 md:flex md:flex-col">
         <div className="border-primaryBlue/10 relative flex-1 rounded-xl border bg-white p-4 shadow-sm transition hover:shadow-md">
-          {/* subtle gradient accent */}
-          <div className="bg-primaryBlue/10 pointer-events-none absolute -top-6 -right-6 h-16 w-16 rounded-full blur-xl" />
-
           <div className="mb-4 flex items-center justify-between">
             <span className="text-TextSecondary text-[10px] font-semibold tracking-widest uppercase">
               {t("mock.score")}
