@@ -748,6 +748,8 @@
     "totalAchievements": "Total Pencapaian",
     "achievementsUnit": "Pencapaian",
 
+    "noScoreYet": "Belum ada skor",
+
     "dreamJob": "Pekerjaan Impian",
     "dreamJobEmpty": "Belum ada pekerjaan impian",
     "dreamJobError": "Gagal memuat",
