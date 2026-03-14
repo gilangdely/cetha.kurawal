@@ -1,6 +1,7 @@
 import { useCvBuilderStore } from "@/store/buildCvStore";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { ReorderList } from "@/components/ReorderList";
 import { ImageCropDialog } from "@/components/ImageCropDialog";
 import {
@@ -13,6 +14,8 @@ import {
   GraduationCap,
   Star,
   User,
+  Maximize2,
+  Minimize2
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -25,6 +28,7 @@ import {
 } from "@/components/ui/accordion";
 import { Textarea } from "./ui/textarea";
 import { useTranslations } from "next-intl";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function CvBuildAccordion() {
   const t = useTranslations("dashboard.formCvBuilder");
@@ -58,6 +62,14 @@ export default function CvBuildAccordion() {
 
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [upgradeMessage, setUpgradeMessage] = useState("");
+
+  const [activeSection, setActiveSection] = useState<string>("personal");
+  const [isMaximized, setIsMaximized] = useState<string | null>(null);
+
+  const toggleMaximize = (e: React.MouseEvent, section: string) => {
+    e.stopPropagation();
+    setIsMaximized(prev => prev === section ? null : section);
+  };
 
   const handleAIGenerate = async (
     type: "summary" | "experience" | "education",
@@ -195,20 +207,45 @@ export default function CvBuildAccordion() {
   return (
     <>
       <Accordion
-        type="multiple"
-        defaultValue={["personal"]}
-        className="overflow-hidden rounded-xl border border-gray-200 bg-white"
+        type="single"
+        value={activeSection}
+        onValueChange={(val) => val && setActiveSection(val)}
+        collapsible
+        className="space-y-4"
       >
         {/* Personal Information */}
-        <AccordionItem value="personal" className="border-b last:border-b-0">
-          <AccordionTrigger className="px-4 py-3 text-sm font-medium hover:no-underline">
-            <div className="flex items-center gap-2 text-gray-800">
-              <User size={16} />
-              {t("sections.personal")}
+        <motion.div
+           layout
+           initial={false}
+           animate={{
+             scale: activeSection === "personal" ? (isMaximized === "personal" ? 1.05 : 1.02) : 1,
+             opacity: activeSection && activeSection !== "personal" ? 0.4 : 1,
+             boxShadow: activeSection === "personal" ? "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" : "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+           }}
+           transition={{ duration: 0.3 }}
+           className={`overflow-hidden bg-white border border-gray-200 rounded-xl transition-all duration-300 ${isMaximized === "personal" ? "fixed inset-4 z-50 overflow-y-auto" : "relative"}`}
+        >
+        <AccordionItem value="personal" className="border-b-0">
+          <AccordionTrigger className="px-5 py-4 text-sm font-medium hover:no-underline">
+            <div className="flex w-full items-center justify-between">
+              <div className="flex items-center gap-2 text-gray-800">
+                <User size={16} />
+                {t("sections.personal")}
+              </div>
+              {activeSection === "personal" && (
+                <button
+                  type="button"
+                  onClick={(e) => toggleMaximize(e, "personal")}
+                  className="mr-4 rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+                  title={isMaximized === "personal" ? "Minimize" : "Maximize"}
+                >
+                  {isMaximized === "personal" ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+                </button>
+              )}
             </div>
           </AccordionTrigger>
 
-          <AccordionContent className="space-y-4 px-4 pt-2 pb-4">
+          <AccordionContent className="space-y-5 px-6 pt-3 pb-8 md:px-8">
             {/* Photo */}
             <div className="flex flex-col items-center gap-2">
               <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-gray-300 bg-gray-50">
@@ -241,6 +278,24 @@ export default function CvBuildAccordion() {
                 {t("photo.optional")}
               </p>
             </div>
+
+            {/* Photo Visibility Toggle */}
+            {data.personalInfo.photoUrl && (
+              <div className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-3">
+                <div className="space-y-0.5">
+                  <label className="text-sm font-medium text-gray-800">
+                    {t("photo.showOnCV") || "Show Photo on CV"}
+                  </label>
+                  <p className="text-xs text-gray-500">
+                    {t("photo.showOnCVDescription") || "Toggle photo visibility in the preview"}
+                  </p>
+                </div>
+                <Switch
+                  checked={data.personalInfo.showPhoto !== false}
+                  onCheckedChange={(checked: boolean) => togglePhoto(checked)}
+                />
+              </div>
+            )}
 
             {/* Name */}
             <Input
@@ -297,17 +352,41 @@ export default function CvBuildAccordion() {
             </div>
           </AccordionContent>
         </AccordionItem>
+        </motion.div>
 
         {/* Experiences */}
-        <AccordionItem value="experience" className="border-b last:border-b-0">
-          <AccordionTrigger className="px-4 py-3 text-sm font-medium hover:no-underline">
-            <div className="flex items-center gap-2 text-gray-800">
-              <Briefcase size={16} />
-              {t("sections.experience")}
-            </div>
+        <motion.div
+           layout
+           initial={false}
+           animate={{
+             scale: activeSection === "experience" ? (isMaximized === "experience" ? 1.05 : 1.02) : 1,
+             opacity: activeSection && activeSection !== "experience" ? 0.4 : 1,
+             boxShadow: activeSection === "experience" ? "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" : "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+           }}
+           transition={{ duration: 0.3 }}
+           className={`overflow-hidden bg-white border border-gray-200 rounded-xl transition-all duration-300 ${isMaximized === "experience" ? "fixed inset-4 z-50 overflow-y-auto" : "relative"}`}
+        >
+        <AccordionItem value="experience" className="border-b-0">
+          <AccordionTrigger className="px-5 py-4 text-sm font-medium hover:no-underline">
+            <div className="flex w-full items-center justify-between">
+              <div className="flex items-center gap-2 text-gray-800">
+                <Briefcase size={16} />
+                {t("sections.experience")}
+              </div>
+              {activeSection === "experience" && (
+                <button
+                  type="button"
+                  onClick={(e) => toggleMaximize(e, "experience")}
+                  className="mr-4 rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+                  title={isMaximized === "experience" ? "Minimize" : "Maximize"}
+                >
+                  {isMaximized === "experience" ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+                </button>
+              )}
+             </div>
           </AccordionTrigger>
 
-          <AccordionContent className="space-y-4 px-4 pt-2 pb-4">
+          <AccordionContent className="space-y-5 px-6 pt-3 pb-8 md:px-8">
             <ReorderList
               items={data.experience}
               onReorder={reorderExperience}
@@ -408,17 +487,41 @@ export default function CvBuildAccordion() {
             </Button>
           </AccordionContent>
         </AccordionItem>
+        </motion.div>
 
         {/* Education */}
-        <AccordionItem value="education" className="border-b last:border-b-0">
-          <AccordionTrigger className="px-4 py-3 text-sm font-medium hover:no-underline">
-            <div className="flex items-center gap-2 text-gray-800">
-              <GraduationCap size={16} />
-              {t("sections.education")}
+        <motion.div
+           layout
+           initial={false}
+           animate={{
+             scale: activeSection === "education" ? (isMaximized === "education" ? 1.05 : 1.02) : 1,
+             opacity: activeSection && activeSection !== "education" ? 0.4 : 1,
+             boxShadow: activeSection === "education" ? "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" : "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+           }}
+           transition={{ duration: 0.3 }}
+           className={`overflow-hidden bg-white border border-gray-200 rounded-xl transition-all duration-300 ${isMaximized === "education" ? "fixed inset-4 z-50 overflow-y-auto" : "relative"}`}
+        >
+        <AccordionItem value="education" className="border-b-0">
+          <AccordionTrigger className="px-5 py-4 text-sm font-medium hover:no-underline">
+            <div className="flex w-full items-center justify-between">
+              <div className="flex items-center gap-2 text-gray-800">
+                <GraduationCap size={16} />
+                {t("sections.education")}
+              </div>
+              {activeSection === "education" && (
+                <button
+                  type="button"
+                  onClick={(e) => toggleMaximize(e, "education")}
+                  className="mr-4 rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+                  title={isMaximized === "education" ? "Minimize" : "Maximize"}
+                >
+                  {isMaximized === "education" ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+                </button>
+              )}
             </div>
           </AccordionTrigger>
 
-          <AccordionContent className="space-y-4 px-4 pt-2 pb-4">
+          <AccordionContent className="space-y-5 px-6 pt-3 pb-8 md:px-8">
             <ReorderList
               items={data.education}
               onReorder={reorderEducation}
@@ -521,17 +624,41 @@ export default function CvBuildAccordion() {
             </Button>
           </AccordionContent>
         </AccordionItem>
+        </motion.div>
 
         {/* Skills */}
-        <AccordionItem value="skills" className="border-b last:border-b-0">
-          <AccordionTrigger className="px-4 py-3 text-sm font-medium hover:no-underline">
-            <div className="flex items-center gap-2 text-gray-800">
-              <Star size={16} />
-              {t("sections.skills")}
+        <motion.div
+           layout
+           initial={false}
+           animate={{
+             scale: activeSection === "skills" ? (isMaximized === "skills" ? 1.05 : 1.02) : 1,
+             opacity: activeSection && activeSection !== "skills" ? 0.4 : 1,
+             boxShadow: activeSection === "skills" ? "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" : "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+           }}
+           transition={{ duration: 0.3 }}
+           className={`overflow-hidden bg-white border border-gray-200 rounded-xl transition-all duration-300 ${isMaximized === "skills" ? "fixed inset-4 z-50 overflow-y-auto" : "relative"}`}
+        >
+        <AccordionItem value="skills" className="border-b-0">
+          <AccordionTrigger className="px-5 py-4 text-sm font-medium hover:no-underline">
+            <div className="flex w-full items-center justify-between">
+              <div className="flex items-center gap-2 text-gray-800">
+                <Star size={16} />
+                {t("sections.skills")}
+              </div>
+              {activeSection === "skills" && (
+                <button
+                  type="button"
+                  onClick={(e) => toggleMaximize(e, "skills")}
+                  className="mr-4 rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+                  title={isMaximized === "skills" ? "Minimize" : "Maximize"}
+                >
+                  {isMaximized === "skills" ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+                </button>
+              )}
             </div>
           </AccordionTrigger>
 
-          <AccordionContent className="space-y-4 px-4 pt-2 pb-4">
+          <AccordionContent className="space-y-5 px-6 pt-3 pb-8 md:px-8">
             <ReorderList
               items={data.skills}
               onReorder={reorderSkills}
@@ -559,6 +686,7 @@ export default function CvBuildAccordion() {
             </Button>
           </AccordionContent>
         </AccordionItem>
+        </motion.div>
       </Accordion>
 
       <UpgradeModal

@@ -2,8 +2,7 @@
 
 import axios from "axios";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Trash2, ChevronRight } from "lucide-react";
@@ -15,7 +14,12 @@ import { useJobResultStore } from "@/store/jobResultStore";
 import { useUploadStore } from "@/store/uploadStore";
 import { UpgradeModal } from "@/components/UpgradeModal";
 
-const UploadJobs = () => {
+/**
+ * UploadJobsDashboard — versi upload jobs khusus dashboard.
+ * Setelah upload berhasil, redirect ke /dashboard/job-match-result.
+ * Tidak ada batasan upload guest (user dashboard pasti sudah login).
+ */
+const UploadJobsDashboard = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const uploading = useUploadStore((s) => s.uploading);
@@ -23,38 +27,10 @@ const UploadJobs = () => {
   const setProgressGlobal = useUploadStore((s) => s.setProgress);
   const [uploadEnabled, setUploadEnabled] = useState(true);
 
-  const [ip, setIp] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [uploadCount, setUploadCount] = useState(0);
-
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [upgradeMessage, setUpgradeMessage] = useState("");
 
-  const router = useRouter();
   const setJobResult = useJobResultStore((state) => state.setJobResult);
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setIsLoggedIn(!!user);
-    });
-
-    fetch("/api/ip")
-      .then((res) => res.json())
-      .then((data) => {
-        const ipAddr = data.ip;
-        setIp(ipAddr);
-
-        const count = localStorage.getItem(`upload-job-count-${ipAddr}`);
-        const parsedCount = Number(count) || 0;
-        setUploadCount(parsedCount);
-
-        if (!auth.currentUser && parsedCount >= 5) {
-          toast.warning("Kamu sudah mencapai batas 5x upload tanpa login.");
-        }
-      });
-
-    return () => unsubscribe();
-  }, []);
 
   const generatePreview = (file: File) => {
     if (file.type === "application/pdf") {
@@ -96,7 +72,7 @@ const UploadJobs = () => {
 
     try {
       setGlobalUploading(true, "job");
-      // Langkah 2: Kirim ke backend untuk review
+      // Kirim ke backend untuk review
       const res = await fetch("/api/jobrecommend", {
         method: "POST",
         body: formData,
@@ -121,7 +97,6 @@ const UploadJobs = () => {
 
       const responseData = await res.json();
 
-      // ✅ Result asli dari Gradio / HuggingFace space ada di responseData.data.result.data array
       const apiResult = responseData?.data?.result || responseData?.result;
       const parsedData = apiResult?.data?.[0];
 
@@ -133,14 +108,7 @@ const UploadJobs = () => {
       setJobResult(parsedData);
       toast.success("Rekomendasi pekerjaan berhasil dibuat!");
 
-      // batas upload guest
-      if (!isLoggedIn) {
-        const newCount = uploadCount + 1;
-        setUploadCount(newCount);
-        localStorage.setItem(`upload-job-count-${ip}`, String(newCount));
-      }
-
-      router.push("/job-match-result");
+      // Dashboard: tidak redirect — hasil ditampilkan inline
     } catch (err: any) {
       console.error("❌ Upload gagal:", err.message || err);
       toast.error(err.message || "Gagal mengunggah atau menganalisis CV");
@@ -244,15 +212,6 @@ const UploadJobs = () => {
         )}
       </div>
 
-      {/* Info batas upload */}
-      <div className="mt-2 text-center text-sm text-gray-500">
-        {!isLoggedIn && (
-          <span>
-            Sisa upload tanpa login: {Math.max(0, 5 - uploadCount)} dari 5 kali
-          </span>
-        )}
-      </div>
-
       <div className="mt-4">
         <p className="text-TextSecondary font-medium">
           File yang dapat terbaca: PDF
@@ -264,7 +223,7 @@ const UploadJobs = () => {
         <div className="flex justify-end lg:justify-start">
           <button
             onClick={handleUpload}
-            disabled={uploading || (!isLoggedIn && uploadCount >= 5)}
+            disabled={uploading}
             className="bg-primaryBlue flex cursor-pointer items-center gap-1 rounded-full px-4 py-2.5 font-medium text-white disabled:opacity-50"
           >
             Analisis Sekarang
@@ -282,4 +241,4 @@ const UploadJobs = () => {
   );
 };
 
-export default UploadJobs;
+export default UploadJobsDashboard;

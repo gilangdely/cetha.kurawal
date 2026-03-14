@@ -2,6 +2,9 @@ import { useCvBuilderStore } from "../store/buildCvStore";
 import { ClassicAts } from "./cv-templates/classic-ats";
 import { ModernAts } from "./cv-templates/modern-ats";
 import { MinimalAts } from "./cv-templates/minimal-ats";
+import { CreativeModernTemplate } from "./cv-templates/creative-modern";
+import { ExecutiveMinimalistTemplate } from "./cv-templates/executive-minimalist";
+import { CompactProfessionalTemplate } from "./cv-templates/compact-professional";
 import {
   Select,
   SelectContent,
@@ -32,6 +35,12 @@ export const CvPreview = () => {
         return <ModernAts data={data} style={style} />;
       case "minimal":
         return <MinimalAts data={data} style={style} />;
+      case "creative-modern":
+        return <CreativeModernTemplate data={data} style={style} />;
+      case "executive-minimalist":
+        return <ExecutiveMinimalistTemplate data={data} style={style} />;
+      case "compact-professional":
+        return <CompactProfessionalTemplate data={data} style={style} />;
       default:
         return <ModernAts data={data} style={style} />;
     }
@@ -39,7 +48,7 @@ export const CvPreview = () => {
 
   return (
     <div className="flex w-full flex-col items-center overflow-y-auto print:overflow-visible">
-      {/* Style Toolbar */}
+      {/* Style & Template Toolbar */}
       <div className="mb-4 flex items-center gap-1 rounded-lg border border-gray-200 bg-gray-100 p-1.5 print:hidden">
         {/* Font Dropdown */}
         <Select
