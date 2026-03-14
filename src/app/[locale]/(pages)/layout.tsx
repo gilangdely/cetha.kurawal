@@ -12,7 +12,6 @@ import LoadingScreen from "@/components/loading-screen";
 export default function Layout(props: { children: ReactNode }) {
   const pathname = usePathname();
   const loading = useUploadStore((s) => s.uploading);
-  const progress = useUploadStore((s) => s.progress);
   const uploadType = useUploadStore((s) => s.uploadType);
 
   const isExcluded = ["/result-cv", "/job-match-result"].includes(pathname);
@@ -23,7 +22,7 @@ export default function Layout(props: { children: ReactNode }) {
   if (loading) {
     return (
       <>
-        <LoadingScreen progress={progress} type={uploadType ?? "cv"} />
+        <LoadingScreen type={uploadType ?? "cv"} />
       </>
     );
   }

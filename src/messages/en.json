@@ -230,12 +230,32 @@
     }
   },
 
-
-  "ArticleAndVideo": {
-    "badge": "Articles & Videos",
-    "title": "Learn Smarter. Get Hired Faster.",
-    "description": "Discover practical guides and career strategy videos to improve your CV quality and increase your chances of getting hired.",
-    "cta": "View All Articles"
+  "careerTipsPage": {
+    "hero": {
+      "title": "We build projects that help you achieve your career goals",
+      "description": "Explore a collection of articles and videos to help you prepare for the professional world."
+    },
+    "search": {
+      "placeholder": "Search content",
+      "button": "Search"
+    },
+    "tabs": {
+      "all": "All",
+      "article": "Article",
+      "video": "Video"
+    },
+    "content": {
+      "readArticle": "Read Article",
+      "watchVideo": "Watch Video"
+    },
+    "empty": {
+      "notFound": "Content not found.",
+      "noContent": "No content has been published yet."
+    },
+    "error": {
+      "title": "An Error Occurred"
+    },
+    "loadMore": "Load More"
   },
 
   "LinkedinImproveSection": {
@@ -663,6 +683,7 @@
       },
 
       "tokenMessage": {
+        "exhausted": "Your tokens are exhausted. Please add more tokens to continue using AI features.",
         "low": "Your tokens are almost depleted. Add more tokens to keep using AI.",
         "medium": "Your tokens are running low. Use them wisely or add more tokens.",
         "safe": "Your tokens are still sufficient. Use AI to boost your career."
@@ -683,6 +704,9 @@
         "review-cv": "Review CV",
         "my-profile": "My Profile",
         "settings": "Settings"
+      },
+       "messages" : {
+        "logoutSuccess": "You have been logged out successfully."
       }
     },
 

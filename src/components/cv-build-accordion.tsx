@@ -475,7 +475,7 @@ export default function CvBuildAccordion() {
 
                     <div className="col-span-1 space-y-3 md:col-span-2">
                       <Textarea
-                        placeholder={t("placeholders.activitiesAchievements")}
+                        placeholder={t("placeholders.activities")}
                         className="min-h-[90px]"
                         value={edu.description || ""}
                         onChange={(e) =>

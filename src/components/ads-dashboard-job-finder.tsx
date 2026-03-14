@@ -35,7 +35,7 @@ export default function AdsDashboardJobFinder() {
 
         <Link
           href="/dashboard/job-match"
-          className="group mt-3 flex w-fit items-center gap-2 rounded-xl bg-gradient-to-r from-red-400 to-red-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-red-500/20 transition-all duration-300 hover:scale-105 hover:shadow-red-500/40 hover:brightness-110"
+          className="group mt-3 flex w-fit items-center gap-2 rounded-xl bg-gradient-to-r from-red-400 to-red-500 px-6 py-3 text-sm font-semibold text-white transition-all duration-300"
         >
           {t("cta")}
           <ArrowRight
@@ -46,11 +46,8 @@ export default function AdsDashboardJobFinder() {
       </div>
 
       {/* Right: Mock Job Cards */}
-      <div className="flex w-full max-w-2xs flex-1 flex-col">
+      <div className="hidden w-full max-w-2xs flex-1 md:flex md:flex-col">
         <div className="relative flex flex-1 flex-col rounded-xl border border-red-500/10 bg-white p-4 shadow-sm transition hover:shadow-md">
-          {/* subtle gradient accent */}
-          <div className="pointer-events-none absolute -top-6 -right-6 h-16 w-16 rounded-full bg-red-500/10 blur-xl" />
-
           {[
             {
               role: t("mock.role1"),
