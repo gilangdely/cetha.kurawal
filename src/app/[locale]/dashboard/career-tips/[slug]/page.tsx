@@ -1,177 +1,219 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, Book, Calendar, User, Video } from "lucide-react";
+import { useParams } from "next/navigation";
+import { motion } from "framer-motion";
+import {
+  ArrowLeft,
+  BookOpenText,
+  CalendarDays,
+  PlayCircle,
+} from "lucide-react";
 import DOMPurify from "isomorphic-dompurify";
 
-import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-  BreadcrumbPage,
-} from "@/components/ui/breadcrumb";
+interface ContentItem {
+  id: string;
+  type: "article" | "video";
+  title: string;
+  slug: string;
+  excerpt: string;
+  contentHtml: string | null;
+  youtubeUrl: string | null;
+  coverImageUrl: string | null;
+  tags?: string[];
+  publishedAt?: { _seconds?: number } | string | null;
+}
 
-export default function TipsKarirDetailPage() {
+function formatDate(dateInput: ContentItem["publishedAt"]) {
+  if (!dateInput) return "Baru saja";
+
+  if (typeof dateInput === "string") {
+    const parsed = new Date(dateInput);
+    if (!Number.isNaN(parsed.getTime())) {
+      return parsed.toLocaleDateString("id-ID", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+    }
+    return "Baru saja";
+  }
+
+  if (typeof dateInput === "object" && dateInput._seconds) {
+    return new Date(dateInput._seconds * 1000).toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  }
+
+  return "Baru saja";
+}
+
+export default function CareerTipsDetailPage() {
   const params = useParams();
-  const router = useRouter();
-  const [content, setContent] = useState<any>(null);
+  const locale = typeof params.locale === "string" ? params.locale : "id";
+  const slug = typeof params.slug === "string" ? params.slug : "";
+
+  const [content, setContent] = useState<ContentItem | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
-    const slug = params.slug as string;
     if (!slug) return;
 
     const loadContent = async () => {
+      setLoading(true);
+      setErrorMsg("");
       try {
         const res = await fetch(`/api/contents/${slug}`);
         const json = await res.json();
 
         if (!res.ok || !json.success) {
-          setError("Konten tidak ditemukan atau belum dipublikasikan.");
-        } else {
-          setContent(json.data);
+          setErrorMsg("Konten tidak ditemukan atau belum dipublikasikan.");
+          return;
         }
-      } catch (err) {
-        console.error(err);
-        setError("Terjadi kesalahan sistem saat memuat.");
+
+        setContent(json.data as ContentItem);
+      } catch {
+        setErrorMsg("Terjadi kesalahan saat memuat konten.");
       } finally {
         setLoading(false);
       }
     };
 
     loadContent();
-  }, [params.slug]);
+  }, [slug]);
+
+  const cleanHtml = useMemo(
+    () => (content?.contentHtml ? DOMPurify.sanitize(content.contentHtml) : ""),
+    [content?.contentHtml],
+  );
 
   if (loading) {
     return (
-      <div className="flex h-[80vh] items-center justify-center">
-        <div className="border-primaryBlue h-10 w-10 animate-spin rounded-full border-t-2 border-b-2" />
+      <div className="flex min-h-[72vh] items-center justify-center px-4 pt-28 pb-10">
+        <div className="border-t-primaryBlue h-10 w-10 animate-spin rounded-full border-2 border-gray-300" />
       </div>
     );
   }
 
-  if (error || !content) {
+  if (errorMsg || !content) {
     return (
-      <div className="w-full p-4 py-10 text-center md:px-10">
-        <h2 className="mb-4 text-2xl font-bold text-gray-800">{error}</h2>
-        <button
-          onClick={() => router.back()}
-          className="text-primaryBlue inline-flex items-center hover:underline"
+      <div className="mx-auto flex min-h-[72vh] w-full max-w-3xl flex-col items-center justify-center px-4 pt-28 pb-10 text-center sm:px-6">
+        <h2 className="text-TextPrimary text-2xl font-semibold">{errorMsg}</h2>
+        <Link
+          href={`/${locale}/career-tips`}
+          className="text-primaryBlue mt-6 inline-flex items-center gap-2 text-sm font-medium hover:underline"
         >
-          <ArrowLeft size={16} className="mr-2" /> Kembali
-        </button>
+          <ArrowLeft size={16} /> Kembali ke daftar konten
+        </Link>
       </div>
     );
   }
-
-  // Safety rendering via DOMPurify
-  const cleanHtml = content.contentHtml
-    ? DOMPurify.sanitize(content.contentHtml)
-    : "";
-  const dateTitle = content.publishedAt
-    ? new Date(content.publishedAt._seconds * 1000).toLocaleDateString(
-      "id-ID",
-      { year: "numeric", month: "long", day: "numeric" },
-    )
-    : "Baru saja";
 
   return (
-    <div className="mx-auto w-full p-4 md:px-10">
-
-      <article className="overflow-hidden rounded-2xl bg-white ">
-        {/* Header Metadata */}
-        <div className="border-b border-gray-100 px-6 py-8 md:px-10 md:py-10">
-          <div className="mb-4 flex items-center gap-3">
+    <div className="mx-auto flex w-full max-w-6xl items-center">
+      <article className="overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, ease: "easeOut" }}
+          className="px-5 py-8 sm:px-8 md:px-10 md:py-10"
+        >
+          <div className="mb-4 flex flex-wrap items-center gap-3">
             <span
-              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-medium ${content.type === "article" ? "bg-blue-100 text-blue-700" : "bg-red-100 text-red-700"}`}
+              className={`inline-flex items-center rounded-full px-4 py-1.5 text-sm font-semibold ${
+                content.type === "article"
+                  ? "bg-primaryBlue/10 text-primaryBlue"
+                  : "bg-sky-50 text-sky-700"
+              }`}
             >
-              {content.type === "article" ? (
-                <Book size={16} />
-              ) : (
-                <Video size={16} />
-              )}
-              <span className="capitalize">
-                {content.type === "article" ? "Artikel" : "Vidio"}
-              </span>
+              {content.type === "article" ? "Artikel" : "Video"}
             </span>
-            <div className="flex items-center gap-1.5 text-sm text-gray-500">
-              <Calendar size={16} />
-              <span>{dateTitle}</span>
-            </div>
+
+            <span className="inline-flex items-center gap-1.5 text-sm text-gray-500">
+              {formatDate(content.publishedAt)}
+            </span>
           </div>
-          <h1 className="text-3xl leading-tight font-extrabold text-gray-900 md:text-4xl">
-            {content.title}
-          </h1>
 
-          {content.tags && content.tags.length > 0 && (
-            <div className="mt-6 flex flex-wrap gap-2">
-              {content.tags.map((tag: string) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-gray-200 bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-600"
-                >
-                  #{tag}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
+          <div className="space-y-5">
+            <h1 className="font-careerTips text-3xl font-semibold text-gray-900 sm:text-4xl md:text-5xl">
+              {content.title}
+            </h1>
 
-        {/* Thumbnail / Cover Image */}
-        {/* {(() => {
-          const ytThumb = content.type === "video" && content.youtubeUrl
-            ? (() => {
-              const m = content.youtubeUrl.match(/(?:youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*)/);
-              return m && m[1]?.length === 11
-                ? `https://img.youtube.com/vi/${m[1]}/hqdefault.jpg`
-                : null;
-            })()
-            : null;
-          const thumbUrl = content.coverImageUrl || ytThumb;
+            {!!content.tags?.length && (
+              <div className="flex flex-wrap gap-2 pt-1">
+                {content.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="border-primaryBlue/15 bg-primaryBlue/5 text-primaryBlue rounded-full border px-3 py-1 text-sm"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </motion.div>
 
-          return thumbUrl ? (
-            <div className="relative aspect-21/9 w-full overflow-hidden px-6 py-8 md:px md:py-12">
+        <div className="px-5 py-3 sm:px-8 md:px-10 md:py-6">
+          {content.coverImageUrl && (
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+              className="relative mb-8 aspect-[16/8] w-full overflow-hidden border border-gray-200 bg-gray-100"
+            >
               <Image
-                src={thumbUrl}
+                src={content.coverImageUrl}
                 alt={content.title}
                 fill
                 className="object-cover"
-                sizes="100vw"
+                sizes="(max-width: 1024px) 100vw, 960px"
                 unoptimized
               />
-            </div>
-          ) : null;
-        })()} */}
+              {content.type === "video" && (
+                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black/35 to-black/15">
+                  <div className="bg-primaryBlue/90 rounded-full p-4 shadow-lg shadow-blue-500/20">
+                    <PlayCircle size={38} className="fill-white text-white" />
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          )}
 
-        {/* Content Renderer Based on Type */}
-        <div className="px-6 py-8 md:px-10 md:py-12">
           {content.type === "video" && content.youtubeUrl ? (
-            <div className="w-full">
-              <div className="border-accentOrange mb-8 rounded-r-lg border-l-4 bg-gray-50 p-4 font-medium text-gray-700">
-                {content.excerpt}
-              </div>
-              <div className="relative aspect-video w-full overflow-hidden rounded-xl shadow-md">
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.16, ease: "easeOut" }}
+              className="space-y-4"
+            >
+              <div className="relative aspect-video overflow-hidden rounded-3xl border border-gray-200 bg-black shadow-sm">
                 <iframe
                   src={content.youtubeUrl}
                   title={content.title}
-                  className="absolute top-0 left-0 h-full w-full"
-                  allowFullScreen
+                  className="absolute inset-0 h-full w-full"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                ></iframe>
+                  allowFullScreen
+                />
               </div>
-            </div>
-          ) : content.type === "article" ? (
-            <div
-              className="prose prose-blue sm:prose-lg w-full max-w-none leading-relaxed text-gray-800"
-              dangerouslySetInnerHTML={{ __html: cleanHtml }}
-            />
-          ) : null}
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.16, ease: "easeOut" }}
+            >
+              <div
+                className="prose prose-neutral sm:prose-lg prose-headings:text-gray-900 prose-a:text-primaryBlue prose-strong:text-gray-900 max-w-none px-1 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: cleanHtml }}
+              />
+            </motion.div>
+          )}
         </div>
       </article>
     </div>

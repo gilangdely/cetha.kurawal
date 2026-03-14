@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   collection,
   query,

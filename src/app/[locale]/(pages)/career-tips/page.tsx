@@ -243,22 +243,52 @@ export default function TipsKarirPage() {
                   className="group flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm"
                 >
                   <div className="relative aspect-[16/9] w-full overflow-hidden bg-gray-100">
-                    {item.coverImageUrl ? (
-                      <Image
-                        src={item.coverImageUrl}
-                        alt={item.title}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width:768px)100vw,(max-width:1280px)50vw,33vw"
-                        unoptimized
-                      />
-                    ) : (
-                      <div className="flex h-full items-center justify-center text-gray-300">
-                        {item.type === "video" ? (
-                          <Video size={54} />
-                        ) : (
-                          <Book size={54} />
-                        )}
+                    {(() => {
+                      // Resolve thumbnail: coverImageUrl > YouTube auto-thumbnail > icon fallback
+                      const ytThumb =
+                        item.type === "video" && item.youtubeUrl
+                          ? (() => {
+                              const m = item.youtubeUrl!.match(
+                                /(?:youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*)/,
+                              );
+                              return m && m[1]?.length === 11
+                                ? `https://img.youtube.com/vi/${m[1]}/hqdefault.jpg`
+                                : null;
+                            })()
+                          : null;
+
+                      const thumbUrl = item.coverImageUrl || ytThumb;
+
+                      if (thumbUrl) {
+                        return (
+                          <Image
+                            src={thumbUrl}
+                            alt={item.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width:768px) 100vw, (max-width:1024px) 50vw, 33vw"
+                            unoptimized
+                          />
+                        );
+                      }
+
+                      return (
+                        <div className="flex h-full items-center justify-center text-gray-300">
+                          {item.type === "video" ? (
+                            <Video size={64} />
+                          ) : (
+                            <Book size={64} />
+                          )}
+                        </div>
+                      );
+                    })()}
+
+                    {item.type === "video" && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/20 transition hover:bg-black/30">
+                        <PlayCircle
+                          size={56}
+                          className="text-white opacity-90 drop-shadow-md"
+                        />
                       </div>
                     )}
 
@@ -287,7 +317,7 @@ export default function TipsKarirPage() {
                     </p>
 
                     <Link
-                      href={`/${locale}/career-tips/${item.slug}`}
+                      href={`/career-tips/${item.slug}`}
                       className="text-primaryBlue inline-flex items-center text-sm font-medium hover:underline"
                     >
                       {item.type === "article"

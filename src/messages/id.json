@@ -230,6 +230,13 @@
     }
   },
 
+  "ArticleAndVideo": {
+    "badge": "Artikel & Video",
+    "title": "Belajar Lebih Cerdas. Dapatkan Pekerjaan Lebih Cepat.",
+    "description": "Temukan panduan praktis dan video strategi karier untuk meningkatkan kualitas CV dan memperbesar peluang Anda diterima kerja.",
+    "cta": "Lihat Semua Artikel"
+  },
+
   "careerTipsPage": {
     "hero": {
       "title": "Kami membangun proyek yang membantu kamu mencapai tujuan kariermu",
@@ -787,9 +794,10 @@
 
   "DashboardStats": {
     "careerScore": "Career Score",
-    "noScoreYet": "Review CV dulu",
     "totalAchievements": "Total Pencapaian",
     "achievementsUnit": "Pencapaian",
+
+    "noScoreYet": "Belum ada skor",
 
     "dreamJob": "Pekerjaan Impian",
     "dreamJobEmpty": "Belum ada pekerjaan impian",

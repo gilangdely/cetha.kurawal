@@ -230,6 +230,14 @@
     }
   },
 
+
+  "ArticleAndVideo": {
+    "badge": "Articles & Videos",
+    "title": "Learn Smarter. Get Hired Faster.",
+    "description": "Discover practical guides and career strategy videos to improve your CV quality and increase your chances of getting hired.",
+    "cta": "View All Articles"
+  },
+
   "careerTipsPage": {
     "hero": {
       "title": "We build projects that help you achieve your career goals",
@@ -787,9 +795,10 @@
 
   "DashboardStats": {
     "careerScore": "Career Score",
-    "noScoreYet": "Review your CV",
     "totalAchievements": "Total Achievements",
     "achievementsUnit": "Achievements",
+
+    "noScoreYet": "No career score yet",
 
     "dreamJob": "Dream Job",
     "dreamJobEmpty": "No dream job yet",

@@ -8,10 +8,8 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
-import { ArrowRight, Loader2, MapPin, Briefcase } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { useState } from "react";
-import Image from "next/image";
-import ReactMarkdown from "react-markdown";
 import LinkedInAnalysisResult from "@/components/linkedin-analysis";
 import LinkedInProfileDisplay from "@/components/linkedin-profile-card";
 
@@ -168,75 +166,68 @@ export default function ImproveLinkedInDashboard() {
   };
 
   return (
-    <div className="w-full p-4 md:px-10">
-      {/* Breadcrumb */}
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Improve LinkedIn</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-
-      {/* Header */}
-      <div className="mt-6 mb-8">
-        <h2 className="text-TextPrimary text-3xl font-semibold">
-          Profil{" "}
-          <span className="text-accentOrange">LinkedIn Lebih Standout</span>
-        </h2>
-        <p className="text-TextSecondary mt-2 max-w-2xl text-base">
-          Masukkan URL LinkedIn kamu, biarkan AI menganalisis headline, summary,
-          dan skill.
-        </p>
-      </div>
-
-      {/* Input */}
-      <div className="mb-10 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
-        <h3 className="text-TextPrimary mb-4 text-xl font-medium">
-          Masukkan Profil LinkedIn Kamu
-        </h3>
-        <div className="flex w-full gap-2">
-          <input
-            type="text"
-            placeholder="Masukan username atau URL profil LinkedIn kamu"
-            className="focus:ring-primaryBlue flex-1 rounded-full border px-4 py-3 focus:ring-2 focus:outline-none"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <button
-            onClick={handleAnalyze}
-            disabled={loading}
-            className={`flex items-center justify-center rounded-full px-4 py-3 text-white transition-colors ${
-              loading
-                ? "bg-primaryBlue/70 cursor-not-allowed"
-                : "bg-primaryBlue hover:bg-primaryBlue/90"
-            }`}
-          >
-            {loading ? <Loader2 className="animate-spin" /> : <ArrowRight />}
-          </button>
+    <div className="w-full">
+      <div>
+        {/* Header */}
+        <div className="mt-6 mb-8">
+          <h2 className="text-TextPrimary text-3xl font-semibold">
+            Profil{" "}
+            <span className="text-accentOrange">LinkedIn Lebih Standout</span>
+          </h2>
+          <p className="text-TextSecondary mt-2 max-w-2xl text-base">
+            Masukkan URL LinkedIn kamu, biarkan AI menganalisis headline,
+            summary, dan skill.
+          </p>
         </div>
 
-        {error && (
-          <div className="mt-4 rounded-lg border border-red-300 bg-red-50 px-4 py-2 text-red-700">
-            {error}
+        {/* Input */}
+        <div className="mb-10 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+          <h3 className="text-TextPrimary mb-4 text-xl font-medium">
+            Masukkan Profil LinkedIn Kamu
+          </h3>
+          <div className="flex w-full gap-2">
+            <input
+              type="text"
+              placeholder="Masukan username atau URL profil LinkedIn kamu"
+              className="focus:ring-primaryBlue flex-1 rounded-full border px-3 py-2 focus:ring-2 focus:outline-none"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <button
+              onClick={handleAnalyze}
+              disabled={loading}
+              className={`flex items-center justify-center rounded-full p-2 text-white transition-colors ${
+                loading
+                  ? "bg-primaryBlue/70 cursor-not-allowed"
+                  : "bg-primaryBlue hover:bg-primaryBlue/90"
+              }`}
+            >
+              {loading ? <Loader2 className="animate-spin" /> : <ArrowRight />}
+            </button>
           </div>
-        )}
+
+          {error && (
+            <div className="mt-4 rounded-lg border border-red-300 bg-red-50 px-4 py-2 text-red-700">
+              {error}
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Profile Display */}
-      {profile && <LinkedInProfileDisplay profile={profile} />}
-      {aiResult && (
-        <LinkedInAnalysisResult
-          result={
-            typeof aiResult === "string" ? JSON.parse(aiResult) : aiResult
-          }
-          className="mt-6"
-        />
-      )}
+      <div className="space-y-12">
+        {/* Profile Display */}
+        {profile && <LinkedInProfileDisplay profile={profile} />}
+
+        {/* Result */}
+        {aiResult && (
+          <LinkedInAnalysisResult
+            result={
+              typeof aiResult === "string" ? JSON.parse(aiResult) : aiResult
+            }
+            className="mt-6"
+          />
+        )}
+      </div>
     </div>
   );
 }

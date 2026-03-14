@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
+import { Locate, MapPin, UserPlus, Users } from "lucide-react";
 
 interface Position {
   companyName: string;
@@ -69,149 +70,278 @@ interface LinkedInProfileDisplayProps {
   className?: string;
 }
 
-const LinkedInProfileDisplay: React.FC<LinkedInProfileDisplayProps> = ({ profile, className = "" }) => {
+const LinkedInProfileDisplay: React.FC<LinkedInProfileDisplayProps> = ({
+  profile,
+  className = "",
+}) => {
   const [showAllEducation, setShowAllEducation] = useState(false);
 
+  const { overview, details, experience, education } = profile;
+
   return (
-    <div className={`rounded-lg overflow-hidden bg-white border shadow-sm ${className}`}>
-      {/* Banner */}
-      <div className="relative h-48 w-full">
-        {profile.overview.backgroundImageURL ? (
-          <Image
-            src={profile.overview.backgroundImageURL}
-            alt="Background"
-            fill
-            className="object-cover"
-            referrerPolicy="no-referrer"
-          />
-        ) : (
-          <div className="bg-gray-200 h-full" />
-        )}
-        <div className="absolute -bottom-16 left-6 flex items-end gap-4">
-          {profile?.overview?.profilePictureURL ? (
+    <div className="w-full space-y-3">
+      {/* ── Profile Card ── */}
+      <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white">
+        {/* Banner */}
+        <div className="relative h-36 w-full bg-gray-100">
+          {overview.backgroundImageURL ? (
             <Image
-              src={profile.overview.profilePictureURL}
-              alt={profile.overview.fullName || "Profile Picture"}
-              width={120}
-              height={120}
-              className="rounded-full object-cover"
+              src={overview.backgroundImageURL}
+              alt="Banner"
+              fill
+              className="z-0 object-cover"
               referrerPolicy="no-referrer"
             />
           ) : (
-            <div className="w-[100px] h-[100px] rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-              N/A
-            </div>
+            <div className="h-full w-full bg-gradient-to-br from-gray-200 to-gray-300" />
           )}
+        </div>
+
+        <div className="relative px-6 pb-6">
+          <div className="-mt-10 mb-4 flex justify-between gap-6">
+            {overview.profilePictureURL ? (
+              <Image
+                src={overview.profilePictureURL}
+                alt={overview.fullName}
+                width={100}
+                height={100}
+                className="z-10 rounded-full object-cover shadow-sm"
+                referrerPolicy="no-referrer"
+              />
+            ) : (
+              <div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-white bg-gray-200 text-sm font-medium text-gray-400 shadow-sm" />
+            )}
+          </div>
+          <div className="flex justify-between gap-6">
+            <div className="space-y-3">
+              {/* Name */}
+              <h1 className="text-2xl leading-tight font-bold text-gray-900">
+                {overview.fullName}
+              </h1>
+
+              {/* Headline */}
+              {overview.headline && (
+                <p className="max-w-xl text-sm leading-snug text-gray-500">
+                  {overview.headline}
+                </p>
+              )}
+
+              {/* Location */}
+              {overview.location?.fullLocation && (
+                <div className="flex items-center gap-1 text-sm text-gray-400">
+                  <MapPin size={14} />
+                  <span>{overview.location.fullLocation}</span>
+                </div>
+              )}
+
+              {/* Stats */}
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                {overview.followerCount && (
+                  <span className="flex items-center gap-1 rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700">
+                    <Users size={14} />
+                    {overview.followerCount.toLocaleString()} pengikut
+                  </span>
+                )}
+
+                {overview.connectionsCount && (
+                  <span className="flex items-center gap-1 rounded-full bg-green-50 px-3 py-1 text-sm font-medium text-green-700">
+                    <UserPlus size={14} />
+                    {overview.connectionsCount.toLocaleString()} koneksi
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Spacing untuk foto */}
-      <div className="mt-12 p-6">
-        <div className="mb-4">
-          <h2 className="text-2xl font-bold text-gray-900">
-            {profile.overview.fullName}
-          </h2>
-          <p className="text-gray-700">{profile.overview.headline}</p>
+      {/* ── About ── */}
+      {/* ── About ── */}
+      {details.about && (
+        <div className="rounded-2xl border border-gray-100 bg-white px-6 py-5">
+          <SectionTitle>Tentang</SectionTitle>
+
+          <p className="mt-3 text-justify text-sm leading-relaxed whitespace-pre-line text-gray-600">
+            {details.about}
+          </p>
         </div>
-        
-        {/* Tentang */}
-        {profile.details.about && (
-          <section className="mb-4">
-            <h3 className="text-lg font-semibold mb-2 text-gray-800">Tentang</h3>
-            <p className="text-gray-700 leading-relaxed text-sm whitespace-pre-line">
-              {profile.details.about}
-            </p>
-          </section>
-        )}
+      )}
 
-        <div className="flex gap-4">
-          {/* Pengalaman */}
-          {profile?.experience && profile.experience.length > 0 && (
-            <div className="mt-10 flex-1">
-              <h3 className="text-xl font-semibold mb-4">Pengalaman Kerja</h3>
+      <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+        {/* ── Experience ── */}
+        {experience && experience.length > 0 && (
+          <div className="rounded-2xl border border-gray-100 bg-white px-6 py-5">
+            <SectionTitle>Pengalaman</SectionTitle>
 
-              {profile.experience.map((exp, index) => (
-                <div key={index} className="mb-8 border-b pb-9">
-                  <div className="flex gap-4 items-center">
-                    {exp.companyLogo && (
+            <ul className="mt-4 space-y-6">
+              {experience.map((exp, i) => (
+                <li key={i} className="flex gap-4">
+                  {/* Logo */}
+                  <div className="mt-0.5 flex-shrink-0">
+                    {exp.companyLogo ? (
                       <Image
                         src={exp.companyLogo}
                         alt={exp.companyName}
-                        width={48}
-                        height={48}
-                        className="rounded-md border bg-white"
+                        width={44}
+                        height={44}
+                        className="rounded-xl border border-gray-100 bg-white object-contain"
                         referrerPolicy="no-referrer"
                       />
+                    ) : (
+                      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-100 text-gray-400">
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                        >
+                          <rect x="2" y="7" width="20" height="14" rx="2" />
+                          <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+                        </svg>
+                      </div>
                     )}
-                    <div>
-                      <h4 className="text-lg font-medium">{exp.companyName}</h4>
-                      <p className="text-sm text-gray-500">{exp.totalDuration}</p>
-                      <p className="text-sm text-gray-500">{exp.duration}</p>
-                    </div>
                   </div>
 
-                  {/* Tampilkan posisi di perusahaan tersebut */}
-                  {exp.positions && exp.positions.length > 0 && (
-                    <div className="mt-3 ml-12 space-y-2">
-                      {exp.positions.map((pos, i) => (
-                        <div key={i}>
-                          <p className="font-semibold">{pos.title}</p>
-                          <p className="text-sm text-gray-600">{pos.duration}</p>
-                          {pos.description && (
-                            <p className="text-sm text-gray-500 mt-1">{pos.description}</p>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
+                  {/* Content */}
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-semibold text-gray-900">
+                      {exp.companyName}
+                    </p>
 
-          {/* Pendidikan */}
-          {profile?.education && profile.education.length > 0 && (
-            <div className="mt-10 flex-1">
-              <h3 className="text-xl font-semibold mb-4">Pendidikan</h3>
-              {(showAllEducation ? profile.education : profile.education.slice(0, 2)).map((edu, index) => (
-                <div key={index} className="mb-8 border-b pb-4">
-                  <div className="flex gap-4 items-center">
-                    <div>
-                      <h4 className="text-lg font-medium">{edu.university}</h4>
-                      <p className="text-sm text-gray-500">{edu.duration}</p>
-                      <p className="text-sm text-gray-500">{edu.degree}</p>
-                    </div>
+                    {exp.totalDuration && (
+                      <p className="mt-0.5 text-xs text-gray-400">
+                        {exp.totalDuration}
+                      </p>
+                    )}
+
+                    {exp.positions && exp.positions.length > 0 ? (
+                      <div className="mt-3 space-y-3 border-l border-gray-100 pl-3">
+                        {exp.positions.map((pos, j) => (
+                          <div key={j}>
+                            <p className="text-sm font-medium text-gray-800">
+                              {pos.title}
+                            </p>
+
+                            <p className="mt-0.5 text-xs text-gray-400">
+                              {pos.duration}
+                            </p>
+
+                            {pos.description && (
+                              <p className="mt-1 text-justify text-sm leading-relaxed text-gray-600">
+                                {pos.description}
+                              </p>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <>
+                        {exp.title && (
+                          <p className="mt-0.5 text-sm text-gray-700">
+                            {exp.title}
+                          </p>
+                        )}
+
+                        {exp.duration && (
+                          <p className="mt-0.5 text-xs text-gray-400">
+                            {exp.duration}
+                          </p>
+                        )}
+
+                        {exp.description && (
+                          <p className="mt-1.5 text-justify text-sm leading-relaxed text-gray-600">
+                            {exp.description}
+                          </p>
+                        )}
+                      </>
+                    )}
                   </div>
-                </div>
-              ))}
-              {profile.education.length > 2 && (
-                <button
-                  className="text-primaryBlue text-sm mt-2 underline"
-                  onClick={() => setShowAllEducation((prev) => !prev)}
-                >
-                  {showAllEducation ? "Sembunyikan" : "Lihat Semua"}
-                </button>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Bahasa */}
-        {profile.details.languages?.languages?.length ? (
-          <section className="mb-6">
-            <h3 className="text-lg font-semibold mb-2 text-gray-800">Bahasa</h3>
-            <ul className="list-disc list-inside text-gray-700 text-sm">
-              {profile.details.languages.languages.map((lang, i) => (
-                <li key={i}>
-                  {lang.Language} – <span className="text-gray-500">{lang.Level}</span>
                 </li>
               ))}
             </ul>
-          </section>
-        ) : null}
+          </div>
+        )}
+
+        {/* ── Education ── */}
+        {education && education.length > 0 && (
+          <div className="rounded-2xl border border-gray-100 bg-white px-6 py-5">
+            <SectionTitle>Pendidikan</SectionTitle>
+
+            <ul className="mt-4 space-y-5">
+              {(showAllEducation ? education : education.slice(0, 2)).map(
+                (edu, i) => (
+                  <li key={i} className="flex gap-4">
+                    <div className="mt-0.5 flex-shrink-0">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-400">
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                        >
+                          <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                          <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    <div className="flex-1">
+                      <p className="text-sm font-semibold text-gray-900">
+                        {edu.university}
+                      </p>
+
+                      {edu.degree && (
+                        <p className="mt-0.5 text-sm text-gray-600">
+                          {edu.degree}
+                        </p>
+                      )}
+
+                      {edu.duration && (
+                        <p className="mt-0.5 text-xs text-gray-400">
+                          {edu.duration}
+                        </p>
+                      )}
+                    </div>
+                  </li>
+                ),
+              )}
+            </ul>
+
+            {education.length > 2 && (
+              <button
+                onClick={() => setShowAllEducation((p) => !p)}
+                className="mt-4 flex items-center gap-1 text-xs font-medium text-gray-400 transition-colors hover:text-gray-700"
+              >
+                {showAllEducation ? (
+                  <>
+                    Sembunyikan <span className="text-[10px]">▲</span>
+                  </>
+                ) : (
+                  <>
+                    Lihat semua {education.length} pendidikan{" "}
+                    <span className="text-[10px]">▼</span>
+                  </>
+                )}
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
 };
+
+/* ── Reusable section heading ── */
+const SectionTitle: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => (
+  <h2 className="text-[0.7rem] font-semibold tracking-widest text-gray-400 uppercase">
+    {children}
+  </h2>
+);
 
 export default LinkedInProfileDisplay;
