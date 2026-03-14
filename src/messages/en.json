@@ -472,7 +472,9 @@
       },
       "photo": {
         "upload": "Upload photo",
-        "optional": "Optional"
+        "optional": "Optional",
+        "showOnCV": "Show Photo on CV",
+        "showOnCVDescription": "Toggle photo visibility in the CV preview."
       },
       "placeholders": {
         "fullName": "Full name",

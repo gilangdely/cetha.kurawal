@@ -16,12 +16,12 @@ interface CvStyle {
 interface CvHistoryState {
   data: ResumeData;
   style: CvStyle;
-  activeTemplate: "classic" | "modern" | "minimal";
+  activeTemplate: "classic" | "modern" | "minimal" | "creative" | "creative-modern" | "executive-minimalist" | "compact-professional";
 }
 
 interface CvBuilderState {
   data: ResumeData;
-  activeTemplate: "classic" | "modern" | "minimal";
+  activeTemplate: "classic" | "modern" | "minimal" | "creative" | "creative-modern" | "executive-minimalist" | "compact-professional";
   style: CvStyle;
 
   // History
@@ -32,7 +32,7 @@ interface CvBuilderState {
   redo: () => void;
 
   // Template
-  setTemplate: (template: "classic" | "modern" | "minimal") => void;
+  setTemplate: (template: "classic" | "modern" | "minimal" | "creative" | "creative-modern" | "executive-minimalist" | "compact-professional") => void;
 
   // Style
   setFontFamily: (font: string) => void;

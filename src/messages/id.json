@@ -471,7 +471,9 @@
       },
       "photo": {
         "upload": "Unggah foto",
-        "optional": "Opsional"
+        "optional": "Opsional",
+        "showOnCV": "Tampilkan Foto di CV",
+        "showOnCVDescription": "Aktifkan untuk menampilkan foto profil pada pratinjau CV."
       },
       "placeholders": {
         "fullName": "Nama lengkap",
