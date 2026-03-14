@@ -62,6 +62,13 @@ User: ${message}
 `;
 
     const result = await model.generateContent(prompt);
+    
+    // Log penggunaan token GEMINI
+    const usage = result.response.usageMetadata;
+    if (usage) {
+        console.log(`[GEMINI API] Token Usage - Input: ${usage.promptTokenCount}, Output: ${usage.candidatesTokenCount}, Total: ${usage.totalTokenCount}`);
+    }
+
     const reply = result.response.text();
 
     await QuotaService.consumeQuota(userId, "Chatbot Konsultasi", ip);

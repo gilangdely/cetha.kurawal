@@ -130,6 +130,13 @@ Jawab hanya dengan JSON valid.
 
     // 🔹 Panggil model Gemini
     const result = await model.generateContent(prompt);
+    
+    // Log penggunaan token GEMINI
+    const usage = result?.response?.usageMetadata;
+    if (usage) {
+        console.log(`[GEMINI API] Token Usage - Input: ${usage.promptTokenCount}, Output: ${usage.candidatesTokenCount}, Total: ${usage.totalTokenCount}`);
+    }
+
     const text = result?.response?.text() || "{}";
 
     let parsed;

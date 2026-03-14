@@ -66,6 +66,13 @@ Aturan:
 Jawab hanya JSON valid.`;
 
     const result = await model.generateContent(prompt);
+    
+    // Log penggunaan token GEMINI
+    const usage = result?.response?.usageMetadata;
+    if (usage) {
+        console.log(`[GEMINI API] Token Usage - Input: ${usage.promptTokenCount}, Output: ${usage.candidatesTokenCount}, Total: ${usage.totalTokenCount}`);
+    }
+
     const raw = result?.response?.text() || "{}";
 
     // Robust JSON parsing for gemma-3-27b-it
