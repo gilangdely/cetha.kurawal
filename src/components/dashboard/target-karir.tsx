@@ -281,15 +281,35 @@ export default function TargetKarir() {
             </div>
           ))
         ) : (
-          <div className="py-12 text-center">
-            <Target size={30} className="mx-auto text-indigo-500" />
-            <p className="mt-3 font-semibold">{t("emptyState.title")}</p>
+          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-gradient-to-b from-slate-50 to-white py-12 text-center">
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-900/5">
+              <Target size={24} className="text-indigo-500" />
+            </div>
+
+            {/* Badge motivasi */}
+            <span className="mb-2 rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-500">
+              {t("emptyState.badge")}
+            </span>
+
+            {/* Title */}
+            <p className="text-base font-semibold text-slate-800">
+              {t("emptyState.title")}
+            </p>
+
+            {/* Motivational text */}
+            <p className="mt-1 mb-5 max-w-xs text-xs leading-relaxed text-slate-400">
+              {t("emptyState.description")}
+            </p>
 
             <button
               onClick={openAdd}
-              className="mt-4 rounded-lg bg-indigo-600 px-4 py-2 text-white"
+              className="group flex items-center gap-2 rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-[1px] hover:bg-indigo-600 hover:shadow-md active:scale-95"
             >
               {t("emptyState.cta")}
+              <Plus
+                size={16}
+                className="transition-transform duration-200 group-hover:rotate-90"
+              />
             </button>
           </div>
         )}
@@ -324,7 +344,7 @@ export default function TargetKarir() {
                   prev.filter((t) => t.id !== deleteTargetId),
                 );
 
-                toast.success("Target karier berhasil dihapus");
+                toast.success(t("deleteDialog.success"));
 
                 setIsDeleteDialogOpen(false);
                 setDeleteTargetId(null);

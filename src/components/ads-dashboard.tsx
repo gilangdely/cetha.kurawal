@@ -1,6 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef, useState } from "react";
+import type { Swiper as SwiperType } from "swiper";
+import { Autoplay, EffectFade } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/effect-fade";
 
 import AdsDashboardCvReview from "./ads-dashboard-cv-review";
 import AdsDashboardCvBuilder from "./ads-dashboard-cv-builder";
@@ -17,120 +22,97 @@ const slides = [
 ];
 
 const AUTOPLAY_DELAY = 4500;
-const TRANSITION_DURATION = 500; // ms
 
 export default function AdsCarouselSection() {
   const [current, setCurrent] = useState(0);
-  const [animating, setAnimating] = useState(false);
-  const [direction, setDirection] = useState<"next" | "prev">("next");
-  const [displayed, setDisplayed] = useState(0);
-  const autoplayRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const swiperRef = useRef<SwiperType | null>(null);
 
-  const goTo = (index: number, dir: "next" | "prev" = "next") => {
-    if (animating || index === current) return;
-    setDirection(dir);
-    setAnimating(true);
-    setCurrent(index);
-    setTimeout(() => {
-      setDisplayed(index);
-      setAnimating(false);
-    }, TRANSITION_DURATION);
+  const goTo = (index: number) => {
+    if (!swiperRef.current || index === current) return;
+    swiperRef.current.slideToLoop(index);
   };
 
   const next = () => {
-    if (slides.length <= 1) return;
-
-    const nextIdx = (current + 1) % slides.length;
-    goTo(nextIdx, "next");
+    swiperRef.current?.slideNext();
   };
 
   const prev = () => {
-    if (slides.length <= 1) return;
-
-    const prevIdx = (current - 1 + slides.length) % slides.length;
-    goTo(prevIdx, "prev");
+    swiperRef.current?.slidePrev();
   };
 
-  // Autoplay
-  useEffect(() => {
-    autoplayRef.current = setTimeout(next, AUTOPLAY_DELAY);
-    return () => {
-      if (autoplayRef.current) clearTimeout(autoplayRef.current);
-    };
-  }, [current, animating]);
-
-  const CurrentComponent = slides[displayed].Component;
-
   return (
-    <>
-      <style>{`
-        @keyframes slideInFromRight {
-          from { opacity: 0; transform: translateX(48px); }
-          to   { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes slideInFromLeft {
-          from { opacity: 0; transform: translateX(-48px); }
-          to   { opacity: 1; transform: translateX(0); }
-        }
-        .slide-enter-next {
-          animation: slideInFromRight ${TRANSITION_DURATION}ms cubic-bezier(0.4,0,0.2,1) both;
-        }
-        .slide-enter-prev {
-          animation: slideInFromLeft ${TRANSITION_DURATION}ms cubic-bezier(0.4,0,0.2,1) both;
-        }
-      `}</style>
+    <section className="bg-Background text-TextPrimary relative overflow-hidden rounded-3xl p-6 shadow-sm md:p-8">
+      {/* Decorative blobs */}
+      <div className="bg-primaryBlue/15 pointer-events-none absolute -top-20 -right-20 h-64 w-64 rounded-full blur-3xl" />
+      <div className="bg-accentOrange/10 pointer-events-none absolute -bottom-20 -left-20 h-64 w-64 rounded-full blur-3xl" />
 
-      <section className="bg-Background text-TextPrimary relative h-100 overflow-hidden rounded-3xl p-6 shadow-sm md:p-8">
-        {/* Decorative blobs */}
-        <div className="bg-primaryBlue/15 pointer-events-none absolute -top-20 -right-20 h-64 w-64 rounded-full blur-3xl" />
-        <div className="bg-accentOrange/10 pointer-events-none absolute -bottom-20 -left-20 h-64 w-64 rounded-full blur-3xl" />
-
-        {/* Slide content */}
-        <div
-          key={displayed}
-          className={
-            direction === "next" ? "slide-enter-next" : "slide-enter-prev"
-          }
+      <div className="relative z-10">
+        <Swiper
+          modules={[Autoplay, EffectFade]}
+          loop
+          speed={500}
+          effect="fade"
+          fadeEffect={{ crossFade: true }}
+          autoplay={{
+            delay: AUTOPLAY_DELAY,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          }}
+          onSwiper={(swiper) => {
+            swiperRef.current = swiper;
+            setCurrent(swiper.realIndex);
+          }}
+          onSlideChange={(swiper) => setCurrent(swiper.realIndex)}
+          className="h-full overflow-hidden"
         >
-          <CurrentComponent />
+          {slides.map(({ id, Component }) => (
+            <SwiperSlide key={id} className="h-auto">
+              <Component />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+
+      {/* Pagination + Nav */}
+      <div className="relative z-10 mt-6 flex items-center justify-between">
+        {/* Dots */}
+        <div className="flex gap-2">
+          {slides.map((slide, i) => (
+            <button
+              key={slide.id}
+              type="button"
+              aria-label={`Go to ${slide.id}`}
+              onClick={() => goTo(i)}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === current
+                  ? "bg-primaryBlue w-10"
+                  : "bg-primaryBlue/20 hover:bg-primaryBlue/40 w-5"
+              }`}
+            />
+          ))}
         </div>
 
-        {/* Pagination + Nav */}
-        <div className="mt-8 flex items-center justify-between">
-          {/* Dots */}
-          <div className="flex gap-2">
-            {slides.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => goTo(i, i > current ? "next" : "prev")}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  i === current
-                    ? "bg-primaryBlue w-10"
-                    : "bg-primaryBlue/20 hover:bg-primaryBlue/40 w-5"
-                }`}
-              />
-            ))}
-          </div>
+        {/* Arrow Buttons */}
+        <div className="flex gap-2">
+          <button
+            type="button"
+            aria-label="Previous slide"
+            onClick={prev}
+            className="border-primaryBlue/20 text-primaryBlue hover:bg-primaryBlue flex h-9 w-9 items-center justify-center rounded-full border bg-white transition hover:text-white"
+          >
+            ‹
+          </button>
 
-          {/* Arrow Buttons */}
-          <div className="flex gap-2">
-            <button
-              onClick={prev}
-              className="border-primaryBlue/20 text-primaryBlue hover:bg-primaryBlue flex h-9 w-9 items-center justify-center rounded-full border bg-white transition hover:text-white disabled:opacity-30"
-              disabled={animating}
-            >
-              ‹
-            </button>
-
-            <button
-              onClick={next}
-              className="border-primaryBlue/20 text-primaryBlue hover:bg-primaryBlue flex h-9 w-9 items-center justify-center rounded-full border bg-white transition hover:text-white disabled:opacity-30"
-            >
-              ›
-            </button>
-          </div>
+          <button
+            type="button"
+            aria-label="Next slide"
+            onClick={next}
+            className="border-primaryBlue/20 text-primaryBlue hover:bg-primaryBlue flex h-9 w-9 items-center justify-center rounded-full border bg-white transition hover:text-white"
+          >
+            ›
+          </button>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

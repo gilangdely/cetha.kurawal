@@ -135,7 +135,9 @@ export function AppSidebar() {
 
   let message = "";
 
-  if (remaining <= 2) {
+  if (remaining == 0) {
+    message = t("tokenMessage.exhausted");
+  } else if (remaining <= 2) {
     message = t("tokenMessage.low");
   } else if (remaining <= 20) {
     message = t("tokenMessage.medium");

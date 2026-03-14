@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { registerUser, loginWithGoogle } from "@/app/lib/auth";
 import { useRouter } from "next/navigation";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/app/lib/firebase";
 import { toast } from "sonner";
 
 import AuthCarousel from "@/components/auth-carousel";
@@ -43,7 +45,7 @@ export default function RegisterPage() {
     try {
       await registerUser(username, email, password, confirmPassword);
       toast.success(t("toast.success"));
-      router.push("/login");
+      router.push("/dashboard");
     } catch (error: any) {
       console.error("Error registrasi:", error);
 
@@ -78,6 +80,23 @@ export default function RegisterPage() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const token = await user.getIdToken();
+        await fetch("/api/auth/session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ idToken: token }),
+        });
+
+        router.push("/dashboard");
+      }
+    });
+
+    return () => unsubscribe();
+  }, [router, t]);
 
   return (
     <main className="flex h-screen max-w-screen bg-[#F9FAFB]">

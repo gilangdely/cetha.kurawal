@@ -79,13 +79,14 @@ const AppTopbar = () => {
   };
 
   const formatSegment = (segment: string) => {
-    try {
-      return t(`routes.${segment}`);
-    } catch {
-      return segment
-        .replace(/-/g, " ")
-        .replace(/\b\w/g, (char) => char.toUpperCase());
+    const key = `routes.${segment}` as any;
+    if (t.has(key)) {
+      return t(key);
     }
+    // Fallback for dynamic slugs (e.g. article slugs): title-case
+    return segment
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase());
   };
 
   useEffect(() => {
@@ -127,7 +128,7 @@ const AppTopbar = () => {
   const handleLogout = async () => {
     await logoutUser();
 
-    toast.success(t("logoutSuccess"));
+    toast.success(t("messages.logoutSuccess"));
 
     router.push("/");
   };

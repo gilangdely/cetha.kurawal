@@ -35,12 +35,23 @@ export const registerUser = async (
     createdAt: serverTimestamp(),
   });
 
+  const token = await user.getIdToken();
+  await fetch("/api/auth/session", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ idToken: token }),
+  });
+
   return user;
 };
 
 // Login dengan Email & Password
 export const loginUser = async (email: string, password: string) => {
-  const userCredential = await signInWithEmailAndPassword(auth, email, password);
+  const userCredential = await signInWithEmailAndPassword(
+    auth,
+    email,
+    password,
+  );
   const token = await userCredential.user.getIdToken();
   await fetch("/api/auth/session", {
     method: "POST",

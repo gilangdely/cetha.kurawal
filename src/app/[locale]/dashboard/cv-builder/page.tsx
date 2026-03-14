@@ -47,28 +47,28 @@ export default function CvBuilderPage() {
       // Kita asumsikan element punya parent pembungkus yang melakukan transform scale
       const parentWrapper = element.parentElement;
       const originalTransform = parentWrapper?.style.transform || "";
-      
+
       if (parentWrapper) {
-         parentWrapper.style.transform = "none";
-         parentWrapper.style.transition = "none"; // Matikan transisi agar tidak capture animasi
+        parentWrapper.style.transform = "none";
+        parentWrapper.style.transition = "none"; // Matikan transisi agar tidak capture animasi
       }
 
       console.log("[Export] Membangun Image Data dari DOM via html-to-image...");
-      
+
       const imgData = await htmlToImage.toJpeg(element, {
         quality: 1,
-        pixelRatio: 2, 
+        pixelRatio: 2,
         backgroundColor: "#ffffff",
       });
 
       // Kembalikan style parent seperti semula
       if (parentWrapper) {
-         parentWrapper.style.transform = originalTransform;
-         parentWrapper.style.transition = ""; 
+        parentWrapper.style.transform = originalTransform;
+        parentWrapper.style.transition = "";
       }
 
       console.log("[Export] Canvas selesai digenerate. Mempersiapkan Image Data...");
-      
+
       console.log("[Export] Inisialisasi library jsPDF...");
       const pdf = new jsPDF({
         orientation: "portrait",
@@ -80,13 +80,13 @@ export default function CvBuilderPage() {
       const pdfHeight = (element.scrollHeight * pdfWidth) / element.scrollWidth;
 
       pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
-      
+
       const userName = useCvBuilderStore.getState().data.personalInfo.fullName || "User";
       const templateName = useCvBuilderStore.getState().activeTemplate;
-      
+
       const fileName = `CV_${userName.replace(/\s+/g, "_")}_${templateName}.pdf`;
       console.log(`[Export] Memicu fungsi download: ${fileName}`);
-      
+
       pdf.save(fileName);
       toast.success("PDF berhasil diunduh");
       console.log("[Export] File berhasil diunduh.");
@@ -112,9 +112,8 @@ export default function CvBuilderPage() {
       <div className="flex border-b border-gray-200 px-4 pt-4 md:px-6 md:pt-6">
         <button
           onClick={() => setDesktopTab("builder")}
-          className={`relative px-2 pb-3 text-[14px] font-bold transition-colors ${
-            desktopTab === "builder" ? "text-primaryBlue" : "text-gray-500 hover:text-gray-800"
-          }`}
+          className={`relative px-2 pb-3 text-[14px] font-bold transition-colors ${desktopTab === "builder" ? "text-primaryBlue" : "text-gray-500 hover:text-gray-800"
+            }`}
           style={{ fontFamily: "'Manrope', sans-serif" }}
         >
           <div className="flex items-center gap-2">
@@ -129,9 +128,8 @@ export default function CvBuilderPage() {
         </button>
         <button
           onClick={() => setDesktopTab("template")}
-          className={`relative ml-4 md:ml-6 px-2 pb-3 text-[14px] font-bold transition-colors ${
-            desktopTab === "template" ? "text-primaryBlue" : "text-gray-500 hover:text-gray-800"
-          }`}
+          className={`relative ml-4 md:ml-6 px-2 pb-3 text-[14px] font-bold transition-colors ${desktopTab === "template" ? "text-primaryBlue" : "text-gray-500 hover:text-gray-800"
+            }`}
           style={{ fontFamily: "'Manrope', sans-serif" }}
         >
           <div className="flex items-center gap-2">
@@ -181,22 +179,20 @@ export default function CvBuilderPage() {
         <div className="flex items-center gap-1 rounded-xl border border-gray-200 bg-gray-100 p-1 md:hidden">
           <button
             onClick={() => setMobileTab("form")}
-            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
-              mobileTab === "form"
-                ? "bg-white text-gray-900 shadow-sm"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${mobileTab === "form"
+              ? "bg-white text-gray-900 shadow-sm"
+              : "text-gray-500 hover:text-gray-700"
+              }`}
           >
             <PenLine size={13} />
             {t("form")}
           </button>
           <button
             onClick={() => setMobileTab("preview")}
-            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
-              mobileTab === "preview"
-                ? "bg-white text-gray-900 shadow-sm"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${mobileTab === "preview"
+              ? "bg-white text-gray-900 shadow-sm"
+              : "text-gray-500 hover:text-gray-700"
+              }`}
           >
             <LayoutTemplate size={13} />
             {t("preview")}
@@ -225,11 +221,11 @@ export default function CvBuilderPage() {
 
       {/* ── Main Content ── */}
       <div className="flex flex-1 overflow-hidden print:block print:w-full print:px-0">
-        {/* ── DESKTOP: side-by-side (Grid Layout) ── */}
-        <div className="hidden md:grid md:flex-1 md:grid-cols-12 md:overflow-hidden print:flex print:w-full print:px-0 print:py-0">
-          {/* Form sidebar (4 columns) */}
-          <div className="print-hidden col-span-4 flex h-full flex-col border-r border-gray-200 bg-white">
-            {renderEditorPanel()}
+        {/* ── DESKTOP: side-by-side ── */}
+        <div className="hidden md:flex md:flex-1 md:overflow-hidden md:px-4 md:py-6 lg:px-6 lg:py-8 print:flex print:w-full print:px-0 print:py-0">
+          {/* Form sidebar */}
+          <div className="print-hidden w-[300px] shrink-0 overflow-y-auto pr-4 lg:w-[450px]">
+            <FormBuildCv />
           </div>
 
           {/* Preview area (8 columns) */}
