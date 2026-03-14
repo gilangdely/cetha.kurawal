@@ -153,9 +153,8 @@ export function AppSidebar() {
       {/* HEADER */}
       <SidebarHeader className="h-20 justify-center">
         <div
-          className={`flex items-center px-4 transition-all duration-300 ${
-            isExpanded ? "justify-between" : "justify-center"
-          }`}
+          className={`flex items-center px-4 transition-all duration-300 ${isExpanded ? "justify-between" : "justify-center"
+            }`}
         >
           {isExpanded && (
             <Link
@@ -173,9 +172,8 @@ export function AppSidebar() {
           )}
 
           <SidebarTrigger
-            className={`rounded-lg transition-colors hover:bg-gray-100 ${
-              isExpanded ? "h-9 w-9" : "h-10 w-10"
-            }`}
+            className={`rounded-lg transition-colors hover:bg-gray-100 ${isExpanded ? "h-9 w-9" : "h-10 w-10"
+              }`}
           >
             <Menu className="h-5 w-5 text-gray-600" />
           </SidebarTrigger>
@@ -185,9 +183,8 @@ export function AppSidebar() {
       {/* CONTENT */}
       <SidebarContent className="scrollbar-none px-2">
         <SidebarGroupLabel
-          className={`mb-2 px-2 text-xs font-bold tracking-wider text-gray-400 uppercase transition-opacity ${
-            isExpanded ? "opacity-100" : "opacity-0"
-          }`}
+          className={`mb-2 px-2 text-xs font-bold tracking-wider text-gray-400 uppercase transition-opacity ${isExpanded ? "opacity-100" : "opacity-0"
+            }`}
         >
           {t("mainNavigation")}
         </SidebarGroupLabel>
@@ -206,20 +203,17 @@ export function AppSidebar() {
                   >
                     <Link
                       href={item.href}
-                      className={`group relative flex h-10 items-center rounded-xl transition-all duration-200 ${
-                        isExpanded ? "gap-3 px-3" : "justify-center"
-                      } ${
-                        isActive
+                      className={`group relative flex h-10 items-center rounded-xl transition-all duration-200 ${isExpanded ? "gap-3 px-3" : "justify-center"
+                        } ${isActive
                           ? "bg-blue-600 text-white shadow-lg ring-1 shadow-blue-200 ring-blue-600"
                           : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
-                      }`}
+                        }`}
                     >
                       <item.icon
-                        className={`!h-5 !w-5 shrink-0 transition-colors ${
-                          isActive
+                        className={`!h-5 !w-5 shrink-0 transition-colors ${isActive
                             ? "text-white"
                             : "text-gray-400 group-hover:text-gray-600"
-                        }`}
+                          }`}
                       />
 
                       {isExpanded && (
@@ -245,20 +239,17 @@ export function AppSidebar() {
         <SidebarMenuButton asChild tooltip={t("pricing")}>
           <Link
             href="/dashboard/my-profile/subscription"
-            className={`group flex h-10 items-center rounded-xl transition-all ${
-              isExpanded ? "gap-3" : "relative right-2 justify-center"
-            } ${
-              pathname === "/dashboard/my-profile/subscription"
+            className={`group flex h-10 items-center rounded-xl transition-all ${isExpanded ? "gap-3" : "relative right-2 justify-center"
+              } ${pathname === "/dashboard/my-profile/subscription"
                 ? "bg-blue-100 font-semibold text-blue-700"
                 : "text-gray-500 hover:bg-blue-50 hover:text-blue-600"
-            }`}
+              }`}
           >
             <Tag
-              className={`!h-5 !w-5 ${
-                pathname === "/dashboard/my-profile/subscription"
+              className={`!h-5 !w-5 ${pathname === "/dashboard/my-profile/subscription"
                   ? "text-blue-600"
                   : "text-gray-400 group-hover:text-blue-500"
-              }`}
+                }`}
             />
 
             {isExpanded && (
@@ -271,20 +262,17 @@ export function AppSidebar() {
           <SidebarMenuButton asChild tooltip={t("adminPanel")}>
             <Link
               href="/admin"
-              className={`group flex h-10 items-center rounded-xl transition-all ${
-                isExpanded ? "gap-3" : "relative right-2 justify-center"
-              } ${
-                pathname === "/admin"
+              className={`group flex h-10 items-center rounded-xl transition-all ${isExpanded ? "gap-3" : "relative right-2 justify-center"
+                } ${pathname === "/admin"
                   ? "bg-orange-100 font-semibold text-orange-700"
                   : "text-gray-500 hover:bg-orange-50 hover:text-orange-600"
-              }`}
+                }`}
             >
               <Settings2
-                className={`!h-5 !w-5 ${
-                  pathname === "/admin"
+                className={`!h-5 !w-5 ${pathname === "/admin"
                     ? "text-orange-600"
                     : "text-gray-400 group-hover:text-orange-500"
-                }`}
+                  }`}
               />
 
               {isExpanded && (
@@ -339,20 +327,17 @@ export function AppSidebar() {
           >
             <Link
               href="/upgrade"
-              className={`relative flex items-center rounded-xl transition-all duration-200 ${
-                isExpanded ? "h-10 gap-3 px-3" : "h-10 w-10 justify-center"
-              } ${
-                pathname === "/upgrade"
+              className={`relative flex items-center rounded-xl transition-all duration-200 ${isExpanded ? "h-10 gap-3 px-3" : "h-10 w-10 justify-center"
+                } ${pathname === "/upgrade"
                   ? "bg-blue-600 text-white shadow-lg ring-1 shadow-blue-200 ring-blue-600"
                   : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
-              }`}
+                }`}
             >
               <Gift
-                className={`!h-5 !w-5 shrink-0 transition-colors ${
-                  pathname === "/upgrade"
+                className={`!h-5 !w-5 shrink-0 transition-colors ${pathname === "/upgrade"
                     ? "text-white"
                     : "text-gray-400 group-hover:text-gray-600"
-                }`}
+                  }`}
               />
 
               {isExpanded && (

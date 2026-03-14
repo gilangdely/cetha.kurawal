@@ -4,7 +4,6 @@ import LoadingScreen from "@/components/loading-screen";
 import axios from "axios";
 import Image from "next/image";
 import { useDataReviewStore } from "@/store/dataReviewStore";
-import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useUploadStore } from "@/store/uploadStore";
 
@@ -18,43 +17,21 @@ import office from "@/assets/icons/office-docsx.svg";
 import { auth, db } from "@/app/lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
 
-const UploadCv = () => {
+/**
+ * UploadCvDashboard — versi upload CV khusus dashboard.
+ * Setelah upload berhasil, TIDAK melakukan redirect.
+ * Hasil review langsung ditampilkan inline di halaman dashboard.
+ */
+const UploadCvDashboard = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const uploading = useUploadStore((s) => s.uploading);
   const setGlobalUploading = useUploadStore((s) => s.setUploading);
   const setProgressGlobal = useUploadStore((s) => s.setProgress);
   const [uploadEnabled, setUploadEnabled] = useState(true);
-  const router = useRouter();
-
-  const [ip, setIp] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [uploadCount, setUploadCount] = useState(0);
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setIsLoggedIn(!!user);
-    });
-
-    fetch("/api/ip")
-      .then((res) => res.json())
-      .then((data) => {
-        const ipAddr = data.ip;
-        setIp(ipAddr);
-
-        const count = localStorage.getItem(`upload-count-${ipAddr}`);
-        const parsedCount = Number(count) || 0;
-        setUploadCount(parsedCount);
-
-        if (!auth.currentUser && parsedCount >= 5) {
-          toast.warning("Kamu sudah mencapai batas 5x upload tanpa login.");
-        }
-      });
-
-    return () => unsubscribe();
-  }, []);
 
   const setReviewData = useDataReviewStore((state) => state.setReviewData);
+
   // Helper: Buat preview jika file PDF
   const generatePreview = (file: File) => {
     if (file.type === "application/pdf") {
@@ -100,11 +77,6 @@ const UploadCv = () => {
     event.preventDefault();
   };
 
-  if (!isLoggedIn && uploadCount >= 5) {
-    toast.error("Kamu sudah mencapai batas 5x upload tanpa login.");
-    return;
-  }
-
   // Upload file ke backend
   const handleUpload = async () => {
     if (!selectedFile) {
@@ -139,8 +111,8 @@ const UploadCv = () => {
         result: reviewResult,
       });
 
-      // Save to Firestore if logged in
-      if (isLoggedIn && auth.currentUser) {
+      // Dashboard: user pasti sudah login, simpan ke Firestore
+      if (auth.currentUser) {
         try {
           await addDoc(collection(db, "cvReviews"), {
             userId: auth.currentUser.uid,
@@ -153,13 +125,7 @@ const UploadCv = () => {
         }
       }
 
-      if (!isLoggedIn) {
-        const newCount = uploadCount + 1;
-        setUploadCount(newCount);
-        localStorage.setItem(`upload-count-${ip}`, String(newCount));
-      }
-
-      router.push("/result-cv");
+      // Tidak ada redirect — hasil ditampilkan inline di dashboard
     } catch (err: any) {
       console.error("Upload gagal:", err.response?.data || err.message);
       toast.error("Gagal Upload");
@@ -266,13 +232,6 @@ const UploadCv = () => {
           </div>
         )}
       </div>
-      <div className="mt-2 text-center text-sm text-gray-500">
-        {!isLoggedIn && (
-          <span>
-            Sisa upload tanpa login: {Math.max(0, 5 - uploadCount)} dari 5 kali
-          </span>
-        )}
-      </div>
 
       <div className="mt-4">
         <p className="text-TextSecondary font-medium">
@@ -285,7 +244,7 @@ const UploadCv = () => {
         <div className="flex justify-start">
           <button
             onClick={handleUpload}
-            disabled={uploading || (!isLoggedIn && uploadCount >= 5)}
+            disabled={uploading}
             className="bg-primaryBlue flex cursor-pointer items-center gap-1 rounded-full px-4 py-2.5 font-medium text-white disabled:opacity-50"
           >
             Prediksi Sekarang
@@ -297,4 +256,4 @@ const UploadCv = () => {
   );
 };
 
-export default UploadCv;
+export default UploadCvDashboard;
