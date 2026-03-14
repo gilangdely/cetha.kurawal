@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { auth } from "@/app/lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
@@ -38,6 +38,9 @@ import {
   BreadcrumbPage,
 } from "./ui/breadcrumb";
 import { useTranslations } from "next-intl";
+import { useNotificationStore } from "@/store/useNotificationStore";
+import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
 
 function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(false);
@@ -65,6 +68,10 @@ const AppTopbar = () => {
   const [email, setEmail] = useState("m@example.com");
   const [openDialog, setOpenDialog] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [openNotifMenu, setOpenNotifMenu] = useState(false);
+  const notifMenuRef = useRef<HTMLDivElement>(null);
+
+  const { notifications, unreadCount, initListener, markAsRead, clearListener } = useNotificationStore();
 
   const isSidebarOpen = state === "expanded";
 
@@ -103,26 +110,53 @@ const AppTopbar = () => {
 
             setUsername(
               data.username ||
-                user.displayName ||
-                user.email?.split("@")[0] ||
-                "Pengguna",
+              user.displayName ||
+              user.email?.split("@")[0] ||
+              "Pengguna",
             );
           }
 
           const res = await fetch("/api/me");
           if (res.ok) {
             const data = await res.json();
-            setIsAdmin(data.role === "admin");
+            const userIsAdmin = data.role === "admin";
+            setIsAdmin(userIsAdmin);
+            
+            // Inisialisasi listener untuk semua user dashboard
+            initListener(user.uid, userIsAdmin);
+          } else {
+            // Jika gagal ambil data role, tetap nyalakan listener sebagai user biasa (fallback)
+            setIsAdmin(false);
+            initListener(user.uid, false);
           }
         } catch (e) {
           console.error("Failed to fetch user data", e);
+          setIsAdmin(false);
+          initListener(user.uid, false);
         }
       } else {
         setIsAdmin(false);
+        clearListener();
       }
     });
 
     return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        notifMenuRef.current &&
+        !notifMenuRef.current.contains(event.target as Node)
+      ) {
+        setOpenNotifMenu(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   const handleLogout = async () => {
@@ -186,9 +220,72 @@ const AppTopbar = () => {
 
         <div className="flex items-center gap-2 md:gap-4">
           <div className="flex items-center gap-1">
-            <button className="rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700">
-              <Bell className="h-5 w-5" />
-            </button>
+            <div className="relative" ref={notifMenuRef}>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenNotifMenu(!openNotifMenu);
+                }}
+                className="relative rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
+              >
+                <Bell className="h-5 w-5" />
+                {unreadCount > 0 && (
+                  <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white shadow-sm ring-2 ring-white">
+                    {unreadCount > 9 ? "9+" : unreadCount}
+                  </span>
+                )}
+              </button>
+
+              <AnimatePresence>
+                {openNotifMenu && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute right-0 mt-2 flex w-80 flex-col rounded-xl border border-gray-200 bg-white shadow-xl overflow-hidden z-[100]"
+                  >
+                    <div className="flex items-center justify-between border-b border-gray-100 px-4 py-3 bg-gray-50/50">
+                      <span className="font-bold text-gray-800 text-sm">Notifikasi</span>
+                    </div>
+                    <div className="flex max-h-80 flex-col overflow-y-auto w-full">
+                      {notifications.length === 0 ? (
+                        <div className="px-4 py-6 text-center text-sm text-gray-400">
+                          Belum ada notifikasi
+                        </div>
+                      ) : (
+                        notifications.slice(0, 5).map((notif) => (
+                          <button
+                            key={notif.id}
+                            onClick={() => {
+                              if (!notif.isRead) markAsRead(notif.id);
+                              if (notif.link) router.push(notif.link);
+                              setOpenNotifMenu(false);
+                            }}
+                            className={`flex flex-col gap-1 border-b border-gray-50 px-4 py-3 text-left transition hover:bg-gray-50 ${!notif.isRead ? "bg-blue-50/30" : ""}`}
+                          >
+                            <div className="flex w-full items-start justify-between gap-2">
+                              <span className={`text-sm ${!notif.isRead ? "font-bold text-gray-900" : "font-semibold text-gray-700"} truncate`}>
+                                {notif.title}
+                              </span>
+                              {!notif.isRead && <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-blue-500" />}
+                            </div>
+                            <span className="text-xs text-gray-500 line-clamp-2 leading-relaxed">
+                              {notif.message}
+                            </span>
+                          </button>
+                        ))
+                      )}
+                    </div>
+                    {notifications.length > 5 && (
+                      <Link href="/dashboard" className="border-t border-gray-100 px-4 py-2.5 text-center text-xs font-semibold text-primaryBlue hover:bg-gray-50 transition">
+                        Lihat Semua Notifikasi
+                      </Link>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
 
           <DropdownMenu>

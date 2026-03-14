@@ -75,6 +75,18 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
                 current_tier_id: subData.tier_id,
                 updatedAt: FieldValue.serverTimestamp()
             });
+
+            // 6. Create Notification for User
+            const notifRef = adminDb.collection("notifications").doc();
+            transaction.set(notifRef, {
+                recipientId: subData.user_id,
+                title: "Pembayaran Terverifikasi",
+                message: `Pembayaran Anda untuk paket ${tierData.name} telah disetujui. Kuota langganan Anda telah diperbarui.`,
+                type: "payment_update",
+                isRead: false,
+                link: `/dashboard/transactions?invoice=${subData.invoice_number}`,
+                createdAt: FieldValue.serverTimestamp()
+            });
         });
 
         return NextResponse.json({ success: true, message: "Pembayaran berhasil diverifikasi & Kuota bertambah." });

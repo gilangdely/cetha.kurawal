@@ -121,7 +121,7 @@ export default function CheckoutPage() {
         `Pembayaran berhasil dikirim dengan Invoice ${json.invoice}. Mohon menunggu verifikasi admin.`,
       );
 
-      router.push("/id/dashboard");
+      router.push("/id/dashboard/transactions");
     } catch (err: any) {
       setError(err.message);
     } finally {
