@@ -15,7 +15,8 @@ import { Trash2, ChevronRight } from "lucide-react";
 import logo from "@/assets/icons/upload-docs.svg";
 import office from "@/assets/icons/office-docsx.svg";
 
-import { auth } from "@/app/lib/firebase";
+import { auth, db } from "@/app/lib/firebase";
+import { collection, addDoc } from "firebase/firestore";
 
 const UploadCv = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -131,12 +132,27 @@ const UploadCv = () => {
 
       toast.success("File berhasil diunggah!");
       console.log("Respon server:", res.data);
+      const reviewResult = res.data.data.result.data;
       setReviewData({
         fileName: selectedFile.name,
         fileType: selectedFile.type,
         fileUrl: "",
-        result: res.data.result.data,
+        result: reviewResult,
       });
+
+      // Save to Firestore if logged in
+      if (isLoggedIn && auth.currentUser) {
+        try {
+          await addDoc(collection(db, "cvReviews"), {
+            userId: auth.currentUser.uid,
+            fileName: selectedFile.name,
+            createdAt: new Date().toISOString(),
+            result: reviewResult,
+          });
+        } catch (e) {
+          console.error("Gagal menyimpan ke Firestore:", e);
+        }
+      }
 
       if (!isLoggedIn) {
         const newCount = uploadCount + 1;
