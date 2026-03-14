@@ -787,6 +787,7 @@
 
   "DashboardStats": {
     "careerScore": "Career Score",
+    "noScoreYet": "Review your CV",
     "totalAchievements": "Total Achievements",
     "achievementsUnit": "Achievements",
 

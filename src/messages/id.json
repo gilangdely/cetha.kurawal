@@ -787,6 +787,7 @@
 
   "DashboardStats": {
     "careerScore": "Career Score",
+    "noScoreYet": "Review CV dulu",
     "totalAchievements": "Total Pencapaian",
     "achievementsUnit": "Pencapaian",
 

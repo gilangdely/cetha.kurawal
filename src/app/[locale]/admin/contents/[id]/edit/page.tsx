@@ -10,7 +10,9 @@ export default async function EditContentPage({ params }: { params: Promise<{ id
         return <div className="p-8 text-center text-gray-500">Konten tidak ditemukan.</div>;
     }
 
-    const data = doc.data();
+    const raw = doc.data();
+    // Serialize to strip Firestore Timestamp class instances into plain objects
+    const data = JSON.parse(JSON.stringify(raw));
 
     return <ContentForm id={id} initialData={data} />;
 }

@@ -73,7 +73,7 @@ export default function TipsKarirDashboard() {
       search.trim() === ""
         ? true
         : c.title.toLowerCase().includes(search.toLowerCase()) ||
-          c.excerpt.toLowerCase().includes(search.toLowerCase());
+        c.excerpt.toLowerCase().includes(search.toLowerCase());
 
     return matchTab && matchSearch;
   });
@@ -118,31 +118,28 @@ export default function TipsKarirDashboard() {
 
           <button
             onClick={() => handleTabChange("all")}
-            className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition ${
-              activeTab === "all"
+            className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition ${activeTab === "all"
                 ? "bg-primaryBlue text-white"
                 : "bg-Background text-TextSecondary border border-gray-200 hover:bg-gray-50"
-            }`}
+              }`}
           >
             <LayoutGrid size={18} /> Semua
           </button>
           <button
             onClick={() => handleTabChange("article")}
-            className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition ${
-              activeTab === "article"
+            className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition ${activeTab === "article"
                 ? "bg-primaryBlue text-white"
                 : "bg-Background text-TextSecondary border border-gray-200 hover:bg-gray-50"
-            }`}
+              }`}
           >
             <Book size={18} /> Artikel
           </button>
           <button
             onClick={() => handleTabChange("video")}
-            className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition ${
-              activeTab === "video"
+            className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition ${activeTab === "video"
                 ? "bg-primaryBlue text-white"
                 : "bg-Background text-TextSecondary border border-gray-200 hover:bg-gray-50"
-            }`}
+              }`}
           >
             <Video size={18} /> Video
           </button>
@@ -194,24 +191,38 @@ export default function TipsKarirDashboard() {
                 className="flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition hover:shadow-md"
               >
                 <div className="relative aspect-[16/9] w-full overflow-hidden bg-gray-100">
-                  {item.coverImageUrl ? (
-                    <Image
-                      src={item.coverImageUrl}
-                      alt={item.title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width:768px) 100vw, (max-width:1024px) 50vw, 33vw"
-                      unoptimized
-                    />
-                  ) : item.type === "video" ? (
-                    <div className="text-gray-300">
-                      <Video size={64} />
-                    </div>
-                  ) : (
-                    <div className="text-gray-300">
-                      <Book size={64} />
-                    </div>
-                  )}
+                  {(() => {
+                    // Resolve thumbnail: coverImageUrl > YouTube auto-thumbnail > icon fallback
+                    const ytThumb = item.type === "video" && item.youtubeUrl
+                      ? (() => {
+                        const m = item.youtubeUrl!.match(/(?:youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*)/);
+                        return m && m[1]?.length === 11
+                          ? `https://img.youtube.com/vi/${m[1]}/hqdefault.jpg`
+                          : null;
+                      })()
+                      : null;
+
+                    const thumbUrl = item.coverImageUrl || ytThumb;
+
+                    if (thumbUrl) {
+                      return (
+                        <Image
+                          src={thumbUrl}
+                          alt={item.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width:768px) 100vw, (max-width:1024px) 50vw, 33vw"
+                          unoptimized
+                        />
+                      );
+                    }
+
+                    return (
+                      <div className="flex h-full items-center justify-center text-gray-300">
+                        {item.type === "video" ? <Video size={64} /> : <Book size={64} />}
+                      </div>
+                    );
+                  })()}
                   {/* Video Indicator Overlay */}
                   {item.type === "video" && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black/20 transition hover:bg-black/30">
@@ -225,7 +236,7 @@ export default function TipsKarirDashboard() {
                     <span
                       className={`rounded-full px-3 py-1 text-xs font-bold shadow-sm ${item.type === "article" ? "bg-blue-100 text-blue-700" : "bg-red-100 text-red-700"}`}
                     >
-                      {item.type === "article" ? "Artikel" : "Vidio"}
+                      {item.type === "article" ? "Artikel" : "Video"}
                     </span>
                   </div>
                 </div>

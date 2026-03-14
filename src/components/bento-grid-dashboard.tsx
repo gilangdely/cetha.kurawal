@@ -5,12 +5,21 @@ import UserQuotaWidget from "@/components/dashboard/user-quota-widget";
 import DreamOccupation from "@/components/dashboard/dream-occupation";
 import { useState, useEffect } from "react";
 import { db, auth } from "@/app/lib/firebase";
-import { collection, query, where, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  orderBy,
+  limit,
+  getDocs,
+} from "firebase/firestore";
 import { useTranslations } from "next-intl";
 
 const BentoGridDashboard = () => {
   const t = useTranslations("DashboardStats");
   const [totalAchievements, setTotalAchievements] = useState(0);
+  const [careerScore, setCareerScore] = useState<number | null>(null);
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -28,10 +37,40 @@ const BentoGridDashboard = () => {
     return () => unsubscribe();
   }, []);
 
+  // Fetch latest CV review score
+  useEffect(() => {
+    const fetchLatestScore = async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      try {
+        const q = query(
+          collection(db, "cvReviews"),
+          where("userId", "==", user.uid),
+          orderBy("createdAt", "desc"),
+          limit(1),
+        );
+
+        const snapshot = await getDocs(q);
+        if (!snapshot.empty) {
+          const data = snapshot.docs[0].data();
+          const result = data.result?.[0];
+          if (result?.skor_keseluruhan != null) {
+            setCareerScore(result.skor_keseluruhan);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch career score:", error);
+      }
+    };
+
+    fetchLatestScore();
+  }, []);
+
   const stats = [
     {
       label: t("careerScore"),
-      value: "82 / 100",
+      value: careerScore != null ? `${careerScore} / 100` : t("noScoreYet"),
       icon: Zap,
       theme: "bg-white border border-slate-200 text-slate-900",
     },
