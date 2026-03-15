@@ -176,7 +176,7 @@ Pastikan Anda telah menginstal:
    ```
 
 5. **Akses Aplikasi:**
-   Buka browser Anda dan navigasikan ke [http://localhost:3000](http://localhost:3000).
+   Buka browser Anda dan akses [http://localhost:3000](http://localhost:3000).
 
 ---
 
