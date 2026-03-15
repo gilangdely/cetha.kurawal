@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 import { Mail, MapPin, Phone, Facebook, Instagram, Globe } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import logo from "@/assets/icons/cetha-logo-white.svg";
+import logo from "@/assets/icons/cetha-new-logo-white.svg";
 
 const Footer = () => {
   const t = useTranslations("Footer");
@@ -28,7 +28,7 @@ const Footer = () => {
           transition={{ duration: 0.6, delay: 0.1 }}
         >
           <Link href="/" className="flex items-center gap-3">
-            <Image src={logo} alt="logo" priority />
+            <Image src={logo} alt="logo" width={180} height={180} priority />
           </Link>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-gray-400">
             {t("description")}
