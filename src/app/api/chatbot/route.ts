@@ -27,7 +27,7 @@ export async function POST(req: Request) {
 
     // Periksa Kuota AI
     const userId = await getSessionUidFromCookie();
-    const quotaCheck = await QuotaService.checkQuota(userId, ip);
+    const quotaCheck = await QuotaService.checkQuota(userId, ip, "Chat Bot");
     if (!quotaCheck.hasQuota) {
       return NextResponse.json(
         { reply: quotaCheck.message, requireUpgrade: true },
@@ -64,7 +64,7 @@ User: ${message}
     const result = await model.generateContent(prompt);
     const reply = result.response.text();
 
-    await QuotaService.consumeQuota(userId, "Chatbot Konsultasi", ip);
+    await QuotaService.consumeQuota(userId, "Chat Bot", ip);
 
     return NextResponse.json({ reply });
   } catch (err) {

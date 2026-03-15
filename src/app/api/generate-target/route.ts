@@ -24,7 +24,7 @@ export async function POST(req: Request) {
 
     // Periksa Kuota AI
     const userId = await getSessionUidFromCookie();
-    const quotaCheck = await QuotaService.checkQuota(userId, ip);
+    const quotaCheck = await QuotaService.checkQuota(userId, ip, "Generate Target");
     if (!quotaCheck.hasQuota) {
       return NextResponse.json(
         { success: false, message: quotaCheck.message, requireUpgrade: true },
@@ -109,7 +109,7 @@ Jawab hanya JSON valid.`;
 
     const summary = typeof parsed.summary === "string" ? parsed.summary : "";
 
-    await QuotaService.consumeQuota(userId, "Generate Career Target", ip);
+    await QuotaService.consumeQuota(userId, "Generate Target", ip);
 
     return NextResponse.json({
       success: true,

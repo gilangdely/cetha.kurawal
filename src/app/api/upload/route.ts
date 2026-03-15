@@ -37,7 +37,7 @@ export const POST = async (req: NextRequest) => {
     const userId = await getSessionUidFromCookie();
     const ipAddress = req.headers.get("x-forwarded-for") || "127.0.0.1";
 
-    const quotaCheck = await QuotaService.checkQuota(userId, ipAddress);
+    const quotaCheck = await QuotaService.checkQuota(userId, ipAddress, "CV Review");
     if (!quotaCheck.hasQuota) {
       return NextResponse.json(
         { success: false, message: quotaCheck.message, requireUpgrade: true },
