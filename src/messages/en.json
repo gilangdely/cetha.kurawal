@@ -763,7 +763,52 @@
       "redo": "Redo",
       "form": "Form",
       "preview": "Preview",
-      "exportPdf": "Export PDF"
+      "exportPdf": "Export PDF",
+      "selectMode": "Select mode",
+      "builderMode": "Data Builder",
+      "templateMode": "Choose Template",
+      "preparingPdf": "Preparing PDF...",
+      "toast": {
+        "exportSuccess": "PDF downloaded successfully (Searchable Mode)"
+      },
+      "errors": {
+        "documentNotFound": "Document structure not found",
+        "exportServerFailed": "Failed to reach export server",
+        "exportFailed": "Failed to generate PDF file"
+      }
+    },
+    "templateGallery": {
+      "title": "Choose CV Template",
+      "description": "Choose the design that best matches your industry and experience. All templates are optimized for ATS.",
+      "templates": {
+        "modern": {
+          "name": "Modern ATS",
+          "description": "Neat, professional, single-column layout."
+        },
+        "minimal": {
+          "name": "Minimal ATS",
+          "description": "Clean and focused on content."
+        },
+        "classic": {
+          "name": "Classic ATS",
+          "description": "Safe traditional resume format."
+        },
+        "creativeModern": {
+          "name": "Creative Modern",
+          "description": "Asymmetrical layout with color accents."
+        },
+        "executiveMinimalist": {
+          "name": "Executive Minimalist",
+          "description": "Elegant style with orange accents."
+        },
+        "compactProfessional": {
+          "name": "Compact Pro",
+          "description": "High-density layout for one page."
+        }
+      }
+    },
+    "cvPreview": {
+      "fontPlaceholder": "Font"
     },
 
     "formCvBuilder": {
@@ -1306,6 +1351,82 @@
     "title": "Your CV Review Result",
     "description": "Here is the AI analysis result of the CV you uploaded.",
     "backButton": "Back to CV Review"
+  },
+  "dashboardImproveLinkedinPage": {
+    "header": {
+      "title": "Make Your LinkedIn Profile More Standout",
+      "description": "Enter your LinkedIn URL and let AI analyze your headline, summary, and skills."
+    },
+    "form": {
+      "title": "Enter Your LinkedIn Profile",
+      "placeholder": "Enter your username or LinkedIn profile URL"
+    },
+    "errors": {
+      "invalidProfileUrl": "Enter a valid username or LinkedIn URL.",
+      "dailyLimitReached": "Daily profile retrieval limit has been reached.",
+      "fetchProfileFailed": "Failed to fetch LinkedIn profile data.",
+      "aiAnalyzeFailed": "Failed to analyze with AI.",
+      "requestProcessFailed": "An error occurred while processing the request."
+    }
+  },
+  "dashboardImproveLinkedinResultPage": {
+    "title": "LinkedIn Optimization Result",
+    "description": "Here is the AI analysis result for your LinkedIn profile, complete with highlights and areas to improve."
+  },
+  "dashboardJobMatchPage": {
+    "title": "Find The Right Job for You",
+    "description": "Get job recommendations that best match your skills and experience, directly from your CV analysis."
+  },
+  "dashboardJobMatchResultPage": {
+    "hero": {
+      "badge": "Match Score Driven",
+      "kicker": "The job that fits you best",
+      "description": "This role is selected because it aligns most with your current skill foundation and career direction, making it more realistic to pursue while still offering room to level up."
+    },
+    "cards": {
+      "bestFit": {
+        "title": "Best Fit",
+        "description": "Focus on the role that is most realistic to apply for now."
+      },
+      "growthPath": {
+        "title": "Growth Path",
+        "description": "There is room to grow from the entry point to the next level."
+      },
+      "salarySnapshot": {
+        "title": "Salary Snapshot",
+        "description": "See compensation ranges to help set expectations from the start."
+      }
+    },
+    "sections": {
+      "matchReason": {
+        "eyebrow": "Match Reason",
+        "title": "Why are you a good fit?"
+      },
+      "jobPreview": {
+        "eyebrow": "Job Preview",
+        "title": "Job description"
+      },
+      "careerDirection": {
+        "eyebrow": "Career Direction",
+        "title": "Career potential"
+      },
+      "bonusEdge": {
+        "eyebrow": "Bonus Edge",
+        "title": "Additional strengths"
+      }
+    },
+    "salary": {
+      "badge": "Salary Snapshot",
+      "title": "Salary Range",
+      "description": "Use this as an initial benchmark when choosing vacancies and preparing negotiation expectations.",
+      "cardHint": "A general estimate that can be a reference when you start applying.",
+      "levels": {
+        "junior": "Entry Level",
+        "midLevel": "Mid Level",
+        "senior": "Senior Level"
+      }
+    },
+    "backButton": "Check Another CV"
   },
 
   "profile": {

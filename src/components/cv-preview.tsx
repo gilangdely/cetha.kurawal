@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useTranslations } from "next-intl";
 
 const COLORS = [
   "#000000",
@@ -24,6 +25,7 @@ const COLORS = [
 ];
 
 export const CvPreview = () => {
+  const t = useTranslations("dashboard.cvPreview");
   const { data, activeTemplate, style, setFontFamily, setFontColor } =
     useCvBuilderStore();
 
@@ -56,7 +58,7 @@ export const CvPreview = () => {
           onValueChange={(value) => setFontFamily(value)}
         >
           <SelectTrigger className="h-8 border-0 bg-transparent text-sm font-medium shadow-none hover:bg-gray-200 focus:ring-0">
-            <SelectValue placeholder="Font" />
+            <SelectValue placeholder={t("fontPlaceholder")} />
           </SelectTrigger>
 
           <SelectContent side="bottom" position="popper">

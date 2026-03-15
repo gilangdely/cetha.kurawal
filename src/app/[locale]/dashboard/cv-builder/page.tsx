@@ -46,10 +46,12 @@ export default function CvBuilderPage() {
   const handleExportPdf = async () => {
     try {
       setIsExporting(true);
-      console.log("[Export] Memulai proses Export PDF Searchable (Backend Printing)...");
+      console.log(
+        "[Export] Starting searchable PDF export process (backend printing)...",
+      );
 
       const element = document.querySelector(".cv-document") as HTMLElement;
-      if (!element) throw new Error("Document structure not found");
+      if (!element) throw new Error(t("errors.documentNotFound"));
 
       // Tunggu font siap
       await document.fonts.ready;
@@ -65,7 +67,9 @@ export default function CvBuilderPage() {
           }
         }
       } catch (e) {
-        console.warn("[Export] Beberapa styles tidak dapat diakses (CORS), mengandalkan Tailwind global.");
+        console.warn(
+          "[Export] Some styles are not accessible (CORS), relying on global Tailwind.",
+        );
       }
 
       // Clone element untuk memanipulasi tanpa merusak UI asli
@@ -74,7 +78,8 @@ export default function CvBuilderPage() {
       clonedElement.style.margin = "0";
       clonedElement.style.boxShadow = "none";
 
-      const userName = useCvBuilderStore.getState().data.personalInfo.fullName || "User";
+      const userName =
+        useCvBuilderStore.getState().data.personalInfo.fullName || "User";
       const templateName = useCvBuilderStore.getState().activeTemplate;
       const fileName = `CV_${userName.replace(/\s+/g, "_")}_${templateName}.pdf`;
 
@@ -96,7 +101,7 @@ export default function CvBuilderPage() {
         </html>
       `;
 
-      console.log("[Export] Mengirim data ke Backend...");
+      console.log("[Export] Sending data to backend...");
 
       const response = await fetch("/api/export-pdf", {
         method: "POST",
@@ -106,7 +111,7 @@ export default function CvBuilderPage() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || "Gagal menghubungi server ekspor");
+        throw new Error(errorData.message || t("errors.exportServerFailed"));
       }
 
       const blob = await response.blob();
@@ -119,11 +124,11 @@ export default function CvBuilderPage() {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
 
-      toast.success("PDF berhasil diunduh (Searchable Mode)");
-      console.log("[Export] File berhasil diunduh via Backend.");
+      toast.success(t("toast.exportSuccess"));
+      console.log("[Export] File downloaded successfully via backend.");
     } catch (error: any) {
-      console.error("[Export Error] Gagal melakukan export PDF:", error);
-      toast.error(error.message || "Gagal menghasilkan file PDF");
+      console.error("[Export Error] Failed to export PDF:", error);
+      toast.error(error.message || t("errors.exportFailed"));
     } finally {
       setIsExporting(false);
     }
@@ -149,11 +154,11 @@ export default function CvBuilderPage() {
             }
           >
             <SelectTrigger className="h-10 rounded-xl border-gray-200 bg-white text-sm font-semibold">
-              <SelectValue placeholder="Pilih mode" />
+              <SelectValue placeholder={t("selectMode")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="builder">Data Builder</SelectItem>
-              <SelectItem value="template">Pilih Template</SelectItem>
+              <SelectItem value="builder">{t("builderMode")}</SelectItem>
+              <SelectItem value="template">{t("templateMode")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -167,7 +172,7 @@ export default function CvBuilderPage() {
                 : "text-gray-600 hover:text-gray-800"
             }`}
           >
-            Data Builder
+            {t("builderMode")}
           </button>
 
           <button
@@ -178,7 +183,7 @@ export default function CvBuilderPage() {
                 : "text-gray-600 hover:text-gray-800"
             }`}
           >
-            Pilih Template
+            {t("templateMode")}
           </button>
         </div>
       </div>
@@ -249,7 +254,7 @@ export default function CvBuilderPage() {
           {isExporting ? (
             <>
               <Loader2 size={16} className="animate-spin" />
-              <span className="hidden sm:inline">Menyiapkan PDF...</span>
+              <span className="hidden sm:inline">{t("preparingPdf")}</span>
             </>
           ) : (
             <>

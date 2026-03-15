@@ -714,7 +714,52 @@
       "redo": "Ulangi",
       "form": "Form",
       "preview": "Pratinjau",
-      "exportPdf": "Ekspor PDF"
+      "exportPdf": "Ekspor PDF",
+      "selectMode": "Pilih mode",
+      "builderMode": "Data Builder",
+      "templateMode": "Pilih Template",
+      "preparingPdf": "Menyiapkan PDF...",
+      "toast": {
+        "exportSuccess": "PDF berhasil diunduh (Searchable Mode)"
+      },
+      "errors": {
+        "documentNotFound": "Struktur dokumen tidak ditemukan",
+        "exportServerFailed": "Gagal menghubungi server ekspor",
+        "exportFailed": "Gagal menghasilkan file PDF"
+      }
+    },
+    "templateGallery": {
+      "title": "Pilih Template CV",
+      "description": "Pilih desain yang paling sesuai dengan industri dan pengalaman Anda. Semua template dioptimalkan untuk ATS.",
+      "templates": {
+        "modern": {
+          "name": "Modern ATS",
+          "description": "Rapi, profesional, satu kolom."
+        },
+        "minimal": {
+          "name": "Minimal ATS",
+          "description": "Bersih, fokus pada konten."
+        },
+        "classic": {
+          "name": "Classic ATS",
+          "description": "Format tradisional yang aman."
+        },
+        "creativeModern": {
+          "name": "Creative Modern",
+          "description": "Asimetris dengan aksen warna."
+        },
+        "executiveMinimalist": {
+          "name": "Executive Minimalist",
+          "description": "Elegan dengan aksen oranye."
+        },
+        "compactProfessional": {
+          "name": "Compact Pro",
+          "description": "Kepadatan tinggi untuk 1 lembar."
+        }
+      }
+    },
+    "cvPreview": {
+      "fontPlaceholder": "Font"
     },
     "formCvBuilder": {
       "sections": {
@@ -1208,6 +1253,82 @@
     "title": "Hasil Review CV Kamu",
     "description": "Berikut hasil analisis AI terhadap CV yang telah kamu unggah.",
     "backButton": "Kembali ke Review CV"
+  },
+  "dashboardImproveLinkedinPage": {
+    "header": {
+      "title": "Profil LinkedIn Lebih Standout",
+      "description": "Masukkan URL LinkedIn kamu, biarkan AI menganalisis headline, summary, dan skill."
+    },
+    "form": {
+      "title": "Masukkan Profil LinkedIn Kamu",
+      "placeholder": "Masukan username atau URL profil LinkedIn kamu"
+    },
+    "errors": {
+      "invalidProfileUrl": "Masukkan username atau URL LinkedIn yang valid.",
+      "dailyLimitReached": "Batas harian penarikan profil telah habis.",
+      "fetchProfileFailed": "Gagal mengambil data profil LinkedIn.",
+      "aiAnalyzeFailed": "Gagal menganalisis dengan AI.",
+      "requestProcessFailed": "Terjadi kesalahan saat memproses permintaan."
+    }
+  },
+  "dashboardImproveLinkedinResultPage": {
+    "title": "Hasil Optimasi LinkedIn",
+    "description": "Berikut hasil analisis AI untuk profil LinkedIn kamu, lengkap dengan highlight dan area yang bisa ditingkatkan."
+  },
+  "dashboardJobMatchPage": {
+    "title": "Temukan Pekerjaan yang Tepat untukmu",
+    "description": "Dapatkan rekomendasi pekerjaan yang paling sesuai dengan keahlian dan pengalamanmu, langsung dari analisis CV kamu."
+  },
+  "dashboardJobMatchResultPage": {
+    "hero": {
+      "badge": "Match Score Driven",
+      "kicker": "Pekerjaan yang paling cocok buat kamu",
+      "description": "Role ini dipilih karena paling nyambung dengan fondasi skill dan arah karier kamu saat ini, jadi lebih realistis untuk dikejar sekaligus punya ruang naik level."
+    },
+    "cards": {
+      "bestFit": {
+        "title": "Best Fit",
+        "description": "Fokus ke role yang paling masuk akal untuk dilamar sekarang."
+      },
+      "growthPath": {
+        "title": "Growth Path",
+        "description": "Ada ruang berkembang dari entry point ke level berikutnya."
+      },
+      "salarySnapshot": {
+        "title": "Salary Snapshot",
+        "description": "Lihat range kompensasi untuk bantu set ekspektasi sejak awal."
+      }
+    },
+    "sections": {
+      "matchReason": {
+        "eyebrow": "Match Reason",
+        "title": "Kenapa kamu cocok?"
+      },
+      "jobPreview": {
+        "eyebrow": "Job Preview",
+        "title": "Deskripsi pekerjaan"
+      },
+      "careerDirection": {
+        "eyebrow": "Career Direction",
+        "title": "Potensi karier"
+      },
+      "bonusEdge": {
+        "eyebrow": "Bonus Edge",
+        "title": "Kelebihan tambahan"
+      }
+    },
+    "salary": {
+      "badge": "Salary Snapshot",
+      "title": "Kisaran Gaji",
+      "description": "Gunakan ini sebagai benchmark awal saat memilih lowongan dan menyiapkan ekspektasi negosiasi.",
+      "cardHint": "Estimasi umum yang bisa jadi acuan saat mulai melamar.",
+      "levels": {
+        "junior": "Entry Level",
+        "midLevel": "Mid Level",
+        "senior": "Senior Level"
+      }
+    },
+    "backButton": "Cek CV Lain"
   },
   "profile": {
     "defaultUsername": "Explorer",

@@ -1,13 +1,5 @@
 "use client";
 
-import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-  BreadcrumbPage,
-} from "@/components/ui/breadcrumb";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -15,6 +7,7 @@ import LinkedInAnalysisResult from "@/components/linkedin-analysis";
 import LinkedInProfileDisplay from "@/components/linkedin-profile-card";
 import { useUploadStore } from "@/store/uploadStore";
 import { useLinkedinResultStore } from "../../../../store/linkedinResultStore";
+import { useTranslations } from "next-intl";
 
 interface Position {
   companyName: string;
@@ -79,23 +72,14 @@ interface Profile {
   education: Education[];
 }
 
-interface SummaryProfile {
-  name: string;
-  headline: string;
-  about: string;
-  location: string;
-  followerCount: number;
-  connectionsCount: number;
-}
-
 export default function ImproveLinkedInDashboard() {
+  const t = useTranslations("dashboardImproveLinkedinPage");
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [aiResult, setAiResult] = useState<string | null>(null);
-  const [showAllEducation, setShowAllEducation] = useState(false);
   const setGlobalUploading = useUploadStore((s) => s.setUploading);
   const setGlobalProgress = useUploadStore((s) => s.setProgress);
   const setLinkedinResult = useLinkedinResultStore((s) => s.setResult);
@@ -112,21 +96,27 @@ export default function ImproveLinkedInDashboard() {
     // Ekstrak username secara robust
     if (cleanUsername.includes("linkedin.com/in/")) {
       try {
-        const url = new URL(cleanUsername.startsWith("http") ? cleanUsername : `https://${cleanUsername}`);
+        const url = new URL(
+          cleanUsername.startsWith("http")
+            ? cleanUsername
+            : `https://${cleanUsername}`,
+        );
         const pathParts = url.pathname.split("/").filter(Boolean);
         const inIndex = pathParts.indexOf("in");
         if (inIndex !== -1 && pathParts.length > inIndex + 1) {
           cleanUsername = pathParts[inIndex + 1];
         }
       } catch (e) {
-        cleanUsername = cleanUsername.split("?")[0].replace(/\/$/, "").split("/").pop() || cleanUsername;
+        cleanUsername =
+          cleanUsername.split("?")[0].replace(/\/$/, "").split("/").pop() ||
+          cleanUsername;
       }
     } else {
       cleanUsername = cleanUsername.split("?")[0].replace(/\/$/, "");
     }
 
     if (!cleanUsername) {
-      setError("Masukkan username atau URL LinkedIn yang valid.");
+      setError(t("errors.invalidProfileUrl"));
       setLoading(false);
       setGlobalProgress(0);
       setGlobalUploading(false);
@@ -142,9 +132,13 @@ export default function ImproveLinkedInDashboard() {
 
       if (!res.ok || data.success === false) {
         if (data.requireUpgrade) {
-          throw new Error(data.message || data.error || "Batas harian penarikan profil telah habis.");
+          throw new Error(
+            data.message || data.error || t("errors.dailyLimitReached"),
+          );
         }
-        throw new Error(data.message || data.error || "Gagal mengambil data profil LinkedIn.");
+        throw new Error(
+          data.message || data.error || t("errors.fetchProfileFailed"),
+        );
       }
 
       const { overview, details, experience, education } = data.data || data;
@@ -181,7 +175,7 @@ export default function ImproveLinkedInDashboard() {
 
       const aiData = await aiRes.json();
       if (!aiRes.ok)
-        throw new Error(aiData.message || "Gagal menganalisis dengan AI.");
+        throw new Error(aiData.message || t("errors.aiAnalyzeFailed"));
       setGlobalProgress(85);
 
       // 4️⃣ Simpan hasil AI ke state
@@ -203,7 +197,7 @@ export default function ImproveLinkedInDashboard() {
       router.push("/dashboard/improve-linkedin/result-improve-linkedin");
     } catch (err: any) {
       console.error(err);
-      setError(err.message || "Terjadi kesalahan saat memproses permintaan.");
+      setError(err.message || t("errors.requestProcessFailed"));
       setGlobalProgress(0);
       setGlobalUploading(false);
     } finally {
@@ -217,23 +211,22 @@ export default function ImproveLinkedInDashboard() {
         {/* Header */}
         <div className="mt-6 mb-8">
           <h2 className="text-TextPrimary text-3xl font-semibold">
-            Profil LinkedIn Lebih Standout
+            {t("header.title")}
           </h2>
           <p className="text-TextSecondary mt-2 max-w-2xl text-base">
-            Masukkan URL LinkedIn kamu, biarkan AI menganalisis headline,
-            summary, dan skill.
+            {t("header.description")}
           </p>
         </div>
 
         {/* Input */}
         <div className="mb-10 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
           <h3 className="text-TextPrimary mb-4 text-xl font-medium">
-            Masukkan Profil LinkedIn Kamu
+            {t("form.title")}
           </h3>
           <div className="flex w-full gap-2">
             <input
               type="text"
-              placeholder="Masukan username atau URL profil LinkedIn kamu"
+              placeholder={t("form.placeholder")}
               className="focus:ring-primaryBlue flex-1 rounded-full border px-3 py-2 focus:ring-2 focus:outline-none"
               value={username}
               onChange={(e) => setUsername(e.target.value)}

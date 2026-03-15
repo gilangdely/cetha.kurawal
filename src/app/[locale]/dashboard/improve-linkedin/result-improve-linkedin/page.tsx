@@ -6,8 +6,10 @@ import { motion } from "framer-motion";
 import LinkedInAnalysisResult from "@/components/linkedin-analysis";
 import LinkedInProfileDisplay from "@/components/linkedin-profile-card";
 import { useLinkedinResultStore } from "@/store/linkedinResultStore";
+import { useTranslations } from "next-intl";
 
 export default function ResultImproveLinkedinDashboardPage() {
+  const t = useTranslations("dashboardImproveLinkedinResultPage");
   const router = useRouter();
   const profile = useLinkedinResultStore((state) => state.profile);
   const analysis = useLinkedinResultStore((state) => state.analysis);
@@ -33,11 +35,10 @@ export default function ResultImproveLinkedinDashboardPage() {
     <div className="w-full space-y-8">
       <div>
         <h1 className="text-TextPrimary text-3xl font-semibold">
-          Hasil Optimasi LinkedIn
+          {t("title")}
         </h1>
         <p className="text-TextSecondary mt-2 max-w-2xl text-base">
-          Berikut hasil analisis AI untuk profil LinkedIn kamu, lengkap dengan
-          highlight dan area yang bisa ditingkatkan.
+          {t("description")}
         </p>
       </div>
 

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useJobResultStore } from "@/store/jobResultStore";
+import { useTranslations } from "next-intl";
 
 import {
   Briefcase,
@@ -22,6 +23,7 @@ import NamedSectionResult from "@/components/named-section-result";
 import JobLinksSection from "@/components/job-link-section";
 
 export default function JobMatchResultPage() {
+  const t = useTranslations("dashboardJobMatchResultPage");
   const router = useRouter();
   const jobResult = useJobResultStore((state) => state.jobResult);
   const [hydrated, setHydrated] = useState(false);
@@ -43,9 +45,9 @@ export default function JobMatchResultPage() {
   if (!hydrated || !jobResult) return null;
 
   const salaryLabels: Record<string, string> = {
-    junior: "Entry Level",
-    mid_level: "Mid Level",
-    senior: "Senior Level",
+    junior: t("salary.levels.junior"),
+    mid_level: t("salary.levels.midLevel"),
+    senior: t("salary.levels.senior"),
   };
 
   return (
@@ -62,22 +64,20 @@ export default function JobMatchResultPage() {
 
           <div className="absolute top-5 right-5 flex items-center gap-1.5 rounded-full border border-sky-200 bg-white/80 px-3 py-1 text-xs font-semibold text-sky-700 backdrop-blur">
             <Sparkles size={14} />
-            Match Score Driven
+            {t("hero.badge")}
           </div>
 
           <div className="relative z-10 flex flex-col gap-6">
             <div className="flex items-start gap-4">
               <div>
                 <p className="text-sm font-medium text-slate-500">
-                  Pekerjaan yang paling cocok buat kamu
+                  {t("hero.kicker")}
                 </p>
                 <h2 className="mt-1 max-w-2xl text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
                   {jobResult.jabatan_ideal}
                 </h2>
                 <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-600 md:text-base">
-                  Role ini dipilih karena paling nyambung dengan fondasi skill
-                  dan arah karier kamu saat ini, jadi lebih realistis untuk
-                  dikejar sekaligus punya ruang naik level.
+                  {t("hero.description")}
                 </p>
               </div>
             </div>
@@ -87,11 +87,11 @@ export default function JobMatchResultPage() {
                 <div className="mb-2 flex items-center gap-2 text-slate-500">
                   <Target size={16} />
                   <span className="text-xs font-semibold tracking-wide uppercase">
-                    Best Fit
+                    {t("cards.bestFit.title")}
                   </span>
                 </div>
                 <p className="text-sm leading-relaxed text-slate-700">
-                  Fokus ke role yang paling masuk akal untuk dilamar sekarang.
+                  {t("cards.bestFit.description")}
                 </p>
               </div>
 
@@ -99,11 +99,11 @@ export default function JobMatchResultPage() {
                 <div className="mb-2 flex items-center gap-2 text-slate-500">
                   <Rocket size={16} />
                   <span className="text-xs font-semibold tracking-wide uppercase">
-                    Growth Path
+                    {t("cards.growthPath.title")}
                   </span>
                 </div>
                 <p className="text-sm leading-relaxed text-slate-700">
-                  Ada ruang berkembang dari entry point ke level berikutnya.
+                  {t("cards.growthPath.description")}
                 </p>
               </div>
 
@@ -111,11 +111,11 @@ export default function JobMatchResultPage() {
                 <div className="mb-2 flex items-center gap-2 text-slate-500">
                   <BadgeDollarSign size={16} />
                   <span className="text-xs font-semibold tracking-wide uppercase">
-                    Salary Snapshot
+                    {t("cards.salarySnapshot.title")}
                   </span>
                 </div>
                 <p className="text-sm leading-relaxed text-slate-700">
-                  Lihat range kompensasi untuk bantu set ekspektasi sejak awal.
+                  {t("cards.salarySnapshot.description")}
                 </p>
               </div>
             </div>
@@ -127,8 +127,8 @@ export default function JobMatchResultPage() {
             <NamedSectionResult
               icon={<Handshake size={16} />}
               color="amber"
-              eyebrow="Match Reason"
-              title="Kenapa kamu cocok?"
+              eyebrow={t("sections.matchReason.eyebrow")}
+              title={t("sections.matchReason.title")}
               list={jobResult.alasan_kecocokan}
             />
           </section>
@@ -136,8 +136,8 @@ export default function JobMatchResultPage() {
           <section className="">
             <NamedSectionResult
               icon={<Briefcase size={16} />}
-              eyebrow="Job Preview"
-              title="Deskripsi pekerjaan"
+              eyebrow={t("sections.jobPreview.eyebrow")}
+              title={t("sections.jobPreview.title")}
               list={jobResult.deskripsi_pekerjaan}
             />
           </section>
@@ -146,8 +146,8 @@ export default function JobMatchResultPage() {
             <NamedSectionResult
               icon={<ChartNoAxesCombined size={16} />}
               color="green"
-              eyebrow="Career Direction"
-              title="Potensi karier"
+              eyebrow={t("sections.careerDirection.eyebrow")}
+              title={t("sections.careerDirection.title")}
               list={jobResult.potensi_karir}
             />
           </section>
@@ -156,8 +156,8 @@ export default function JobMatchResultPage() {
             <NamedSectionResult
               icon={<Star size={16} />}
               color="amber"
-              eyebrow="Bonus Edge"
-              title="Kelebihan tambahan"
+              eyebrow={t("sections.bonusEdge.eyebrow")}
+              title={t("sections.bonusEdge.title")}
               list={jobResult.kelebihan_tambahan}
             />
           </section>
@@ -167,7 +167,7 @@ export default function JobMatchResultPage() {
           <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div>
               <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold tracking-wide text-emerald-700 uppercase">
-                Salary Snapshot
+                {t("salary.badge")}
               </div>
 
               <div className="flex items-center gap-3">
@@ -176,14 +176,13 @@ export default function JobMatchResultPage() {
                 </div>
 
                 <h3 className="text-lg font-semibold text-slate-900">
-                  Kisaran Gaji
+                  {t("salary.title")}
                 </h3>
               </div>
             </div>
 
             <p className="max-w-md text-sm leading-relaxed text-slate-500">
-              Gunakan ini sebagai benchmark awal saat memilih lowongan dan
-              menyiapkan ekspektasi negosiasi.
+              {t("salary.description")}
             </p>
           </div>
 
@@ -202,7 +201,7 @@ export default function JobMatchResultPage() {
                 </p>
 
                 <p className="mt-2 text-sm text-slate-500">
-                  Estimasi umum yang bisa jadi acuan saat mulai melamar.
+                  {t("salary.cardHint")}
                 </p>
               </div>
             ))}
@@ -219,7 +218,7 @@ export default function JobMatchResultPage() {
             className="bg-primaryBlue hover:bg-primaryBlueHover inline-flex items-center gap-2 rounded-full px-4 py-3 text-sm font-medium text-white transition hover:-translate-y-0.5"
           >
             <ArrowLeft size={16} />
-            Cek CV Lain
+            {t("backButton")}
           </button>
         </div>
       </motion.div>
