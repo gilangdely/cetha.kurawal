@@ -46,70 +46,81 @@ export default function CvBuilderPage() {
   const handleExportPdf = async () => {
     try {
       setIsExporting(true);
-      console.log("[Export] Memulai proses persiapan Export PDF...");
-
-      // Dinamis Import agar server tidak komplain
-      const htmlToImage = await import("html-to-image");
-      const { jsPDF } = await import("jspdf");
+      console.log("[Export] Memulai proses Export PDF Searchable (Backend Printing)...");
 
       const element = document.querySelector(".cv-document") as HTMLElement;
       if (!element) throw new Error("Document structure not found");
 
-      console.log("[Export] Menunggu kesiapan Font Manrope...");
+      // Tunggu font siap
       await document.fonts.ready;
 
-      // Hapus efek scale pada origin element sementara waktu untuk capture yang sempurna
-      // Kita asumsikan element punya parent pembungkus yang melakukan transform scale
-      const parentWrapper = element.parentElement;
-      const originalTransform = parentWrapper?.style.transform || "";
-
-      if (parentWrapper) {
-        parentWrapper.style.transform = "none";
-        parentWrapper.style.transition = "none"; // Matikan transisi agar tidak capture animasi
+      // Ambil semua styles yang aktif untuk diinjeksi ke backend
+      const styleSheets = Array.from(document.styleSheets);
+      let cssStyles = "";
+      try {
+        for (const sheet of styleSheets) {
+          const rules = Array.from(sheet.cssRules);
+          for (const rule of rules) {
+            cssStyles += rule.cssText;
+          }
+        }
+      } catch (e) {
+        console.warn("[Export] Beberapa styles tidak dapat diakses (CORS), mengandalkan Tailwind global.");
       }
 
-      console.log(
-        "[Export] Membangun Image Data dari DOM via html-to-image...",
-      );
+      // Clone element untuk memanipulasi tanpa merusak UI asli
+      const clonedElement = element.cloneNode(true) as HTMLElement;
+      clonedElement.style.transform = "none";
+      clonedElement.style.margin = "0";
+      clonedElement.style.boxShadow = "none";
 
-      const imgData = await htmlToImage.toJpeg(element, {
-        quality: 1,
-        pixelRatio: 2,
-        backgroundColor: "#ffffff",
-      });
-
-      // Kembalikan style parent seperti semula
-      if (parentWrapper) {
-        parentWrapper.style.transform = originalTransform;
-        parentWrapper.style.transition = "";
-      }
-
-      console.log(
-        "[Export] Canvas selesai digenerate. Mempersiapkan Image Data...",
-      );
-
-      console.log("[Export] Inisialisasi library jsPDF...");
-      const pdf = new jsPDF({
-        orientation: "portrait",
-        unit: "mm",
-        format: "a4",
-      });
-
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (element.scrollHeight * pdfWidth) / element.scrollWidth;
-
-      pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
-
-      const userName =
-        useCvBuilderStore.getState().data.personalInfo.fullName || "User";
+      const userName = useCvBuilderStore.getState().data.personalInfo.fullName || "User";
       const templateName = useCvBuilderStore.getState().activeTemplate;
-
       const fileName = `CV_${userName.replace(/\s+/g, "_")}_${templateName}.pdf`;
-      console.log(`[Export] Memicu fungsi download: ${fileName}`);
 
-      pdf.save(fileName);
-      toast.success("PDF berhasil diunduh");
-      console.log("[Export] File berhasil diunduh.");
+      // Bungkus dalam HTML lengkap dengan styles
+      const fullHtml = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <style>
+              ${cssStyles}
+              body { margin: 0; padding: 0; background: white; }
+              .cv-document { width: 210mm; min-height: 297mm; margin: 0 auto !important; transform: none !important; box-shadow: none !important; }
+            </style>
+          </head>
+          <body>
+            ${clonedElement.outerHTML}
+          </body>
+        </html>
+      `;
+
+      console.log("[Export] Mengirim data ke Backend...");
+
+      const response = await fetch("/api/export-pdf", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ html: fullHtml, fileName }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Gagal menghubungi server ekspor");
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      toast.success("PDF berhasil diunduh (Searchable Mode)");
+      console.log("[Export] File berhasil diunduh via Backend.");
     } catch (error: any) {
       console.error("[Export Error] Gagal melakukan export PDF:", error);
       toast.error(error.message || "Gagal menghasilkan file PDF");

@@ -5,7 +5,11 @@ import { getSessionUidFromCookie } from "@/app/lib/session";
 
 const validateFile = (file: File | null): string | null => {
     if (!file) return "File tidak ditemukan";
-    if (file.type !== "application/pdf") {
+    
+    const isPdfMime = file.type === "application/pdf";
+    const isPdfExt = file.name.toLowerCase().endsWith(".pdf");
+
+    if (!isPdfMime && !isPdfExt) {
         return `Format file tidak didukung: ${file.type}. Harus PDF.`;
     }
     return null;
@@ -18,9 +22,15 @@ export const POST = async (req: NextRequest) => {
         const formData = await req.formData();
         const file = formData.get("file") as File | null;
 
+        console.log(`[Server] Received file: ${file?.name}, Size: ${file?.size} bytes, Type: ${file?.type}`);
+
         const validationError = validateFile(file);
         if (validationError) {
             return NextResponse.json({ success: false, message: validationError }, { status: 400 });
+        }
+
+        if (file!.size === 0) {
+            return NextResponse.json({ success: false, message: "File PDF kosong atau tidak dapat dibaca" }, { status: 400 });
         }
 
         // Periksa Kuota AI
@@ -41,7 +51,22 @@ export const POST = async (req: NextRequest) => {
             throw new Error("Konfigurasi root tidak ditemukan");
         }
 
-        const { files } = await upload_files.call(app, root, [file!]);
+        // Konversi ke Buffer
+        const arrayBuffer = await file!.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+        
+        console.log(`[Server] File converted to Buffer, length: ${buffer.length}`);
+
+        // Rekonstruksi objek File yang kompatibel dengan Gradio Nodejs Client
+        // Sangat penting untuk menyertakan ekstensi .pdf di nama file agar Gradio tidak menolak tipe file
+        const fileName = file!.name.toLowerCase().endsWith('.pdf') ? file!.name : `${file!.name}.pdf`;
+        
+        // Menggunakan native File constructor (Node.js 22+) untuk menjamin metadata terkirim
+        const fileToUpload = new File([buffer], fileName, { type: "application/pdf" });
+        
+        console.log(`[Server] Prepared file for Gradio: ${fileToUpload.name}, Size: ${fileToUpload.size}, Type: ${fileToUpload.type}`);
+
+        const { files } = await upload_files.call(app, root, [fileToUpload as any]);
         const fileUrl = getFileUrl(files![0]);
 
         const result = await app.predict("/score_cv", [handle_file(fileUrl)]);
@@ -51,12 +76,15 @@ export const POST = async (req: NextRequest) => {
 
         return NextResponse.json({ success: true, message: "Review berhasil", data: { result } });
     } catch (error: any) {
-        console.error("❌ API Upload Error:", error);
+        console.error("❌ API Upload Error Detail:", error);
 
-        if (error.response?.status === 429) {
+        const status = error.response?.status || 500;
+        const message = error.response?.data?.message || error.message || "Terjadi kesalahan saat memproses file (Internal Server Error).";
+
+        if (status === 429) {
             return NextResponse.json({ success: false, message: "Kuota API Server terlampaui. Silakan coba lagi beberapa saat lagi." }, { status: 429 });
         }
 
-        return NextResponse.json({ success: false, message: error?.message || "Terjadi kesalahan saat memproses file (Internal Server Error)." }, { status: 500 });
+        return NextResponse.json({ success: false, message }, { status });
     }
 };

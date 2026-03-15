@@ -41,7 +41,7 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [paymentProofUrl, setPaymentProofUrl] = useState<string | null>(null);
-  const [alert, setAlert] = useState<CheckoutAlert | null>(null);
+  const [checkoutAlert, setCheckoutAlert] = useState<CheckoutAlert | null>(null);
   const [selectedMethod, setSelectedMethod] = useState<string>("bri");
   const redirectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -119,7 +119,7 @@ export default function CheckoutPage() {
 
   const handleCheckout = async () => {
     if (!tier || !tier.id || !paymentProofUrl) {
-      setAlert({
+      setCheckoutAlert({
         variant: "destructive",
         title: t("alert.errorTitle"),
         message: t("errors.uploadProofRequired"),
@@ -128,7 +128,7 @@ export default function CheckoutPage() {
     }
 
     setSubmitting(true);
-    setAlert(null);
+    setCheckoutAlert(null);
 
     try {
       const res = await fetch("/api/subscriptions/checkout", {
@@ -152,7 +152,7 @@ export default function CheckoutPage() {
 
       router.push("/id/dashboard/transactions");
     } catch (err: any) {
-      setAlert({
+      setCheckoutAlert({
         variant: "destructive",
         title: t("alert.errorTitle"),
         message: err.message,
@@ -174,19 +174,19 @@ export default function CheckoutPage() {
 
   return (
     <div className="flex min-h-screen w-full lg:h-screen lg:overflow-hidden">
-      {alert && (
+      {checkoutAlert && (
         <div className="pointer-events-none fixed top-6 left-1/2 z-50 w-full max-w-md -translate-x-1/2 px-4">
           <Alert
-            variant={alert.variant}
+            variant={checkoutAlert.variant}
             className="pointer-events-auto border shadow-lg"
           >
-            {alert.variant === "destructive" ? (
+            {checkoutAlert.variant === "destructive" ? (
               <AlertCircle className="text-current" />
             ) : (
               <CheckCircle className="text-current" />
             )}
-            <AlertTitle>{alert.title}</AlertTitle>
-            <AlertDescription>{alert.message}</AlertDescription>
+            <AlertTitle>{checkoutAlert.title}</AlertTitle>
+            <AlertDescription>{checkoutAlert.message}</AlertDescription>
           </Alert>
         </div>
       )}
@@ -281,11 +281,10 @@ export default function CheckoutPage() {
                 <button
                   key={id}
                   onClick={() => setSelectedMethod(id)}
-                  className={`flex h-11 items-center justify-center rounded-xl border transition-colors ${
-                    selectedMethod === id
-                      ? "border-blue-600 bg-blue-50"
-                      : "border-gray-200 bg-white hover:border-gray-300"
-                  }`}
+                  className={`flex h-11 items-center justify-center rounded-xl border transition-colors ${selectedMethod === id
+                    ? "border-blue-600 bg-blue-50"
+                    : "border-gray-200 bg-white hover:border-gray-300"
+                    }`}
                 >
                   <div className="flex h-5 w-20 items-center justify-center">
                     <Image
@@ -360,7 +359,7 @@ export default function CheckoutPage() {
             <UploadPaymentProof
               onUploadComplete={(base64Url) => {
                 setPaymentProofUrl(base64Url);
-                setAlert(null);
+                setCheckoutAlert(null);
               }}
             />
 
@@ -376,11 +375,10 @@ export default function CheckoutPage() {
           <Button
             onClick={handleCheckout}
             disabled={submitting || !paymentProofUrl}
-            className={`h-12 w-full rounded-xl font-semibold text-white transition ${
-              !paymentProofUrl
-                ? "bg-gray-200 text-gray-400"
-                : "bg-blue-600 hover:bg-blue-700"
-            }`}
+            className={`h-12 w-full rounded-xl font-semibold text-white transition ${!paymentProofUrl
+              ? "bg-gray-200 text-gray-400"
+              : "bg-blue-600 hover:bg-blue-700"
+              }`}
           >
             {submitting ? (
               <span className="flex items-center justify-center gap-2">
