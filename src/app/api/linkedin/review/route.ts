@@ -1,5 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
+import { QuotaService } from "@/lib/quota-service";
+import { getSessionUidFromCookie } from "@/app/lib/session";
 
 // 🔹 Inisialisasi Gemini AI
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API || "");
@@ -35,6 +37,17 @@ function parseJsonSafe(text: string): any {
 
 export async function POST(req: Request) {
   try {
+    const ip = req.headers.get("x-forwarded-for") || "127.0.0.1";
+    const userId = await getSessionUidFromCookie();
+
+    const quotaCheck = await QuotaService.checkQuota(userId, ip, "Improve LinkedIn");
+    if (!quotaCheck.hasQuota) {
+      return NextResponse.json(
+        { success: false, message: quotaCheck.message, requireUpgrade: true },
+        { status: 403 }
+      );
+    }
+
     const body = await req.json();
     const data = body.data || body; // Support raw linkedin payload or formatted payload
 
@@ -139,6 +152,8 @@ Jawab hanya dengan JSON valid.
       console.warn("⚠️ Gagal parse JSON:", e.message);
       parsed = { rawText: text }; // Fallback
     }
+
+    await QuotaService.consumeQuota(userId, "Improve LinkedIn", ip);
 
     return NextResponse.json({
       success: true,

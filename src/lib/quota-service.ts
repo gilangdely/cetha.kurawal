@@ -2,31 +2,52 @@ import { adminDb } from "@/app/lib/firebase-admin";
 import { FieldValue } from "firebase-admin/firestore";
 
 /**
+ * Feature costs in tokens.
+ */
+export const FEATURE_COSTS: Record<string, number> = {
+    "CV Review": 25,
+    "Job Match": 20,
+    "Improve LinkedIn": 15,
+    "Generate Target": 5,
+    "Chat Bot": 5,
+    "Generate CV": 2,
+};
+
+/**
  * Service to manage user quotas and guest (IP-based) quotas.
  */
 export class QuotaService {
     /**
-     * Checks if a user or guest has remaining quota.
+     * Checks if a user or guest has remaining quota based on the feature cost.
      */
-    static async checkQuota(userId: string | null, ipAddress: string): Promise<{ hasQuota: boolean; message?: string }> {
+    static async checkQuota(
+        userId: string | null,
+        ipAddress: string,
+        featureName: string = "CV Review"
+    ): Promise<{ hasQuota: boolean; message?: string }> {
+        const cost = FEATURE_COSTS[featureName] || 0;
+
         if (userId) {
-            // Check User Quota
+            // Check User Token Quota
             const quotaRef = adminDb.collection("user_quotas").doc(userId);
             const quotaDoc = await quotaRef.get();
 
             if (!quotaDoc.exists) {
-                // Give default free quota if document doesn't exist
+                // Give default free quota if document doesn't exist (e.g. 50 tokens for new users)
                 return { hasQuota: true };
             }
 
             const remaining = quotaDoc.data()?.remaining_quota || 0;
-            if (remaining > 0) {
+            if (remaining >= cost) {
                 return { hasQuota: true };
             }
 
-            return { hasQuota: false, message: "Kuota kamu sudah habis. Silakan upgrade paket langganan untuk melanjutkan." };
+            return { 
+                hasQuota: false, 
+                message: "Token kamu tidak cukup untuk fitur ini. Silakan top-up atau upgrade paket langganan untuk melanjutkan." 
+            };
         } else {
-            // Check Guest Quota by IP
+            // Check Guest Quota by IP (Standard 1 free usage for guests)
             const guestRef = adminDb.collection("guest_usage").doc(ipAddress.replace(/[:.]/g, "_"));
             const guestDoc = await guestRef.get();
 
@@ -35,18 +56,20 @@ export class QuotaService {
             }
 
             const used = guestDoc.data()?.used_quota || 0;
-            if (used < 1) { // 1x free usage for guests
+            if (used < 1) {
                 return { hasQuota: true };
             }
 
-            return { hasQuota: false, message: "Batas penggunaan tamu telah habis. Silakan login atau daftar untuk mendapatkan kuota tambahan gratis." };
+            return { hasQuota: false, message: "Batas penggunaan tamu telah habis. Silakan login atau daftar untuk mendapatkan token gratis." };
         }
     }
 
     /**
-     * Consumes 1 quota from a user or guest and logs the usage.
+     * Consumes tokens from a user or guest and logs the usage.
      */
     static async consumeQuota(userId: string | null, featureName: string, ipAddress: string): Promise<void> {
+        const cost = FEATURE_COSTS[featureName] || 0;
+
         await adminDb.runTransaction(async (transaction) => {
             const logRef = adminDb.collection("usage_logs").doc();
 
@@ -60,6 +83,7 @@ export class QuotaService {
                     user_id: userId,
                     ip_address: ipAddress,
                     feature: featureName,
+                    token_cost: cost,
                     created_at: FieldValue.serverTimestamp()
                 });
 
@@ -67,22 +91,23 @@ export class QuotaService {
                     const currentRemaining = quotaDoc.data()?.remaining_quota || 0;
                     const currentUsed = quotaDoc.data()?.used_quota || 0;
 
-                    if (currentRemaining <= 0) {
-                        throw new Error("Insufficient quota");
+                    if (currentRemaining < cost) {
+                        throw new Error("Insufficient token quota");
                     }
 
                     transaction.update(quotaRef, {
-                        remaining_quota: currentRemaining - 1,
-                        used_quota: currentUsed + 1,
+                        remaining_quota: currentRemaining - cost,
+                        used_quota: currentUsed + cost,
                         updated_at: FieldValue.serverTimestamp()
                     });
                 } else {
-                    // Create default free quota minus 1
+                    // Create default free quota minus cost
+                    const initialTokens = 50; 
                     transaction.set(quotaRef, {
                         user_id: userId,
-                        total_quota: 2, // 2 free standard
-                        used_quota: 1,
-                        remaining_quota: 1,
+                        total_quota: initialTokens,
+                        used_quota: cost,
+                        remaining_quota: initialTokens - cost,
                         updated_at: FieldValue.serverTimestamp()
                     });
                 }
@@ -97,6 +122,7 @@ export class QuotaService {
                     user_id: "guest",
                     ip_address: ipAddress,
                     feature: featureName,
+                    token_cost: 0, // Guests consume "uses", not tokens directly for simplicity
                     created_at: FieldValue.serverTimestamp()
                 });
 

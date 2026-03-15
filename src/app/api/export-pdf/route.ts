@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import puppeteer from "puppeteer";
+import { QuotaService } from "@/lib/quota-service";
+import { getSessionUidFromCookie } from "@/app/lib/session";
 
 export async function POST(req: NextRequest) {
   try {
@@ -7,6 +9,18 @@ export async function POST(req: NextRequest) {
 
     if (!html) {
       return NextResponse.json({ message: "HTML content is required" }, { status: 400 });
+    }
+
+    const userId = await getSessionUidFromCookie();
+    const ip = req.headers.get("x-forwarded-for") || "127.0.0.1";
+
+    // Periksa Kuota (Generate CV)
+    const quotaCheck = await QuotaService.checkQuota(userId, ip, "Generate CV");
+    if (!quotaCheck.hasQuota) {
+      return NextResponse.json(
+        { message: quotaCheck.message, requireUpgrade: true },
+        { status: 403 }
+      );
     }
 
     console.log("[Export API] Memulai proses printing via Puppeteer...");
@@ -38,8 +52,11 @@ export async function POST(req: NextRequest) {
 
     console.log("[Export API] PDF berhasil di-generate.");
 
+    // Konsumsi Kuota (Generate CV)
+    await QuotaService.consumeQuota(userId, "Generate CV", ip);
+
     // Return sebagai data biner
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(pdfBuffer as any, {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
