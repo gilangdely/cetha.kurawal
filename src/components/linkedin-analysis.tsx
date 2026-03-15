@@ -9,6 +9,7 @@ import {
   CircleCheck,
   CircleCheckBig,
 } from "lucide-react";
+import ScoreCard from "./ui/scored-card";
 
 interface AnalysisResult {
   skor_keseluruhan: number;
@@ -32,23 +33,6 @@ interface Props {
   result: AnalysisResult;
   className?: string;
 }
-
-const ScoreCard = ({ label, value }: { label: string; value: number }) => (
-  <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-    <p className="text-xs text-gray-500">{label}</p>
-
-    <div className="mt-2 flex items-center gap-3">
-      <div className="h-2 flex-1 rounded-full bg-gray-200">
-        <div
-          className="bg-primaryBlue h-2 rounded-full"
-          style={{ width: `${value}%` }}
-        />
-      </div>
-
-      <span className="text-sm font-semibold text-gray-700">{value}</span>
-    </div>
-  </div>
-);
 
 const MarkdownText = ({ children }: { children: string }) => (
   <ReactMarkdown

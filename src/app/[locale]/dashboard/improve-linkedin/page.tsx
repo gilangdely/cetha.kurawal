@@ -200,7 +200,7 @@ export default function ImproveLinkedInDashboard() {
       setGlobalProgress(100);
       await new Promise((resolve) => setTimeout(resolve, 350));
       setGlobalUploading(false);
-      router.push("/dashboard/result-improve-linkedin");
+      router.push("/dashboard/improve-linkedin/result-improve-linkedin");
     } catch (err: any) {
       console.error(err);
       setError(err.message || "Terjadi kesalahan saat memproses permintaan.");
