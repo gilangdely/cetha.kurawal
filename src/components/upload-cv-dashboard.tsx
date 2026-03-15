@@ -1,6 +1,5 @@
 "use client";
 
-import LoadingScreen from "@/components/loading-screen";
 import axios from "axios";
 import Image from "next/image";
 import { useDataReviewStore } from "@/store/dataReviewStore";
@@ -89,7 +88,7 @@ const UploadCvDashboard = () => {
 
     try {
       setGlobalUploading(true, "cv");
-      setProgressGlobal(0);
+      setProgressGlobal(5);
 
       const res = await axios.post("/api/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -97,9 +96,13 @@ const UploadCvDashboard = () => {
           const percent = event.total
             ? Math.round((event.loaded * 100) / event.total)
             : 0;
-          setProgressGlobal(percent);
+          // Keep upload phase below completion so final processing can animate smoothly.
+          const mapped = Math.min(70, Math.max(8, Math.round(percent * 0.7)));
+          setProgressGlobal(mapped);
         },
       });
+
+      setProgressGlobal(82);
 
       toast.success("File berhasil diunggah!");
       console.log("Respon server:", res.data);
@@ -110,6 +113,7 @@ const UploadCvDashboard = () => {
         fileUrl: "",
         result: reviewResult,
       });
+      setProgressGlobal(90);
 
       // Dashboard: user pasti sudah login, simpan ke Firestore
       if (auth.currentUser) {
@@ -120,16 +124,20 @@ const UploadCvDashboard = () => {
             createdAt: new Date().toISOString(),
             result: reviewResult,
           });
+          setProgressGlobal(96);
         } catch (e) {
           console.error("Gagal menyimpan ke Firestore:", e);
         }
       }
 
       // Tidak ada redirect — hasil ditampilkan inline di dashboard
+      setProgressGlobal(100);
+      await new Promise((resolve) => setTimeout(resolve, 320));
+      setGlobalUploading(false);
     } catch (err: any) {
       console.error("Upload gagal:", err.response?.data || err.message);
       toast.error("Gagal Upload");
-    } finally {
+      setProgressGlobal(0);
       setGlobalUploading(false);
     }
   };
