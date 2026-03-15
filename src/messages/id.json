@@ -1003,6 +1003,179 @@
       "cta": "Mulai Review CV"
     }
   },
+  "reviewCvResultPage": {
+    "title": "Berikut adalah rangkuman dari CV kamu",
+    "aside": {
+      "imageAlt": "Review CV",
+      "title": "Coba nilai CV-mu berdasarkan pekerjaan impian mu",
+      "button": "Coba sekarang"
+    },
+    "tips": {
+      "badge": "Tips",
+      "description": "Perbarui CV kamu secara rutin dan sesuaikan dengan posisi yang kamu lamar agar skor terus meningkat."
+    },
+    "mobileCta": {
+      "title": "Coba Rekomendasi Pekerjaan",
+      "description": "Temukan pekerjaan yang sesuai dengan skill dan pengalaman yang kamu miliki berdasarkan analisis CV kamu.",
+      "button": "Lihat Rekomendasi Pekerjaan"
+    }
+  },
+  "reviewCvPage": {
+    "hero": {
+      "titlePrefix": "CV Lebih Baik,",
+      "titleHighlight": "Peluang Lebih Besar",
+      "description": "Dapatkan feedback otomatis dari AI agar CV kamu makin standout di mata recruiter.",
+      "imageAlt": "illustration review cv"
+    }
+  },
+  "uploadCv": {
+    "uploadLogoAlt": "upload",
+    "officeIconAlt": "office-docx",
+    "dropzone": {
+      "ctaPrefix": "Seret dan taruh file disini",
+      "or": "atau",
+      "uploadLabel": "Unggah File",
+      "disabled": "Upload dimatikan"
+    },
+    "remainingWithoutLogin": "Sisa upload tanpa login: {remaining} dari 5 kali",
+    "supportedFiles": "File yang dapat terbaca: PDF",
+    "submitButton": "Prediksi Sekarang",
+    "toast": {
+      "uploadLimitReached": "Kamu sudah mencapai batas 5x upload tanpa login.",
+      "onlyPdf": "Saat ini hanya file dengan format PDF yang didukung.",
+      "selectFileFirst": "Pilih file terlebih dahulu!",
+      "uploadSuccess": "File berhasil diunggah!"
+    },
+    "errors": {
+      "emptyAnalysis": "Hasil analisis CV kosong atau tidak dikenali dari server.",
+      "uploadFailed": "Gagal Upload"
+    }
+  },
+  "improveLinkedinPage": {
+    "hero": {
+      "titlePrefix": "Buat Profil LinkedIn Kamu Lebih",
+      "titleHighlight": "Standout",
+      "description": "Masukkan URL LinkedIn kamu, biarkan AI menganalisis headline, summary, dan skill. Dapatkan saran kata kunci dan tips supaya recruiter lebih mudah menemukan kamu.",
+      "imageAlt": "illustration improve linkedin"
+    },
+    "form": {
+      "label": "Masukan URL profil LinkedIn Kamu",
+      "placeholder": "Masukan username atau URL profil LinkedIn kamu"
+    },
+    "attempts": {
+      "remainingPrefix": "Kamu punya",
+      "remainingSuffix": "dari 5 percobaan tersisa.",
+      "login": "Login",
+      "unlimitedAccess": "untuk akses tak terbatas.",
+      "exhausted": "Batas percobaan habis. Silakan login."
+    },
+    "errors": {
+      "limitReached": "Kamu sudah mencapai batas maksimal 5 kali analisis. Silakan login untuk melanjutkan.",
+      "invalidProfileUrl": "Masukkan username atau URL LinkedIn yang valid.",
+      "quotaExhausted": "Kuota kamu habis.",
+      "fetchProfileFailed": "Gagal mengambil data profil LinkedIn.",
+      "analyzeFailed": "Gagal menganalisis profil.",
+      "processFailed": "Terjadi kesalahan saat memproses data LinkedIn."
+    }
+  },
+  "improveLinkedinResultPage": {
+    "title": "Hasil Analisis LinkedIn",
+    "description": "Berikut ringkasan profil dan rekomendasi optimasi dari AI untuk meningkatkan visibilitas profilmu.",
+    "reviewAnotherButton": "Review Profil Lain"
+  },
+  "jobMatchPage": {
+    "hero": {
+      "titlePrefix": "Temukan",
+      "titleHighlight": "Pekerjaan yang Tepat",
+      "titleSuffix": "untukmu",
+      "description": "Dapatkan rekomendasi pekerjaan yang paling sesuai dengan keahlian dan pengalamanmu, langsung dari analisis CV kamu.",
+      "imageAlt": "illustration"
+    }
+  },
+  "jobMatchResultPage": {
+    "aside": {
+      "card": {
+        "imageAlt": "Review CV",
+        "title": "Sudah dapat rekomendasi pekerjaan? Sekarang coba review CV kamu!",
+        "button": "Coba Review CV"
+      },
+      "insight": {
+        "badge": "Insight",
+        "description": "Gunakan role target dan range gaji di halaman ini sebagai acuan awal saat pilih lowongan dan menyesuaikan CV kamu."
+      }
+    },
+    "hero": {
+      "badge": "Match Score Driven",
+      "kicker": "Pekerjaan yang paling cocok buat kamu",
+      "description": "Role ini dipilih karena paling nyambung dengan fondasi skill dan arah karier kamu saat ini, jadi lebih realistis untuk dikejar sekaligus punya ruang naik level."
+    },
+    "cards": {
+      "bestFit": {
+        "title": "Best Fit",
+        "description": "Fokus ke role yang paling masuk akal untuk dilamar sekarang."
+      },
+      "growthPath": {
+        "title": "Growth Path",
+        "description": "Ada ruang berkembang dari entry point ke level berikutnya."
+      },
+      "salarySnapshot": {
+        "title": "Salary Snapshot",
+        "description": "Lihat range kompensasi untuk bantu set ekspektasi sejak awal."
+      }
+    },
+    "sections": {
+      "matchReason": {
+        "eyebrow": "Match Reason",
+        "title": "Kenapa kamu cocok?"
+      },
+      "jobPreview": {
+        "eyebrow": "Job Preview",
+        "title": "Deskripsi pekerjaan"
+      },
+      "careerDirection": {
+        "eyebrow": "Career Direction",
+        "title": "Potensi karier"
+      },
+      "bonusEdge": {
+        "eyebrow": "Bonus Edge",
+        "title": "Kelebihan tambahan"
+      }
+    },
+    "salary": {
+      "badge": "Salary Snapshot",
+      "title": "Kisaran Gaji",
+      "description": "Gunakan ini sebagai benchmark awal saat memilih lowongan dan menyiapkan ekspektasi negosiasi.",
+      "cardHint": "Estimasi umum yang bisa jadi acuan saat mulai melamar.",
+      "levels": {
+        "junior": "Entry Level",
+        "midLevel": "Mid Level",
+        "senior": "Senior Level"
+      }
+    },
+    "backButton": "Cek CV Lain"
+  },
+  "uploadJobs": {
+    "uploadLogoAlt": "upload",
+    "officeIconAlt": "office-docx",
+    "dropzone": {
+      "ctaPrefix": "Seret dan taruh file CV di sini",
+      "or": "atau",
+      "uploadLabel": "Unggah File",
+      "disabled": "Upload dimatikan"
+    },
+    "remainingWithoutLogin": "Sisa upload tanpa login: {remaining} dari 5 kali",
+    "supportedFiles": "File yang dapat terbaca: PDF",
+    "analyzeButton": "Analisis Sekarang",
+    "toast": {
+      "uploadLimitReached": "Kamu sudah mencapai batas 5x upload tanpa login.",
+      "selectCvFirst": "Pilih file CV terlebih dahulu!",
+      "recommendationCreated": "Rekomendasi pekerjaan berhasil dibuat!"
+    },
+    "errors": {
+      "uploadOrAnalyzeFailed": "Gagal mengunggah atau menganalisis CV",
+      "resultNotFound": "Data hasil tidak ditemukan dari server."
+    }
+  },
   "profile": {
     "defaultUsername": "Explorer",
     "noEmail": "Tidak ada email",

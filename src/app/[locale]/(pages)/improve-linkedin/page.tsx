@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { ArrowRight, Loader2, Lock } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 import illustration from "@/assets/img/illustration-improve-linkedIn.jpg";
 import { UpgradeModal } from "@/components/UpgradeModal";
@@ -78,6 +79,7 @@ interface Profile {
 }
 
 export default function ImproveLinkedInPage() {
+  const t = useTranslations("improveLinkedinPage");
   const router = useRouter();
   const setLinkedinResult = useLinkedinResultStore((s) => s.setResult);
   const setGlobalUploading = useUploadStore((s) => s.setUploading);
@@ -155,9 +157,7 @@ export default function ImproveLinkedInPage() {
 
   const handleAnalyze = async () => {
     if (!isLoggedIn && attemptsLeft <= 0) {
-      setError(
-        "Kamu sudah mencapai batas maksimal 5 kali analisis. Silakan login untuk melanjutkan.",
-      );
+      setError(t("errors.limitReached"));
       return;
     }
 
@@ -170,7 +170,11 @@ export default function ImproveLinkedInPage() {
     // Ekstrak username secara robust (hindari querystring atau subdomain bahasa)
     if (cleanUsername.includes("linkedin.com/in/")) {
       try {
-        const url = new URL(cleanUsername.startsWith("http") ? cleanUsername : `https://${cleanUsername}`);
+        const url = new URL(
+          cleanUsername.startsWith("http")
+            ? cleanUsername
+            : `https://${cleanUsername}`,
+        );
         const pathParts = url.pathname.split("/").filter(Boolean);
         const inIndex = pathParts.indexOf("in");
         if (inIndex !== -1 && pathParts.length > inIndex + 1) {
@@ -178,14 +182,16 @@ export default function ImproveLinkedInPage() {
         }
       } catch (e) {
         // Fallback jika new URL gagal
-        cleanUsername = cleanUsername.split("?")[0].replace(/\/$/, "").split("/").pop() || cleanUsername;
+        cleanUsername =
+          cleanUsername.split("?")[0].replace(/\/$/, "").split("/").pop() ||
+          cleanUsername;
       }
     } else {
       cleanUsername = cleanUsername.split("?")[0].replace(/\/$/, "");
     }
 
     if (!cleanUsername) {
-      setError("Masukkan username atau URL LinkedIn yang valid.");
+      setError(t("errors.invalidProfileUrl"));
       setLoading(false);
       setGlobalProgress(0);
       setGlobalUploading(false);
@@ -213,14 +219,16 @@ export default function ImproveLinkedInPage() {
 
       if (!res.ok || data.success === false) {
         if (data.requireUpgrade) {
-          setUpgradeMessage(data.message || data.error || "Kuota kamu habis.");
+          setUpgradeMessage(
+            data.message || data.error || t("errors.quotaExhausted"),
+          );
           setShowUpgradeModal(true);
           setGlobalProgress(0);
           setGlobalUploading(false);
           return; // hentikan eksekusi
         }
         throw new Error(
-          data.message || data.error || "Gagal mengambil data profil LinkedIn.",
+          data.message || data.error || t("errors.fetchProfileFailed"),
         );
       }
       setGlobalProgress(40);
@@ -259,7 +267,7 @@ export default function ImproveLinkedInPage() {
       const aiData = await aiRes.json();
       if (!aiRes.ok || aiData.success === false) {
         throw new Error(
-          aiData.message || aiData.error || "Gagal menganalisis profil.",
+          aiData.message || aiData.error || t("errors.analyzeFailed"),
         );
       }
       setGlobalProgress(85);
@@ -282,9 +290,7 @@ export default function ImproveLinkedInPage() {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err: any) {
       console.error("LinkedIn Analysis Error:", err);
-      setError(
-        err.message || "Terjadi kesalahan saat memproses data LinkedIn.",
-      );
+      setError(err.message || t("errors.processFailed"));
       setGlobalProgress(0);
       setGlobalUploading(false);
     } finally {
@@ -311,8 +317,10 @@ export default function ImproveLinkedInPage() {
                 transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
                 className="text-TextPrimary text-center text-2xl font-semibold md:text-3xl lg:text-start lg:text-4xl"
               >
-                Buat Profil LinkedIn Kamu Lebih{" "}
-                <span className="text-accentOrange">Standout</span>
+                {t("hero.titlePrefix")}{" "}
+                <span className="text-accentOrange">
+                  {t("hero.titleHighlight")}
+                </span>
               </motion.h2>
 
               <motion.p
@@ -321,9 +329,7 @@ export default function ImproveLinkedInPage() {
                 transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
                 className="text-TextSecondary mt-3 text-center text-lg lg:text-start"
               >
-                Masukkan URL LinkedIn kamu, biarkan AI menganalisis headline,
-                summary, dan skill. Dapatkan saran kata kunci dan tips supaya
-                recruiter lebih mudah menemukan kamu.
+                {t("hero.description")}
               </motion.p>
 
               <motion.div
@@ -333,12 +339,12 @@ export default function ImproveLinkedInPage() {
                 className="mx-auto mt-8 w-full"
               >
                 <h2 className="text-TextSecondary mb-2 font-medium">
-                  Masukan URL profil LinkedIn Kamu
+                  {t("form.label")}
                 </h2>
                 <div className="flex w-full gap-2">
                   <input
                     type="text"
-                    placeholder="Masukan username atau URL profil LinkedIn kamu"
+                    placeholder={t("form.placeholder")}
                     className="flex-1 rounded-full border px-4 py-3"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
@@ -368,20 +374,20 @@ export default function ImproveLinkedInPage() {
                   <div className="mt-2 text-sm text-gray-600">
                     {attemptsLeft > 0 ? (
                       <span>
-                        Kamu punya{" "}
-                        <span className="font-medium">{attemptsLeft}</span> dari
-                        5 percobaan tersisa.{" "}
+                        {t("attempts.remainingPrefix")}{" "}
+                        <span className="font-medium">{attemptsLeft}</span>{" "}
+                        {t("attempts.remainingSuffix")}{" "}
                         <Link
                           href="/login"
                           className="text-primaryBlue hover:underline"
                         >
-                          Login
+                          {t("attempts.login")}
                         </Link>{" "}
-                        untuk akses tak terbatas.
+                        {t("attempts.unlimitedAccess")}
                       </span>
                     ) : (
                       <span className="flex items-center gap-1 font-medium text-red-600">
-                        <Lock size={16} /> Batas percobaan habis. Silakan login.
+                        <Lock size={16} /> {t("attempts.exhausted")}
                       </span>
                     )}
                   </div>
@@ -400,7 +406,7 @@ export default function ImproveLinkedInPage() {
                 className="relative"
                 draggable={false}
                 src={illustration}
-                alt="illustration improve linkedin"
+                alt={t("hero.imageAlt")}
               />
             </motion.div>
           </div>

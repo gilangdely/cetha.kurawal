@@ -1,15 +1,15 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import UploadCv from "@/components/upload-cv";
 import { motion } from "framer-motion";
-
-import { ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import illustration from "@/assets/img/illustration-review-cv.jpg";
 
 export default function ReviewCVPage() {
+  const t = useTranslations("reviewCvPage");
+
   return (
     <main className="mx-auto flex w-full max-w-7xl items-center pt-20 lg:pt-0">
       <section className="w-full">
@@ -29,8 +29,10 @@ export default function ReviewCVPage() {
                 transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
                 className="text-TextPrimary text-2xl font-semibold md:text-3xl lg:text-4xl"
               >
-                CV Lebih Baik,{" "}
-                <span className="text-accentOrange">Peluang Lebih Besar</span>
+                {t("hero.titlePrefix")}{" "}
+                <span className="text-accentOrange">
+                  {t("hero.titleHighlight")}
+                </span>
               </motion.h2>
 
               <motion.p
@@ -39,8 +41,7 @@ export default function ReviewCVPage() {
                 transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
                 className="text-TextSecondary mt-3 text-lg"
               >
-                Dapatkan feedback otomatis dari AI agar CV kamu makin standout
-                di mata recruiter.
+                {t("hero.description")}
               </motion.p>
 
               <motion.div
@@ -63,7 +64,7 @@ export default function ReviewCVPage() {
                 className="relative"
                 draggable={false}
                 src={illustration}
-                alt="illustration review cv"
+                alt={t("hero.imageAlt")}
               />
             </motion.div>
           </div>

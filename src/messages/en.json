@@ -1101,6 +1101,179 @@
       "cta": "Start CV Review"
     }
   },
+  "reviewCvResultPage": {
+    "title": "Here is a summary of your CV",
+    "aside": {
+      "imageAlt": "CV Review",
+      "title": "Try scoring your CV based on your dream job",
+      "button": "Try now"
+    },
+    "tips": {
+      "badge": "Tips",
+      "description": "Update your CV regularly and tailor it to the role you apply for so your score keeps improving."
+    },
+    "mobileCta": {
+      "title": "Try Job Recommendations",
+      "description": "Find jobs that match your skills and experience based on your CV analysis.",
+      "button": "View Job Recommendations"
+    }
+  },
+  "reviewCvPage": {
+    "hero": {
+      "titlePrefix": "Better CV,",
+      "titleHighlight": "Bigger Opportunities",
+      "description": "Get automated AI feedback so your CV stands out more to recruiters.",
+      "imageAlt": "illustration review cv"
+    }
+  },
+  "uploadCv": {
+    "uploadLogoAlt": "upload",
+    "officeIconAlt": "office-docx",
+    "dropzone": {
+      "ctaPrefix": "Drag and drop your file here",
+      "or": "or",
+      "uploadLabel": "Upload File",
+      "disabled": "Upload is disabled"
+    },
+    "remainingWithoutLogin": "Remaining uploads without login: {remaining} of 5 times",
+    "supportedFiles": "Supported file format: PDF",
+    "submitButton": "Predict Now",
+    "toast": {
+      "uploadLimitReached": "You have reached the limit of 5 uploads without logging in.",
+      "onlyPdf": "Currently, only PDF files are supported.",
+      "selectFileFirst": "Please select a file first!",
+      "uploadSuccess": "File uploaded successfully!"
+    },
+    "errors": {
+      "emptyAnalysis": "CV analysis result is empty or unrecognized from the server.",
+      "uploadFailed": "Upload failed"
+    }
+  },
+  "improveLinkedinPage": {
+    "hero": {
+      "titlePrefix": "Make Your LinkedIn Profile More",
+      "titleHighlight": "Standout",
+      "description": "Enter your LinkedIn URL and let AI analyze your headline, summary, and skills. Get keyword suggestions and tips so recruiters can find you more easily.",
+      "imageAlt": "illustration improve linkedin"
+    },
+    "form": {
+      "label": "Enter your LinkedIn profile URL",
+      "placeholder": "Enter your username or LinkedIn profile URL"
+    },
+    "attempts": {
+      "remainingPrefix": "You have",
+      "remainingSuffix": "of 5 attempts remaining.",
+      "login": "Login",
+      "unlimitedAccess": "for unlimited access.",
+      "exhausted": "No attempts left. Please log in."
+    },
+    "errors": {
+      "limitReached": "You have reached the maximum limit of 5 analyses. Please log in to continue.",
+      "invalidProfileUrl": "Enter a valid username or LinkedIn URL.",
+      "quotaExhausted": "Your quota is exhausted.",
+      "fetchProfileFailed": "Failed to fetch LinkedIn profile data.",
+      "analyzeFailed": "Failed to analyze profile.",
+      "processFailed": "An error occurred while processing LinkedIn data."
+    }
+  },
+  "improveLinkedinResultPage": {
+    "title": "LinkedIn Analysis Result",
+    "description": "Here is your profile summary and AI optimization recommendations to improve your profile visibility.",
+    "reviewAnotherButton": "Review Another Profile"
+  },
+  "jobMatchPage": {
+    "hero": {
+      "titlePrefix": "Find",
+      "titleHighlight": "The Right Job",
+      "titleSuffix": "for you",
+      "description": "Get job recommendations that best match your skills and experience, directly from your CV analysis.",
+      "imageAlt": "illustration"
+    }
+  },
+  "jobMatchResultPage": {
+    "aside": {
+      "card": {
+        "imageAlt": "CV Review",
+        "title": "Got job recommendations already? Now try reviewing your CV!",
+        "button": "Try CV Review"
+      },
+      "insight": {
+        "badge": "Insight",
+        "description": "Use the target role and salary range on this page as an initial reference when choosing vacancies and tailoring your CV."
+      }
+    },
+    "hero": {
+      "badge": "Match Score Driven",
+      "kicker": "The job that fits you best",
+      "description": "This role is selected because it aligns most with your current skill foundation and career direction, making it more realistic to pursue while still offering room to level up."
+    },
+    "cards": {
+      "bestFit": {
+        "title": "Best Fit",
+        "description": "Focus on the role that is most realistic to apply for now."
+      },
+      "growthPath": {
+        "title": "Growth Path",
+        "description": "There is room to grow from the entry point to the next level."
+      },
+      "salarySnapshot": {
+        "title": "Salary Snapshot",
+        "description": "See compensation ranges to help set expectations from the start."
+      }
+    },
+    "sections": {
+      "matchReason": {
+        "eyebrow": "Match Reason",
+        "title": "Why are you a good fit?"
+      },
+      "jobPreview": {
+        "eyebrow": "Job Preview",
+        "title": "Job description"
+      },
+      "careerDirection": {
+        "eyebrow": "Career Direction",
+        "title": "Career potential"
+      },
+      "bonusEdge": {
+        "eyebrow": "Bonus Edge",
+        "title": "Additional strengths"
+      }
+    },
+    "salary": {
+      "badge": "Salary Snapshot",
+      "title": "Salary Range",
+      "description": "Use this as an initial benchmark when choosing vacancies and preparing negotiation expectations.",
+      "cardHint": "A general estimate that can be a reference when you start applying.",
+      "levels": {
+        "junior": "Entry Level",
+        "midLevel": "Mid Level",
+        "senior": "Senior Level"
+      }
+    },
+    "backButton": "Check Another CV"
+  },
+  "uploadJobs": {
+    "uploadLogoAlt": "upload",
+    "officeIconAlt": "office-docx",
+    "dropzone": {
+      "ctaPrefix": "Drag and drop your CV file here",
+      "or": "or",
+      "uploadLabel": "Upload File",
+      "disabled": "Upload is disabled"
+    },
+    "remainingWithoutLogin": "Remaining uploads without login: {remaining} of 5 times",
+    "supportedFiles": "Supported file format: PDF",
+    "analyzeButton": "Analyze Now",
+    "toast": {
+      "uploadLimitReached": "You have reached the limit of 5 uploads without logging in.",
+      "selectCvFirst": "Please select a CV file first!",
+      "recommendationCreated": "Job recommendation created successfully!"
+    },
+    "errors": {
+      "uploadOrAnalyzeFailed": "Failed to upload or analyze CV",
+      "resultNotFound": "Result data was not found from the server."
+    }
+  },
 
   "profile": {
     "defaultUsername": "Explorer",

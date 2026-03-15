@@ -1,15 +1,16 @@
 "use client";
 
-import GoodThingMd from "@/components/good-things-md";
-import NeedImprovementMd from "@/components/need-improvement-md";
 import CvReviewResult from "@/components/cv-review-result";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 import cardImg from "@/assets/img/article2.jpg";
 import Link from "next/link";
 
 export default function ResultPage() {
+  const t = useTranslations("reviewCvResultPage");
+
   return (
     <main className="mx-auto flex w-full max-w-7xl items-start gap-6 px-6 pt-14 sm:px-6 md:pt-18 lg:gap-8 lg:px-8 lg:pt-22">
       {/* Left Aside — sticky sidebar */}
@@ -24,20 +25,20 @@ export default function ResultPage() {
           <div className="relative h-36 w-full bg-gradient-to-br from-blue-50 to-blue-100">
             <Image
               src={cardImg}
-              alt="CV Review"
+              alt={t("aside.imageAlt")}
               fill
               className="object-cover"
             />
           </div>
           <div className="p-4">
             <h3 className="text-TextPrimary mb-3 text-sm font-semibold">
-              Coba nilai CV-mu berdasarkan pekerjaan impian mu
+              {t("aside.title")}
             </h3>
             <Link
               href={"/job-match"}
               className="bg-primaryBlue block w-full rounded-lg px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-blue-700"
             >
-              Coba sekarang
+              {t("aside.button")}
             </Link>
           </div>
         </div>
@@ -45,11 +46,10 @@ export default function ResultPage() {
         {/* Tips mini-card */}
         <div className="mt-4 rounded-2xl border border-amber-100 bg-gradient-to-br from-amber-50 to-orange-50 p-4">
           <p className="mb-1 text-xs font-semibold tracking-wide text-amber-600 uppercase">
-            Tips
+            {t("tips.badge")}
           </p>
           <p className="text-xs leading-relaxed text-gray-600">
-            Perbarui CV kamu secara rutin dan sesuaikan dengan posisi yang kamu
-            lamar agar skor terus meningkat.
+            {t("tips.description")}
           </p>
         </div>
       </motion.aside>
@@ -64,7 +64,7 @@ export default function ResultPage() {
             className="w-full"
           >
             <h2 className="text-center text-xl font-normal sm:text-2xl md:text-3xl lg:text-left lg:text-4xl">
-              Berikut adalah rangkuman dari CV kamu
+              {t("title")}
             </h2>
 
             {/* Good & Need Improvement Sections */}
@@ -99,15 +99,14 @@ export default function ResultPage() {
                       </svg>
                     </div>
                     <h3 className="text-TextPrimary text-lg font-semibold sm:text-2xl">
-                      Coba Rekomendasi Pekerjaan
+                      {t("mobileCta.title")}
                     </h3>
                   </div>
                   <p className="mb-6 text-sm text-gray-600 sm:text-base">
-                    Temukan pekerjaan yang sesuai dengan skill dan pengalaman
-                    yang kamu miliki berdasarkan analisis CV kamu.
+                    {t("mobileCta.description")}
                   </p>
                   <button className="bg-primaryBlue w-full rounded-xl px-6 py-3.5 font-medium text-white shadow-md transition-all hover:bg-blue-600 hover:shadow-lg sm:text-lg">
-                    Lihat Rekomendasi Pekerjaan
+                    {t("mobileCta.button")}
                   </button>
                 </div>
               </div>

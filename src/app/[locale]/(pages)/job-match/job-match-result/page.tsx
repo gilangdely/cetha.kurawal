@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useJobResultStore } from "@/store/jobResultStore";
+import { useTranslations } from "next-intl";
 import {
   Briefcase,
   ChartNoAxesCombined,
@@ -24,15 +25,16 @@ import NamedSectionResult from "@/components/named-section-result";
 import cardImg from "@/assets/img/article1.jpg";
 
 export default function HasilRekomendasiPage() {
+  const t = useTranslations("jobMatchResultPage");
   const router = useRouter();
   const jobResult = useJobResultStore((state) => state.jobResult);
   const clearJobResult = useJobResultStore((state) => state.clearJobResult);
   const [hydrated, setHydrated] = useState(false);
 
   const salaryLabels: Record<string, string> = {
-    junior: "Entry Level",
-    mid_level: "Mid Level",
-    senior: "Senior Level",
+    junior: t("salary.levels.junior"),
+    mid_level: t("salary.levels.midLevel"),
+    senior: t("salary.levels.senior"),
   };
 
   useEffect(() => {
@@ -63,31 +65,30 @@ export default function HasilRekomendasiPage() {
           <div className="relative h-32 w-full bg-gradient-to-br from-indigo-50 to-blue-100">
             <Image
               src={cardImg}
-              alt="Review CV"
+              alt={t("aside.card.imageAlt")}
               fill
               className="object-cover"
             />
           </div>
           <div className="p-4">
             <h3 className="text-TextPrimary mb-3 text-sm font-semibold">
-              Sudah dapat rekomendasi pekerjaan? Sekarang coba review CV kamu!
+              {t("aside.card.title")}
             </h3>
             <Link
               href="/review-cv"
               className="bg-primaryBlue block w-full rounded-lg px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-blue-700"
             >
-              Coba Review CV
+              {t("aside.card.button")}
             </Link>
           </div>
         </div>
 
         <div className="mt-4 rounded-2xl border border-amber-100 bg-gradient-to-br from-amber-50 to-orange-50 p-4">
           <p className="mb-1 text-xs font-semibold tracking-wide text-amber-600 uppercase">
-            Insight
+            {t("aside.insight.badge")}
           </p>
           <p className="text-xs leading-relaxed text-gray-600">
-            Gunakan role target dan range gaji di halaman ini sebagai acuan awal
-            saat pilih lowongan dan menyesuaikan CV kamu.
+            {t("aside.insight.description")}
           </p>
         </div>
       </motion.aside>
@@ -105,22 +106,20 @@ export default function HasilRekomendasiPage() {
 
             <div className="absolute top-5 right-5 hidden items-center gap-1.5 rounded-full border border-sky-200 bg-white/80 px-3 py-1 text-xs font-semibold text-sky-700 backdrop-blur md:flex">
               <Sparkles size={14} />
-              Match Score Driven
+              {t("hero.badge")}
             </div>
 
             <div className="relative z-10 flex flex-col gap-6">
               <div className="flex items-start gap-4">
                 <div>
                   <p className="text-sm font-medium text-slate-500">
-                    Pekerjaan yang paling cocok buat kamu
+                    {t("hero.kicker")}
                   </p>
                   <h2 className="mt-1 max-w-2xl text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
                     {jobResult.jabatan_ideal}
                   </h2>
                   <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-600 md:text-base">
-                    Role ini dipilih karena paling nyambung dengan fondasi skill
-                    dan arah karier kamu saat ini, jadi lebih realistis untuk
-                    dikejar sekaligus punya ruang naik level.
+                    {t("hero.description")}
                   </p>
                 </div>
               </div>
@@ -130,11 +129,11 @@ export default function HasilRekomendasiPage() {
                   <div className="mb-2 flex items-center gap-2 text-slate-500">
                     <Target size={16} />
                     <span className="text-xs font-semibold tracking-wide uppercase">
-                      Best Fit
+                      {t("cards.bestFit.title")}
                     </span>
                   </div>
                   <p className="text-sm leading-relaxed text-slate-700">
-                    Fokus ke role yang paling masuk akal untuk dilamar sekarang.
+                    {t("cards.bestFit.description")}
                   </p>
                 </div>
 
@@ -142,11 +141,11 @@ export default function HasilRekomendasiPage() {
                   <div className="mb-2 flex items-center gap-2 text-slate-500">
                     <Rocket size={16} />
                     <span className="text-xs font-semibold tracking-wide uppercase">
-                      Growth Path
+                      {t("cards.growthPath.title")}
                     </span>
                   </div>
                   <p className="text-sm leading-relaxed text-slate-700">
-                    Ada ruang berkembang dari entry point ke level berikutnya.
+                    {t("cards.growthPath.description")}
                   </p>
                 </div>
 
@@ -154,12 +153,11 @@ export default function HasilRekomendasiPage() {
                   <div className="mb-2 flex items-center gap-2 text-slate-500">
                     <BadgeDollarSign size={16} />
                     <span className="text-xs font-semibold tracking-wide uppercase">
-                      Salary Snapshot
+                      {t("cards.salarySnapshot.title")}
                     </span>
                   </div>
                   <p className="text-sm leading-relaxed text-slate-700">
-                    Lihat range kompensasi untuk bantu set ekspektasi sejak
-                    awal.
+                    {t("cards.salarySnapshot.description")}
                   </p>
                 </div>
               </div>
@@ -171,8 +169,8 @@ export default function HasilRekomendasiPage() {
               <NamedSectionResult
                 icon={<Handshake size={16} />}
                 color="amber"
-                eyebrow="Match Reason"
-                title="Kenapa kamu cocok?"
+                eyebrow={t("sections.matchReason.eyebrow")}
+                title={t("sections.matchReason.title")}
                 list={jobResult.alasan_kecocokan}
               />
             </section>
@@ -180,8 +178,8 @@ export default function HasilRekomendasiPage() {
             <section>
               <NamedSectionResult
                 icon={<Briefcase size={16} />}
-                eyebrow="Job Preview"
-                title="Deskripsi pekerjaan"
+                eyebrow={t("sections.jobPreview.eyebrow")}
+                title={t("sections.jobPreview.title")}
                 list={jobResult.deskripsi_pekerjaan}
               />
             </section>
@@ -190,8 +188,8 @@ export default function HasilRekomendasiPage() {
               <NamedSectionResult
                 icon={<ChartNoAxesCombined size={16} />}
                 color="green"
-                eyebrow="Career Direction"
-                title="Potensi karier"
+                eyebrow={t("sections.careerDirection.eyebrow")}
+                title={t("sections.careerDirection.title")}
                 list={jobResult.potensi_karir}
               />
             </section>
@@ -200,8 +198,8 @@ export default function HasilRekomendasiPage() {
               <NamedSectionResult
                 icon={<Star size={16} />}
                 color="amber"
-                eyebrow="Bonus Edge"
-                title="Kelebihan tambahan"
+                eyebrow={t("sections.bonusEdge.eyebrow")}
+                title={t("sections.bonusEdge.title")}
                 list={jobResult.kelebihan_tambahan}
               />
             </section>
@@ -211,7 +209,7 @@ export default function HasilRekomendasiPage() {
             <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
               <div>
                 <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold tracking-wide text-emerald-700 uppercase">
-                  Salary Snapshot
+                  {t("salary.badge")}
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -220,14 +218,13 @@ export default function HasilRekomendasiPage() {
                   </div>
 
                   <h3 className="text-lg font-semibold text-slate-900">
-                    Kisaran Gaji
+                    {t("salary.title")}
                   </h3>
                 </div>
               </div>
 
               <p className="max-w-md text-sm leading-relaxed text-slate-500">
-                Gunakan ini sebagai benchmark awal saat memilih lowongan dan
-                menyiapkan ekspektasi negosiasi.
+                {t("salary.description")}
               </p>
             </div>
 
@@ -246,7 +243,7 @@ export default function HasilRekomendasiPage() {
                   </p>
 
                   <p className="mt-2 text-sm text-slate-500">
-                    Estimasi umum yang bisa jadi acuan saat mulai melamar.
+                    {t("salary.cardHint")}
                   </p>
                 </div>
               ))}
@@ -266,7 +263,7 @@ export default function HasilRekomendasiPage() {
               className="bg-primaryBlue inline-flex items-center gap-2 rounded-full px-4 py-3 text-sm font-medium text-white transition hover:-translate-y-0.5 hover:bg-blue-700"
             >
               <ArrowLeft size={16} />
-              Cek CV Lain
+              {t("backButton")}
             </button>
           </div>
         </motion.div>

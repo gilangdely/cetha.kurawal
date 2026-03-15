@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import LinkedInAnalysisResult from "@/components/linkedin-analysis";
 import LinkedInProfileDisplay from "@/components/linkedin-profile-card";
 import { useLinkedinResultStore } from "@/store/linkedinResultStore";
 
 export default function ResultImproveLinkedinPage() {
+  const t = useTranslations("improveLinkedinResultPage");
   const router = useRouter();
   const profile = useLinkedinResultStore((state) => state.profile);
   const analysis = useLinkedinResultStore((state) => state.analysis);
@@ -36,11 +38,10 @@ export default function ResultImproveLinkedinPage() {
       <div className="mb-8">
         <div>
           <h1 className="text-TextPrimary text-2xl font-semibold sm:text-3xl">
-            Hasil Analisis LinkedIn
+            {t("title")}
           </h1>
           <p className="text-TextSecondary mt-2 max-w-2xl text-sm sm:text-base">
-            Berikut ringkasan profil dan rekomendasi optimasi dari AI untuk
-            meningkatkan visibilitas profilmu.
+            {t("description")}
           </p>
         </div>
       </div>
@@ -64,7 +65,7 @@ export default function ResultImproveLinkedinPage() {
           className="bg-primaryBlue flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-700 sm:px-7"
         >
           <ArrowRight className="rotate-180" size={16} />
-          Review Profil Lain
+          {t("reviewAnotherButton")}
         </button>
       </div>
     </main>
