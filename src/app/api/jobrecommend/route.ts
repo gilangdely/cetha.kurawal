@@ -32,7 +32,7 @@ export const POST = async (req: NextRequest) => {
     const userId = await getSessionUidFromCookie();
     const ipAddress = req.headers.get("x-forwarded-for") || "127.0.0.1";
 
-    const quotaCheck = await QuotaService.checkQuota(userId, ipAddress);
+    const quotaCheck = await QuotaService.checkQuota(userId, ipAddress, "Job Match");
     if (!quotaCheck.hasQuota) {
       return NextResponse.json(
         { success: false, message: quotaCheck.message, requireUpgrade: true },
@@ -55,7 +55,7 @@ export const POST = async (req: NextRequest) => {
     const result = await app.predict("/analyze_career_path", [handle_file(fileUrl)]);
 
     // Kurangi kuota jika sukses
-    await QuotaService.consumeQuota(userId, "Job Recommendation", ipAddress);
+    await QuotaService.consumeQuota(userId, "Job Match", ipAddress);
 
     // Kirim hasilnya ke frontend
     return NextResponse.json({ success: true, message: "Review berhasil", data: { result } });
