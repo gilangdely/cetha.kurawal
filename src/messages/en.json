@@ -1274,6 +1274,39 @@
       "resultNotFound": "Result data was not found from the server."
     }
   },
+  "dashboardReviewCvPage": {
+    "title": "Better CV, Bigger Opportunities",
+    "description": "Get automated AI feedback so your CV stands out more to recruiters."
+  },
+  "uploadCvDashboard": {
+    "uploadLogoAlt": "upload",
+    "officeIconAlt": "office-docx",
+    "dropzone": {
+      "ctaPrefix": "Drag and drop your file here",
+      "or": "or",
+      "uploadLabel": "Upload File",
+      "disabled": "Upload is disabled"
+    },
+    "supportedFiles": "Supported file format: PDF",
+    "submitButton": "Predict Now",
+    "toast": {
+      "onlyPdf": "Currently, only PDF files are supported.",
+      "selectFileFirst": "Please select a file first!",
+      "uploadSuccess": "File uploaded successfully!"
+    },
+    "errors": {
+      "emptyAnalysis": "CV analysis result is empty or unrecognized from the server.",
+      "unknown": "An unknown error occurred",
+      "fileTooLarge": "File size is too large (Max 4MB)",
+      "quotaInsufficient": "Insufficient quota",
+      "uploadFailed": "Upload failed: {message}"
+    }
+  },
+  "dashboardReviewCvResultPage": {
+    "title": "Your CV Review Result",
+    "description": "Here is the AI analysis result of the CV you uploaded.",
+    "backButton": "Back to CV Review"
+  },
 
   "profile": {
     "defaultUsername": "Explorer",

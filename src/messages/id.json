@@ -1176,6 +1176,39 @@
       "resultNotFound": "Data hasil tidak ditemukan dari server."
     }
   },
+  "dashboardReviewCvPage": {
+    "title": "CV Lebih Baik, Peluang Lebih Besar",
+    "description": "Dapatkan feedback otomatis dari AI agar CV kamu makin standout di mata recruiter."
+  },
+  "uploadCvDashboard": {
+    "uploadLogoAlt": "upload",
+    "officeIconAlt": "office-docx",
+    "dropzone": {
+      "ctaPrefix": "Seret dan taruh file disini",
+      "or": "atau",
+      "uploadLabel": "Unggah File",
+      "disabled": "Upload dimatikan"
+    },
+    "supportedFiles": "File yang dapat terbaca: PDF",
+    "submitButton": "Prediksi Sekarang",
+    "toast": {
+      "onlyPdf": "Saat ini hanya file dengan format PDF yang didukung.",
+      "selectFileFirst": "Pilih file terlebih dahulu!",
+      "uploadSuccess": "File berhasil diunggah!"
+    },
+    "errors": {
+      "emptyAnalysis": "Hasil analisis CV kosong atau tidak dikenali dari server.",
+      "unknown": "Terjadi kesalahan yang tidak diketahui",
+      "fileTooLarge": "Ukuran file terlalu besar (Maks 4MB)",
+      "quotaInsufficient": "Kuota tidak mencukupi",
+      "uploadFailed": "Upload gagal: {message}"
+    }
+  },
+  "dashboardReviewCvResultPage": {
+    "title": "Hasil Review CV Kamu",
+    "description": "Berikut hasil analisis AI terhadap CV yang telah kamu unggah.",
+    "backButton": "Kembali ke Review CV"
+  },
   "profile": {
     "defaultUsername": "Explorer",
     "noEmail": "Tidak ada email",

@@ -6,6 +6,7 @@ import { useDataReviewStore } from "@/store/dataReviewStore";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUploadStore } from "@/store/uploadStore";
+import { useTranslations } from "next-intl";
 
 import { toast } from "sonner";
 import { Badge } from "./ui/badge";
@@ -24,6 +25,8 @@ import { sanitizeForFirestore } from "@/lib/utils";
  * Hasil review langsung ditampilkan inline di halaman dashboard.
  */
 const UploadCvDashboard = () => {
+  const t = useTranslations("uploadCvDashboard");
+
   const router = useRouter();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -50,7 +53,7 @@ const UploadCvDashboard = () => {
     if (!file) return;
 
     if (file.type !== "application/pdf") {
-      toast.warning("Saat ini hanya file dengan format PDF yang didukung.");
+      toast.warning(t("toast.onlyPdf"));
       return;
     }
 
@@ -67,7 +70,7 @@ const UploadCvDashboard = () => {
     if (!file) return;
 
     if (file.type !== "application/pdf") {
-      toast.warning("Saat ini hanya file dengan format PDF yang didukung.");
+      toast.warning(t("toast.onlyPdf"));
       return;
     }
 
@@ -82,7 +85,7 @@ const UploadCvDashboard = () => {
   // Upload file ke backend
   const handleUpload = async () => {
     if (!selectedFile) {
-      toast.error("Pilih file terlebih dahulu!");
+      toast.error(t("toast.selectFileFirst"));
       return;
     }
 
@@ -106,16 +109,14 @@ const UploadCvDashboard = () => {
 
       setProgressGlobal(82);
 
-      toast.success("File berhasil diunggah!");
+      toast.success(t("toast.uploadSuccess"));
       const apiResult = res.data?.data?.result;
       const reviewResult = Array.isArray(apiResult)
         ? apiResult
         : apiResult?.data;
 
       if (!Array.isArray(reviewResult) || reviewResult.length === 0) {
-        throw new Error(
-          "Hasil analisis CV kosong atau tidak dikenali dari server.",
-        );
+        throw new Error(t("errors.emptyAnalysis"));
       }
 
       setReviewData({
@@ -145,17 +146,15 @@ const UploadCvDashboard = () => {
       setGlobalUploading(false);
     } catch (err: any) {
       const errorMessage =
-        err.response?.data?.message ||
-        err.message ||
-        "Terjadi kesalahan yang tidak diketahui";
+        err.response?.data?.message || err.message || t("errors.unknown");
       const errorStatus = err.response?.status;
 
       if (errorStatus === 413) {
-        toast.error("Ukuran file terlalu besar (Maks 4MB)");
+        toast.error(t("errors.fileTooLarge"));
       } else if (errorStatus === 403) {
-        toast.error(errorMessage || "Kuota tidak mencukupi");
+        toast.error(errorMessage || t("errors.quotaInsufficient"));
       } else {
-        toast.error(`Upload gagal: ${errorMessage}`);
+        toast.error(t("errors.uploadFailed", { message: errorMessage }));
       }
 
       setProgressGlobal(0);
@@ -175,20 +174,24 @@ const UploadCvDashboard = () => {
       >
         {!selectedFile ? (
           <div className="flex flex-col justify-center gap-2 text-center">
-            <Image src={logo} alt="upload" className="mx-auto h-15 w-15" />
+            <Image
+              src={logo}
+              alt={t("uploadLogoAlt")}
+              className="mx-auto h-15 w-15"
+            />
             <h2 className="text-TextPrimary font-medium">
               {uploadEnabled ? (
                 <>
-                  Seret dan taruh file disini <br /> atau{" "}
+                  {t("dropzone.ctaPrefix")} <br /> {t("dropzone.or")}{" "}
                   <label
                     htmlFor="insertFile"
                     className="text-primaryBlue cursor-pointer underline-offset-2 hover:underline"
                   >
-                    Unggah File
+                    {t("dropzone.uploadLabel")}
                   </label>
                 </>
               ) : (
-                <span className="text-gray-500">Upload dimatikan</span>
+                <span className="text-gray-500">{t("dropzone.disabled")}</span>
               )}
             </h2>
             <input
@@ -233,7 +236,7 @@ const UploadCvDashboard = () => {
               <div className="flex flex-col items-center gap-3 text-gray-700">
                 <Image
                   src={office}
-                  alt="office-docx"
+                  alt={t("officeIconAlt")}
                   className="mx-auto h-15 w-15"
                 />
                 <span className="font-medium">{selectedFile.name}</span>
@@ -263,9 +266,7 @@ const UploadCvDashboard = () => {
       </div>
 
       <div className="mt-4">
-        <p className="text-TextSecondary font-medium">
-          File yang dapat terbaca: PDF
-        </p>
+        <p className="text-TextSecondary font-medium">{t("supportedFiles")}</p>
       </div>
 
       {/* Button Upload */}
@@ -276,7 +277,7 @@ const UploadCvDashboard = () => {
             disabled={uploading}
             className="bg-primaryBlue flex cursor-pointer items-center gap-1 rounded-full px-4 py-2.5 font-medium text-white disabled:opacity-50"
           >
-            Prediksi Sekarang
+            {t("submitButton")}
             <ChevronRight size={18} />
           </button>
         </div>

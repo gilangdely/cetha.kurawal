@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
+import { useTranslations } from "next-intl";
 import CvReviewResult from "@/components/cv-review-result";
 import { useDataReviewStore } from "@/store/dataReviewStore";
 
 export default function ResultReviewCv() {
+  const t = useTranslations("dashboardReviewCvResultPage");
   const router = useRouter();
   const reviewData = useDataReviewStore((state) => state.reviewData);
   const [hydrated, setHydrated] = useState(false);
@@ -33,10 +35,10 @@ export default function ResultReviewCv() {
       <div className="mb-8">
         <div>
           <h1 className="text-TextPrimary text-2xl font-semibold md:text-3xl">
-            Hasil Review CV Kamu
+            {t("title")}
           </h1>
           <p className="text-TextSecondary mt-2 max-w-2xl text-sm md:text-base">
-            Berikut hasil analisis AI terhadap CV yang telah kamu unggah.
+            {t("description")}
           </p>
         </div>
       </div>
@@ -58,7 +60,7 @@ export default function ResultReviewCv() {
           className="bg-primaryBlue flex w-fit cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
         >
           <ArrowLeft size={16} />
-          Kembali ke Review CV
+          {t("backButton")}
         </button>
       </div>
     </div>
