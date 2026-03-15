@@ -70,13 +70,30 @@ const UploadJobsDashboard = () => {
     const formData = new FormData();
     formData.append("file", selectedFile, selectedFile.name);
 
+    let progressTicker: ReturnType<typeof setInterval> | null = null;
+
     try {
       setGlobalUploading(true, "job");
+      setProgressGlobal(8);
+
+      // Simulate steady progress while backend processing runs.
+      progressTicker = setInterval(() => {
+        const current = useUploadStore.getState().progress;
+        if (current >= 75) return;
+        const next = Math.min(
+          75,
+          current + Math.max(1, Math.round((75 - current) * 0.12)),
+        );
+        setProgressGlobal(next);
+      }, 350);
+
       // Kirim ke backend untuk review
       const res = await fetch("/api/jobrecommend", {
         method: "POST",
         body: formData,
       });
+
+      setProgressGlobal(82);
 
       if (!res.ok) {
         let errorMessage = "Gagal mengunggah atau menganalisis CV";
@@ -84,11 +101,15 @@ const UploadJobsDashboard = () => {
         try {
           errData = await res.json();
           errorMessage = errData?.message || errData?.error || errorMessage;
-        } catch (_) { }
+        } catch (_) {}
 
         if (errData?.requireUpgrade) {
           setUpgradeMessage(errorMessage);
           setShowUpgradeModal(true);
+          setProgressGlobal(0);
+          if (progressTicker) clearInterval(progressTicker);
+          progressTicker = null;
+          setGlobalUploading(false);
           return;
         }
 
@@ -106,14 +127,20 @@ const UploadJobsDashboard = () => {
 
       // Update global Zustand store
       setJobResult(parsedData);
+      setProgressGlobal(93);
       toast.success("Rekomendasi pekerjaan berhasil dibuat!");
 
       // Dashboard: tidak redirect — hasil ditampilkan inline
+      setProgressGlobal(100);
+      await new Promise((resolve) => setTimeout(resolve, 320));
+      setGlobalUploading(false);
     } catch (err: any) {
       console.error("❌ Upload gagal:", err.message || err);
       toast.error(err.message || "Gagal mengunggah atau menganalisis CV");
-    } finally {
+      setProgressGlobal(0);
       setGlobalUploading(false);
+    } finally {
+      if (progressTicker) clearInterval(progressTicker);
     }
   };
 
@@ -121,10 +148,11 @@ const UploadJobsDashboard = () => {
     <div className="mt-4 w-full">
       {/* Upload Area */}
       <div
-        className={`relative flex h-96 items-center justify-center rounded-2xl border-3 border-dashed ${uploadEnabled
+        className={`relative flex h-96 items-center justify-center rounded-2xl border-3 border-dashed ${
+          uploadEnabled
             ? "cursor-pointer border-gray-400"
             : "cursor-not-allowed border-gray-300 bg-gray-100 opacity-60"
-          }`}
+        }`}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onClick={() => {

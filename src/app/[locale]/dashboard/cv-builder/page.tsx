@@ -147,23 +147,24 @@ export default function CvBuilderPage() {
           </Select>
         </div>
 
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className="hidden w-full items-center rounded-xl bg-gray-100 p-1 lg:flex">
           <button
             onClick={() => setDesktopTab("builder")}
-            className={`rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors ${
+            className={`flex-1 rounded-lg py-2 text-sm font-semibold transition-all ${
               desktopTab === "builder"
-                ? "bg-gray-900 text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                ? "bg-primaryBlue text-white"
+                : "text-gray-600 hover:text-gray-800"
             }`}
           >
             Data Builder
           </button>
+
           <button
             onClick={() => setDesktopTab("template")}
-            className={`rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors ${
+            className={`flex-1 rounded-lg py-2 text-sm font-semibold transition-all ${
               desktopTab === "template"
-                ? "bg-gray-900 text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                ? "bg-primaryBlue text-white"
+                : "text-gray-600 hover:text-gray-800"
             }`}
           >
             Pilih Template
@@ -258,8 +259,8 @@ export default function CvBuilderPage() {
           </aside>
 
           {/* Preview area */}
-          <section className="min-h-0 min-w-0 flex-1 overflow-y-auto rounded-2xl bg-gray-100/30 p-4 lg:p-6 print:block print:overflow-visible print:border-0 print:bg-transparent print:p-0">
-            <div className="mx-auto w-full max-w-[900px]">
+          <section className="min-h-0 min-w-0 flex-1 overflow-auto rounded-2xl bg-gray-100/30 p-4 lg:p-6 print:block print:overflow-visible print:border-0 print:bg-transparent print:p-0">
+            <div className="mx-auto w-fit max-w-[900px] min-w-full">
               <CvPreview />
             </div>
           </section>
@@ -270,9 +271,9 @@ export default function CvBuilderPage() {
           {mobileTab === "form" ? (
             renderEditorPanel()
           ) : (
-            /* Preview: scale down to fit mobile screen */
-            <div className="flex min-h-0 flex-1 flex-col items-center overflow-y-auto bg-gray-50/50 p-3">
-              <div className="w-full max-w-[420px]">
+            /* Preview: scrollable both axes on mobile */
+            <div className="flex min-h-0 flex-1 flex-col items-center overflow-auto bg-gray-50/50 p-3">
+              <div className="w-fit max-w-[420px] min-w-full">
                 <CvPreview />
               </div>
             </div>
