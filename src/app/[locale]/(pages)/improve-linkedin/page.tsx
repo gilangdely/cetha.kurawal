@@ -166,10 +166,23 @@ export default function ImproveLinkedInPage() {
     setGlobalProgress(5);
     setError(null);
 
-    const cleanUsername = username
-      .trim()
-      .replace(/https?:\/\/(www\.)?linkedin\.com\/in\//, "")
-      .replace(/\/$/, "");
+    let cleanUsername = username.trim();
+    // Ekstrak username secara robust (hindari querystring atau subdomain bahasa)
+    if (cleanUsername.includes("linkedin.com/in/")) {
+      try {
+        const url = new URL(cleanUsername.startsWith("http") ? cleanUsername : `https://${cleanUsername}`);
+        const pathParts = url.pathname.split("/").filter(Boolean);
+        const inIndex = pathParts.indexOf("in");
+        if (inIndex !== -1 && pathParts.length > inIndex + 1) {
+          cleanUsername = pathParts[inIndex + 1];
+        }
+      } catch (e) {
+        // Fallback jika new URL gagal
+        cleanUsername = cleanUsername.split("?")[0].replace(/\/$/, "").split("/").pop() || cleanUsername;
+      }
+    } else {
+      cleanUsername = cleanUsername.split("?")[0].replace(/\/$/, "");
+    }
 
     if (!cleanUsername) {
       setError("Masukkan username atau URL LinkedIn yang valid.");

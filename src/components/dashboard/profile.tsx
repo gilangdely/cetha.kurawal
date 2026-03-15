@@ -30,7 +30,8 @@ interface UserData {
   photoURL?: string;
   createdAt?: any;
   lastLogin?: any;
-  role?: string[];
+  role?: string;
+  pekerjaan?: string[];
   skills?: string[];
   dreamJob?: string;
 }
@@ -40,7 +41,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [editOpen, setEditOpen] = useState(false);
   const [skillInput, setSkillInput] = useState("");
-  const [roleInput, setRoleInput] = useState("");
+  const [pekerjaanInput, setPekerjaanInput] = useState("");
   const user = auth.currentUser;
 
   // === LOAD DATA USER ===
@@ -58,10 +59,10 @@ const Profile = () => {
         const normalized: UserData = {
           ...data,
           dreamJob: data.dreamJob || "",
-          role: Array.isArray(data.role)
-            ? data.role
-            : data.role
-              ? [data.role]
+          pekerjaan: Array.isArray(data.pekerjaan)
+            ? data.pekerjaan
+            : data.pekerjaan
+              ? [data.pekerjaan]
               : [],
           skills: Array.isArray(data.skills)
             ? data.skills
@@ -78,7 +79,7 @@ const Profile = () => {
           photoURL: user.photoURL || "",
           createdAt: serverTimestamp(),
           lastLogin: serverTimestamp(),
-          role: ["mahasiswa"],
+          pekerjaan: ["mahasiswa"],
           skills: ["React", "TypeScript", "Node.js"],
           dreamJob: "",
         };
@@ -98,7 +99,7 @@ const Profile = () => {
       const ref = doc(db, "users", user.uid);
       await updateDoc(ref, {
         username: userData.username || "",
-        role: userData.role || [],
+        pekerjaan: userData.pekerjaan || [],
         skills: userData.skills || [],
         dreamJob: userData.dreamJob || "",
       });
@@ -119,7 +120,7 @@ const Profile = () => {
   const addItem = (
     input: string,
     setInput: (v: string) => void,
-    field: "role" | "skills",
+    field: "pekerjaan" | "skills",
   ) => {
     const trimmed = input.trim();
     if (trimmed && userData) {
@@ -132,7 +133,7 @@ const Profile = () => {
   };
 
   // === HAPUS ITEM ===
-  const removeItem = (field: "role" | "skills", index: number) => {
+  const removeItem = (field: "pekerjaan" | "skills", index: number) => {
     if (!userData) return;
     const current = userData[field] || [];
     handleChangeField(
@@ -248,20 +249,20 @@ const Profile = () => {
                       <div className="space-y-3">
                         <div>
                           <p className="text-xs font-semibold tracking-wide text-gray-600 uppercase">
-                            Role
+                            Profesi / Pekerjaan
                           </p>
                           <p className="text-xs text-gray-400">
-                            Tekan Enter atau koma untuk menambahkan role
+                            Tekan Enter atau koma untuk menambahkan pekerjaan
                           </p>
                         </div>
 
                         <input
-                          value={roleInput}
-                          onChange={(e) => setRoleInput(e.target.value)}
+                          value={pekerjaanInput}
+                          onChange={(e) => setPekerjaanInput(e.target.value)}
                           onKeyDown={(e) => {
                             if (e.key === "Enter" || e.key === ",") {
                               e.preventDefault();
-                              addItem(roleInput, setRoleInput, "role");
+                              addItem(pekerjaanInput, setPekerjaanInput, "pekerjaan");
                             }
                           }}
                           className="focus:border-primaryBlue focus:ring-primaryBlue/20 w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm transition outline-none focus:ring-2"
@@ -269,7 +270,7 @@ const Profile = () => {
                         />
 
                         <div className="flex flex-wrap gap-2">
-                          {(userData.role || []).map((r, i) => (
+                          {(userData.pekerjaan || []).map((r, i) => (
                             <span
                               key={i}
                               className="text-primaryBlue border-primaryBlue/40 inline-flex items-center gap-2 rounded-xl border bg-white px-3 py-1.5 text-xs font-semibold transition hover:scale-105"
@@ -277,7 +278,7 @@ const Profile = () => {
                               {r}
 
                               <button
-                                onClick={() => removeItem("role", i)}
+                                onClick={() => removeItem("pekerjaan", i)}
                                 className="text-primaryBlue/70 hover:text-red-500"
                               >
                                 <X size={14} />
@@ -397,7 +398,7 @@ const Profile = () => {
               </div>
 
               <span className="z-10 rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-bold tracking-wider text-slate-500 uppercase">
-                {userData?.role?.length || 0} role
+                {userData?.pekerjaan?.length || 0} role
               </span>
             </div>
 
@@ -406,8 +407,8 @@ const Profile = () => {
             </p>
 
             <div className="flex flex-wrap gap-2">
-              {(userData?.role || []).length > 0 ? (
-                userData!.role!.map((r) => (
+              {(userData?.pekerjaan || []).length > 0 ? (
+                userData!.pekerjaan!.map((r) => (
                   <span
                     key={r}
                     className="text-primaryBlue border-primaryBlue/40 rounded-xl border bg-white px-3 py-1.5 text-xs font-semibold transition hover:scale-105"

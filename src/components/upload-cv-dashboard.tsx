@@ -88,17 +88,18 @@ const UploadCvDashboard = () => {
     const formData = new FormData();
     formData.append("file", selectedFile, selectedFile.name);
 
+    console.log(`[Client] Uploading file: ${selectedFile.name}, Size: ${selectedFile.size} bytes, Type: ${selectedFile.type}`);
+
     try {
       setGlobalUploading(true, "cv");
       setProgressGlobal(5);
 
+      // Hapus header Content-Type manual agar browser menentukan boundary secara otomatis
       const res = await axios.post("/api/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
         onUploadProgress: (event) => {
           const percent = event.total
             ? Math.round((event.loaded * 100) / event.total)
             : 0;
-          // Keep upload phase below completion so final processing can animate smoothly.
           const mapped = Math.min(70, Math.max(8, Math.round(percent * 0.7)));
           setProgressGlobal(mapped);
         },
@@ -117,7 +118,6 @@ const UploadCvDashboard = () => {
       });
       setProgressGlobal(90);
 
-      // Dashboard: user pasti sudah login, simpan ke Firestore
       if (auth.currentUser) {
         try {
           await addDoc(collection(db, "cvReviews"), {
@@ -132,14 +132,28 @@ const UploadCvDashboard = () => {
         }
       }
 
-      // Redirect ke halaman hasil setelah progres selesai.
       setProgressGlobal(100);
       await new Promise((resolve) => setTimeout(resolve, 320));
       router.push("/dashboard/review-cv/result-review-cv");
       setGlobalUploading(false);
     } catch (err: any) {
-      console.error("Upload gagal:", err.response?.data || err.message);
-      toast.error(err?.response?.data?.message || "Gagal Upload");
+      // Logging detail untuk debugging
+      console.error("❌ Upload gagal. Detail objek error:");
+      console.dir(err);
+      
+      const errorMessage = err.response?.data?.message || err.message || "Terjadi kesalahan yang tidak diketahui";
+      const errorStatus = err.response?.status;
+      
+      console.error(`Status: ${errorStatus}, Message: ${errorMessage}`);
+      
+      if (errorStatus === 413) {
+        toast.error("Ukuran file terlalu besar (Maks 4MB)");
+      } else if (errorStatus === 403) {
+        toast.error(errorMessage || "Kuota tidak mencukupi");
+      } else {
+        toast.error(`Upload gagal: ${errorMessage}`);
+      }
+      
       setProgressGlobal(0);
       setGlobalUploading(false);
     }

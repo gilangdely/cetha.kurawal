@@ -108,10 +108,22 @@ export default function ImproveLinkedInDashboard() {
     setProfile(null);
     setAiResult(null);
 
-    const cleanUsername = username
-      .trim()
-      .replace(/https?:\/\/(www\.)?linkedin\.com\/in\//, "")
-      .replace(/\/$/, "");
+    let cleanUsername = username.trim();
+    // Ekstrak username secara robust
+    if (cleanUsername.includes("linkedin.com/in/")) {
+      try {
+        const url = new URL(cleanUsername.startsWith("http") ? cleanUsername : `https://${cleanUsername}`);
+        const pathParts = url.pathname.split("/").filter(Boolean);
+        const inIndex = pathParts.indexOf("in");
+        if (inIndex !== -1 && pathParts.length > inIndex + 1) {
+          cleanUsername = pathParts[inIndex + 1];
+        }
+      } catch (e) {
+        cleanUsername = cleanUsername.split("?")[0].replace(/\/$/, "").split("/").pop() || cleanUsername;
+      }
+    } else {
+      cleanUsername = cleanUsername.split("?")[0].replace(/\/$/, "");
+    }
 
     if (!cleanUsername) {
       setError("Masukkan username atau URL LinkedIn yang valid.");
@@ -127,9 +139,13 @@ export default function ImproveLinkedInDashboard() {
         `/api/apify-linkedin?username=${encodeURIComponent(cleanUsername)}`,
       );
       const data = await res.json();
-      if (!res.ok)
-        throw new Error(data.error || "Gagal mengambil data profil LinkedIn.");
-      setGlobalProgress(40);
+
+      if (!res.ok || data.success === false) {
+        if (data.requireUpgrade) {
+          throw new Error(data.message || data.error || "Batas harian penarikan profil telah habis.");
+        }
+        throw new Error(data.message || data.error || "Gagal mengambil data profil LinkedIn.");
+      }
 
       const { overview, details, experience, education } = data.data || data;
       setProfile({ overview, details, experience, education });

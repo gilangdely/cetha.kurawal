@@ -33,6 +33,7 @@ import {
   Tag,
   ArrowUpRight,
 } from "lucide-react";
+import { Receipt } from "lucide-react";
 
 import logo from "@/assets/icons/cetha-new-logo.svg";
 import favicon from "@/assets/icons/favicon-white-new.svg";
@@ -48,6 +49,7 @@ const mainMenu = [
   },
   { title: "findJobs", icon: Briefcase, href: "/dashboard/job-match" },
   { title: "articles", icon: Newspaper, href: "/dashboard/career-tips" },
+  { title: "transactions", icon: Receipt, href: "/dashboard/transactions" },
 ];
 
 function useMediaQuery(query: string) {

@@ -53,6 +53,17 @@ export async function POST(req: Request) {
 
         const docRef = await adminDb.collection("subscriptions").add(newSubscription);
 
+        // CREATE NOTIFICATION FOR ADMIN
+        await adminDb.collection("notifications").add({
+            recipientId: "admin",
+            title: "Pembayaran Baru",
+            message: `User ${userDoc.data()?.username || "seseorang"} telah mengunggah bukti pembayaran untuk paket ${tierData.name}.`,
+            type: "payment",
+            isRead: false,
+            link: "/admin/subscriptions",
+            createdAt: FieldValue.serverTimestamp()
+        });
+
         return NextResponse.json({ success: true, id: docRef.id, invoice: invoiceNumber });
     } catch (error: any) {
         console.error("POST Checkout error:", error);

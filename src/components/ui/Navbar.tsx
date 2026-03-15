@@ -308,12 +308,14 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Toggle */}
-        <button
-          className="z-10 rounded-lg p-2 transition hover:bg-gray-100 lg:hidden"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="z-50 flex items-center gap-2 lg:hidden">
+          <button
+            className="rounded-lg p-2 transition hover:bg-gray-100"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
