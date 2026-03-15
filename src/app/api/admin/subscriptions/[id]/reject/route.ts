@@ -30,6 +30,18 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
                 status: "rejected",
                 updated_at: FieldValue.serverTimestamp()
             });
+
+            // Create Notification for User
+            const notifRef = adminDb.collection("notifications").doc();
+            transaction.set(notifRef, {
+                recipientId: subData.user_id,
+                title: "Pembayaran Ditolak",
+                message: `Pembayaran Anda (Invoice: ${subData.invoice_number}) ditolak oleh Admin. Silakan hubungi dukungan pelanggan atau unggah ulang bukti yang valid.`,
+                type: "payment_update",
+                isRead: false,
+                link: `/dashboard/transactions?invoice=${subData.invoice_number}`,
+                createdAt: FieldValue.serverTimestamp()
+            });
         });
 
         return NextResponse.json({ success: true, message: "Pembayaran ditolak." });

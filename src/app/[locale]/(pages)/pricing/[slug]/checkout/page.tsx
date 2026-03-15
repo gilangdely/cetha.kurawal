@@ -146,15 +146,11 @@ export default function CheckoutPage() {
         throw new Error(json.message || t("errors.checkoutFailed"));
       }
 
-      setAlert({
-        variant: "default",
-        title: t("alert.successTitle"),
-        message: t("toast.success", { invoice: json.invoice }),
-      });
+      alert(
+        `Pembayaran berhasil dikirim dengan Invoice ${json.invoice}. Mohon menunggu verifikasi admin.`,
+      );
 
-      redirectTimeoutRef.current = setTimeout(() => {
-        router.push(`/${locale}/dashboard`);
-      }, 1400);
+      router.push("/id/dashboard/transactions");
     } catch (err: any) {
       setAlert({
         variant: "destructive",
