@@ -147,7 +147,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ type }) => {
         </AnimatePresence>
       </div>
 
-      <p className="max-w-md text-center text-lg text-gray-700">
+      <p className="max-w-xl text-center text-lg text-gray-700">
         {getText()}
         {dots}
       </p>

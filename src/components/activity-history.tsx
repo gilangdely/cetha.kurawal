@@ -70,7 +70,7 @@ export default function ActivityHistory() {
 
   const handleItemClick = (review: CvReview) => {
     // Redirect ke halaman hasil dengan param ID untuk load data spesifik
-    router.push(`/dashboard/result-cv?id=${review.id}`);
+    router.push(`/dashboard/cv-review-history?id=${review.id}`);
   };
 
   // Skeleton loading untuk 2 item
