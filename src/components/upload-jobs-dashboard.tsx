@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 import { Trash2, ChevronRight } from "lucide-react";
 
@@ -21,6 +22,7 @@ import { UpgradeModal } from "@/components/UpgradeModal";
  * Tidak ada batasan upload guest (user dashboard pasti sudah login).
  */
 const UploadJobsDashboard = () => {
+  const t = useTranslations("uploadJobsDashboard");
   const router = useRouter();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -65,7 +67,7 @@ const UploadJobsDashboard = () => {
 
   const handleUpload = async () => {
     if (!selectedFile) {
-      toast.error("Pilih file CV terlebih dahulu!");
+      toast.error(t("toast.selectFileFirst"));
       return;
     }
 
@@ -98,7 +100,7 @@ const UploadJobsDashboard = () => {
       setProgressGlobal(82);
 
       if (!res.ok) {
-        let errorMessage = "Gagal mengunggah atau menganalisis CV";
+        let errorMessage = t("errors.uploadFailed");
         let errData: any = {};
         try {
           errData = await res.json();
@@ -124,13 +126,13 @@ const UploadJobsDashboard = () => {
       const parsedData = apiResult?.data?.[0];
 
       if (!parsedData) {
-        throw new Error("Data hasil tidak ditemukan dari server.");
+        throw new Error(t("errors.emptyResult"));
       }
 
       // Update global Zustand store
       setJobResult(parsedData);
       setProgressGlobal(93);
-      toast.success("Rekomendasi pekerjaan berhasil dibuat!");
+      toast.success(t("toast.recommendationCreated"));
 
       // Redirect ke halaman hasil setelah progress selesai.
       setProgressGlobal(100);
@@ -139,7 +141,7 @@ const UploadJobsDashboard = () => {
       setGlobalUploading(false);
     } catch (err: any) {
       console.error("❌ Upload gagal:", err.message || err);
-      toast.error(err.message || "Gagal mengunggah atau menganalisis CV");
+      toast.error(err.message || t("errors.uploadFailed"));
       setProgressGlobal(0);
       setGlobalUploading(false);
     } finally {
@@ -164,20 +166,24 @@ const UploadJobsDashboard = () => {
       >
         {!selectedFile ? (
           <div className="flex flex-col justify-center gap-2 text-center">
-            <Image src={logo} alt="upload" className="mx-auto h-15 w-15" />
+            <Image
+              src={logo}
+              alt={t("uploadLogoAlt")}
+              className="mx-auto h-15 w-15"
+            />
             <h2 className="text-TextPrimary font-medium">
               {uploadEnabled ? (
                 <>
-                  Seret dan taruh file CV di sini <br /> atau{" "}
+                  {t("dropzone.ctaPrefix")} <br /> {t("dropzone.or")}{" "}
                   <label
                     htmlFor="insertJobFile"
                     className="text-primaryBlue cursor-pointer underline-offset-2 hover:underline"
                   >
-                    Unggah File
+                    {t("dropzone.uploadLabel")}
                   </label>
                 </>
               ) : (
-                <span className="text-gray-500">Upload dimatikan</span>
+                <span className="text-gray-500">{t("dropzone.disabled")}</span>
               )}
             </h2>
             <input
@@ -218,7 +224,7 @@ const UploadJobsDashboard = () => {
               <div className="flex flex-col items-center gap-3 text-gray-700">
                 <Image
                   src={office}
-                  alt="office-docx"
+                  alt={t("officeIconAlt")}
                   className="mx-auto h-15 w-15"
                 />
                 <span className="font-medium">{selectedFile.name}</span>
@@ -244,9 +250,7 @@ const UploadJobsDashboard = () => {
       </div>
 
       <div className="mt-4">
-        <p className="text-TextSecondary font-medium">
-          File yang dapat terbaca: PDF
-        </p>
+        <p className="text-TextSecondary font-medium">{t("supportedFiles")}</p>
       </div>
 
       {/* Tombol Analisis */}
@@ -257,7 +261,7 @@ const UploadJobsDashboard = () => {
             disabled={uploading}
             className="bg-primaryBlue flex cursor-pointer items-center gap-1 rounded-full px-4 py-2.5 font-medium text-white disabled:opacity-50"
           >
-            Analisis Sekarang
+            {t("analyzeButton")}
             <ChevronRight size={18} />
           </button>
         </div>

@@ -64,7 +64,7 @@ const AppTopbar = () => {
   const { state, setOpen } = useSidebar();
   const t = useTranslations("dashboard.topbar");
 
-  const [username, setUsername] = useState("Cetha");
+  const [username, setUsername] = useState(t("fallbackUsername"));
   const [email, setEmail] = useState("m@example.com");
   const [openDialog, setOpenDialog] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -118,7 +118,7 @@ const AppTopbar = () => {
               data.username ||
                 user.displayName ||
                 user.email?.split("@")[0] ||
-                "Pengguna",
+                t("fallbackUsername"),
             );
           }
 
@@ -253,13 +253,13 @@ const AppTopbar = () => {
                   >
                     <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-4 py-3">
                       <span className="text-sm font-bold text-gray-800">
-                        Notifikasi
+                        {t("notifications.title")}
                       </span>
                     </div>
                     <div className="flex max-h-80 w-full flex-col overflow-y-auto">
                       {notifications.length === 0 ? (
                         <div className="px-4 py-6 text-center text-sm text-gray-400">
-                          Belum ada notifikasi
+                          {t("notifications.empty")}
                         </div>
                       ) : (
                         notifications.slice(0, 5).map((notif) => (
@@ -294,7 +294,7 @@ const AppTopbar = () => {
                         href="/dashboard"
                         className="text-primaryBlue border-t border-gray-100 px-4 py-2.5 text-center text-xs font-semibold transition hover:bg-gray-50"
                       >
-                        Lihat Semua Notifikasi
+                        {t("notifications.viewAll")}
                       </Link>
                     )}
                   </motion.div>

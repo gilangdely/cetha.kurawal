@@ -671,6 +671,7 @@
   },
 
   "navbar": {
+    "logoAlt": "Cetha Logo",
     "features": "Features",
     "blog": "Blog & Tips",
     "price": "Pricing",
@@ -697,7 +698,12 @@
       "settings": "Settings",
       "logout": "Logout",
       "viewProfile": "View profile",
-      "greeting": "Hi"
+      "greeting": "Hi",
+      "fallbackUsername": "User",
+      "fallbackEmail": "No email"
+    },
+    "messages": {
+      "logoutSuccess": "You have been logged out successfully."
     }
   },
 
@@ -741,9 +747,15 @@
     "topbar": {
       "welcomeAdmin": "Welcome back, Admin",
       "searchPlaceholder": "Search article or video...",
+      "fallbackUsername": "User",
       "profile": "My Profile",
       "settings": "Settings",
       "logout": "Logout",
+      "notifications": {
+        "title": "Notifications",
+        "empty": "No notifications yet",
+        "viewAll": "View All Notifications"
+      },
       "routes": {
         "dashboard": "Dashboard",
         "career-tips": "Career Tips",
@@ -1319,6 +1331,155 @@
       "resultNotFound": "Result data was not found from the server."
     }
   },
+  "uploadJobsDashboard": {
+    "uploadLogoAlt": "upload",
+    "officeIconAlt": "office-docx",
+    "dropzone": {
+      "ctaPrefix": "Drag and drop your CV file here",
+      "or": "or",
+      "uploadLabel": "Upload File",
+      "disabled": "Upload is disabled"
+    },
+    "supportedFiles": "Supported file format: PDF",
+    "analyzeButton": "Analyze Now",
+    "toast": {
+      "selectFileFirst": "Please select a CV file first!",
+      "recommendationCreated": "Job recommendation created successfully!"
+    },
+    "errors": {
+      "uploadFailed": "Failed to upload or analyze CV",
+      "emptyResult": "Result data was not found from the server."
+    }
+  },
+  "cethaBotWidget": {
+    "faqs": {
+      "whatIs": "What is Cetha?",
+      "howWorks": "How does Cetha work?",
+      "howUse": "How to use Cetha?"
+    },
+    "header": {
+      "iconAlt": "Icon",
+      "titles": {
+        "whatIs": "What is Cetha?",
+        "howWorks": "How Cetha Works",
+        "howUse": "How to Use Cetha",
+        "default": "CethaBot"
+      },
+      "descriptions": {
+        "whatIs": "Learn about Cetha in short.",
+        "howWorks": "See how Cetha works and the technology behind it.",
+        "howUse": "Cetha step-by-step guide",
+        "default": "Cetha is active right now!"
+      }
+    },
+    "menu": {
+      "back": "Back",
+      "close": "Close"
+    },
+    "home": {
+      "logoAlt": "Cetha Logo",
+      "greeting": "Hello {username}!",
+      "description": "Thanks for using Cetha platform. Is there anything we can help you with to improve your CV?",
+      "onlineCard": {
+        "title": "Our bot is online!",
+        "description": "Want to ask about CV and career?",
+        "startButton": "Start asking"
+      },
+      "popularTitle": "Popular questions"
+    },
+    "pages": {
+      "whatIs": {
+        "userQuestion": "What is Cetha?",
+        "botAnswer": "Cetha is an AI-powered digital career assistant that helps users develop their professional potential. Through features like AI CV Review, job recommendations, and a career chatbot, Cetha supports your digital career growth."
+      },
+      "howWorks": {
+        "userQuestion": "How does Cetha work?",
+        "botAnswer": "Cetha works by using artificial intelligence (AI) to analyze users' career data. From CV information or user input, Cetha provides professional improvement suggestions, recommends relevant jobs, and answers career questions interactively through the chatbot."
+      },
+      "howUse": {
+        "userQuestion": "How do I use Cetha?",
+        "intro": "Here are simple steps to use Cetha effectively:",
+        "step1": "1️⃣ Log in to your account, then upload your CV or complete your profile data first.",
+        "step2": "2️⃣ After that, open AI CV Review to get automatic analysis and professional improvement suggestions.",
+        "step3": "3️⃣ Explore Job Recommendations so Cetha can match you with suitable vacancies.",
+        "step4": "4️⃣ If you are still unsure, use the Career Chatbot to ask questions or consult directly about your career.",
+        "closing": "That way, you can maximize all of Cetha's potential to build your digital career in a more focused way 🚀"
+      }
+    }
+  },
+  "chatCethaBot": {
+    "inputPlaceholder": "Type a message...",
+    "errors": {
+      "quotaExceeded": "Your quota is exhausted."
+    }
+  },
+  "cethaBotLegacy": {
+    "header": {
+      "title": "CETHA Assistant 🤖",
+      "status": "Online - ready to help"
+    },
+    "emptyMessage": "Hi {username}! Is there anything you want to ask about career in CETHA?",
+    "inputPlaceholder": "Type a message..."
+  },
+  "dashboardTransactionsPage": {
+    "header": {
+      "title": "Transaction History",
+      "description": "Payment status & premium package activation.",
+      "upgradeButton": "Upgrade Plan"
+    },
+    "stats": {
+      "total": "Total Transactions",
+      "success": "Successful",
+      "pending": "Pending Verification"
+    },
+    "empty": {
+      "title": "No Transactions Yet",
+      "description": "Pick your first plan and enjoy all Cetha AI features without limits!",
+      "cta": "View Plans"
+    },
+    "table": {
+      "invoice": "Invoice",
+      "date": "Date",
+      "amount": "Amount",
+      "status": "Status",
+      "action": "Action",
+      "detail": "Detail"
+    },
+    "status": {
+      "verified": "Successful",
+      "rejected": "Rejected",
+      "pending": "Pending"
+    },
+    "modal": {
+      "title": "Transaction Detail"
+    },
+    "stepper": {
+      "checkout": "Checkout",
+      "verification": "Verification",
+      "done": "Completed"
+    },
+    "paymentInfo": {
+      "title": "Payment Information",
+      "status": "Status",
+      "date": "Date",
+      "total": "Total Payment"
+    },
+    "proof": {
+      "title": "Payment Proof",
+      "imageAlt": "Payment Proof",
+      "zoomImageAlt": "Payment Proof Zoom",
+      "unavailable": "Proof Not Available"
+    },
+    "tier": {
+      "loading": "Loading package details...",
+      "mainFeatures": "Main Features",
+      "notFound": "Package details not found"
+    },
+    "note": "\"Thank you for trusting Cetha to accelerate your career. Contact us if you face any issues.\"",
+    "common": {
+      "close": "Close"
+    }
+  },
   "dashboardReviewCvPage": {
     "title": "Better CV, Bigger Opportunities",
     "description": "Get automated AI feedback so your CV stands out more to recruiters."
@@ -1427,6 +1588,21 @@
       }
     },
     "backButton": "Check Another CV"
+  },
+  "api": {
+    "checkout": {
+      "errors": {
+        "invalidUser": "Invalid user",
+        "tierNotFound": "Subscription tier not found",
+        "tierInactive": "Subscription tier is no longer active",
+        "checkoutFailed": "An error occurred during checkout"
+      },
+      "notifications": {
+        "newPayment": "New Payment",
+        "someone": "someone",
+        "paymentMessage": "User {username} uploaded payment proof for package {tierName}."
+      }
+    }
   },
 
   "profile": {

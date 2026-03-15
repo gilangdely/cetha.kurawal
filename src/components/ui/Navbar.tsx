@@ -27,6 +27,7 @@ import LangSwitchDesktop from "../lang-switch-desktop";
 import LangSwitchMobile from "../lang-switch-mobile";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
+import { Skeleton } from "./skeleton";
 
 const Navbar = () => {
   const router = useRouter();
@@ -35,9 +36,10 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [username, setUsername] = useState("Cetha");
-  const [email, setEmail] = useState("m@example.com");
+  const [username, setUsername] = useState(t("auth.fallbackUsername"));
+  const [email, setEmail] = useState(t("auth.fallbackEmail"));
   const [openAvatarMenu, setOpenAvatarMenu] = useState(false);
+  const [loadingUser, setLoadingUser] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   const avatarMenuRef = useRef<HTMLDivElement>(null);
@@ -82,7 +84,7 @@ const Navbar = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        setEmail(user.email || "m@example.com");
+        setEmail(user.email || t("auth.fallbackEmail"));
         setIsLoggedIn(true);
 
         try {
@@ -91,17 +93,21 @@ const Navbar = () => {
 
           if (snap.exists()) {
             const data = snap.data();
-            setUsername(data.username || "Pengguna");
+            setUsername(
+              data.username || user.displayName || t("auth.fallbackUsername"),
+            );
           } else {
-            setUsername(user.displayName || "Pengguna");
+            setUsername(user.displayName || t("auth.fallbackUsername"));
           }
         } catch (error) {
           console.error("Gagal mengambil profile:", error);
-          setUsername(user.displayName || "Pengguna");
+          setUsername(user.displayName || t("auth.fallbackUsername"));
         }
       } else {
         setIsLoggedIn(false);
       }
+
+      setLoadingUser(false);
     });
 
     return () => unsubscribe();
@@ -129,7 +135,7 @@ const Navbar = () => {
       setOpenAvatarMenu(false);
       setIsMobileMenuOpen(false);
 
-      toast.success("Logout berhasil");
+      toast.success(t("messages.logoutSuccess"));
 
       router.push("/");
     } catch (error) {
@@ -169,7 +175,7 @@ const Navbar = () => {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-3 py-3">
         {/* Logo */}
         <Link href="/" className="z-10 flex items-center">
-          <Image alt="Cetha Logo" src={logo} height={36} />
+          <Image alt={t("logoAlt")} src={logo} height={36} />
         </Link>
 
         {/* Desktop Nav */}
@@ -261,12 +267,21 @@ const Navbar = () => {
                   <UserAvatar />
                 </Avatar>
                 <div className="flex max-w-[140px] flex-col truncate text-left md:max-w-[160px] lg:max-w-none">
-                  <span className="truncate text-sm font-medium text-gray-800">
-                    {t("auth.greeting")}, {username}
-                  </span>
-                  <span className="text-xs text-gray-500">
-                    {t("auth.viewProfile")}
-                  </span>
+                  {loadingUser ? (
+                    <div className="flex flex-col gap-1">
+                      <Skeleton className="h-4 w-24" />
+                      <Skeleton className="h-3 w-20" />
+                    </div>
+                  ) : (
+                    <>
+                      <span className="truncate text-sm font-medium text-gray-800">
+                        {t("auth.greeting")}, {username}
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        {t("auth.viewProfile")}
+                      </span>
+                    </>
+                  )}
                 </div>
               </button>
 

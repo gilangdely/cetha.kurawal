@@ -2,14 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, X, BotMessageSquare, LogIn } from "lucide-react";
+import { Send, X, BotMessageSquare } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { auth } from "@/app/lib/firebase";
 
 export default function CethaBot() {
+  const t = useTranslations("cethaBotLegacy");
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [username, setUsername] = useState<string | null>(null);
-  const [messages, setMessages] = useState<{ sender: string; text: string }[]>([]);
+  const [messages, setMessages] = useState<{ sender: string; text: string }[]>(
+    [],
+  );
 
   // 🔹 Cek user login dari Firebase
   useEffect(() => {
@@ -57,8 +61,8 @@ export default function CethaBot() {
             {/* Header */}
             <div className="flex items-center justify-between bg-blue-600 px-4 py-3 text-white">
               <div>
-                <h2 className="text-sm font-semibold">CETHA Assistant 🤖</h2>
-                <p className="text-xs opacity-80">Online - siap membantu</p>
+                <h2 className="text-sm font-semibold">{t("header.title")}</h2>
+                <p className="text-xs opacity-80">{t("header.status")}</p>
               </div>
               <button onClick={() => setIsOpen(false)} className="text-white">
                 <X size={18} />
@@ -69,7 +73,7 @@ export default function CethaBot() {
             <div className="h-80 space-y-2 overflow-y-auto bg-gray-50 p-3">
               {messages.length === 0 && (
                 <p className="mt-10 text-center text-sm text-gray-400">
-                  Hai {username}! Ada yang ingin kamu tanyakan seputar karier di CETHA?
+                  {t("emptyMessage", { username })}
                 </p>
               )}
               {messages.map((msg, i) => (
@@ -98,7 +102,7 @@ export default function CethaBot() {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ketik pesan..."
+                placeholder={t("inputPlaceholder")}
                 className="flex-1 rounded-full border px-3 py-2 text-sm focus:ring-1 focus:ring-blue-400 focus:outline-none"
               />
               <button

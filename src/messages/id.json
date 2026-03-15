@@ -632,6 +632,7 @@
     ]
   },
   "navbar": {
+    "logoAlt": "Logo Cetha",
     "features": "Fitur",
     "blog": "Blog & Tips",
     "price": "Harga",
@@ -656,7 +657,12 @@
       "settings": "Pengaturan",
       "logout": "Keluar",
       "viewProfile": "Lihat profil",
-      "greeting": "Hai"
+      "greeting": "Hai",
+      "fallbackUsername": "Pengguna",
+      "fallbackEmail": "Tidak ada email"
+    },
+    "messages": {
+      "logoutSuccess": "Berhasil logout"
     }
   },
   "NotFound": {
@@ -693,9 +699,15 @@
     "topbar": {
       "welcomeAdmin": "Selamat datang kembali, Admin",
       "searchPlaceholder": "Cari artikel atau video...",
+      "fallbackUsername": "Pengguna",
       "profile": "Profil Saya",
       "settings": "Pengaturan",
       "logout": "Keluar",
+      "notifications": {
+        "title": "Notifikasi",
+        "empty": "Belum ada notifikasi",
+        "viewAll": "Lihat Semua Notifikasi"
+      },
       "routes": {
         "dashboard": "Dashboard",
         "career-tips": "Tips Karier",
@@ -1221,6 +1233,155 @@
       "resultNotFound": "Data hasil tidak ditemukan dari server."
     }
   },
+  "uploadJobsDashboard": {
+    "uploadLogoAlt": "upload",
+    "officeIconAlt": "office-docx",
+    "dropzone": {
+      "ctaPrefix": "Seret dan taruh file CV di sini",
+      "or": "atau",
+      "uploadLabel": "Unggah File",
+      "disabled": "Upload dimatikan"
+    },
+    "supportedFiles": "File yang dapat terbaca: PDF",
+    "analyzeButton": "Analisis Sekarang",
+    "toast": {
+      "selectFileFirst": "Pilih file CV terlebih dahulu!",
+      "recommendationCreated": "Rekomendasi pekerjaan berhasil dibuat!"
+    },
+    "errors": {
+      "uploadFailed": "Gagal mengunggah atau menganalisis CV",
+      "emptyResult": "Data hasil tidak ditemukan dari server."
+    }
+  },
+  "cethaBotWidget": {
+    "faqs": {
+      "whatIs": "Apa itu Cetha?",
+      "howWorks": "Bagaimana cara kerja Cetha?",
+      "howUse": "Cara pakai Cetha?"
+    },
+    "header": {
+      "iconAlt": "Icon",
+      "titles": {
+        "whatIs": "Apa itu Cetha?",
+        "howWorks": "Bagaimana Cetha Bekerja?",
+        "howUse": "Cara Menggunakan Cetha",
+        "default": "CethaBot"
+      },
+      "descriptions": {
+        "whatIs": "Pelajari tentang Cetha secara singkat.",
+        "howWorks": "Lihat cara kerja dan teknologi di balik Cetha.",
+        "howUse": "Panduan langkah Cetha",
+        "default": "Cetha sedang aktif nih!"
+      }
+    },
+    "menu": {
+      "back": "Kembali",
+      "close": "Tutup"
+    },
+    "home": {
+      "logoAlt": "Logo Cetha",
+      "greeting": "Hallo {username}!",
+      "description": "Terimakasih sudah menggunakan platform Cetha ada yang bisa kami bantu untuk meningkatkan cv kamu?",
+      "onlineCard": {
+        "title": "Bot kami sedang online loh!",
+        "description": "Ingin bertanya seputar cv dan karir?",
+        "startButton": "Mulai bertanya"
+      },
+      "popularTitle": "Pertanyaan populer"
+    },
+    "pages": {
+      "whatIs": {
+        "userQuestion": "Apa itu Cetha?",
+        "botAnswer": "Cetha adalah asisten karier digital berbasis AI yang membantu pengguna mengembangkan potensi profesional mereka. Melalui fitur seperti AI Review CV, rekomendasi pekerjaan, dan chatbot karier, Cetha mendukung pengembangan karier digitalmu."
+      },
+      "howWorks": {
+        "userQuestion": "Bagaimana cara kerja Cetha?",
+        "botAnswer": "Cetha bekerja dengan memanfaatkan teknologi kecerdasan buatan (AI) untuk menganalisis data karier pengguna. Dari informasi dalam CV atau input pengguna, Cetha memberikan saran peningkatan profesional, merekomendasikan pekerjaan yang relevan, dan menjawab pertanyaan karier secara interaktif melalui chatbot."
+      },
+      "howUse": {
+        "userQuestion": "Bagaimana cara menggunakan Cetha?",
+        "intro": "Berikut langkah-langkah mudah untuk menggunakan Cetha dengan efektif:",
+        "step1": "1️⃣ Masuk ke akun kamu, lalu unggah CV atau isi data profil kamu terlebih dahulu.",
+        "step2": "2️⃣ Setelah itu, buka fitur AI Review CV untuk mendapatkan analisis otomatis dan saran peningkatan profesional.",
+        "step3": "3️⃣ Jelajahi fitur Rekomendasi Pekerjaan agar Cetha bisa mencocokkan kamu dengan lowongan yang sesuai.",
+        "step4": "4️⃣ Kalau masih bingung, gunakan Chatbot Karier untuk bertanya atau konsultasi langsung seputar karier.",
+        "closing": "Dengan begitu, kamu bisa memanfaatkan seluruh potensi Cetha untuk membangun karier digitalmu dengan lebih terarah 🚀"
+      }
+    }
+  },
+  "chatCethaBot": {
+    "inputPlaceholder": "Ketik pesan...",
+    "errors": {
+      "quotaExceeded": "Kuota kamu habis."
+    }
+  },
+  "cethaBotLegacy": {
+    "header": {
+      "title": "CETHA Assistant 🤖",
+      "status": "Online - siap membantu"
+    },
+    "emptyMessage": "Hai {username}! Ada yang ingin kamu tanyakan seputar karier di CETHA?",
+    "inputPlaceholder": "Ketik pesan..."
+  },
+  "dashboardTransactionsPage": {
+    "header": {
+      "title": "Riwayat Transaksi",
+      "description": "Status pembayaran & aktivasi paket premium Anda.",
+      "upgradeButton": "Upgrade Paket"
+    },
+    "stats": {
+      "total": "Total Transaksi",
+      "success": "Berhasil",
+      "pending": "Menunggu Verifikasi"
+    },
+    "empty": {
+      "title": "Belum Ada Transaksi",
+      "description": "Ayo pilih paket pertamamu dan nikmati semua fitur AI Cetha tanpa batas!",
+      "cta": "Lihat Paket Sekarang"
+    },
+    "table": {
+      "invoice": "Invoice",
+      "date": "Tanggal",
+      "amount": "Jumlah",
+      "status": "Status",
+      "action": "Aksi",
+      "detail": "Detail"
+    },
+    "status": {
+      "verified": "Berhasil",
+      "rejected": "Ditolak",
+      "pending": "Pending"
+    },
+    "modal": {
+      "title": "Detail Transaksi"
+    },
+    "stepper": {
+      "checkout": "Checkout",
+      "verification": "Verifikasi",
+      "done": "Selesai"
+    },
+    "paymentInfo": {
+      "title": "Informasi Pembayaran",
+      "status": "Status",
+      "date": "Tanggal",
+      "total": "Total Bayar"
+    },
+    "proof": {
+      "title": "Bukti Transfer",
+      "imageAlt": "Bukti Transfer",
+      "zoomImageAlt": "Bukti Transfer Zoom",
+      "unavailable": "Bukti Tidak Tersedia"
+    },
+    "tier": {
+      "loading": "Memuat rincian paket...",
+      "mainFeatures": "Fitur Utama",
+      "notFound": "Detail paket tidak ditemukan"
+    },
+    "note": "\"Terima kasih telah mempercayai Cetha untuk mengakselerasi karier Anda. Hubungi kami jika ada kendala.\"",
+    "common": {
+      "close": "Tutup"
+    }
+  },
   "dashboardReviewCvPage": {
     "title": "CV Lebih Baik, Peluang Lebih Besar",
     "description": "Dapatkan feedback otomatis dari AI agar CV kamu makin standout di mata recruiter."
@@ -1329,6 +1490,21 @@
       }
     },
     "backButton": "Cek CV Lain"
+  },
+  "api": {
+    "checkout": {
+      "errors": {
+        "invalidUser": "User tidak valid",
+        "tierNotFound": "Tier langganan tidak ditemukan",
+        "tierInactive": "Tier langganan sudah tidak aktif",
+        "checkoutFailed": "Terjadi kesalahan saat checkout"
+      },
+      "notifications": {
+        "newPayment": "Pembayaran Baru",
+        "someone": "seseorang",
+        "paymentMessage": "User {username} telah mengunggah bukti pembayaran untuk paket {tierName}."
+      }
+    }
   },
   "profile": {
     "defaultUsername": "Explorer",
