@@ -116,7 +116,7 @@ const UploadCv = () => {
 
     try {
       setGlobalUploading(true, "cv");
-      setProgressGlobal(0);
+      setProgressGlobal(5);
 
       const res = await axios.post("/api/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -124,9 +124,12 @@ const UploadCv = () => {
           const percent = event.total
             ? Math.round((event.loaded * 100) / event.total)
             : 0;
-          setProgressGlobal(percent);
+          const mapped = Math.min(70, Math.max(8, Math.round(percent * 0.7)));
+          setProgressGlobal(mapped);
         },
       });
+
+      setProgressGlobal(82);
 
       toast.success("File berhasil diunggah!");
       console.log("Respon server:", res.data);
@@ -137,6 +140,7 @@ const UploadCv = () => {
         fileUrl: "",
         result: reviewResult,
       });
+      setProgressGlobal(90);
 
       // Save to Firestore if logged in
       if (isLoggedIn && auth.currentUser) {
@@ -147,6 +151,7 @@ const UploadCv = () => {
             createdAt: new Date().toISOString(),
             result: reviewResult,
           });
+          setProgressGlobal(96);
         } catch (e) {
           console.error("Gagal menyimpan ke Firestore:", e);
         }
@@ -156,13 +161,17 @@ const UploadCv = () => {
         const newCount = uploadCount + 1;
         setUploadCount(newCount);
         localStorage.setItem(`upload-count-${ip}`, String(newCount));
+        setProgressGlobal(96);
       }
 
-      router.push("/result-cv");
+      setProgressGlobal(100);
+      await new Promise((resolve) => setTimeout(resolve, 320));
+      router.push("/review-cv/result-review-cv");
+      setGlobalUploading(false);
     } catch (err: any) {
       console.error("Upload gagal:", err.response?.data || err.message);
-      toast.error("Gagal Upload");
-    } finally {
+      toast.error(err?.response?.data?.message || "Gagal Upload");
+      setProgressGlobal(0);
       setGlobalUploading(false);
     }
   };
@@ -170,7 +179,7 @@ const UploadCv = () => {
   return (
     <div className="mx-auto mt-4 w-full">
       <div
-        className={`relative flex h-96 items-center justify-center rounded-2xl border-3 border-dashed ${uploadEnabled ? "cursor-pointer border-gray-400" : "cursor-not-allowed border-gray-300 bg-gray-100 opacity-60"}`}
+        className={`relative flex h-52 items-center justify-center rounded-2xl border-3 border-dashed ${uploadEnabled ? "cursor-pointer border-gray-400" : "cursor-not-allowed border-gray-300 bg-gray-100 opacity-60"}`}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onClick={() => {

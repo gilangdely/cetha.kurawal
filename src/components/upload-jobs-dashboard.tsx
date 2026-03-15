@@ -3,6 +3,7 @@
 import axios from "axios";
 import Image from "next/image";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Trash2, ChevronRight } from "lucide-react";
@@ -20,6 +21,7 @@ import { UpgradeModal } from "@/components/UpgradeModal";
  * Tidak ada batasan upload guest (user dashboard pasti sudah login).
  */
 const UploadJobsDashboard = () => {
+  const router = useRouter();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const uploading = useUploadStore((s) => s.uploading);
@@ -130,9 +132,10 @@ const UploadJobsDashboard = () => {
       setProgressGlobal(93);
       toast.success("Rekomendasi pekerjaan berhasil dibuat!");
 
-      // Dashboard: tidak redirect — hasil ditampilkan inline
+      // Redirect ke halaman hasil setelah progress selesai.
       setProgressGlobal(100);
       await new Promise((resolve) => setTimeout(resolve, 320));
+      router.push("/dashboard/job-match/job-match-result");
       setGlobalUploading(false);
     } catch (err: any) {
       console.error("❌ Upload gagal:", err.message || err);
@@ -247,7 +250,7 @@ const UploadJobsDashboard = () => {
       </div>
 
       {/* Tombol Analisis */}
-      <div className="mx-auto w-full pt-4 pb-12">
+      <div className="mx-auto w-full pt-4">
         <div className="flex justify-end lg:justify-start">
           <button
             onClick={handleUpload}
