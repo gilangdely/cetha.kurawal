@@ -304,19 +304,6 @@ export default function TipsKarirDashboard() {
             )}
           </AnimatePresence>
         )}
-
-        {!isAllVisible && !loading && contents.length > 0 && (
-          <div className="mt-8 flex justify-center">
-            <motion.button
-              onClick={handleLoadMore}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-primaryBlue hover:bg-primaryBlue/90 flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium text-white transition"
-            >
-              <MoveDown size={16} /> Muat Lebih Banyak
-            </motion.button>
-          </div>
-        )}
       </section>
     </main>
   );

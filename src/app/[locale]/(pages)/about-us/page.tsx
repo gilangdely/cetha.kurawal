@@ -18,6 +18,7 @@ import iyanImage from "@/assets/img/iyan.jpg";
 import firmanImage from "@/assets/img/firman.jpg";
 import gilangImage from "@/assets/img/gilang.jpg";
 import Link from "next/link";
+import { useState } from "react";
 
 const profiles = [
   {
@@ -45,11 +46,32 @@ const testimonialIds = ["1", "2", "3", "4", "5", "6", "7", "8"];
 export default function AboutUsPage() {
   const t = useTranslations("AboutUsPage");
 
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
   const testimonials = testimonialIds.map((id) => ({
     quote: t(`testimonials.items.${id}.quote`),
     name: t(`testimonials.items.${id}.name`),
     title: t(`testimonials.items.${id}.title`),
   }));
+
+  const handleMail = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const subject = encodeURIComponent(`Contact from ${firstName} ${lastName}`);
+
+    const body = encodeURIComponent(
+      `Name: ${firstName} ${lastName}
+       Email: ${email}
+
+       Message:
+       ${message}`,
+    );
+
+    window.location.href = `mailto:kurawal.creative@email.com?subject=${subject}&body=${body}`;
+  };
 
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-col items-center px-6 pt-20 lg:pt-0">
@@ -218,7 +240,7 @@ export default function AboutUsPage() {
         <div className="mx-auto mt-10 grid w-full max-w-5xl gap-12 px-6 md:grid-cols-2">
           {/* LEFT - FORM */}
           <motion.div variants={itemFadeLeft}>
-            <form className="space-y-4 p-4">
+            <form onSubmit={handleMail} className="space-y-4 p-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <label className="text-sm font-medium text-gray-700">
@@ -228,6 +250,8 @@ export default function AboutUsPage() {
                     type="text"
                     className="focus:border-primaryBlue focus:ring-primaryBlue mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-1 focus:outline-none"
                     placeholder={t("contact.form.firstNamePlaceholder")}
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
                   />
                 </div>
 
@@ -239,6 +263,8 @@ export default function AboutUsPage() {
                     type="text"
                     className="focus:border-primaryBlue focus:ring-primaryBlue mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-1 focus:outline-none"
                     placeholder={t("contact.form.lastNamePlaceholder")}
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
                   />
                 </div>
               </div>
@@ -251,6 +277,8 @@ export default function AboutUsPage() {
                   type="email"
                   className="focus:border-primaryBlue focus:ring-primaryBlue mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-1 focus:outline-none"
                   placeholder={t("contact.form.emailPlaceholder")}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
 
@@ -262,6 +290,8 @@ export default function AboutUsPage() {
                   rows={4}
                   className="focus:border-primaryBlue focus:ring-primaryBlue mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-1 focus:outline-none"
                   placeholder={t("contact.form.messagePlaceholder")}
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
                 />
               </div>
 

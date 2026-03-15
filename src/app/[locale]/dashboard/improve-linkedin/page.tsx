@@ -10,8 +10,11 @@ import {
 } from "@/components/ui/breadcrumb";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import LinkedInAnalysisResult from "@/components/linkedin-analysis";
 import LinkedInProfileDisplay from "@/components/linkedin-profile-card";
+import { useUploadStore } from "@/store/uploadStore";
+import { useLinkedinResultStore } from "../../../../store/linkedinResultStore";
 
 interface Position {
   companyName: string;
@@ -86,15 +89,21 @@ interface SummaryProfile {
 }
 
 export default function ImproveLinkedInDashboard() {
+  const router = useRouter();
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [aiResult, setAiResult] = useState<string | null>(null);
   const [showAllEducation, setShowAllEducation] = useState(false);
+  const setGlobalUploading = useUploadStore((s) => s.setUploading);
+  const setGlobalProgress = useUploadStore((s) => s.setProgress);
+  const setLinkedinResult = useLinkedinResultStore((s) => s.setResult);
 
   const handleAnalyze = async () => {
     setLoading(true);
+    setGlobalUploading(true, "linkedin");
+    setGlobalProgress(5);
     setError(null);
     setProfile(null);
     setAiResult(null);
@@ -119,6 +128,8 @@ export default function ImproveLinkedInDashboard() {
     if (!cleanUsername) {
       setError("Masukkan username atau URL LinkedIn yang valid.");
       setLoading(false);
+      setGlobalProgress(0);
+      setGlobalUploading(false);
       return;
     }
 
@@ -171,12 +182,30 @@ export default function ImproveLinkedInDashboard() {
       const aiData = await aiRes.json();
       if (!aiRes.ok)
         throw new Error(aiData.message || "Gagal menganalisis dengan AI.");
+      setGlobalProgress(85);
 
       // 4️⃣ Simpan hasil AI ke state
       setAiResult(aiData.result);
+
+      const normalizedAiResult =
+        typeof aiData.result === "string"
+          ? JSON.parse(aiData.result)
+          : aiData.result;
+
+      setLinkedinResult({
+        profile: { overview, details, experience, education },
+        analysis: normalizedAiResult,
+      });
+
+      setGlobalProgress(100);
+      await new Promise((resolve) => setTimeout(resolve, 350));
+      setGlobalUploading(false);
+      router.push("/dashboard/result-improve-linkedin");
     } catch (err: any) {
       console.error(err);
       setError(err.message || "Terjadi kesalahan saat memproses permintaan.");
+      setGlobalProgress(0);
+      setGlobalUploading(false);
     } finally {
       setLoading(false);
     }
@@ -188,8 +217,7 @@ export default function ImproveLinkedInDashboard() {
         {/* Header */}
         <div className="mt-6 mb-8">
           <h2 className="text-TextPrimary text-3xl font-semibold">
-            Profil{" "}
-            <span className="text-accentOrange">LinkedIn Lebih Standout</span>
+            Profil LinkedIn Lebih Standout
           </h2>
           <p className="text-TextSecondary mt-2 max-w-2xl text-base">
             Masukkan URL LinkedIn kamu, biarkan AI menganalisis headline,

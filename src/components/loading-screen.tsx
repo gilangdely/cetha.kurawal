@@ -10,7 +10,7 @@ import loadingIcons2 from "@/assets/icons/loading-horse.svg";
 import loadingIcons3 from "@/assets/icons/loading-paperline.svg";
 
 interface LoadingScreenProps {
-  type: "cv" | "job";
+  type: "cv" | "job" | "linkedin";
 }
 
 const Icons = [loadingIcons1, loadingIcons2, loadingIcons3];
@@ -92,7 +92,16 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ type }) => {
     return "Rekomendasi pekerjaan siap ditampilkan!";
   };
 
-  const getText = type === "cv" ? getTextCv : getTextJob;
+  const getTextLinkedin = () => {
+    if (displayedProgress < 50)
+      return "Sedang menganalisis profil LinkedIn kamu";
+    if (displayedProgress < 80)
+      return "Menilai headline, summary, dan skill untuk meningkatkan profilmu";
+    return "Hampir selesai! Kami menyiapkan insight agar profilmu lebih standout.";
+  };
+
+  const getText =
+    type === "cv" ? getTextCv : type === "job" ? getTextJob : getTextLinkedin;
 
   const estimatedRemainingSec = (() => {
     const safeProgress = Math.max(0, Math.min(displayedProgress, 100));
