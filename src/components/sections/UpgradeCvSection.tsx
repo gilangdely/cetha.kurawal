@@ -2,6 +2,12 @@ import React, { useState } from "react";
 import UploadCard from "@/components/ui/upload-card";
 import { ArrowDownRight } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
+import {
+  itemFadeUp,
+  sectionFadeUp,
+  sectionViewport,
+} from "../../lib/animations/section-motion";
 
 const UpgradeCvSection = () => {
   const t = useTranslations("CvUpgrade");
@@ -25,8 +31,14 @@ const UpgradeCvSection = () => {
   }>;
 
   return (
-    <section className="mx-auto w-full max-w-7xl px-6 py-8 md:py-12">
-      <div className="flex flex-col items-center text-center">
+    <motion.section className="mx-auto w-full max-w-7xl px-6 py-8 md:py-12">
+      <motion.div
+        variants={sectionFadeUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={sectionViewport}
+        className="flex flex-col items-center text-center"
+      >
         <div className="border-primaryBlue/40 bg-primaryBlue/5 rounded-full border px-3 py-1">
           <p className="text-primaryBlue text-sm font-medium tracking-wide">
             {t("badge")}
@@ -40,11 +52,17 @@ const UpgradeCvSection = () => {
             {t("hero.description")}
           </p>
         </div>
-      </div>
+      </motion.div>
 
       <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
         {/* 1. Upload Card */}
-        <div className="rounded-2xl bg-white p-8 shadow-sm">
+        <motion.div
+          variants={itemFadeUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={sectionViewport}
+          className="rounded-2xl bg-white p-8 shadow-sm"
+        >
           <div className="flex justify-center">
             <UploadCard />
           </div>
@@ -59,10 +77,17 @@ const UpgradeCvSection = () => {
               {t("step1.description")}
             </p>
           </div>
-        </div>
+        </motion.div>
 
         {/* 2. Skor dan Kekuatan CV */}
-        <div className="min-h-[260px] rounded-2xl bg-white p-8 shadow-sm md:col-span-2">
+        <motion.div
+          variants={itemFadeUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={sectionViewport}
+          transition={{ delay: 0.05 }}
+          className="min-h-[260px] rounded-2xl bg-white p-8 shadow-sm md:col-span-2"
+        >
           {/* Header */}
           <div className="max-w-xl">
             <h3 className="text-xl font-semibold text-gray-900">
@@ -123,10 +148,17 @@ const UpgradeCvSection = () => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* 3. Saran dan Perbaikan */}
-        <div className="min-h-[260px] rounded-2xl bg-white p-8 shadow-sm md:col-span-2">
+        <motion.div
+          variants={itemFadeUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={sectionViewport}
+          transition={{ delay: 0.08 }}
+          className="min-h-[260px] rounded-2xl bg-white p-8 shadow-sm md:col-span-2"
+        >
           {/* Header */}
           <div className="max-w-xl">
             <h3 className="text-xl font-semibold text-gray-900">
@@ -177,10 +209,17 @@ const UpgradeCvSection = () => {
               </ul>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* 4. Cta */}
-        <div className="bg-primaryBlue flex min-h-[260px] flex-col justify-between rounded-2xl p-8 text-white shadow-lg">
+        <motion.div
+          variants={itemFadeUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={sectionViewport}
+          transition={{ delay: 0.12 }}
+          className="bg-primaryBlue flex min-h-[260px] flex-col justify-between rounded-2xl p-8 text-white shadow-lg"
+        >
           <div>
             <h3 className="text-xl leading-snug font-semibold">
               {t("cta.title")}
@@ -200,9 +239,9 @@ const UpgradeCvSection = () => {
               {t("cta.footnote")}
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

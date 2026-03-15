@@ -573,6 +573,45 @@
       }
     }
   },
+  "checkoutPage": {
+    "backToPricing": "Kembali ke Daftar Harga",
+    "summary": {
+      "badge": "Upgrade Paket",
+      "quota": "Tambahan {quota}x pemakaian",
+      "note": "Kuota akan langsung ditambahkan ke akun setelah pembayaran berhasil.",
+      "subtotal": "Subtotal",
+      "total": "Total",
+      "terms": "Dengan melanjutkan pembayaran, kamu menyetujui syarat layanan kami.",
+      "verification": "Pembayaran diverifikasi oleh admin setelah bukti transfer dikirim."
+    },
+    "header": {
+      "title": "Selesaikan Pembayaran",
+      "description": "Pilih metode dan unggah bukti transfer"
+    },
+    "paymentMethod": "Metode Pembayaran",
+    "billTotal": "Total Tagihan",
+    "destinationBank": "Bank Tujuan",
+    "accountNumber": "Nomor Rekening",
+    "accountOwner": "Atas Nama",
+    "upload": {
+      "title": "Bukti Transfer",
+      "required": "WAJIB",
+      "success": "Bukti pembayaran berhasil dipilih"
+    },
+    "processing": "Memproses...",
+    "confirm": "Konfirmasi Pembayaran",
+    "alert": {
+      "successTitle": "Pembayaran Terkirim",
+      "errorTitle": "Terjadi Kesalahan"
+    },
+    "errors": {
+      "uploadProofRequired": "Harap unggah bukti pembayaran terlebih dahulu.",
+      "checkoutFailed": "Terjadi kesalahan saat checkout."
+    },
+    "toast": {
+      "success": "Pembayaran berhasil dikirim dengan Invoice {invoice}. Mohon menunggu verifikasi admin."
+    }
+  },
   "authCarousel": {
     "quotes": [
       {

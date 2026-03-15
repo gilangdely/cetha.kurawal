@@ -9,6 +9,11 @@ import { CardsLoginStack } from "../cards-login-stack";
 import { AiBeam } from "../ai-beam";
 import { OptimalizeLinkedIn } from "../optimalize-linkedIn";
 import { InfiniteMovingJobs } from "../infinite-moving-jobs";
+import {
+  itemFadeUp,
+  sectionFadeUp,
+  sectionViewport,
+} from "../../lib/animations/section-motion";
 
 const stepsOrder = ["register", "cv", "linkedin", "jobs"];
 
@@ -30,10 +35,10 @@ const HowItWorksSection = () => {
     <motion.section className="mx-auto w-full max-w-7xl px-6 py-8 md:py-12">
       {/* HEADER */}
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        viewport={{ once: true }}
+        variants={sectionFadeUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={sectionViewport}
         className="flex flex-col items-center text-center"
       >
         <div className="border-primaryBlue/40 bg-primaryBlue/5 rounded-full border px-3 py-1">
@@ -54,10 +59,11 @@ const HowItWorksSection = () => {
 
       {/* MAIN CONTENT – ENTRANCE ONLY WHEN IN VIEW */}
       <motion.div
-        initial={{ opacity: 0, y: 32 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
-        viewport={{ once: true }}
+        variants={sectionFadeUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={sectionViewport}
+        transition={{ delay: 0.04 }}
         className="mt-10"
       >
         <motion.div
@@ -112,13 +118,10 @@ const HowItWorksSection = () => {
             <motion.button
               key={key}
               onClick={() => setActiveStep(idx + 1)}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.45,
-                ease: "easeOut",
-                delay: idx * 0.12,
-              }}
+              variants={itemFadeUp}
+              initial="hidden"
+              whileInView="show"
+              transition={{ delay: idx * 0.07 }}
               viewport={{ once: true }}
               className={`group relative flex flex-col border-t-4 bg-white p-4 text-start transition-all duration-300 ease-out ${
                 isActive

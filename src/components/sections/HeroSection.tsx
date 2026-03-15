@@ -9,6 +9,11 @@ import { motion } from "framer-motion";
 import { Send, CircleCheck } from "lucide-react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
+import {
+  itemFadeLeft,
+  itemFadeRight,
+  sectionStagger,
+} from "../../lib/animations/section-motion";
 
 import illustration from "@/assets/img/illustration-hero.jpg";
 
@@ -26,19 +31,14 @@ const HeroSection = () => {
 
   return (
     <motion.section
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8, ease: "easeInOut" }}
+      initial="hidden"
+      animate="show"
+      variants={sectionStagger}
       className="mx-auto mt-6 flex w-full max-w-7xl items-center lg:mt-0 lg:min-h-screen lg:px-6"
     >
       <div className="flex w-full flex-col-reverse items-center gap-6 px-6 pt-16 pb-12 md:flex-row md:pt-24 lg:gap-10 lg:px-0 lg:pt-0">
         {/* LEFT */}
-        <motion.div
-          className="flex-1"
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
+        <motion.div className="flex-1" variants={itemFadeLeft}>
           <h2 className="text-TextPrimary text-2xl leading-tight font-bold lg:text-4xl">
             <span className="text-accentOrange">{t("headlineHighlight")}</span>{" "}
             {t("headlineText")}
@@ -95,9 +95,7 @@ const HeroSection = () => {
         {/* RIGHT */}
         <motion.div
           className="relative flex-1 overflow-visible"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+          variants={itemFadeRight}
         >
           <div className="relative overflow-visible">
             <Image

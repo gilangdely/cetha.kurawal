@@ -1,11 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { CheckCircle, ChevronLeft, Loader2, Copy } from "lucide-react";
+import {
+  CheckCircle,
+  ChevronLeft,
+  Loader2,
+  Copy,
+  AlertCircle,
+} from "lucide-react";
 import { CheckoutSkeleton } from "@/components/checkout-skeleton";
+import { useTranslations } from "next-intl";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { UploadPaymentProof } from "@/components/UploadPaymentProof";
 import { SubscriptionTier } from "@/types/subscription";
@@ -16,17 +24,26 @@ import IconsBSI from "@/assets/payment/Logo Bank BSI - Dianisa.com.svg";
 import IconsGopay from "@/assets/payment/GoPay Logo_Primary.svg";
 import IconsDana from "@/assets/payment/Logo DANA -  dianisa.com.svg";
 
+type CheckoutAlert = {
+  variant: "default" | "destructive";
+  title: string;
+  message: string;
+};
+
 export default function CheckoutPage() {
   const params = useParams();
   const router = useRouter();
+  const t = useTranslations("checkoutPage");
   const slug = params.slug as string;
+  const locale = params.locale as string;
 
   const [tier, setTier] = useState<SubscriptionTier | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [paymentProofUrl, setPaymentProofUrl] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [alert, setAlert] = useState<CheckoutAlert | null>(null);
   const [selectedMethod, setSelectedMethod] = useState<string>("bri");
+  const redirectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const paymentMethods = {
     bri: {
@@ -59,6 +76,14 @@ export default function CheckoutPage() {
     paymentMethods[selectedMethod as keyof typeof paymentMethods];
 
   useEffect(() => {
+    return () => {
+      if (redirectTimeoutRef.current) {
+        clearTimeout(redirectTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     const fetchTierInfo = async () => {
       try {
         const res = await fetch("/api/subscription-tiers");
@@ -70,7 +95,7 @@ export default function CheckoutPage() {
           if (foundTier) {
             setTier(foundTier);
           } else {
-            router.push("/pricing");
+            router.push(`/${locale}/pricing`);
           }
         }
       } catch (err) {
@@ -81,7 +106,7 @@ export default function CheckoutPage() {
     };
 
     if (slug) fetchTierInfo();
-  }, [slug, router]);
+  }, [slug, router, locale]);
 
   const formatRupiah = (amount: number) => {
     return new Intl.NumberFormat("id-ID", {
@@ -94,12 +119,16 @@ export default function CheckoutPage() {
 
   const handleCheckout = async () => {
     if (!tier || !tier.id || !paymentProofUrl) {
-      setError("Harap unggah bukti pembayaran terlebih dahulu.");
+      setAlert({
+        variant: "destructive",
+        title: t("alert.errorTitle"),
+        message: t("errors.uploadProofRequired"),
+      });
       return;
     }
 
     setSubmitting(true);
-    setError(null);
+    setAlert(null);
 
     try {
       const res = await fetch("/api/subscriptions/checkout", {
@@ -114,16 +143,24 @@ export default function CheckoutPage() {
       const json = await res.json();
 
       if (!res.ok || json.ok === false) {
-        throw new Error(json.message || "Terjadi kesalahan saat checkout.");
+        throw new Error(json.message || t("errors.checkoutFailed"));
       }
 
-      alert(
-        `Pembayaran berhasil dikirim dengan Invoice ${json.invoice}. Mohon menunggu verifikasi admin.`,
-      );
+      setAlert({
+        variant: "default",
+        title: t("alert.successTitle"),
+        message: t("toast.success", { invoice: json.invoice }),
+      });
 
-      router.push("/id/dashboard");
+      redirectTimeoutRef.current = setTimeout(() => {
+        router.push(`/${locale}/dashboard`);
+      }, 1400);
     } catch (err: any) {
-      setError(err.message);
+      setAlert({
+        variant: "destructive",
+        title: t("alert.errorTitle"),
+        message: err.message,
+      });
     } finally {
       setSubmitting(false);
     }
@@ -141,26 +178,43 @@ export default function CheckoutPage() {
 
   return (
     <div className="flex min-h-screen w-full lg:h-screen lg:overflow-hidden">
+      {alert && (
+        <div className="pointer-events-none fixed top-6 left-1/2 z-50 w-full max-w-md -translate-x-1/2 px-4">
+          <Alert
+            variant={alert.variant}
+            className="pointer-events-auto border shadow-lg"
+          >
+            {alert.variant === "destructive" ? (
+              <AlertCircle className="text-current" />
+            ) : (
+              <CheckCircle className="text-current" />
+            )}
+            <AlertTitle>{alert.title}</AlertTitle>
+            <AlertDescription>{alert.message}</AlertDescription>
+          </Alert>
+        </div>
+      )}
+
       {/* LEFT PANEL */}
-      <div className="relative hidden flex-1 overflow-hidden bg-gradient-to-br from-purple-600 via-fuchsia-600 to-pink-500 lg:flex">
+      <div className="from-primaryBlue to-accentOrange relative hidden flex-1 overflow-hidden bg-gradient-to-br via-amber-500 lg:flex">
         <div className="absolute inset-0 opacity-30">
           <div className="absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-white/10 blur-3xl" />
         </div>
 
         <div className="relative z-10 flex h-full w-full flex-col justify-between p-10 text-white">
           <Link
-            href="/id/pricing"
+            href={`/${locale}/pricing`}
             className="flex w-fit items-center gap-2 px-3 py-1.5 text-sm opacity-80 transition hover:opacity-100"
           >
             <ChevronLeft size={18} />
-            Kembali ke Daftar Harga
+            {t("backToPricing")}
           </Link>
 
-          <div className="absolute top-30 right-14 max-w-md rounded-2xl border border-white/20 bg-white/10 p-6 shadow-lg shadow-black/10 backdrop-blur-xl">
+          <div className="absolute top-30 right-14 z-10 max-w-md rounded-2xl border border-white/20 bg-white/10 p-6 shadow-lg shadow-black/10 backdrop-blur-xl">
             {/* HEADER */}
             <div className="mb-4">
               <p className="text-xs tracking-wide text-white/60 uppercase">
-                Upgrade Paket
+                {t("summary.badge")}
               </p>
 
               <h2 className="mt-1 text-4xl font-bold text-white">
@@ -177,16 +231,13 @@ export default function CheckoutPage() {
               <div>
                 <p className="font-semibold text-white">{tier.name}</p>
                 <p className="text-xs text-white/70">
-                  Tambahan {tier.quota_amount}x pemakaian
+                  {t("summary.quota", { quota: tier.quota_amount })}
                 </p>
               </div>
             </div>
 
             {/* SMALL NOTE */}
-            <p className="mt-3 text-xs text-white/60">
-              Kuota akan langsung ditambahkan ke akun setelah pembayaran
-              berhasil.
-            </p>
+            <p className="mt-3 text-xs text-white/60">{t("summary.note")}</p>
 
             {/* DIVIDER */}
             <div className="my-4 h-px bg-white/20" />
@@ -194,26 +245,21 @@ export default function CheckoutPage() {
             {/* SUMMARY */}
             <div className="space-y-2 text-sm text-white/80">
               <div className="flex justify-between">
-                <span>Subtotal</span>
+                <span>{t("summary.subtotal")}</span>
                 <span>{formatRupiah(tier.price)}</span>
               </div>
 
               <div className="flex justify-between font-semibold text-white">
-                <span>Total</span>
+                <span>{t("summary.total")}</span>
                 <span>{formatRupiah(tier.price)}</span>
               </div>
             </div>
 
             {/* FOOTER NOTE */}
-            <p className="mt-4 text-xs text-white/50">
-              Dengan melanjutkan pembayaran, kamu menyetujui syarat layanan
-              kami.
-            </p>
+            <p className="mt-4 text-xs text-white/50">{t("summary.terms")}</p>
           </div>
 
-          <p className="text-xs opacity-70">
-            Pembayaran diverifikasi oleh admin setelah bukti transfer dikirim.
-          </p>
+          <p className="text-xs opacity-70">{t("summary.verification")}</p>
         </div>
       </div>
 
@@ -223,17 +269,15 @@ export default function CheckoutPage() {
           {/* HEADER */}
           <div>
             <h2 className="text-xl font-bold text-gray-900">
-              Selesaikan Pembayaran
+              {t("header.title")}
             </h2>
-            <p className="text-sm text-gray-500">
-              Pilih metode dan unggah bukti transfer
-            </p>
+            <p className="text-sm text-gray-500">{t("header.description")}</p>
           </div>
 
           {/* PAYMENT METHOD */}
           <div>
             <label className="mb-3 block text-xs font-bold tracking-wider text-gray-500 uppercase">
-              Metode Pembayaran
+              {t("paymentMethod")}
             </label>
 
             <div className="grid grid-cols-4 gap-3">
@@ -263,7 +307,7 @@ export default function CheckoutPage() {
           <div className="rounded-2xl border border-gray-200 bg-white p-5">
             <div className="mb-4 text-center">
               <p className="text-[11px] font-semibold tracking-wide text-gray-500 uppercase">
-                Total Tagihan
+                {t("billTotal")}
               </p>
 
               <h3 className="text-2xl font-bold text-gray-900">
@@ -273,14 +317,14 @@ export default function CheckoutPage() {
 
             <div className="space-y-3 border-t border-gray-100 pt-4 text-sm">
               <div className="flex items-center justify-between">
-                <span className="text-gray-500">Bank Tujuan</span>
+                <span className="text-gray-500">{t("destinationBank")}</span>
                 <span className="font-semibold text-gray-800">
                   {selectedPayment.bank}
                 </span>
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="text-gray-500">Nomor Rekening</span>
+                <span className="text-gray-500">{t("accountNumber")}</span>
 
                 <div className="flex items-center gap-2">
                   <span className="font-mono text-sm font-semibold text-gray-900">
@@ -297,7 +341,7 @@ export default function CheckoutPage() {
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="text-gray-500">Atas Nama</span>
+                <span className="text-gray-500">{t("accountOwner")}</span>
                 <span className="font-semibold text-gray-800">
                   {selectedPayment.name}
                 </span>
@@ -309,24 +353,25 @@ export default function CheckoutPage() {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <h4 className="text-sm font-semibold text-gray-800">
-                Bukti Transfer
+                {t("upload.title")}
               </h4>
 
               <span className="rounded bg-red-50 px-2 py-0.5 text-[10px] font-semibold text-red-500">
-                WAJIB
+                {t("upload.required")}
               </span>
             </div>
 
             <UploadPaymentProof
               onUploadComplete={(base64Url) => {
                 setPaymentProofUrl(base64Url);
+                setAlert(null);
               }}
             />
 
             {paymentProofUrl && (
               <div className="flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 p-2 text-xs text-emerald-700">
                 <CheckCircle size={14} />
-                Bukti pembayaran berhasil dipilih
+                {t("upload.success")}
               </div>
             )}
           </div>
@@ -344,10 +389,10 @@ export default function CheckoutPage() {
             {submitting ? (
               <span className="flex items-center justify-center gap-2">
                 <Loader2 className="animate-spin" size={18} />
-                Memproses...
+                {t("processing")}
               </span>
             ) : (
-              "Konfirmasi Pembayaran"
+              t("confirm")
             )}
           </Button>
         </div>

@@ -610,6 +610,45 @@
       }
     }
   },
+  "checkoutPage": {
+    "backToPricing": "Back to Pricing",
+    "summary": {
+      "badge": "Upgrade Plan",
+      "quota": "Additional {quota}x usage",
+      "note": "Quota will be added to your account immediately after payment is confirmed.",
+      "subtotal": "Subtotal",
+      "total": "Total",
+      "terms": "By continuing, you agree to our terms of service.",
+      "verification": "Payments are verified by admin after proof of transfer is submitted."
+    },
+    "header": {
+      "title": "Complete Payment",
+      "description": "Choose a payment method and upload proof of transfer"
+    },
+    "paymentMethod": "Payment Method",
+    "billTotal": "Total Bill",
+    "destinationBank": "Destination Bank",
+    "accountNumber": "Account Number",
+    "accountOwner": "Account Holder",
+    "upload": {
+      "title": "Transfer Proof",
+      "required": "REQUIRED",
+      "success": "Payment proof selected successfully"
+    },
+    "processing": "Processing...",
+    "confirm": "Confirm Payment",
+    "alert": {
+      "successTitle": "Payment Submitted",
+      "errorTitle": "Something Went Wrong"
+    },
+    "errors": {
+      "uploadProofRequired": "Please upload proof of payment first.",
+      "checkoutFailed": "An error occurred during checkout."
+    },
+    "toast": {
+      "success": "Payment submitted successfully with Invoice {invoice}. Please wait for admin verification."
+    }
+  },
 
   "authCarousel": {
     "quotes": [

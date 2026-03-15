@@ -4,7 +4,7 @@ export function CheckoutSkeleton() {
   return (
     <div className="flex min-h-screen w-full lg:h-screen lg:overflow-hidden">
       {/* LEFT PANEL */}
-      <div className="relative hidden flex-1 overflow-hidden bg-gradient-to-br from-purple-600 via-fuchsia-600 to-pink-500 lg:flex">
+      <div className="from-primaryBlue to-accentOrange relative hidden flex-1 overflow-hidden bg-gradient-to-br via-amber-500 lg:flex">
         <div className="absolute inset-0 opacity-30">
           <div className="absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-white/10 blur-3xl" />
         </div>

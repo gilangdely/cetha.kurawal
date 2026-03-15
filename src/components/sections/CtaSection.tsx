@@ -4,6 +4,11 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import {
+  itemFadeUp,
+  sectionStagger,
+  sectionViewport,
+} from "../../lib/animations/section-motion";
 
 import CvDummy from "@/assets/img/cv-dummy.jpg";
 import LinkedinDummy from "@/assets/img/linkedin-dummy.jpg";
@@ -13,16 +18,19 @@ const CtaSection = () => {
 
   return (
     <motion.section
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 0.8, ease: "easeInOut" }}
-      viewport={{ once: true, amount: 0.2 }}
+      variants={sectionStagger}
+      initial="hidden"
+      whileInView="show"
+      viewport={sectionViewport}
       className="mx-auto w-full px-4 py-12 sm:px-6 md:pt-20"
     >
       {/* Desktop/Tabel */}
       <div className="hidden flex-col gap-6 lg:flex lg:flex-row">
         {/* Left Panel */}
-        <div className="bg-primaryBlue relative h-72 w-full overflow-hidden rounded-2xl border border-white/20 shadow-sm md:h-80">
+        <motion.div
+          variants={itemFadeUp}
+          className="bg-primaryBlue relative h-72 w-full overflow-hidden rounded-2xl border border-white/20 shadow-sm md:h-80"
+        >
           <div className="from-primaryBlue via-primaryBlue/95 pointer-events-none absolute inset-0 bg-gradient-to-r to-transparent" />
 
           <div className="relative z-10 flex h-full max-w-sm flex-col justify-center px-4 sm:px-6">
@@ -62,10 +70,14 @@ const CtaSection = () => {
             className="absolute top-1/2 -translate-y-1/2 rotate-[-20deg] object-contain lg:right-[-100px] lg:h-[300px] lg:w-[300px] xl:right-[-140px] xl:h-[380px] xl:w-[380px] 2xl:right-[-180px]"
             priority
           />
-        </div>
+        </motion.div>
 
         {/* Right Panel */}
-        <div className="bg-accentOrange relative h-72 w-full overflow-hidden rounded-2xl border border-white/20 shadow-sm md:h-80">
+        <motion.div
+          variants={itemFadeUp}
+          transition={{ delay: 0.08 }}
+          className="bg-accentOrange relative h-72 w-full overflow-hidden rounded-2xl border border-white/20 shadow-sm md:h-80"
+        >
           <div className="from-accentOrange via-accentOrange/95 pointer-events-none absolute inset-0 bg-gradient-to-l to-transparent" />
 
           <div className="relative z-10 ml-auto flex h-full max-w-sm flex-col justify-center px-4 text-right sm:px-6">
@@ -105,11 +117,14 @@ const CtaSection = () => {
             className="absolute top-1/2 -translate-y-1/2 rotate-[12deg] object-contain lg:left-[-160px] lg:h-[360px] lg:w-[360px] xl:left-[-230px] xl:h-[480px] xl:w-[480px] 2xl:left-[-260px]"
             priority
           />
-        </div>
+        </motion.div>
       </div>
 
       {/* Mobile */}
-      <div className="bg-primaryBlue relative mt-2 h-56 w-full overflow-hidden rounded-2xl border border-white/20 shadow-sm lg:hidden">
+      <motion.div
+        variants={itemFadeUp}
+        className="bg-primaryBlue relative mt-2 h-56 w-full overflow-hidden rounded-2xl border border-white/20 shadow-sm lg:hidden"
+      >
         <div className="from-primaryBlue via-primaryBlue/95 to-primaryBlue/80 pointer-events-none absolute inset-0 bg-gradient-to-r" />
 
         <div className="relative z-10 flex h-full max-w-xs flex-col justify-center px-4">
@@ -140,7 +155,7 @@ const CtaSection = () => {
           className="absolute top-1/2 right-[-80px] h-[220px] w-[220px] -translate-y-1/2 rotate-[-20deg] object-contain"
           priority
         />
-      </div>
+      </motion.div>
     </motion.section>
   );
 };

@@ -5,6 +5,14 @@ import { motion } from "framer-motion";
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
 import { Globe, Mail, MapPin, Phone } from "lucide-react";
 import { useTranslations } from "next-intl";
+import {
+  itemFadeLeft,
+  itemFadeRight,
+  itemFadeUp,
+  sectionFadeUp,
+  sectionStagger,
+  sectionViewport,
+} from "../../../../components/sections/section-motion";
 
 import iyanImage from "@/assets/img/iyan.jpg";
 import firmanImage from "@/assets/img/firman.jpg";
@@ -45,8 +53,17 @@ export default function AboutUsPage() {
 
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-col items-center px-6 pt-20 lg:pt-0">
-      <div className="flex w-full flex-col items-center justify-center py-16 lg:pt-28">
-        <div className="flex max-w-2xl flex-col items-center text-center">
+      <motion.div
+        variants={sectionStagger}
+        initial="hidden"
+        whileInView="show"
+        viewport={sectionViewport}
+        className="flex w-full flex-col items-center justify-center py-16 lg:pt-28"
+      >
+        <motion.div
+          variants={sectionFadeUp}
+          className="flex max-w-2xl flex-col items-center text-center"
+        >
           {/* Badge */}
           <div className="border-primaryBlue/30 bg-primaryBlue/5 text-primaryBlue rounded-full border px-4 py-1.5 text-sm font-medium tracking-wide">
             {t("hero.badge")}
@@ -91,10 +108,15 @@ export default function AboutUsPage() {
               {t("hero.contactButton")}
             </Link>
           </div>
-        </div>
+        </motion.div>
         <div className="mt-10 grid w-full max-w-3xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {profiles.map((profile) => (
-            <div key={profile.id} className="relative">
+          {profiles.map((profile, idx) => (
+            <motion.div
+              key={profile.id}
+              variants={itemFadeUp}
+              transition={{ delay: idx * 0.08 }}
+              className="relative"
+            >
               {/* Image */}
               <div className="overflow-hidden rounded-2xl">
                 <Image
@@ -113,19 +135,25 @@ export default function AboutUsPage() {
                   {t(profile.roleKey)}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Testimonials Section */}
-      <div className="mx-auto w-full px-4 py-16 sm:px-6 lg:py-20">
+      <motion.div
+        variants={sectionFadeUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={sectionViewport}
+        className="mx-auto w-full px-4 py-16 sm:px-6 lg:py-20"
+      >
         <motion.div
           className="flex flex-col items-center text-center"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          viewport={{ once: true, margin: "-100px" }}
+          variants={itemFadeUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={sectionViewport}
         >
           <div className="border-primaryBlue/30 bg-primaryBlue/5 text-primaryBlue w-fit rounded-full border px-4 py-1.5 text-sm font-medium tracking-wide">
             {t("testimonials.badge")}
@@ -153,12 +181,22 @@ export default function AboutUsPage() {
             speed="slow"
           />
         </div>
-      </div>
+      </motion.div>
 
       {/* Get in touch */}
-      <div id="contact-us" className="py-8 md:py-12">
+      <motion.div
+        id="contact-us"
+        variants={sectionFadeUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={sectionViewport}
+        className="py-8 md:py-12"
+      >
         <div className="flex w-full justify-center">
-          <div className="flex max-w-2xl flex-col items-center text-center">
+          <motion.div
+            variants={itemFadeUp}
+            className="flex max-w-2xl flex-col items-center text-center"
+          >
             {/* Badge */}
             <div className="border-primaryBlue/30 bg-primaryBlue/5 text-primaryBlue w-fit rounded-full border px-4 py-1.5 text-sm font-medium tracking-wide">
               {t("contact.badge")}
@@ -175,11 +213,11 @@ export default function AboutUsPage() {
                 {t("contact.description")}
               </p>
             </div>
-          </div>
+          </motion.div>
         </div>
         <div className="mx-auto mt-10 grid w-full max-w-5xl gap-12 px-6 md:grid-cols-2">
           {/* LEFT - FORM */}
-          <div>
+          <motion.div variants={itemFadeLeft}>
             <form className="space-y-4 p-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
@@ -234,10 +272,13 @@ export default function AboutUsPage() {
                 {t("contact.form.submitButton")}
               </button>
             </form>
-          </div>
+          </motion.div>
 
           {/* RIGHT - CONTACT INFO */}
-          <div className="flex flex-col gap-8 p-4">
+          <motion.div
+            variants={itemFadeRight}
+            className="flex flex-col gap-8 p-4"
+          >
             <div>
               <h3 className="text-lg font-semibold text-gray-900">
                 {t("contact.info.contactTitle")}
@@ -271,9 +312,9 @@ export default function AboutUsPage() {
                 <span>{t("contact.info.address")}</span>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </main>
   );
 }

@@ -1,7 +1,10 @@
+"use client";
+
 import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import {
   collection,
   query,
@@ -12,6 +15,11 @@ import {
 } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
 import ArticlesAndVideoSkeleton from "../articles-video-skeleton";
+import {
+  itemFadeUp,
+  sectionFadeUp,
+  sectionViewport,
+} from "../../lib/animations/section-motion";
 
 const ArticlesAndVideoSection = () => {
   const t = useTranslations("ArticleAndVideo");
@@ -65,9 +73,15 @@ const ArticlesAndVideoSection = () => {
   }, []);
 
   return (
-    <section className="mx-auto w-full max-w-7xl px-6 py-8 md:py-12">
+    <motion.section className="mx-auto w-full max-w-7xl px-6 py-8 md:py-12">
       {/* HEADER & BADGE tetap tampil normal */}
-      <div className="flex flex-col items-center text-center">
+      <motion.div
+        variants={sectionFadeUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={sectionViewport}
+        className="flex flex-col items-center text-center"
+      >
         <div className="border-primaryBlue/40 bg-primaryBlue/5 mx-auto w-fit rounded-full border px-3 py-1">
           <p className="text-primaryBlue text-sm font-medium tracking-wide">
             {t("badge")}
@@ -82,15 +96,28 @@ const ArticlesAndVideoSection = () => {
             {t("description")}
           </p>
         </div>
-      </div>
+      </motion.div>
 
       {/* LOADING SKELETON */}
       {loading ? (
         <ArticlesAndVideoSkeleton />
       ) : (
-        <div className="mt-10 flex flex-col gap-8 md:flex-row md:gap-8">
+        <motion.div
+          variants={sectionFadeUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={sectionViewport}
+          transition={{ delay: 0.04 }}
+          className="mt-10 flex flex-col gap-8 md:flex-row md:gap-8"
+        >
           {/* VIDEO */}
-          <div className="w-full md:flex-1">
+          <motion.div
+            variants={itemFadeUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={sectionViewport}
+            className="w-full md:flex-1"
+          >
             <div className="p-1">
               <div className="aspect-video w-full overflow-hidden rounded-2xl bg-gray-300 shadow-sm">
                 {video && (
@@ -112,13 +139,20 @@ const ArticlesAndVideoSection = () => {
                 </h3>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Divider Mobile Only */}
           <div className="block h-px w-full bg-neutral-200 md:hidden" />
 
           {/* ARTICLES */}
-          <div className="w-full space-y-3 md:flex-1">
+          <motion.div
+            variants={itemFadeUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={sectionViewport}
+            transition={{ delay: 0.06 }}
+            className="w-full space-y-3 md:flex-1"
+          >
             {articles.map((article) => (
               <Link
                 href={`/career-tips/${article.slug}`}
@@ -170,10 +204,10 @@ const ArticlesAndVideoSection = () => {
                 <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
-    </section>
+    </motion.section>
   );
 };
 

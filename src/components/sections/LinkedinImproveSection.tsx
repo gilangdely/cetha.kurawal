@@ -5,6 +5,12 @@ import LinkedinIllustration from "@/assets/img/linkedin-illustration.png";
 import { MoveRight, SquareMousePointer } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
+import {
+  itemFadeLeft,
+  itemFadeRight,
+  sectionViewport,
+} from "../../lib/animations/section-motion";
 
 const LinkedinImproveSection = () => {
   const t = useTranslations("LinkedinImproveSection");
@@ -13,7 +19,13 @@ const LinkedinImproveSection = () => {
     <section className="mx-auto w-full max-w-7xl px-6 py-8 md:py-12">
       <div className="flex flex-col items-center gap-10 md:flex-row md:items-center">
         {/* LEFT */}
-        <div className="flex-1 md:flex-[0.6]">
+        <motion.div
+          variants={itemFadeLeft}
+          initial="hidden"
+          whileInView="show"
+          viewport={sectionViewport}
+          className="flex-1 md:flex-[0.6]"
+        >
           <div className="flex flex-col items-start text-left">
             <div className="border-primaryBlue/40 bg-primaryBlue/5 w-fit rounded-full border px-3 py-1">
               <p className="text-primaryBlue text-sm font-medium tracking-wide">
@@ -43,10 +55,17 @@ const LinkedinImproveSection = () => {
               </Link>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* RIGHT */}
-        <div className="flex-1 md:flex-[0.8]">
+        <motion.div
+          variants={itemFadeRight}
+          initial="hidden"
+          whileInView="show"
+          viewport={sectionViewport}
+          transition={{ delay: 0.06 }}
+          className="flex-1 md:flex-[0.8]"
+        >
           <div className="relative mx-auto max-w-md md:max-w-lg">
             <Image
               alt="Linkedin Illustration"
@@ -73,7 +92,7 @@ const LinkedinImproveSection = () => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

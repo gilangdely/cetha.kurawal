@@ -9,6 +9,11 @@ import icons1 from "@/assets/icons/pencils-quils.svg";
 import icons2 from "@/assets/icons/human-resources.svg";
 import icons3 from "@/assets/icons/jobs-search.svg";
 import { useTranslations } from "next-intl";
+import {
+  itemFadeUp,
+  sectionFadeUp,
+  sectionViewport,
+} from "../../lib/animations/section-motion";
 
 const Cards = [
   {
@@ -41,10 +46,10 @@ const AdventagesSection = () => {
     <section className="mx-auto w-full max-w-7xl px-6 pb-12">
       {/* Title */}
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        viewport={{ once: true }}
+        variants={sectionFadeUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={sectionViewport}
         className="flex flex-col items-center text-center"
       >
         <div className="border-primaryBlue/40 bg-primaryBlue/5 rounded-full border px-3 py-1">
@@ -68,13 +73,10 @@ const AdventagesSection = () => {
         {Cards.map((card, idx) => (
           <motion.div
             key={card.id}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.6,
-              ease: "easeOut",
-              delay: idx * 0.2,
-            }}
+            variants={itemFadeUp}
+            initial="hidden"
+            whileInView="show"
+            transition={{ delay: idx * 0.08 }}
             viewport={{ once: true, amount: 0.2 }}
             className="flex h-full flex-col justify-between rounded-xl border border-gray-300 bg-white p-6 text-start shadow-sm transition-shadow hover:shadow-md"
           >

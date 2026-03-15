@@ -2,13 +2,26 @@
 
 import { useState, useEffect } from "react";
 import { CvPreview } from "@/components/cv-preview";
-import { FileDown, LayoutTemplate, PenLine, Undo2, Redo2, Loader2, Edit3 } from "lucide-react";
+import {
+  FileDown,
+  LayoutTemplate,
+  PenLine,
+  Undo2,
+  Redo2,
+  Loader2,
+} from "lucide-react";
 import FormBuildCv from "@/components/form-build-cv";
 import { TemplateGallery } from "@/components/template-gallery";
 import { useCvBuilderStore } from "@/store/buildCvStore";
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
 import { toast } from "sonner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function CvBuilderPage() {
   const [mounted, setMounted] = useState(false);
@@ -25,7 +38,9 @@ export default function CvBuilderPage() {
 
   // Mobile tab: "form" | "preview"
   const [mobileTab, setMobileTab] = useState<"form" | "preview">("form");
-  const [desktopTab, setDesktopTab] = useState<"builder" | "template">("builder");
+  const [desktopTab, setDesktopTab] = useState<"builder" | "template">(
+    "builder",
+  );
   const [isExporting, setIsExporting] = useState(false);
 
   const handleExportPdf = async () => {
@@ -53,7 +68,9 @@ export default function CvBuilderPage() {
         parentWrapper.style.transition = "none"; // Matikan transisi agar tidak capture animasi
       }
 
-      console.log("[Export] Membangun Image Data dari DOM via html-to-image...");
+      console.log(
+        "[Export] Membangun Image Data dari DOM via html-to-image...",
+      );
 
       const imgData = await htmlToImage.toJpeg(element, {
         quality: 1,
@@ -67,7 +84,9 @@ export default function CvBuilderPage() {
         parentWrapper.style.transition = "";
       }
 
-      console.log("[Export] Canvas selesai digenerate. Mempersiapkan Image Data...");
+      console.log(
+        "[Export] Canvas selesai digenerate. Mempersiapkan Image Data...",
+      );
 
       console.log("[Export] Inisialisasi library jsPDF...");
       const pdf = new jsPDF({
@@ -81,7 +100,8 @@ export default function CvBuilderPage() {
 
       pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
 
-      const userName = useCvBuilderStore.getState().data.personalInfo.fullName || "User";
+      const userName =
+        useCvBuilderStore.getState().data.personalInfo.fullName || "User";
       const templateName = useCvBuilderStore.getState().activeTemplate;
 
       const fileName = `CV_${userName.replace(/\s+/g, "_")}_${templateName}.pdf`;
@@ -107,45 +127,52 @@ export default function CvBuilderPage() {
   }
 
   const renderEditorPanel = () => (
-    <div className="flex h-full flex-col w-full">
-      {/* Tabs Header */}
-      <div className="flex border-b border-gray-200 px-4 pt-4 md:px-6 md:pt-6">
-        <button
-          onClick={() => setDesktopTab("builder")}
-          className={`relative px-2 pb-3 text-[14px] font-bold transition-colors ${desktopTab === "builder" ? "text-primaryBlue" : "text-gray-500 hover:text-gray-800"
+    <div className="flex h-full min-h-0 w-full flex-col">
+      {/* Header controls: select on mobile/tablet, button tabs on desktop */}
+      <div className="sticky top-0 z-10 border-b border-gray-100 bg-white px-4 py-4 md:px-6 md:py-5">
+        <div className="lg:hidden">
+          <Select
+            value={desktopTab}
+            onValueChange={(value: "builder" | "template") =>
+              setDesktopTab(value)
+            }
+          >
+            <SelectTrigger className="h-10 rounded-xl border-gray-200 bg-white text-sm font-semibold">
+              <SelectValue placeholder="Pilih mode" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="builder">Data Builder</SelectItem>
+              <SelectItem value="template">Pilih Template</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="hidden items-center gap-2 lg:flex">
+          <button
+            onClick={() => setDesktopTab("builder")}
+            className={`rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors ${
+              desktopTab === "builder"
+                ? "bg-gray-900 text-white"
+                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
-          style={{ fontFamily: "'Manrope', sans-serif" }}
-        >
-          <div className="flex items-center gap-2">
-            <Edit3 size={15} /> Data Builder
-          </div>
-          {desktopTab === "builder" && (
-            <motion.div
-              layoutId="desktop-tab-indicator"
-              className="bg-primaryBlue absolute bottom-0 left-0 right-0 h-0.5"
-            />
-          )}
-        </button>
-        <button
-          onClick={() => setDesktopTab("template")}
-          className={`relative ml-4 md:ml-6 px-2 pb-3 text-[14px] font-bold transition-colors ${desktopTab === "template" ? "text-primaryBlue" : "text-gray-500 hover:text-gray-800"
+          >
+            Data Builder
+          </button>
+          <button
+            onClick={() => setDesktopTab("template")}
+            className={`rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors ${
+              desktopTab === "template"
+                ? "bg-gray-900 text-white"
+                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
-          style={{ fontFamily: "'Manrope', sans-serif" }}
-        >
-          <div className="flex items-center gap-2">
-            <LayoutTemplate size={15} /> Pilih Template
-          </div>
-          {desktopTab === "template" && (
-            <motion.div
-              layoutId="desktop-tab-indicator"
-              className="bg-primaryBlue absolute bottom-0 left-0 right-0 h-0.5"
-            />
-          )}
-        </button>
+          >
+            Pilih Template
+          </button>
+        </div>
       </div>
 
       {/* Sidebar Content */}
-      <div className="flex-1 overflow-y-auto px-4 py-6 md:px-5 lg:px-6 lg:py-8">
+      <div className="min-h-0 flex-1 overflow-y-auto px-4 py-5 md:px-5 lg:px-6 lg:py-6">
         {desktopTab === "builder" ? <FormBuildCv /> : <TemplateGallery />}
       </div>
     </div>
@@ -175,24 +202,26 @@ export default function CvBuilderPage() {
           </button>
         </div>
 
-        {/* Center: Mobile tab toggle (hidden md+) */}
-        <div className="flex items-center gap-1 rounded-xl border border-gray-200 bg-gray-100 p-1 md:hidden">
+        {/* Center: Mobile+tablet tab toggle (hidden lg+) */}
+        <div className="flex items-center gap-1 rounded-xl border border-gray-200 bg-gray-100 p-1 lg:hidden">
           <button
             onClick={() => setMobileTab("form")}
-            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${mobileTab === "form"
-              ? "bg-white text-gray-900 shadow-sm"
-              : "text-gray-500 hover:text-gray-700"
-              }`}
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
+              mobileTab === "form"
+                ? "bg-white text-gray-900 shadow-sm"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
           >
             <PenLine size={13} />
             {t("form")}
           </button>
           <button
             onClick={() => setMobileTab("preview")}
-            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${mobileTab === "preview"
-              ? "bg-white text-gray-900 shadow-sm"
-              : "text-gray-500 hover:text-gray-700"
-              }`}
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
+              mobileTab === "preview"
+                ? "bg-white text-gray-900 shadow-sm"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
           >
             <LayoutTemplate size={13} />
             {t("preview")}
@@ -203,7 +232,7 @@ export default function CvBuilderPage() {
         <button
           onClick={handleExportPdf}
           disabled={isExporting}
-          className="bg-primaryBlue hover:bg-primaryBlueHover flex items-center gap-2 rounded-xl px-3 py-1.5 text-sm font-semibold text-white transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+          className="bg-primaryBlue hover:bg-primaryBlueHover flex items-center gap-2 rounded-xl px-3 py-1.5 text-sm font-semibold text-white transition-all disabled:cursor-not-allowed disabled:opacity-70"
         >
           {isExporting ? (
             <>
@@ -222,28 +251,30 @@ export default function CvBuilderPage() {
       {/* ── Main Content ── */}
       <div className="flex flex-1 overflow-hidden print:block print:w-full print:px-0">
         {/* ── DESKTOP: side-by-side ── */}
-        <div className="hidden md:flex md:flex-1 md:overflow-hidden md:px-4 md:py-6 lg:px-6 lg:py-8 print:flex print:w-full print:px-0 print:py-0">
-          {/* Form sidebar */}
-          <div className="print-hidden w-[300px] shrink-0 overflow-y-auto pr-4 lg:w-[450px]">
-            <FormBuildCv />
-          </div>
+        <div className="hidden min-h-0 lg:flex lg:flex-1 lg:gap-6 lg:overflow-hidden lg:px-6 lg:py-8 print:flex print:w-full print:px-0 print:py-0">
+          {/* Sidebar with builder/template tabs */}
+          <aside className="print-hidden min-h-0 w-full max-w-[460px] min-w-[320px] shrink-0 overflow-hidden rounded-2xl bg-white shadow-sm">
+            {renderEditorPanel()}
+          </aside>
 
-          {/* Preview area (8 columns) */}
-          <div className="col-span-8 flex justify-center overflow-y-auto px-4 py-6 lg:px-6 lg:py-8 print:block print:overflow-visible bg-gray-100/30">
-            <div className="w-full max-w-[850px] shrink-0">
+          {/* Preview area */}
+          <section className="min-h-0 min-w-0 flex-1 overflow-y-auto rounded-2xl bg-gray-100/30 p-4 lg:p-6 print:block print:overflow-visible print:border-0 print:bg-transparent print:p-0">
+            <div className="mx-auto w-full max-w-[900px]">
               <CvPreview />
             </div>
-          </div>
+          </section>
         </div>
 
         {/* ── MOBILE: single pane, tab-controlled ── */}
-        <div className="print-hidden flex flex-1 flex-col overflow-y-auto md:hidden bg-white">
+        <div className="print-hidden flex min-h-0 flex-1 flex-col overflow-y-auto bg-white lg:hidden">
           {mobileTab === "form" ? (
             renderEditorPanel()
           ) : (
             /* Preview: scale down to fit mobile screen */
-            <div className="flex flex-col items-center bg-gray-50/50 p-4">
-              <CvPreview />
+            <div className="flex min-h-0 flex-1 flex-col items-center overflow-y-auto bg-gray-50/50 p-3">
+              <div className="w-full max-w-[420px]">
+                <CvPreview />
+              </div>
             </div>
           )}
         </div>
