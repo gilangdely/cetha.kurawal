@@ -4,6 +4,7 @@ import axios from "axios";
 import Image from "next/image";
 import { useDataReviewStore } from "@/store/dataReviewStore";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useUploadStore } from "@/store/uploadStore";
 
 import { toast } from "sonner";
@@ -22,6 +23,7 @@ import { collection, addDoc } from "firebase/firestore";
  * Hasil review langsung ditampilkan inline di halaman dashboard.
  */
 const UploadCvDashboard = () => {
+  const router = useRouter();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const uploading = useUploadStore((s) => s.uploading);
@@ -130,13 +132,14 @@ const UploadCvDashboard = () => {
         }
       }
 
-      // Tidak ada redirect — hasil ditampilkan inline di dashboard
+      // Redirect ke halaman hasil setelah progres selesai.
       setProgressGlobal(100);
       await new Promise((resolve) => setTimeout(resolve, 320));
+      router.push("/dashboard/review-cv/result-review-cv");
       setGlobalUploading(false);
     } catch (err: any) {
       console.error("Upload gagal:", err.response?.data || err.message);
-      toast.error("Gagal Upload");
+      toast.error(err?.response?.data?.message || "Gagal Upload");
       setProgressGlobal(0);
       setGlobalUploading(false);
     }
@@ -248,7 +251,7 @@ const UploadCvDashboard = () => {
       </div>
 
       {/* Button Upload */}
-      <div className="mx-auto w-full pt-10 pb-12 md:pt-4">
+      <div className="mx-auto w-full pt-10 md:pt-4">
         <div className="flex justify-start">
           <button
             onClick={handleUpload}
