@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useUploadStore } from "@/store/uploadStore";
@@ -19,6 +19,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ type }) => {
   const targetProgress = useUploadStore((s) => s.progress);
   const [dots, setDots] = useState("");
   const [currentIcon, setCurrentIcon] = useState(0);
+  const [iconPhase, setIconPhase] = useState<"in" | "out">("in");
   const [startTime] = useState(() => Date.now());
   const [elapsedSec, setElapsedSec] = useState(0);
   const [displayedProgress, setDisplayedProgress] = useState(0);
@@ -38,10 +39,21 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ type }) => {
   }, []);
 
   useEffect(() => {
+    let switchTimeout: ReturnType<typeof setTimeout> | null = null;
+
     const interval = setInterval(() => {
-      setCurrentIcon((prev) => (prev + 1) % Icons.length);
+      setIconPhase("out");
+
+      switchTimeout = setTimeout(() => {
+        setCurrentIcon((prev) => (prev + 1) % Icons.length);
+        setIconPhase("in");
+      }, 140);
     }, 1000);
-    return () => clearInterval(interval);
+
+    return () => {
+      clearInterval(interval);
+      if (switchTimeout) clearTimeout(switchTimeout);
+    };
   }, []);
 
   useEffect(() => {
@@ -130,21 +142,17 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ type }) => {
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center overscroll-none bg-white">
       <div className="mb-6 flex h-16 w-16 items-center justify-center">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentIcon}
-            initial={{ y: 20, opacity: 0, scale: 0.8 }}
-            animate={{ y: 0, opacity: 1, scale: 1 }}
-            exit={{ y: -20, opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-          >
-            <Image
-              src={Icons[currentIcon]}
-              alt="Loading"
-              className="h-16 w-16"
-            />
-          </motion.div>
-        </AnimatePresence>
+        <motion.div
+          initial={{ y: 0, opacity: 1, scale: 1 }}
+          animate={
+            iconPhase === "in"
+              ? { y: 0, opacity: 1, scale: 1 }
+              : { y: -12, opacity: 0, scale: 0.92 }
+          }
+          transition={{ duration: 0.2, ease: "easeInOut" }}
+        >
+          <Image src={Icons[currentIcon]} alt="Loading" className="h-16 w-16" />
+        </motion.div>
       </div>
 
       <p className="max-w-xl text-center text-lg text-gray-700">

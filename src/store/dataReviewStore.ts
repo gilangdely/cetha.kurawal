@@ -5,7 +5,7 @@ interface ReviewData {
   fileName: string;
   fileType: string;
   fileUrl?: string;
-  result: string;
+  result: unknown[];
 }
 
 interface DataReviewStore {

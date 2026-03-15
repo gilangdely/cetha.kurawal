@@ -71,7 +71,13 @@ const AppTopbar = () => {
   const [openNotifMenu, setOpenNotifMenu] = useState(false);
   const notifMenuRef = useRef<HTMLDivElement>(null);
 
-  const { notifications, unreadCount, initListener, markAsRead, clearListener } = useNotificationStore();
+  const {
+    notifications,
+    unreadCount,
+    initListener,
+    markAsRead,
+    clearListener,
+  } = useNotificationStore();
 
   const isSidebarOpen = state === "expanded";
 
@@ -110,9 +116,9 @@ const AppTopbar = () => {
 
             setUsername(
               data.username ||
-              user.displayName ||
-              user.email?.split("@")[0] ||
-              "Pengguna",
+                user.displayName ||
+                user.email?.split("@")[0] ||
+                "Pengguna",
             );
           }
 
@@ -121,7 +127,7 @@ const AppTopbar = () => {
             const data = await res.json();
             const userIsAdmin = data.role === "admin";
             setIsAdmin(userIsAdmin);
-            
+
             // Inisialisasi listener untuk semua user dashboard
             initListener(user.uid, userIsAdmin);
           } else {
@@ -230,7 +236,7 @@ const AppTopbar = () => {
               >
                 <Bell className="h-5 w-5" />
                 {unreadCount > 0 && (
-                  <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white shadow-sm ring-2 ring-white">
+                  <span className="absolute top-1.5 right-1.5 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white shadow-sm ring-2 ring-white">
                     {unreadCount > 9 ? "9+" : unreadCount}
                   </span>
                 )}
@@ -243,12 +249,14 @@ const AppTopbar = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute right-0 mt-2 flex w-80 flex-col rounded-xl border border-gray-200 bg-white shadow-xl overflow-hidden z-[100]"
+                    className="absolute right-0 z-[100] mt-2 flex w-80 flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xl"
                   >
-                    <div className="flex items-center justify-between border-b border-gray-100 px-4 py-3 bg-gray-50/50">
-                      <span className="font-bold text-gray-800 text-sm">Notifikasi</span>
+                    <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-4 py-3">
+                      <span className="text-sm font-bold text-gray-800">
+                        Notifikasi
+                      </span>
                     </div>
-                    <div className="flex max-h-80 flex-col overflow-y-auto w-full">
+                    <div className="flex max-h-80 w-full flex-col overflow-y-auto">
                       {notifications.length === 0 ? (
                         <div className="px-4 py-6 text-center text-sm text-gray-400">
                           Belum ada notifikasi
@@ -265,12 +273,16 @@ const AppTopbar = () => {
                             className={`flex flex-col gap-1 border-b border-gray-50 px-4 py-3 text-left transition hover:bg-gray-50 ${!notif.isRead ? "bg-blue-50/30" : ""}`}
                           >
                             <div className="flex w-full items-start justify-between gap-2">
-                              <span className={`text-sm ${!notif.isRead ? "font-bold text-gray-900" : "font-semibold text-gray-700"} truncate`}>
+                              <span
+                                className={`text-sm ${!notif.isRead ? "font-bold text-gray-900" : "font-semibold text-gray-700"} truncate`}
+                              >
                                 {notif.title}
                               </span>
-                              {!notif.isRead && <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-blue-500" />}
+                              {!notif.isRead && (
+                                <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-blue-500" />
+                              )}
                             </div>
-                            <span className="text-xs text-gray-500 line-clamp-2 leading-relaxed">
+                            <span className="line-clamp-2 text-xs leading-relaxed text-gray-500">
                               {notif.message}
                             </span>
                           </button>
@@ -278,7 +290,10 @@ const AppTopbar = () => {
                       )}
                     </div>
                     {notifications.length > 5 && (
-                      <Link href="/dashboard" className="border-t border-gray-100 px-4 py-2.5 text-center text-xs font-semibold text-primaryBlue hover:bg-gray-50 transition">
+                      <Link
+                        href="/dashboard"
+                        className="text-primaryBlue border-t border-gray-100 px-4 py-2.5 text-center text-xs font-semibold transition hover:bg-gray-50"
+                      >
                         Lihat Semua Notifikasi
                       </Link>
                     )}

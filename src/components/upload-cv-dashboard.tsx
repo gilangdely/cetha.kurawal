@@ -16,6 +16,7 @@ import office from "@/assets/icons/office-docsx.svg";
 
 import { auth, db } from "@/app/lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
+import { sanitizeForFirestore } from "@/lib/utils";
 
 /**
  * UploadCvDashboard — versi upload CV khusus dashboard.
@@ -88,8 +89,6 @@ const UploadCvDashboard = () => {
     const formData = new FormData();
     formData.append("file", selectedFile, selectedFile.name);
 
-    console.log(`[Client] Uploading file: ${selectedFile.name}, Size: ${selectedFile.size} bytes, Type: ${selectedFile.type}`);
-
     try {
       setGlobalUploading(true, "cv");
       setProgressGlobal(5);
@@ -108,8 +107,17 @@ const UploadCvDashboard = () => {
       setProgressGlobal(82);
 
       toast.success("File berhasil diunggah!");
-      console.log("Respon server:", res.data);
-      const reviewResult = res.data.data.result.data;
+      const apiResult = res.data?.data?.result;
+      const reviewResult = Array.isArray(apiResult)
+        ? apiResult
+        : apiResult?.data;
+
+      if (!Array.isArray(reviewResult) || reviewResult.length === 0) {
+        throw new Error(
+          "Hasil analisis CV kosong atau tidak dikenali dari server.",
+        );
+      }
+
       setReviewData({
         fileName: selectedFile.name,
         fileType: selectedFile.type,
@@ -120,16 +128,15 @@ const UploadCvDashboard = () => {
 
       if (auth.currentUser) {
         try {
+          const firestoreResult = sanitizeForFirestore(reviewResult);
           await addDoc(collection(db, "cvReviews"), {
             userId: auth.currentUser.uid,
             fileName: selectedFile.name,
             createdAt: new Date().toISOString(),
-            result: reviewResult,
+            result: firestoreResult,
           });
           setProgressGlobal(96);
-        } catch (e) {
-          console.error("Gagal menyimpan ke Firestore:", e);
-        }
+        } catch (_) {}
       }
 
       setProgressGlobal(100);
@@ -137,15 +144,12 @@ const UploadCvDashboard = () => {
       router.push("/dashboard/review-cv/result-review-cv");
       setGlobalUploading(false);
     } catch (err: any) {
-      // Logging detail untuk debugging
-      console.error("❌ Upload gagal. Detail objek error:");
-      console.dir(err);
-      
-      const errorMessage = err.response?.data?.message || err.message || "Terjadi kesalahan yang tidak diketahui";
+      const errorMessage =
+        err.response?.data?.message ||
+        err.message ||
+        "Terjadi kesalahan yang tidak diketahui";
       const errorStatus = err.response?.status;
-      
-      console.error(`Status: ${errorStatus}, Message: ${errorMessage}`);
-      
+
       if (errorStatus === 413) {
         toast.error("Ukuran file terlalu besar (Maks 4MB)");
       } else if (errorStatus === 403) {
@@ -153,7 +157,7 @@ const UploadCvDashboard = () => {
       } else {
         toast.error(`Upload gagal: ${errorMessage}`);
       }
-      
+
       setProgressGlobal(0);
       setGlobalUploading(false);
     }

@@ -30,7 +30,7 @@ export default function ResultReviewCv() {
 
   return (
     <div className="w-full">
-      <div className="mt-6 mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="mb-8">
         <div>
           <h1 className="text-TextPrimary text-2xl font-semibold md:text-3xl">
             Hasil Review CV Kamu
@@ -39,16 +39,6 @@ export default function ResultReviewCv() {
             Berikut hasil analisis AI terhadap CV yang telah kamu unggah.
           </p>
         </div>
-
-        <button
-          onClick={() => {
-            router.push("/dashboard/review-cv");
-          }}
-          className="bg-primaryBlue flex w-fit cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
-        >
-          <ArrowLeft size={16} />
-          Kembali ke Review CV
-        </button>
       </div>
 
       <motion.div
@@ -59,6 +49,18 @@ export default function ResultReviewCv() {
       >
         <CvReviewResult />
       </motion.div>
+
+      <div className="mt-10 flex justify-center">
+        <button
+          onClick={() => {
+            router.push("/dashboard/review-cv");
+          }}
+          className="bg-primaryBlue flex w-fit cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
+        >
+          <ArrowLeft size={16} />
+          Kembali ke Review CV
+        </button>
+      </div>
     </div>
   );
 }

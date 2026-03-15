@@ -16,6 +16,7 @@ import office from "@/assets/icons/office-docsx.svg";
 
 import { auth, db } from "@/app/lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
+import { sanitizeForFirestore } from "@/lib/utils";
 
 const UploadCv = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -132,8 +133,17 @@ const UploadCv = () => {
       setProgressGlobal(82);
 
       toast.success("File berhasil diunggah!");
-      console.log("Respon server:", res.data);
-      const reviewResult = res.data.data.result.data;
+      const apiResult = res.data?.data?.result;
+      const reviewResult = Array.isArray(apiResult)
+        ? apiResult
+        : apiResult?.data;
+
+      if (!Array.isArray(reviewResult) || reviewResult.length === 0) {
+        throw new Error(
+          "Hasil analisis CV kosong atau tidak dikenali dari server.",
+        );
+      }
+
       setReviewData({
         fileName: selectedFile.name,
         fileType: selectedFile.type,
@@ -145,16 +155,15 @@ const UploadCv = () => {
       // Save to Firestore if logged in
       if (isLoggedIn && auth.currentUser) {
         try {
+          const firestoreResult = sanitizeForFirestore(reviewResult);
           await addDoc(collection(db, "cvReviews"), {
             userId: auth.currentUser.uid,
             fileName: selectedFile.name,
             createdAt: new Date().toISOString(),
-            result: reviewResult,
+            result: firestoreResult,
           });
           setProgressGlobal(96);
-        } catch (e) {
-          console.error("Gagal menyimpan ke Firestore:", e);
-        }
+        } catch (_) {}
       }
 
       if (!isLoggedIn) {
@@ -169,7 +178,6 @@ const UploadCv = () => {
       router.push("/review-cv/result-review-cv");
       setGlobalUploading(false);
     } catch (err: any) {
-      console.error("Upload gagal:", err.response?.data || err.message);
       toast.error(err?.response?.data?.message || "Gagal Upload");
       setProgressGlobal(0);
       setGlobalUploading(false);
