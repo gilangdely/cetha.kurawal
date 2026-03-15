@@ -16,18 +16,6 @@ export default function Home() {
           <div className="flex w-full items-center gap-10 px-6 lg:flex-row lg:px-0">
             <div className="w-full flex-1 lg:mt-24">
               <h2 className="text-TextPrimary text-2xl font-semibold md:text-3xl lg:text-4xl">
-                <span className="mb-2 hidden items-center gap-1 text-sm lg:flex">
-                  <Link
-                    href="/"
-                    className="hover:text-TextPrimary/80 text-gray-500/50 transition-colors"
-                  >
-                    Home
-                  </Link>
-                  <ChevronRight size={16} className="text-gray-400" />
-                  <span className="text-accentOrange font-medium">
-                    Rekomendasi Pekerjaan
-                  </span>
-                </span>
                 Temukan{" "}
                 <span className="text-accentOrange">Pekerjaan yang Tepat</span>{" "}
                 untukmu
