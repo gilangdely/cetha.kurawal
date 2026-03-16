@@ -46,75 +46,35 @@ export default function CvBuilderPage() {
   const handleExportPdf = async () => {
     try {
       setIsExporting(true);
-      console.log(
-        "[Export] Starting searchable PDF export process (backend printing)...",
-      );
+      console.log("[Export] Initiating client-side PDF generation...");
 
-      const element = document.querySelector(".cv-document") as HTMLElement;
-      if (!element) throw new Error(t("errors.documentNotFound"));
-
-      // Tunggu font siap
-      await document.fonts.ready;
-
-      // Ambil semua styles yang aktif untuk diinjeksi ke backend
-      const styleSheets = Array.from(document.styleSheets);
-      let cssStyles = "";
-      try {
-        for (const sheet of styleSheets) {
-          const rules = Array.from(sheet.cssRules);
-          for (const rule of rules) {
-            cssStyles += rule.cssText;
-          }
-        }
-      } catch (e) {
-        console.warn(
-          "[Export] Some styles are not accessible (CORS), relying on global Tailwind.",
-        );
-      }
-
-      // Clone element untuk memanipulasi tanpa merusak UI asli
-      const clonedElement = element.cloneNode(true) as HTMLElement;
-      clonedElement.style.transform = "none";
-      clonedElement.style.margin = "0";
-      clonedElement.style.boxShadow = "none";
-
-      const userName =
-        useCvBuilderStore.getState().data.personalInfo.fullName || "User";
-      const templateName = useCvBuilderStore.getState().activeTemplate;
-      const fileName = `CV_${userName.replace(/\s+/g, "_")}_${templateName}.pdf`;
-
-      // Bungkus dalam HTML lengkap dengan styles
-      const fullHtml = `
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <meta charset="utf-8">
-            <style>
-              ${cssStyles}
-              body { margin: 0; padding: 0; background: white; }
-              .cv-document { width: 210mm; min-height: 297mm; margin: 0 auto !important; transform: none !important; box-shadow: none !important; }
-            </style>
-          </head>
-          <body>
-            ${clonedElement.outerHTML}
-          </body>
-        </html>
-      `;
-
-      console.log("[Export] Sending data to backend...");
-
-      const response = await fetch("/api/export-pdf", {
+      // 1. Sync Quota (Cut 2 tokens)
+      const quotaResponse = await fetch("/api/cv-quota", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ html: fullHtml, fileName }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || t("errors.exportServerFailed"));
+      if (!quotaResponse.ok) {
+        const errorData = await quotaResponse.json();
+        throw new Error(errorData.message || t("errors.exportQuotaFailed") || "Gagal memotong token");
       }
 
-      const blob = await response.blob();
+      console.log("[Export] Quota synced. Rendering PDF...");
+
+      // 2. Import react-pdf components dynamically to save bundle size
+      const { pdf } = await import("@react-pdf/renderer");
+      const { CvTemplatePdf } = await import("@/components/cv-templates/CvTemplatePdf");
+
+      const data = useCvBuilderStore.getState().data;
+      const style = useCvBuilderStore.getState().style;
+      const templateName = useCvBuilderStore.getState().activeTemplate;
+      const userName = data.personalInfo.fullName || "User";
+      const fileName = `CV_${userName.replace(/\s+/g, "_")}_${templateName}.pdf`;
+
+      // 3. Generate PDF Blob
+      const blob = await pdf(<CvTemplatePdf data={data} templateSlug={templateName} style={style} />).toBlob();
+      
+      // 4. Download
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -124,11 +84,11 @@ export default function CvBuilderPage() {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
 
-      toast.success(t("toast.exportSuccess"));
-      console.log("[Export] File downloaded successfully via backend.");
+      toast.success(t("toast.exportSuccess") || "PDF berhasil diunduh");
+      console.log("[Export] PDF generated and downloaded successfully on client.");
     } catch (error: any) {
       console.error("[Export Error] Failed to export PDF:", error);
-      toast.error(error.message || t("errors.exportFailed"));
+      toast.error(error.message || t("errors.exportFailed") || "Gagal menghasilkan PDF");
     } finally {
       setIsExporting(false);
     }
