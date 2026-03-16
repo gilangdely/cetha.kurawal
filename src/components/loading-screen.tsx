@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useUploadStore } from "@/store/uploadStore";
+import { useTranslations } from "next-intl";
 
 import loadingIcons1 from "@/assets/icons/loading-bulb.svg";
 import loadingIcons2 from "@/assets/icons/loading-horse.svg";
@@ -16,6 +17,7 @@ interface LoadingScreenProps {
 const Icons = [loadingIcons1, loadingIcons2, loadingIcons3];
 
 const LoadingScreen: React.FC<LoadingScreenProps> = ({ type }) => {
+  const t = useTranslations("loadingScreen");
   const targetProgress = useUploadStore((s) => s.progress);
   const [dots, setDots] = useState("");
   const [currentIcon, setCurrentIcon] = useState(0);
@@ -90,26 +92,24 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ type }) => {
   }, [targetProgress]);
 
   const getTextCv = () => {
-    if (displayedProgress < 50) return "Sedang menganalisis CV kamu";
+    if (displayedProgress < 50) return t("types.cv.stage1");
     if (displayedProgress < 80)
-      return "Cari kata kunci yang pas biar HR gampang nemuin kamu";
-    return "Siap! CV kamu akan jadi lebih siap dilirik recruiter.";
+      return t("types.cv.stage2");
+    return t("types.cv.stage3");
   };
 
   const getTextJob = () => {
-    if (displayedProgress < 50)
-      return "Mencari peluang kerja yang cocok buat kamu";
+    if (displayedProgress < 50) return t("types.job.stage1");
     if (displayedProgress < 80)
-      return "Menganalisis keahlian dan preferensimu untuk hasil terbaik";
-    return "Rekomendasi pekerjaan siap ditampilkan!";
+      return t("types.job.stage2");
+    return t("types.job.stage3");
   };
 
   const getTextLinkedin = () => {
-    if (displayedProgress < 50)
-      return "Sedang menganalisis profil LinkedIn kamu";
+    if (displayedProgress < 50) return t("types.linkedin.stage1");
     if (displayedProgress < 80)
-      return "Menilai headline, summary, dan skill untuk meningkatkan profilmu";
-    return "Hampir selesai! Kami menyiapkan insight agar profilmu lebih standout.";
+      return t("types.linkedin.stage2");
+    return t("types.linkedin.stage3");
   };
 
   const getText =
@@ -136,32 +136,41 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ type }) => {
 
   const etaLabel =
     estimatedRemainingSec <= 1
-      ? "Kurang dari 1 detik lagi"
-      : `Perkiraan selesai dalam ${estimatedRemainingSec} detik`;
+      ? t("eta.lessThanOneSecond")
+      : t("eta.seconds", { seconds: estimatedRemainingSec });
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center overscroll-none bg-white">
-      <div className="mb-6 flex h-16 w-16 items-center justify-center">
-        <motion.div
-          initial={{ y: 0, opacity: 1, scale: 1 }}
-          animate={
-            iconPhase === "in"
-              ? { y: 0, opacity: 1, scale: 1 }
-              : { y: -12, opacity: 0, scale: 0.92 }
-          }
-          transition={{ duration: 0.2, ease: "easeInOut" }}
-        >
-          <Image src={Icons[currentIcon]} alt="Loading" className="h-16 w-16" />
-        </motion.div>
+    <div className="fixed inset-0 z-999 overscroll-none bg-white">
+      {/* CENTER CONTENT */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center px-4">
+        <div className="mb-6 flex h-16 w-16 items-center justify-center">
+          <motion.div
+            initial={{ y: 0, opacity: 1, scale: 1 }}
+            animate={
+              iconPhase === "in"
+                ? { y: 0, opacity: 1, scale: 1 }
+                : { y: -12, opacity: 0, scale: 0.92 }
+            }
+            transition={{ duration: 0.2, ease: "easeInOut" }}
+          >
+            <Image
+              src={Icons[currentIcon]}
+              alt={t("iconAlt")}
+              className="h-16 w-16"
+            />
+          </motion.div>
+        </div>
+
+        <p className="max-w-md text-center text-lg text-gray-700 md:max-w-xl">
+          {getText()}
+          {dots}
+        </p>
       </div>
 
-      <p className="max-w-xl text-center text-lg text-gray-700">
-        {getText()}
-        {dots}
-      </p>
-
-      <div className="mt-4 w-full max-w-xs px-4 text-center">
+      {/* BOTTOM PROGRESS */}
+      <div className="absolute bottom-10 left-1/2 w-full max-w-xs -translate-x-1/2 px-4 text-center">
         <p className="text-sm font-medium text-gray-500">{etaLabel}</p>
+
         <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-gray-200">
           <div
             className="bg-primaryBlue h-full rounded-full transition-all duration-300"
@@ -170,6 +179,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ type }) => {
             }}
           />
         </div>
+
         <p className="mt-1 text-xs text-gray-400">
           {Math.round(displayedProgress)}%
         </p>

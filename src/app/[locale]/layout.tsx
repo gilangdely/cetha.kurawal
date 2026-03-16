@@ -33,7 +33,7 @@ export default async function RootLayout({
       <body className="antialiased">
         <NextIntlClientProvider messages={messages}>
           {children}
-          {/* <Toaster richColors position="top-right" closeButton /> */}
+          <Toaster richColors position="top-right" closeButton />
         </NextIntlClientProvider>
       </body>
     </html>
