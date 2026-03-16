@@ -89,7 +89,7 @@ export const ModernAts = ({
                     {exp.role}
                   </h4>
 
-                  <span className="text-primaryBlue ml-4 rounded bg-blue-50 px-2 py-0.5 text-sm font-semibold whitespace-nowrap">
+                  <span className="text-primaryBlue ml-4 text-sm font-semibold whitespace-nowrap">
                     {exp.startDate} - {exp.endDate || "Present"}
                   </span>
                 </div>
@@ -128,7 +128,7 @@ export const ModernAts = ({
                     {edu.fieldOfStudy && `, ${edu.fieldOfStudy}`}
                   </h4>
 
-                  <span className="text-primaryBlue ml-4 rounded bg-blue-50 px-2 py-0.5 text-sm font-semibold whitespace-nowrap">
+                  <span className="text-primaryBlue ml-4 text-sm font-semibold whitespace-nowrap">
                     {edu.startDate} - {edu.endDate || "Present"}
                   </span>
                 </div>

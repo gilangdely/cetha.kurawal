@@ -9,7 +9,7 @@ const TEMPLATES = [
   { id: "classic", key: "classic" },
   { id: "creative-modern", key: "creativeModern" },
   { id: "executive-minimalist", key: "executiveMinimalist" },
-  { id: "compact-professional", key: "compactProfessional" },
+  // { id: "compact-professional", key: "compactProfessional" },
 ] as const;
 
 export const TemplateGallery = () => {
@@ -45,11 +45,10 @@ export const TemplateGallery = () => {
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setTemplate(tmpl.id)}
-              className={`relative flex h-40 flex-col items-center justify-center gap-3 rounded-2xl border p-4 text-center transition-all duration-300 ${
-                isActive
+              className={`relative flex h-40 flex-col items-center justify-center gap-3 rounded-2xl border p-4 text-center transition-all duration-300 ${isActive
                   ? "border-primaryBlue ring-primaryBlue/20 bg-blue-50/50 shadow-md ring-1"
                   : "border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm"
-              }`}
+                }`}
             >
               {/* Badge Active */}
               {isActive && (
@@ -60,11 +59,10 @@ export const TemplateGallery = () => {
 
               {/* Icon / Abstract Preview */}
               <div
-                className={`flex h-12 w-12 items-center justify-center rounded-full ${
-                  isActive
+                className={`flex h-12 w-12 items-center justify-center rounded-full ${isActive
                     ? "bg-primaryBlue/10 text-primaryBlue"
                     : "bg-gray-100 text-gray-400"
-                }`}
+                  }`}
               >
                 <LayoutTemplate size={24} />
               </div>

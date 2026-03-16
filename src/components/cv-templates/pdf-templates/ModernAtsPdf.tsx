@@ -1,23 +1,23 @@
-import { Page, Text, View, StyleSheet, Image } from "@react-pdf/renderer";
+import { Page, Text, View, StyleSheet, Image as PdfImage } from "@react-pdf/renderer";
 import { ResumeData } from "@/types/build-cv";
+import { sanitizePdfText } from "@/lib/utils";
 
 const styles = StyleSheet.create({
   page: {
     padding: "40pt",
     backgroundColor: "#ffffff",
     fontFamily: "Manrope",
-    color: "#111827",
     lineHeight: 1.2,
   },
   header: {
-    marginBottom: "25pt",
+    marginBottom: "24pt",
     flexDirection: "row",
-    gap: "20pt",
-    alignItems: "center",
+    gap: "18pt",
+    alignItems: "flex-start",
   },
   photo: {
-    width: "70pt",
-    height: "70pt",
+    width: "72pt",
+    height: "72pt",
     borderRadius: "12pt",
     borderWidth: "1pt",
     borderColor: "rgba(37, 99, 235, 0.2)",
@@ -27,33 +27,35 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   name: {
-    fontSize: "24pt",
-    fontWeight: 700,
+    fontSize: "27pt",
+    fontWeight: 800,
     color: "#2563eb",
-    marginBottom: "4pt",
+    marginBottom: "6pt",
   },
   jobTitle: {
-    fontSize: "16pt",
+    fontSize: "18pt",
     fontWeight: 600,
-    color: "#374151",
-    marginBottom: "5pt",
+    marginBottom: "9pt",
+    opacity: 0.9,
   },
   contactText: {
-    fontSize: "9pt",
-    color: "#6b7280",
+    fontSize: "10.5pt",
     flexDirection: "row",
-    gap: "10pt",
+    flexWrap: "wrap",
+    gap: "12pt",
+    opacity: 0.7,
+    fontWeight: 500,
   },
   section: {
     marginBottom: "15pt",
   },
   sectionTitle: {
-    fontSize: "12pt",
+    fontSize: "13pt",
     fontWeight: 700,
     color: "#2563eb",
     textTransform: "uppercase",
     letterSpacing: "1pt",
-    marginBottom: "4pt",
+    marginBottom: "6pt",
   },
   line: {
     height: "1pt",
@@ -61,9 +63,9 @@ const styles = StyleSheet.create({
     marginBottom: "8pt",
   },
   summary: {
-    fontSize: "10pt",
+    fontSize: "10.5pt",
     lineHeight: 1.5,
-    color: "#374151",
+    opacity: 0.9,
   },
   item: {
     marginBottom: "12pt",
@@ -75,28 +77,23 @@ const styles = StyleSheet.create({
     marginBottom: "3pt",
   },
   itemTitle: {
-    fontSize: "11pt",
+    fontSize: "12pt",
     fontWeight: 700,
   },
   itemDateBadge: {
-    backgroundColor: "#eff6ff",
-    paddingHorizontal: "6pt",
-    paddingVertical: "2pt",
-    borderRadius: "4pt",
-    fontSize: "8.5pt",
+    fontSize: "10pt",
     fontWeight: 600,
     color: "#2563eb",
   },
   itemSubtitle: {
     fontSize: "10pt",
     fontWeight: 500,
-    color: "#4b5563",
     marginBottom: "4pt",
   },
   itemDescription: {
-    fontSize: "9.5pt",
+    fontSize: "10.5pt",
     lineHeight: 1.4,
-    color: "#374151",
+    opacity: 0.9,
   },
   skillContainer: {
     flexDirection: "row",
@@ -108,52 +105,56 @@ const styles = StyleSheet.create({
     paddingHorizontal: "8pt",
     paddingVertical: "3pt",
     borderRadius: "4pt",
-    fontSize: "9pt",
+    fontSize: "10pt",
     fontWeight: 500,
     color: "#374151",
   },
 });
 
 export const ModernAtsPdf = ({ data, style }: { data: ResumeData; style: any }) => {
-  const primaryColor = style.fontColor || "#2563eb";
+  const primaryColor = "#2563eb"; // Accent theme remains fixed to match modern-ats.tsx
 
   return (
-    <Page size="A4" style={styles.page}>
+    <Page size="A4" style={[styles.page, style?.fontColor ? { color: style.fontColor } : {}]}>
       <View style={styles.header}>
         {data.personalInfo.showPhoto && data.personalInfo.photoUrl && (
-          <Image src={data.personalInfo.photoUrl} style={styles.photo} />
+          <PdfImage src={data.personalInfo.photoUrl} style={styles.photo} />
         )}
         <View style={styles.headerContent}>
-          <Text style={[styles.name, { color: primaryColor }]}>{data.personalInfo.fullName || "Nama Lengkap"}</Text>
+          <Text style={styles.name}>{data.personalInfo.fullName || "Nama Lengkap"}</Text>
           <Text style={styles.jobTitle}>{data.personalInfo.jobTitle}</Text>
           <View style={styles.contactText}>
-            <Text>{data.personalInfo.email}  |  {data.personalInfo.phone}  |  {data.personalInfo.location}</Text>
+            {data.personalInfo.email && <Text>{data.personalInfo.email}</Text>}
+            {data.personalInfo.phone && <Text>{data.personalInfo.phone}</Text>}
+            {data.personalInfo.location && <Text>{data.personalInfo.location}</Text>}
+            {data.personalInfo.linkedin && <Text>{data.personalInfo.linkedin}</Text>}
+            {data.personalInfo.portfolio && <Text>{data.personalInfo.portfolio}</Text>}
           </View>
         </View>
       </View>
 
       {data.personalInfo.summary && (
         <View style={styles.section} wrap={false}>
-          <Text style={[styles.sectionTitle, { color: primaryColor }]}>Profile</Text>
+          <Text style={styles.sectionTitle}>Profile</Text>
           <View style={styles.line} />
-          <Text style={styles.summary}>{data.personalInfo.summary}</Text>
+          <Text style={styles.summary}>{sanitizePdfText(data.personalInfo.summary)}</Text>
         </View>
       )}
 
       {data.experience.length > 0 && (
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: primaryColor }]}>Experience</Text>
+          <Text style={styles.sectionTitle}>Experience</Text>
           <View style={styles.line} />
           {data.experience.map((exp) => (
             <View key={exp.id} style={styles.item} wrap={false}>
               <View style={styles.itemHeader}>
                 <Text style={styles.itemTitle}>{exp.role}</Text>
-                <View style={[styles.itemDateBadge, { backgroundColor: primaryColor + "1a", color: primaryColor }]}>
+                <View style={styles.itemDateBadge}>
                   <Text>{exp.startDate} - {exp.endDate || "Present"}</Text>
                 </View>
               </View>
               <Text style={styles.itemSubtitle}>{exp.company}{exp.location ? ` • ${exp.location}` : ""}</Text>
-              {exp.description && <Text style={styles.itemDescription}>{exp.description}</Text>}
+              {exp.description && <Text style={styles.itemDescription}>{sanitizePdfText(exp.description)}</Text>}
             </View>
           ))}
         </View>
@@ -161,26 +162,40 @@ export const ModernAtsPdf = ({ data, style }: { data: ResumeData; style: any }) 
 
       {data.education.length > 0 && (
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: primaryColor }]}>Education</Text>
+          <Text style={styles.sectionTitle}>Education</Text>
           <View style={styles.line} />
-          {data.education.map((edu) => (
-            <View key={edu.id} style={styles.item} wrap={false}>
-              <View style={styles.itemHeader}>
-                <Text style={styles.itemTitle}>{edu.degree}{edu.fieldOfStudy ? `, ${edu.fieldOfStudy}` : ""}</Text>
-                <View style={[styles.itemDateBadge, { backgroundColor: primaryColor + "1a", color: primaryColor }]}>
-                  <Text>{edu.startDate} - {edu.endDate || "Present"}</Text>
+
+          <View style={{ flexDirection: "column", gap: "16pt" }}>
+            {data.education.map((edu) => (
+              <View key={edu.id} wrap={false}>
+                <View style={styles.itemHeader}>
+                  <Text style={styles.itemTitle}>
+                    {edu.degree}
+                    {edu.fieldOfStudy ? `, ${edu.fieldOfStudy}` : ""}
+                  </Text>
+                  <Text style={styles.itemDateBadge}>
+                    {edu.startDate} - {edu.endDate || "Present"}
+                  </Text>
                 </View>
+
+                <Text style={[styles.itemSubtitle, { fontWeight: 500, opacity: 0.8 }]}>
+                  {edu.institution}
+                </Text>
+
+                {edu.description && (
+                  <Text style={[styles.itemDescription, { marginTop: "4pt", lineHeight: 1.6, opacity: 0.9 }]}>
+                    {sanitizePdfText(edu.description)}
+                  </Text>
+                )}
               </View>
-              <Text style={styles.itemSubtitle}>{edu.institution}</Text>
-              {edu.description && <Text style={styles.itemDescription}>{edu.description}</Text>}
-            </View>
-          ))}
+            ))}
+          </View>
         </View>
       )}
 
       {data.skills.length > 0 && (
         <View style={styles.section} wrap={false}>
-          <Text style={[styles.sectionTitle, { color: primaryColor }]}>Skills</Text>
+          <Text style={styles.sectionTitle}>Skills</Text>
           <View style={styles.line} />
           <View style={styles.skillContainer}>
             {data.skills.map((skill) => (

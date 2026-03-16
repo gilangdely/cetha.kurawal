@@ -40,3 +40,8 @@ export function sanitizeForFirestore<T>(value: T): T {
   const sanitized = sanitizeValue(value);
   return (sanitized === undefined ? null : sanitized) as T;
 }
+
+export function sanitizePdfText(text?: string): string {
+  if (!text) return "";
+  return text.replace(/\t/g, " ");
+}

@@ -52,25 +52,7 @@ export const CvPreview = () => {
     <div className="flex w-full flex-col items-center overflow-y-auto print:overflow-visible">
       {/* Style & Template Toolbar */}
       <div className="mb-4 flex items-center gap-1 rounded-lg border border-gray-200 bg-gray-100 p-1.5 print:hidden">
-        {/* Font Dropdown */}
-        <Select
-          value={style.fontFamily}
-          onValueChange={(value) => setFontFamily(value)}
-        >
-          <SelectTrigger className="h-8 border-0 bg-transparent text-sm font-medium shadow-none hover:bg-gray-200 focus:ring-0">
-            <SelectValue placeholder={t("fontPlaceholder")} />
-          </SelectTrigger>
 
-          <SelectContent side="bottom" position="popper">
-            <SelectItem value="Inter">Inter</SelectItem>
-            <SelectItem value="Poppins">Poppins</SelectItem>
-            <SelectItem value="Roboto">Roboto</SelectItem>
-            <SelectItem value="Georgia">Georgia</SelectItem>
-          </SelectContent>
-        </Select>
-
-        {/* Divider */}
-        <div className="mx-1 h-5 w-px bg-gray-300/70" />
 
         {/* Color Selector */}
         <div className="flex items-center gap-1 px-1">
@@ -81,11 +63,10 @@ export const CvPreview = () => {
               <button
                 key={color}
                 onClick={() => setFontColor(color)}
-                className={`h-6 w-6 rounded-full border transition-all duration-200 ${
-                  active
+                className={`h-6 w-6 rounded-full border transition-all duration-200 ${active
                     ? "-translate-y-[2px] border-gray-300 shadow-sm"
                     : "border-transparent opacity-80 hover:-translate-y-[1px] hover:bg-gray-200 hover:opacity-100"
-                }`}
+                  }`}
                 style={{ backgroundColor: color }}
               />
             );

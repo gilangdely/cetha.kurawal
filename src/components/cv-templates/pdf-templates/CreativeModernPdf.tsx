@@ -1,5 +1,6 @@
 import { Page, Text, View, StyleSheet, Image } from "@react-pdf/renderer";
 import { ResumeData } from "@/types/build-cv";
+import { sanitizePdfText } from "@/lib/utils";
 
 const styles = StyleSheet.create({
   page: {
@@ -7,231 +8,375 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     fontFamily: "Manrope",
     color: "#111827",
-    lineHeight: 1.2,
+    lineHeight: 1.3,
   },
+
+  // ─── SIDEBAR ─────────────────────────────────────────────────────────
   sidebar: {
-    width: "30%",
-    backgroundColor: "rgba(37, 99, 235, 0.05)",
-    padding: "24pt",
-    height: "100%",
-    borderRightWidth: "0.5pt",
-    borderRightColor: "rgba(37, 99, 235, 0.1)",
-    borderRightStyle: "solid",
+    width: "32%",
+    backgroundColor: "#1e3a5f",
+    padding: "28pt 20pt",
+    flexShrink: 0,
   },
+
+  // Photo
   photoContainer: {
-    marginBottom: "20pt",
     alignItems: "center",
+    marginBottom: "24pt",
   },
   photo: {
-    width: "80pt",
-    height: "80pt",
-    borderRadius: "40pt",
-    borderWidth: "3pt",
+    width: "76pt",
+    height: "76pt",
+    borderRadius: "38pt",
+    borderWidth: "2.5pt",
     borderColor: "#ffffff",
     borderStyle: "solid",
   },
-  sectionTitleSidebar: {
-    color: "#2563eb",
-    borderBottomWidth: "1.5pt",
-    borderBottomColor: "rgba(37, 99, 235, 0.2)",
-    borderBottomStyle: "solid",
-    paddingBottom: "3pt",
-    fontSize: "9pt",
+  photoPlaceholder: {
+    width: "76pt",
+    height: "76pt",
+    borderRadius: "38pt",
+    backgroundColor: "#2d4f7a",
+  },
+
+  // Name block (inside sidebar when no main header is used)
+  sidebarName: {
+    fontSize: "14pt",
+    fontWeight: 800,
+    color: "#f8fafc",
+    textAlign: "center",
+    marginBottom: "3pt",
+    lineHeight: 1.2,
+  },
+  sidebarJobTitle: {
+    fontSize: "7.5pt",
+    fontWeight: 600,
+    color: "#93c5fd",
+    textAlign: "center",
+    textTransform: "uppercase",
+    letterSpacing: "1.4pt",
+    marginBottom: "22pt",
+  },
+
+  // Sidebar section label
+  sidebarSectionTitle: {
+    fontSize: "6.5pt",
     fontWeight: 700,
     textTransform: "uppercase",
-    letterSpacing: "1pt",
+    letterSpacing: "1.8pt",
+    color: "#64748b",
+    marginBottom: "8pt",
+    marginTop: "18pt",
+  },
+  sidebarDivider: {
+    height: "0.5pt",
+    backgroundColor: "#2d4f7a",
     marginBottom: "10pt",
-    marginTop: "16pt",
   },
+
+  // Contact
   contactItem: {
-    fontSize: "8.5pt",
+    fontSize: "8pt",
+    color: "#cbd5e1",
     fontWeight: 400,
-    color: "#4b5563",
-    marginBottom: "6pt",
+    marginBottom: "5pt",
+    lineHeight: 1.4,
   },
-  skillContainer: {
+
+  // Skills
+  skillWrap: {
     flexDirection: "row",
     flexWrap: "wrap",
     gap: "5pt",
   },
   skillBadge: {
-    backgroundColor: "#ffffff",
-    paddingHorizontal: "7pt",
+    backgroundColor: "#2d4f7a",
+    paddingHorizontal: "8pt",
     paddingVertical: "3pt",
-    borderRadius: "5pt",
+    borderRadius: "3pt",
     fontSize: "7.5pt",
     fontWeight: 600,
-    color: "#2563eb",
-    marginBottom: "4pt",
+    color: "#93c5fd",
   },
+
+  // ─── MAIN ─────────────────────────────────────────────────────────────
   main: {
-    width: "70%",
-    padding: "30pt",
+    flex: 1,
+    padding: "32pt 28pt 32pt 24pt",
+    backgroundColor: "#ffffff",
+  },
+
+  // Main header
+  mainHeader: {
+    marginBottom: "22pt",
+    paddingBottom: "16pt",
+    borderBottomWidth: "1pt",
+    borderBottomColor: "#e2e8f0",
+    borderBottomStyle: "solid",
   },
   name: {
-    fontSize: "26pt",
-    fontWeight: 700,
-    color: "#111827",
-    marginBottom: "4pt",
+    fontSize: "22pt",
+    fontWeight: 800,
+    color: "#0f172a",
+    letterSpacing: "-0.3pt",
+    marginBottom: "3pt",
   },
   jobTitle: {
-    color: "#2563eb",
-    fontSize: "13pt",
-    fontWeight: 700,
+    fontSize: "10pt",
+    fontWeight: 600,
     textTransform: "uppercase",
-    letterSpacing: "1pt",
-    marginBottom: "25pt",
+    letterSpacing: "1.6pt",
   },
+
+  // Section
   section: {
     marginBottom: "18pt",
   },
-  sectionTitleMain: {
-    marginBottom: "10pt",
+  sectionHeader: {
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: "10pt",
+    gap: "8pt",
   },
-  sectionIndicator: {
-    width: "18pt",
-    height: "5pt",
-    backgroundColor: "#2563eb",
+  sectionBar: {
+    width: "16pt",
+    height: "3pt",
+    borderRadius: "2pt",
   },
-  sectionTitleText: {
-    color: "#2563eb",
-    fontSize: "11pt",
+  sectionTitle: {
+    fontSize: "8.5pt",
     fontWeight: 700,
     textTransform: "uppercase",
-    letterSpacing: "1pt",
-    marginLeft: "8pt",
+    letterSpacing: "1.4pt",
+    color: "#0f172a",
   },
+  sectionRule: {
+    flex: 1,
+    height: "0.5pt",
+    backgroundColor: "#e2e8f0",
+  },
+
+  // Summary
   summary: {
     fontSize: "9.5pt",
-    lineHeight: 1.5,
-    color: "#374151",
+    lineHeight: 1.65,
+    color: "#475569",
   },
-  experienceItem: {
+
+  // Experience / Education item
+  // Hapus semua border dari styles.item
+  item: {
     marginBottom: "12pt",
-    paddingLeft: "12pt",
-    position: "relative",
+    flexDirection: "row",  // ubah ke row
   },
-  experienceDot: {
-    position: "absolute",
-    left: 0,
-    top: "5pt",
-    width: "5pt",
-    height: "5pt",
-    borderRadius: "2.5pt",
-    backgroundColor: "rgba(37, 99, 235, 0.5)",
+  itemBorder: {
+    width: "1.5pt",
+    backgroundColor: "#e2e8f0",
+    marginRight: "10pt",
+    borderRadius: "1pt",
   },
-  itemHeader: {
+  itemContent: {
+    flex: 1,
+  },
+  itemTopRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: "3pt",
+    alignItems: "baseline",
+    marginBottom: "1pt",
   },
   itemTitle: {
-    fontSize: "10.5pt",
+    fontSize: "10pt",
     fontWeight: 700,
+    color: "#0f172a",
+    flex: 1,
+    paddingRight: "8pt",
   },
   itemDate: {
-    fontSize: "8.5pt",
-    color: "#6b7280",
+    fontSize: "7.5pt",
+    color: "#94a3b8",
+    fontWeight: 500,
+    flexShrink: 0,
   },
   itemSubtitle: {
-    fontSize: "9.5pt",
+    fontSize: "8.5pt",
     fontWeight: 600,
-    color: "#4b5563",
+    color: "#64748b",
     marginBottom: "4pt",
   },
-  itemDescription: {
+
+  // Bullet description
+  bulletRow: {
+    flexDirection: "row",
+    gap: "5pt",
+    marginBottom: "2pt",
+  },
+  bulletDash: {
     fontSize: "9pt",
-    lineHeight: 1.4,
-    color: "#374151",
+    color: "#94a3b8",
+    lineHeight: 1.55,
+  },
+  bulletText: {
+    flex: 1,
+    fontSize: "8.5pt",
+    lineHeight: 1.55,
+    color: "#475569",
+  },
+  plainDescription: {
+    fontSize: "8.5pt",
+    lineHeight: 1.55,
+    color: "#475569",
   },
 });
 
+// Bullet description renderer
+const Description = ({ text }: { text: string }) => {
+  const lines = sanitizePdfText(text)
+    .split("\n")
+    .map((l) => l.replace(/^[-•]\s*/, "").trim())
+    .filter(Boolean);
+
+  if (lines.length <= 1) {
+    return <Text style={styles.plainDescription}>{sanitizePdfText(text)}</Text>;
+  }
+
+  return (
+    <View>
+      {lines.map((line, i) => (
+        <View key={i} style={styles.bulletRow}>
+          <Text style={styles.bulletDash}>–</Text>
+          <Text style={styles.bulletText}>{line}</Text>
+        </View>
+      ))}
+    </View>
+  );
+};
+
 export const CreativeModernPdf = ({ data, style }: { data: ResumeData; style: any }) => {
-  const primaryColor = style.fontColor || "#2563eb";
+  const primaryColor: string = style?.fontColor || "#2563eb";
+  const hasPhoto = data.personalInfo.showPhoto && data.personalInfo.photoUrl;
 
   return (
     <Page size="A4" style={styles.page}>
+
+      {/* ═══ SIDEBAR ══════════════════════════════════════════════════ */}
       <View style={styles.sidebar}>
-        {data.personalInfo.showPhoto && data.personalInfo.photoUrl && (
-          <View style={styles.photoContainer}>
-            <Image src={data.personalInfo.photoUrl} style={styles.photo} />
-          </View>
-        )}
-        
-        <Text style={[styles.sectionTitleSidebar, { color: primaryColor, borderBottomColor: primaryColor + "33" }]}>Kontak</Text>
-        <View>
-          {data.personalInfo.email && <Text style={styles.contactItem}>{data.personalInfo.email}</Text>}
-          {data.personalInfo.phone && <Text style={styles.contactItem}>{data.personalInfo.phone}</Text>}
-          {data.personalInfo.location && <Text style={styles.contactItem}>{data.personalInfo.location}</Text>}
+
+        {/* Photo */}
+        <View style={styles.photoContainer}>
+          {hasPhoto ? (
+            <Image src={data.personalInfo.photoUrl!} style={styles.photo} />
+          ) : (
+            <View style={styles.photoPlaceholder} />
+          )}
         </View>
 
+        {/* Name + Title */}
+        <Text style={styles.sidebarName}>
+          {data.personalInfo.fullName || "Nama Lengkap"}
+        </Text>
+        {data.personalInfo.jobTitle && (
+          <Text style={[styles.sidebarJobTitle, { color: primaryColor === "#2563eb" ? "#93c5fd" : primaryColor }]}>
+            {data.personalInfo.jobTitle}
+          </Text>
+        )}
+
+        {/* Contact */}
+        {(data.personalInfo.email || data.personalInfo.phone || data.personalInfo.location || data.personalInfo.linkedin || data.personalInfo.portfolio) && (
+          <View>
+            <Text style={styles.sidebarSectionTitle}>Kontak</Text>
+            <View style={styles.sidebarDivider} />
+            {data.personalInfo.email && <Text style={styles.contactItem}>{data.personalInfo.email}</Text>}
+            {data.personalInfo.phone && <Text style={styles.contactItem}>{data.personalInfo.phone}</Text>}
+            {data.personalInfo.location && <Text style={styles.contactItem}>{data.personalInfo.location}</Text>}
+            {data.personalInfo.linkedin && <Text style={styles.contactItem}>{data.personalInfo.linkedin}</Text>}
+            {data.personalInfo.portfolio && <Text style={styles.contactItem}>{data.personalInfo.portfolio}</Text>}
+          </View>
+        )}
+
+        {/* Skills */}
         {data.skills.length > 0 && (
           <View>
-            <Text style={[styles.sectionTitleSidebar, { color: primaryColor, borderBottomColor: primaryColor + "33" }]}>Keahlian</Text>
-            <View style={styles.skillContainer}>
+            <Text style={styles.sidebarSectionTitle}>Keahlian</Text>
+            <View style={styles.sidebarDivider} />
+            <View style={styles.skillWrap}>
               {data.skills.map((skill) => (
-                <Text key={skill.id} style={[styles.skillBadge, { color: primaryColor }]}>{skill.name}</Text>
+                <Text key={skill.id} style={styles.skillBadge}>{skill.name}</Text>
               ))}
             </View>
           </View>
         )}
       </View>
 
+      {/* ═══ MAIN ═════════════════════════════════════════════════════ */}
       <View style={styles.main}>
-        <Text style={styles.name}>{data.personalInfo.fullName || "Nama Lengkap"}</Text>
-        <Text style={[styles.jobTitle, { color: primaryColor }]}>{data.personalInfo.jobTitle}</Text>
 
+        {/* Summary */}
         {data.personalInfo.summary && (
           <View style={styles.section} wrap={false}>
-            <View style={styles.sectionTitleMain}>
-              <View style={[styles.sectionIndicator, { backgroundColor: primaryColor }]} />
-              <Text style={[styles.sectionTitleText, { color: primaryColor }]}>Profil</Text>
+            <View style={styles.sectionHeader}>
+              <View style={[styles.sectionBar, { backgroundColor: primaryColor }]} />
+              <Text style={styles.sectionTitle}>Profil</Text>
+              <View style={styles.sectionRule} />
             </View>
-            <Text style={styles.summary}>{data.personalInfo.summary}</Text>
+            <Text style={styles.summary}>{sanitizePdfText(data.personalInfo.summary)}</Text>
           </View>
         )}
 
+        {/* Experience */}
         {data.experience.length > 0 && (
           <View style={styles.section}>
-            <View style={styles.sectionTitleMain}>
-              <View style={[styles.sectionIndicator, { backgroundColor: primaryColor }]} />
-              <Text style={[styles.sectionTitleText, { color: primaryColor }]}>Pengalaman</Text>
+            <View style={styles.sectionHeader}>
+              <View style={[styles.sectionBar, { backgroundColor: primaryColor }]} />
+              <Text style={styles.sectionTitle}>Pengalaman</Text>
+              <View style={styles.sectionRule} />
             </View>
             {data.experience.map((exp) => (
-              <View key={exp.id} style={styles.experienceItem} wrap={false}>
-                <View style={[styles.experienceDot, { backgroundColor: primaryColor + "80" }]} />
-                <View style={styles.itemHeader}>
-                  <Text style={styles.itemTitle}>{exp.role}</Text>
-                  <Text style={styles.itemDate}>{exp.startDate} - {exp.endDate || "Sekarang"}</Text>
+              <View key={exp.id} style={styles.item} wrap={false}>
+                {/* Ganti borderLeft dengan View solid */}
+                <View style={styles.itemBorder} />
+
+                <View style={styles.itemContent}>
+                  <View style={styles.itemTopRow}>
+                    <Text style={styles.itemTitle}>{exp.role}</Text>
+                    <Text style={styles.itemDate}>{exp.startDate} – {exp.endDate || "Sekarang"}</Text>
+                  </View>
+                  <Text style={styles.itemSubtitle}>
+                    {exp.company}{exp.location ? ` • ${exp.location}` : ""}
+                  </Text>
+                  {exp.description && <Description text={exp.description} />}
                 </View>
-                <Text style={styles.itemSubtitle}>{exp.company}{exp.location ? ` • ${exp.location}` : ""}</Text>
-                {exp.description && <Text style={styles.itemDescription}>{exp.description}</Text>}
               </View>
             ))}
           </View>
         )}
 
+        {/* Education */}
         {data.education.length > 0 && (
           <View style={styles.section}>
-            <View style={styles.sectionTitleMain}>
-              <View style={[styles.sectionIndicator, { backgroundColor: primaryColor }]} />
-              <Text style={[styles.sectionTitleText, { color: primaryColor }]}>Pendidikan</Text>
+            <View style={styles.sectionHeader}>
+              <View style={[styles.sectionBar, { backgroundColor: primaryColor }]} />
+              <Text style={styles.sectionTitle}>Pendidikan</Text>
+              <View style={styles.sectionRule} />
             </View>
             {data.education.map((edu) => (
-              <View key={edu.id} style={styles.experienceItem} wrap={false}>
-                <View style={[styles.experienceDot, { backgroundColor: primaryColor + "80" }]} />
-                <View style={styles.itemHeader}>
-                  <Text style={styles.itemTitle}>{edu.degree}{edu.fieldOfStudy ? `, ${edu.fieldOfStudy}` : ""}</Text>
-                  <Text style={styles.itemDate}>{edu.startDate} - {edu.endDate || "Sekarang"}</Text>
+              <View key={edu.id} style={styles.item} wrap={false}>
+                <View style={[styles.itemBorder, { backgroundColor: primaryColor + "40" }]} />
+
+                <View style={styles.itemContent}>
+                  <View style={styles.itemTopRow}>
+                    <Text style={styles.itemTitle}>
+                      {edu.degree}{edu.fieldOfStudy ? `, ${edu.fieldOfStudy}` : ""}
+                    </Text>
+                    <Text style={styles.itemDate}>{edu.startDate} – {edu.endDate || "Sekarang"}</Text>
+                  </View>
+                  <Text style={styles.itemSubtitle}>{edu.institution}</Text>
+                  {edu.description && <Description text={edu.description} />}
                 </View>
-                <Text style={styles.itemSubtitle}>{edu.institution}</Text>
-                {edu.description && <Text style={styles.itemDescription}>{edu.description}</Text>}
               </View>
             ))}
           </View>
         )}
+
       </View>
     </Page>
   );
