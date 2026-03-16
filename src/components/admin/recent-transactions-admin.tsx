@@ -146,7 +146,7 @@ export function RecentTransactionsAdmin({
           <span className="text-base font-semibold">{t("title")}</span>
 
           <Link
-            href="/admin/subscriptions"
+            href="/admin/payments"
             className="flex items-center gap-1 rounded-full bg-violet-100 px-3 py-1 text-xs font-medium text-violet-700 transition hover:bg-violet-200"
           >
             {t("seeAll")}

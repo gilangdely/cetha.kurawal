@@ -91,7 +91,7 @@ export async function POST(req: Request) {
       }),
       type: "payment",
       isRead: false,
-      link: "/admin/subscriptions",
+      link: `/${locale}/admin/payments`,
       createdAt: FieldValue.serverTimestamp(),
     });
 
