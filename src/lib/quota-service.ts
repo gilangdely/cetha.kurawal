@@ -9,7 +9,7 @@ export const FEATURE_COSTS: Record<string, number> = {
     "Job Match": 20,
     "Improve LinkedIn": 15,
     "Generate Target": 5,
-    "Chat Bot": 5,
+    "Chat Bot": 1,
     "Generate CV": 2,
 };
 
