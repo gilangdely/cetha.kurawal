@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import {
   Sidebar,
@@ -19,22 +20,34 @@ import {
 } from "@/components/ui/sidebar";
 import {
   LayoutDashboard,
-  Newspaper,
-  FileText,
-  Blocks,
-  Settings,
   LayoutTemplate,
   Menu,
+  CreditCard,
+  FileEdit,
+  ReceiptText,
+  Sliders,
 } from "lucide-react";
 
 import logo from "@/assets/icons/cetha-new-logo.svg";
 
 const adminMenu = [
-  { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { title: "Plans", href: "/admin/subscription-tiers", icon: Blocks },
-  { title: "Payments", href: "/admin/subscriptions", icon: FileText },
-  { title: "Content", href: "/admin/contents", icon: Newspaper },
-  { title: "Site Settings", href: "/admin/settings", icon: Settings },
+  { titleKey: "menu.overview", href: "/admin", icon: LayoutDashboard },
+  {
+    titleKey: "menu.subscriptionPlans",
+    href: "/admin/subscription-tiers",
+    icon: CreditCard,
+  },
+  { titleKey: "menu.transactions", href: "/admin/payments", icon: ReceiptText },
+  {
+    titleKey: "menu.contentManagement",
+    href: "/admin/contents",
+    icon: FileEdit,
+  },
+  {
+    titleKey: "menu.systemSettings",
+    href: "/admin/site-settings",
+    icon: Sliders,
+  },
 ];
 
 function useMediaQuery(query: string) {
@@ -54,6 +67,7 @@ function useMediaQuery(query: string) {
 }
 
 export function AdminSidebar() {
+  const t = useTranslations("adminSidebar");
   const pathname = usePathname();
   const { state, setOpen } = useSidebar();
 
@@ -92,14 +106,14 @@ export function AdminSidebar() {
               className="animate-in fade-in flex items-center duration-500"
             >
               <Image
-                alt="logo"
+                alt={t("logoAlt")}
                 src={logo}
                 width={100}
                 priority
                 className="object-contain"
               />
               <span className="bg-accentOrange ml-1 rounded px-2 py-0.5 text-[10px] font-bold tracking-wider text-white uppercase shadow-sm">
-                ADMIN
+                {t("badge")}
               </span>
             </Link>
           )}
@@ -121,19 +135,20 @@ export function AdminSidebar() {
             isExpanded ? "opacity-100" : "opacity-0"
           }`}
         >
-          Manajemen Situs
+          {t("sectionLabel")}
         </SidebarGroupLabel>
 
         <SidebarGroupContent>
           <SidebarMenu className="gap-0.5">
             {adminMenu.map((item) => {
+              const itemTitle = t(item.titleKey);
               const isActive = pathname === item.href;
 
               return (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton
                     asChild
-                    tooltip={item.title}
+                    tooltip={itemTitle}
                     isActive={isActive}
                   >
                     <Link
@@ -156,7 +171,7 @@ export function AdminSidebar() {
 
                       {isExpanded && (
                         <span className="text-sm font-semibold">
-                          {item.title}
+                          {itemTitle}
                         </span>
                       )}
 
@@ -174,7 +189,7 @@ export function AdminSidebar() {
 
       {/* Footer */}
       <SidebarFooter className="p-4">
-        <SidebarMenuButton asChild tooltip="Web User UI">
+        <SidebarMenuButton asChild tooltip={t("userUi")}>
           <Link
             href="/dashboard"
             className={`group flex h-10 items-center rounded-xl transition-all ${
@@ -194,7 +209,7 @@ export function AdminSidebar() {
             />
 
             {isExpanded && (
-              <span className="text-sm font-semibold">Web User UI</span>
+              <span className="text-sm font-semibold">{t("userUi")}</span>
             )}
           </Link>
         </SidebarMenuButton>

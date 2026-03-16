@@ -53,13 +53,6 @@ const CtaSection = () => {
               >
                 {t("cvPanel.primaryCta")}
               </Link>
-
-              <Link
-                href="contoh"
-                className="text-sm font-medium text-white/80 underline-offset-4 transition hover:underline"
-              >
-                {t("cvPanel.secondaryCta")}
-              </Link>
             </div>
           </div>
 
@@ -95,17 +88,10 @@ const CtaSection = () => {
 
             <div className="mt-6 flex items-center justify-end gap-4">
               <Link
-                href="review-linkedin"
+                href="improve-linkedin"
                 className="text-accentOrange rounded-full bg-white px-6 py-3 text-sm font-semibold transition-all duration-200 hover:scale-[1.02] hover:bg-white/90 active:scale-[0.98]"
               >
                 {t("linkedinPanel.primaryCta")}
-              </Link>
-
-              <Link
-                href="contoh-linkedin"
-                className="text-sm font-medium text-white/80 underline-offset-4 transition hover:underline"
-              >
-                {t("linkedinPanel.secondaryCta")}
               </Link>
             </div>
           </div>

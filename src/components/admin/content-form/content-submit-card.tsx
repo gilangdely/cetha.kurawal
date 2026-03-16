@@ -1,6 +1,7 @@
 "use client";
 
 import { Save, AlertCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface ContentSubmitCardProps {
   loading: boolean;
@@ -8,7 +9,13 @@ interface ContentSubmitCardProps {
   isEdit: boolean;
 }
 
-export function ContentSubmitCard({ loading, error, isEdit }: ContentSubmitCardProps) {
+export function ContentSubmitCard({
+  loading,
+  error,
+  isEdit,
+}: ContentSubmitCardProps) {
+  const t = useTranslations("adminContents.form.submitCard");
+
   return (
     <div className="space-y-3">
       {/* Error alert */}
@@ -28,12 +35,12 @@ export function ContentSubmitCard({ loading, error, isEdit }: ContentSubmitCardP
         {loading ? (
           <>
             <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-            Menyimpan...
+            {t("saving")}
           </>
         ) : (
           <>
             <Save size={16} />
-            {isEdit ? "Simpan Perubahan" : "Simpan ke Database"}
+            {isEdit ? t("saveChanges") : t("saveToDatabase")}
           </>
         )}
       </button>

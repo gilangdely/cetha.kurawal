@@ -2,13 +2,16 @@
 
 import React from "react";
 import { Hash, Image, Tag } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface ContentMetaSidebarProps {
   slug: string;
   coverImageUrl: string;
   tags: string;
   onChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => void;
 }
 
@@ -43,32 +46,38 @@ export function ContentMetaSidebar({
   tags,
   onChange,
 }: ContentMetaSidebarProps) {
+  const t = useTranslations("adminContents.form.metaSidebar");
+
   return (
     <div className="rounded-2xl border border-gray-100 bg-white shadow-sm">
       <div className="border-b border-gray-100 px-5 py-3.5">
         <h3 className="text-xs font-semibold tracking-wider text-gray-500 uppercase">
-          Metadata Publikasi
+          {t("title")}
         </h3>
       </div>
       <div className="space-y-5 p-5">
-        <MetaField label="URL Slug" hint="Kosongkan agar di-generate otomatis" icon={Hash}>
+        <MetaField
+          label={t("fields.slug.label")}
+          hint={t("fields.slug.hint")}
+          icon={Hash}
+        >
           <input
             type="text"
             name="slug"
             value={slug}
             onChange={onChange}
-            placeholder="judul-konten-kamu"
+            placeholder={t("fields.slug.placeholder")}
             className={inputClass}
           />
         </MetaField>
 
-        <MetaField label="Gambar Sampul" icon={Image}>
+        <MetaField label={t("fields.coverImage.label")} icon={Image}>
           <input
             type="url"
             name="coverImageUrl"
             value={coverImageUrl}
             onChange={onChange}
-            placeholder="https://..."
+            placeholder={t("fields.coverImage.placeholder")}
             className={inputClass}
           />
           {coverImageUrl && (
@@ -76,7 +85,7 @@ export function ContentMetaSidebar({
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={coverImageUrl}
-                alt="Preview"
+                alt={t("fields.coverImage.previewAlt")}
                 className="h-28 w-full object-cover"
                 onError={(e) => {
                   (e.target as HTMLImageElement).style.display = "none";
@@ -86,13 +95,17 @@ export function ContentMetaSidebar({
           )}
         </MetaField>
 
-        <MetaField label="Tags" hint="Pisahkan dengan koma" icon={Tag}>
+        <MetaField
+          label={t("fields.tags.label")}
+          hint={t("fields.tags.hint")}
+          icon={Tag}
+        >
           <input
             type="text"
             name="tags"
             value={tags}
             onChange={onChange}
-            placeholder="frontend, javascript, resume"
+            placeholder={t("fields.tags.placeholder")}
             className={inputClass}
           />
         </MetaField>

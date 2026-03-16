@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import { ContentFormHeader } from "@/components/admin/content-form/content-form-header";
 import { ContentTypeSelector } from "@/components/admin/content-form/content-type-selector";
 import { ContentMainFields } from "@/components/admin/content-form/content-main-fields";
@@ -16,6 +17,8 @@ interface ContentFormProps {
 
 export function ContentForm({ id, initialData }: ContentFormProps) {
   const router = useRouter();
+  const locale = useLocale();
+  const t = useTranslations("adminContents.form");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -96,12 +99,10 @@ export function ContentForm({ id, initialData }: ContentFormProps) {
 
       const json = await res.json();
       if (!res.ok || json.ok === false || json.success === false) {
-        throw new Error(
-          json.message || json.error || "Terjadi kesalahan saat menyimpan",
-        );
+        throw new Error(json.message || json.error || t("errors.saveFailed"));
       }
 
-      router.push("/id/admin/contents");
+      router.push(`/${locale}/admin/contents`);
       router.refresh();
     } catch (err: any) {
       setError(err.message);
@@ -130,7 +131,7 @@ export function ContentForm({ id, initialData }: ContentFormProps) {
           {/* Informasi Utama card */}
           <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
             <h3 className="mb-4 text-sm font-semibold text-gray-800">
-              Informasi Utama
+              {t("sections.basicInfo")}
             </h3>
             <div className="space-y-5">
               <ContentTypeSelector

@@ -1,6 +1,7 @@
 "use client";
 
 import { Search, Filter, ChevronDown, LayoutGrid, List } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface TypeFilterContentAdminProps {
   search: string;
@@ -21,6 +22,8 @@ export default function TypeFilterContentAdmin({
   setViewMode,
   filteredCount,
 }: TypeFilterContentAdminProps) {
+  const t = useTranslations("adminContents.filter");
+
   return (
     <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
       <div className="flex flex-col gap-3 sm:flex-row">
@@ -32,7 +35,7 @@ export default function TypeFilterContentAdmin({
           />
           <input
             type="text"
-            placeholder="Cari judul konten..."
+            placeholder={t("searchPlaceholder")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full rounded-xl border border-gray-200 bg-gray-50 py-2.5 pr-4 pl-9 text-sm text-gray-700 placeholder-gray-400 transition-all focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
@@ -50,9 +53,9 @@ export default function TypeFilterContentAdmin({
             onChange={(e) => setTypeFilter(e.target.value)}
             className="cursor-pointer appearance-none rounded-xl border border-gray-200 bg-gray-50 py-2.5 pr-8 pl-8 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
           >
-            <option value="all">Semua Format</option>
-            <option value="article">Artikel</option>
-            <option value="video">Video</option>
+            <option value="all">{t("typeOptions.all")}</option>
+            <option value="article">{t("typeOptions.article")}</option>
+            <option value="video">{t("typeOptions.video")}</option>
           </select>
           <ChevronDown
             size={13}
@@ -80,7 +83,7 @@ export default function TypeFilterContentAdmin({
       {/* Active filters indicator */}
       {(search || typeFilter !== "all") && (
         <div className="mt-3 flex items-center gap-2 border-t border-gray-100 pt-3">
-          <span className="text-xs text-gray-500">Filter aktif:</span>
+          <span className="text-xs text-gray-500">{t("activeFilters")}</span>
           {search && (
             <span className="flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-600">
               &quot;{search}&quot;
@@ -104,7 +107,7 @@ export default function TypeFilterContentAdmin({
             </span>
           )}
           <span className="ml-auto text-xs text-gray-400">
-            {filteredCount} hasil
+            {t("resultCount", { count: filteredCount })}
           </span>
         </div>
       )}

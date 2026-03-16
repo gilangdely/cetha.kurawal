@@ -1,6 +1,7 @@
 "use client";
 
 import { FileText, Video } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface ContentTypeSelectorProps {
   value: string;
@@ -24,29 +25,41 @@ const TYPES = [
   },
 ];
 
-export function ContentTypeSelector({ value, onChange }: ContentTypeSelectorProps) {
+export function ContentTypeSelector({
+  value,
+  onChange,
+}: ContentTypeSelectorProps) {
+  const t = useTranslations("adminContents.form.typeSelector");
+
   return (
     <div className="space-y-2">
-      <label className="text-sm font-medium text-gray-700">Format Konten</label>
+      <label className="text-sm font-medium text-gray-700">{t("label")}</label>
       <div className="grid grid-cols-2 gap-3">
-        {TYPES.map((t) => {
-          const isActive = value === t.key;
+        {TYPES.map((typeOption) => {
+          const isActive = value === typeOption.key;
+          const label =
+            typeOption.key === "article"
+              ? t("options.article")
+              : t("options.video");
+
           return (
             <button
-              key={t.key}
+              key={typeOption.key}
               type="button"
-              onClick={() => onChange(t.key)}
+              onClick={() => onChange(typeOption.key)}
               className={`group relative flex flex-col items-center justify-center gap-2 rounded-xl border-2 p-5 transition-all ${
                 isActive
-                  ? t.activeClass + " shadow-sm"
+                  ? typeOption.activeClass + " shadow-sm"
                   : "border-gray-100 bg-white text-gray-400 hover:border-gray-200 hover:text-gray-600"
               }`}
             >
               {isActive && (
-                <span className={`absolute top-2.5 right-2.5 h-2 w-2 rounded-full ${t.dotClass}`} />
+                <span
+                  className={`absolute top-2.5 right-2.5 h-2 w-2 rounded-full ${typeOption.dotClass}`}
+                />
               )}
-              <t.icon size={22} strokeWidth={1.75} />
-              <span className="text-sm font-semibold">{t.label}</span>
+              <typeOption.icon size={22} strokeWidth={1.75} />
+              <span className="text-sm font-semibold">{label}</span>
             </button>
           );
         })}

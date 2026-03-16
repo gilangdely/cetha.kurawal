@@ -1,7 +1,7 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
 import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts";
+import { useTranslations } from "next-intl";
 
 import {
   Card,
@@ -18,21 +18,6 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 
-const chartConfig = {
-  success: {
-    label: "Berhasil",
-    color: "var(--chart-1)",
-  },
-  pending: {
-    label: "Menunggu",
-    color: "var(--chart-2)",
-  },
-  failed: {
-    label: "Gagal",
-    color: "var(--chart-3)",
-  },
-} satisfies ChartConfig;
-
 export function TransactionDonutChart({
   success,
   pending,
@@ -44,6 +29,23 @@ export function TransactionDonutChart({
   failed: number;
   isLoading?: boolean;
 }) {
+  const t = useTranslations("adminDashboard.transactionDonut");
+
+  const chartConfig = {
+    success: {
+      label: t("status.success"),
+      color: "var(--chart-1)",
+    },
+    pending: {
+      label: t("status.pending"),
+      color: "var(--chart-2)",
+    },
+    failed: {
+      label: t("status.failed"),
+      color: "var(--chart-3)",
+    },
+  } satisfies ChartConfig;
+
   const total = success + pending + failed;
 
   const chartData = [
@@ -56,10 +58,10 @@ export function TransactionDonutChart({
   ];
 
   return (
-    <Card className="flex flex-col">
-      <CardHeader className="items-center pt-5">
-        <CardTitle>Status Transaksi</CardTitle>
-        <CardDescription>Ringkasan transaksi Pengguna</CardDescription>
+    <Card className="flex flex-col py-6">
+      <CardHeader className="items-center">
+        <CardTitle>{t("title")}</CardTitle>
+        <CardDescription>{t("description")}</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-1 items-center pb-0">
         {isLoading ? (
@@ -99,7 +101,7 @@ export function TransactionDonutChart({
                             y={(viewBox.cy || 0) + 4}
                             className="fill-muted-foreground text-xs"
                           >
-                            Transaksi
+                            {t("totalLabel")}
                           </tspan>
                         </text>
                       );
@@ -132,7 +134,7 @@ export function TransactionDonutChart({
           </ChartContainer>
         )}
       </CardContent>
-      <CardFooter className="flex-col gap-2 pb-5 text-sm">
+      <CardFooter className="flex-col gap-2 text-sm">
         {isLoading ? (
           <div className="w-full space-y-2">
             <div className="bg-muted h-4 w-32 animate-pulse rounded" />
@@ -143,17 +145,23 @@ export function TransactionDonutChart({
           <div className="flex gap-2">
             <div className="flex items-center gap-2">
               <span className="inline-block h-2 w-2 rounded-full bg-teal-400" />
-              <span className="text-muted-foreground">Berhasil</span>
+              <span className="text-muted-foreground">
+                {t("status.success")}
+              </span>
               <span className="ml-auto font-semibold">{success}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="inline-block h-2 w-2 rounded-full bg-orange-700" />
-              <span className="text-muted-foreground">Menunggu</span>
+              <span className="text-muted-foreground">
+                {t("status.pending")}
+              </span>
               <span className="ml-auto font-semibold">{pending}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="inline-block h-2 w-2 rounded-full bg-teal-950" />
-              <span className="text-muted-foreground">Gagal</span>
+              <span className="text-muted-foreground">
+                {t("status.failed")}
+              </span>
               <span className="ml-auto font-semibold">{failed}</span>
             </div>
           </div>

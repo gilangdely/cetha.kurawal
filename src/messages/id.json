@@ -693,7 +693,8 @@
         "exhausted": "Tokenmu habis. Tambahkan token agar AI tetap bisa digunakan.",
         "low": "Tokenmu hampir habis. Tambahkan token agar AI tetap bisa digunakan.",
         "medium": "Tokenmu mulai menipis. Gunakan dengan bijak atau tambahkan token.",
-        "safe": "Tokenmu masih aman. Gunakan AI untuk meningkatkan kariermu."
+        "safe": "Tokenmu masih aman. Gunakan AI untuk meningkatkan kariermu.",
+        "extraSafe": "Tokenmu sangat aman. Nikmati fitur AI untuk optimalkan CV dan LinkedInmu."
       }
     },
     "topbar": {
@@ -706,7 +707,8 @@
       "notifications": {
         "title": "Notifikasi",
         "empty": "Belum ada notifikasi",
-        "viewAll": "Lihat Semua Notifikasi"
+        "viewAll": "Lihat Semua Notifikasi",
+        "closeOverlayAria": "Tutup lapisan notifikasi"
       },
       "routes": {
         "dashboard": "Dashboard",
@@ -1514,6 +1516,508 @@
       }
     },
     "backButton": "Cek CV Lain"
+  },
+  "adminDashboard": {
+    "actions": {
+      "newPage": "Halaman Baru",
+      "newPlan": "Paket Baru",
+      "newContent": "Konten Baru"
+    },
+    "contentStats": {
+      "revenue": {
+        "title": "Pendapatan",
+        "hint": "Total transaksi sukses"
+      },
+      "library": {
+        "title": "Pustaka",
+        "items": "Item",
+        "hint": "Artikel, Video & Aset"
+      },
+      "liveNow": {
+        "title": "Tayang",
+        "hint": "Konten publik aktif"
+      },
+      "tiers": {
+        "title": "Tier",
+        "hint": "Paket layanan aktif"
+      }
+    },
+    "transactionDonut": {
+      "title": "Status Transaksi",
+      "description": "Ringkasan transaksi pengguna",
+      "totalLabel": "Transaksi",
+      "status": {
+        "success": "Berhasil",
+        "pending": "Menunggu",
+        "failed": "Gagal"
+      }
+    },
+    "transactionTrend": {
+      "revenueLabel": "Pendapatan",
+      "title": "Keuntungan 4 Bulan Terakhir",
+      "description": "Statistik pendapatan {months}",
+      "footer": {
+        "primary": "Statistik pendapatan bulanan",
+        "secondary": "Menampilkan total pendapatan 4 bulan terakhir"
+      }
+    },
+    "lastContent": {
+      "title": "Konten Terbaru",
+      "seeAll": "Lihat semua",
+      "empty": "Belum ada konten",
+      "types": {
+        "article": "Artikel",
+        "video": "Video"
+      },
+      "status": {
+        "published": "Terbit",
+        "draft": "Draft"
+      },
+      "time": {
+        "justNow": "Baru saja",
+        "minutesAgo": "{value}m lalu",
+        "hoursAgo": "{value}j lalu",
+        "daysAgo": "{value}h lalu"
+      }
+    },
+    "recentTransactions": {
+      "title": "Transaksi Terbaru",
+      "seeAll": "Lihat semua",
+      "fallbackUser": "Pengguna",
+      "empty": "Tidak ada transaksi",
+      "filters": {
+        "all": "Semua",
+        "verified": "Terverifikasi",
+        "pending": "Menunggu",
+        "rejected": "Ditolak"
+      },
+      "summary": {
+        "total": "Total",
+        "verified": "Terverifikasi",
+        "pending": "Menunggu",
+        "rejected": "Ditolak"
+      },
+      "status": {
+        "verified": "Terverifikasi",
+        "pending": "Menunggu",
+        "rejected": "Ditolak"
+      },
+      "time": {
+        "justNow": "Baru saja",
+        "minutesAgo": "{value}m lalu",
+        "hoursAgo": "{value}j lalu",
+        "daysAgo": "{value}h lalu"
+      }
+    }
+  },
+  "adminSubscriptionTiers": {
+    "list": {
+      "title": "Subscription Tiers",
+      "description": "Kelola paket langganan dan harga untuk user.",
+      "addButton": "Tambah Tier Baru",
+      "deleteConfirm": "Yakin ingin menghapus tier \"{name}\" secara permanen?"
+    },
+    "createPage": {
+      "title": "Buat Subscription Tier Baru",
+      "description": "Atur harga, kuota, dan fitur yang didapatkan user."
+    },
+    "editPage": {
+      "title": "Edit Subscription Tier",
+      "description": "Atur harga, kuota, dan fitur yang didapatkan user."
+    },
+    "form": {
+      "sections": {
+        "basic": "Informasi Dasar",
+        "features": "Daftar Fitur",
+        "settings": "Pengaturan"
+      },
+      "fields": {
+        "name": "Nama Tier",
+        "slug": "Slug",
+        "price": "Harga (IDR)",
+        "quota": "Tambahan Kuota",
+        "description": "Deskripsi",
+        "activeStatus": "Status Aktif",
+        "recommended": "Tier Direkomendasikan",
+        "displayOrder": "Urutan Tampil"
+      },
+      "placeholders": {
+        "name": "Contoh: Beginner",
+        "slug": "Contoh: beginner-tier",
+        "description": "Contoh: Cocok untuk fresh graduate.",
+        "feature": "Fitur {index}"
+      },
+      "hints": {
+        "recommended": "Hanya satu tier yang bisa direkomendasikan",
+        "displayOrder": "Angka kecil tampil lebih dulu."
+      },
+      "actions": {
+        "addFeature": "Tambah Fitur",
+        "save": "Simpan Tier"
+      },
+      "errors": {
+        "featureRequired": "Tier harus memiliki setidaknya satu fitur",
+        "saveFailed": "Terjadi kesalahan saat menyimpan"
+      }
+    },
+    "stats": {
+      "total": {
+        "label": "Total Tier",
+        "sublabel": "Semua paket"
+      },
+      "active": {
+        "label": "Aktif",
+        "sublabel": "Berjalan"
+      },
+      "inactive": {
+        "label": "Nonaktif",
+        "sublabel": "Jeda"
+      }
+    },
+    "table": {
+      "title": "Daftar Paket",
+      "description": "Kelola tier langganan dan kuota",
+      "totalBadge": "{count} TOTAL TIER",
+      "columns": {
+        "tierInfo": "Tier Info",
+        "pricingQuota": "Harga & Kuota",
+        "display": "Urutan",
+        "status": "Status",
+        "actions": "Aksi"
+      },
+      "empty": {
+        "title": "Belum ada paket",
+        "description": "Mulai dengan membuat tier baru",
+        "createButton": "Buat Tier Pertama"
+      },
+      "quota": "{count} Credits",
+      "status": {
+        "active": "Aktif",
+        "paused": "Jeda"
+      },
+      "actions": {
+        "edit": "Edit Tier",
+        "delete": "Hapus"
+      }
+    }
+  },
+  "adminPayments": {
+    "page": {
+      "title": "Verifikasi Pembayaran",
+      "description": "Cek bukti transfer dan aktifkan paket berlangganan pengguna.",
+      "confirmMessage": "Apakah Anda yakin ingin melakukan {action} pada transaksi ini?",
+      "confirmActions": {
+        "verify": "verifikasi",
+        "reject": "penolakan"
+      },
+      "alerts": {
+        "failed": "Gagal: {error}",
+        "errorProcessing": "Error Processing: {error}"
+      }
+    },
+    "filters": {
+      "all": "Semua",
+      "pending": "Pending",
+      "verified": "Terverifikasi",
+      "rejected": "Ditolak"
+    },
+    "status": {
+      "pending": "Pending",
+      "verified": "Terverifikasi",
+      "rejected": "Ditolak",
+      "unknown": "{status}"
+    },
+    "stats": {
+      "pending": {
+        "label": "Menunggu Review",
+        "sublabel": "Pending"
+      },
+      "verified": {
+        "label": "Terverifikasi",
+        "sublabel": "Verified"
+      },
+      "rejected": {
+        "label": "Ditolak",
+        "sublabel": "Rejected"
+      }
+    },
+    "table": {
+      "title": "Riwayat Pembayaran",
+      "description": "Kelola transaksi, bukti transfer, dan verifikasi pembayaran",
+      "totalBadge": "{count} TOTAL TRANSAKSI",
+      "columns": {
+        "invoiceTime": "Invoice & Waktu",
+        "user": "Pengguna",
+        "packageAmount": "Paket / Nominal",
+        "status": "Status",
+        "actions": "Aksi"
+      },
+      "empty": {
+        "title": "Belum ada transaksi",
+        "description": "Tidak ada data untuk filter ini"
+      },
+      "fallback": {
+        "initial": "U",
+        "userWithoutName": "User Tanpa Nama"
+      },
+      "actions": {
+        "viewProof": "Bukti TF",
+        "verify": "Verifikasi",
+        "reject": "Tolak"
+      },
+      "proofDialog": {
+        "title": "Bukti Pembayaran",
+        "invoiceLabel": "Invoice",
+        "imageAlt": "Bukti Transfer",
+        "downloadPdf": "Unduh File Dokumen (PDF)"
+      }
+    }
+  },
+  "adminContents": {
+    "page": {
+      "title": "Konten Tip Karier",
+      "description": "Kelola artikel dan video tutorial untuk platform.",
+      "newContent": "Konten Baru",
+      "deleteConfirm": "Yakin ingin menghapus konten ini secara permanen?",
+      "types": {
+        "article": "Artikel",
+        "video": "Video"
+      },
+      "status": {
+        "live": "Live",
+        "draft": "Draft"
+      },
+      "grid": {
+        "emptyTitle": "Belum ada konten"
+      }
+    },
+    "createPage": {
+      "title": "Buat Konten Baru",
+      "description": "Buat artikel atau video tip karier baru untuk platform Kurawal."
+    },
+    "editPage": {
+      "title": "Edit Konten",
+      "description": "Perbarui konten artikel atau video untuk platform Kurawal.",
+      "notFound": "Konten tidak ditemukan."
+    },
+    "stats": {
+      "total": {
+        "label": "Total Konten",
+        "sublabel": "TOTAL"
+      },
+      "article": {
+        "label": "Artikel",
+        "sublabel": "ARTICLE"
+      },
+      "video": {
+        "label": "Video",
+        "sublabel": "VIDEO"
+      },
+      "published": {
+        "label": "Published",
+        "sublabel": "LIVE",
+        "rate": "{value}% dari total"
+      }
+    },
+    "filter": {
+      "searchPlaceholder": "Cari judul konten...",
+      "typeOptions": {
+        "all": "Semua Format",
+        "article": "Artikel",
+        "video": "Video"
+      },
+      "activeFilters": "Filter aktif:",
+      "resultCount": "{count} hasil"
+    },
+    "table": {
+      "title": "Daftar Konten",
+      "description": "Kelola artikel dan video tutorial untuk platform",
+      "totalBadge": "{count} TOTAL KONTEN",
+      "columns": {
+        "title": "Judul",
+        "type": "Tipe",
+        "status": "Status",
+        "created": "Dibuat",
+        "actions": "Aksi"
+      },
+      "empty": {
+        "title": "Belum ada konten",
+        "description": "Buat artikel atau video pertama kamu",
+        "createButton": "Buat Konten"
+      },
+      "types": {
+        "article": "Artikel",
+        "video": "Video"
+      },
+      "status": {
+        "published": "Published",
+        "draft": "Draft"
+      },
+      "actions": {
+        "unpublish": "Tarik ke Draft",
+        "publish": "Publikasikan",
+        "edit": "Edit Konten",
+        "delete": "Hapus Permanen"
+      }
+    },
+    "form": {
+      "sections": {
+        "basicInfo": "Informasi Utama"
+      },
+      "errors": {
+        "saveFailed": "Terjadi kesalahan saat menyimpan"
+      },
+      "header": {
+        "titleCreate": "Buat Konten Baru",
+        "titleEdit": "Edit Konten",
+        "status": {
+          "published": "Published",
+          "draft": "Draft"
+        },
+        "contentType": {
+          "article": "Artikel Teks",
+          "video": "Video YouTube"
+        },
+        "actions": {
+          "setDraft": "Jadikan Draft",
+          "setPublished": "Set ke Published"
+        }
+      },
+      "typeSelector": {
+        "label": "Format Konten",
+        "options": {
+          "article": "Teks Artikel",
+          "video": "Video YouTube"
+        }
+      },
+      "mainFields": {
+        "title": {
+          "label": "Judul",
+          "placeholder": "Contoh: 5 Kesalahan Umum Saat Interview"
+        },
+        "excerpt": {
+          "label": "Excerpt",
+          "hint": "Ringkasan Card",
+          "placeholder": "Tuliskan dua kalimat ringkasan (maks. 250 karakter)...",
+          "counter": "{count} / 250"
+        }
+      },
+      "editorSection": {
+        "title": {
+          "article": "Editor Teks Lengkap",
+          "video": "Editor Embed Video"
+        },
+        "youtube": {
+          "label": "URL YouTube",
+          "placeholder": "https://www.youtube.com/watch?v=...",
+          "hint": "Masukkan URL penuh YouTube - sistem otomatis me-render iframe-nya."
+        }
+      },
+      "metaSidebar": {
+        "title": "Metadata Publikasi",
+        "fields": {
+          "slug": {
+            "label": "URL Slug",
+            "hint": "Kosongkan agar di-generate otomatis",
+            "placeholder": "judul-konten-kamu"
+          },
+          "coverImage": {
+            "label": "Gambar Sampul",
+            "placeholder": "https://...",
+            "previewAlt": "Preview"
+          },
+          "tags": {
+            "label": "Tags",
+            "hint": "Pisahkan dengan koma",
+            "placeholder": "frontend, javascript, resume"
+          }
+        }
+      },
+      "submitCard": {
+        "saving": "Menyimpan...",
+        "saveChanges": "Simpan Perubahan",
+        "saveToDatabase": "Simpan ke Database"
+      }
+    }
+  },
+  "adminSiteSettings": {
+    "page": {
+      "title": "Site Settings",
+      "description": "Pengaturan global untuk brand, SEO, dan integrasi. Saat ini masih dalam mode dummy untuk keperluan desain.",
+      "saveButton": "Simpan Perubahan",
+      "alerts": {
+        "saveDummy": "Dummy: pengaturan belum tersambung backend."
+      }
+    },
+    "form": {
+      "alerts": {
+        "maintenanceToggleDummy": "Dummy: toggle maintenance belum tersambung backend.",
+        "betaToggleDummy": "Dummy: toggle beta access belum tersambung backend."
+      },
+      "brand": {
+        "title": "Brand & Identity",
+        "fields": {
+          "siteName": {
+            "label": "Site Name",
+            "placeholder": "Nama brand"
+          },
+          "tagline": {
+            "label": "Tagline",
+            "placeholder": "Tagline singkat"
+          },
+          "primaryColor": {
+            "label": "Primary Color (Tailwind token)",
+            "placeholder": "Mis. blue-600",
+            "hint": "Dummy field. Nantinya dapat digunakan untuk generate theme Tailwind secara dinamis."
+          },
+          "supportEmail": {
+            "label": "Support Email",
+            "placeholder": "Email dukungan"
+          }
+        }
+      },
+      "statusSecurity": {
+        "title": "Status & Keamanan",
+        "maintenance": {
+          "title": "Maintenance Mode",
+          "description": "Saat aktif user publik akan melihat halaman maintenance."
+        },
+        "requireLoginBeta": {
+          "title": "Require Login for Beta",
+          "description": "Kunci fitur eksperimental hanya untuk user tertentu."
+        },
+        "footer": "Semua pengaturan masih dummy dan belum menyimpan data apapun. Fokus saat ini pada tampilan dan struktur panel admin."
+      },
+      "seo": {
+        "title": "Default SEO",
+        "fields": {
+          "defaultMetaTitle": "Default Meta Title",
+          "defaultMetaDescription": "Default Meta Description",
+          "defaultShareImageUrl": "Default Share Image URL"
+        }
+      },
+      "integrations": {
+        "title": "Integrasi",
+        "fields": {
+          "googleAnalyticsId": "Google Analytics ID",
+          "metaPixelId": "Meta Pixel ID"
+        },
+        "footer": "Nilai di atas hanya contoh. Ke depan bisa dihubungkan dengan environment variable atau Firestore config khusus."
+      }
+    }
+  },
+  "adminSidebar": {
+    "logoAlt": "logo",
+    "badge": "ADMIN",
+    "sectionLabel": "Manajemen Situs",
+    "menu": {
+      "overview": "Overview",
+      "subscriptionPlans": "Subscription Plans",
+      "transactions": "Transactions",
+      "contentManagement": "Content Management",
+      "systemSettings": "System Settings"
+    },
+    "userUi": "Web User UI"
   },
   "api": {
     "checkout": {

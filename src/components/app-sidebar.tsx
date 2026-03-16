@@ -141,10 +141,12 @@ export function AppSidebar() {
     message = t("tokenMessage.exhausted");
   } else if (remaining <= 20) {
     message = t("tokenMessage.low");
-  } else if (remaining <= 40) {
+  } else if (remaining <= 50) {
     message = t("tokenMessage.medium");
-  } else if (remaining <= 60) {
+  } else if (remaining <= 80) {
     message = t("tokenMessage.safe");
+  } else if (remaining <= 100000) {
+    message = t("tokenMessage.extraSafe");
   }
 
   return (
