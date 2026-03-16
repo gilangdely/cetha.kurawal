@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import puppeteer from "puppeteer";
+import chromium from "@sparticuz/chromium";
+import puppeteer from "puppeteer-core";
 import { QuotaService } from "@/lib/quota-service";
 import { getSessionUidFromCookie } from "@/app/lib/session";
+
+// Konfigurasi path Chrome lokal untuk Windows (Adjust jika perlu)
+const LOCAL_CHROME_PATH = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 
 export async function POST(req: NextRequest) {
   try {
@@ -23,12 +27,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    console.log("[Export API] Memulai proses printing via Puppeteer...");
+    console.log("[Export API] Memulai proses printing via Puppeteer Core...");
+
+    // Deteksi environment (Vercel/Serverless vs Local)
+    const isLocal = process.env.NODE_ENV === 'development' || !process.env.VERCEL_URL;
 
     // Launch browser
     const browser = await puppeteer.launch({
-      headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      args: isLocal ? ["--no-sandbox", "--disable-setuid-sandbox"] : chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: isLocal ? LOCAL_CHROME_PATH : await chromium.executablePath(),
+      headless: isLocal ? true : (chromium.headless as any),
     });
 
     const page = await browser.newPage();
