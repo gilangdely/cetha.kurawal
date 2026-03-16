@@ -30,13 +30,16 @@ export async function POST(req: NextRequest) {
     console.log("[Export API] Memulai proses printing via Puppeteer Core...");
 
     // Deteksi environment (Vercel/Serverless vs Local)
-    const isLocal = process.env.NODE_ENV === 'development' || !process.env.VERCEL_URL;
+    const isLocal = process.env.NODE_ENV === 'development';
+    const executablePath = isLocal 
+      ? LOCAL_CHROME_PATH 
+      : await chromium.executablePath();
 
     // Launch browser
     const browser = await puppeteer.launch({
-      args: isLocal ? ["--no-sandbox", "--disable-setuid-sandbox"] : chromium.args,
+      args: isLocal ? [] : chromium.args,
       defaultViewport: chromium.defaultViewport,
-      executablePath: isLocal ? LOCAL_CHROME_PATH : await chromium.executablePath(),
+      executablePath: executablePath,
       headless: isLocal ? true : (chromium.headless as any),
     });
 
