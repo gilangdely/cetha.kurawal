@@ -179,9 +179,38 @@ const UploadCv = () => {
       router.push("/review-cv/result-review-cv");
       setGlobalUploading(false);
     } catch (err: any) {
-      toast.error(err?.response?.data?.message || t("errors.uploadFailed"));
+      console.error("❌ Upload error", err);
+
+      // Normalisasi error axios vs non-axios
+      const status = err?.response?.status ?? null;
+      const data = err?.response?.data ?? null;
+      const backendMessage = data?.message as string | undefined;
+      const fallbackMessage = err?.message as string | undefined;
+
+      // Reset state
       setProgressGlobal(0);
       setGlobalUploading(false);
+
+      if (status === 413) {
+        toast.error(t("errors.fileTooLarge") || "Ukuran file terlalu besar.");
+        return;
+      }
+
+      if (status === 403) {
+        const msg =
+          backendMessage ||
+          t("errors.quotaInsufficient") ||
+          "Kuota Anda telah habis.";
+        toast.error(msg);
+        return;
+      }
+
+      // Fallback generic error
+      toast.error(
+        t("errors.uploadFailed", {
+          message: backendMessage || fallbackMessage || "Terjadi kesalahan",
+        }),
+      );
     }
   };
 

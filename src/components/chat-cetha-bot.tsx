@@ -6,14 +6,20 @@ import { useEffect, useState, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import { useTranslations } from "next-intl";
 import { UpgradeModal } from "@/components/UpgradeModal";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const ChatCethaBot = () => {
+interface ChatCethaBotProps {
+  onTypingChange?: (isTyping: boolean) => void;
+}
+
+const ChatCethaBot = ({ onTypingChange }: ChatCethaBotProps) => {
   const t = useTranslations("chatCethaBot");
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<{ sender: string; text: string }[]>(
     [],
   );
   const [username, setUsername] = useState<string | null>(null);
+  const [isBotTyping, setIsBotTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
@@ -36,11 +42,13 @@ const ChatCethaBot = () => {
   }, [messages]);
 
   const sendMessage = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || isBotTyping) return;
 
     const userMsg = { sender: "user", text: input };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
+    setIsBotTyping(true);
+    onTypingChange?.(true);
 
     try {
       const res = await fetch("/api/chatbot", {
@@ -65,8 +73,15 @@ const ChatCethaBot = () => {
       setMessages((prev) => [...prev, botMsg]);
     } catch (error) {
       console.error("Error sending message:", error);
+    } finally {
+      setIsBotTyping(false);
+      onTypingChange?.(false);
     }
   };
+
+  useEffect(() => {
+    return () => onTypingChange?.(false);
+  }, [onTypingChange]);
 
   return (
     <div className="bg-Background flex h-100 flex-col justify-between">
@@ -124,6 +139,15 @@ const ChatCethaBot = () => {
           </div>
         ))}
 
+        {isBotTyping && (
+          <div className="flex justify-start">
+            <div className="w-full max-w-[260px] space-y-2 rounded-xl rounded-bl-none bg-gray-200 px-4 py-3">
+              <Skeleton className="h-3 w-[80%]" />
+              <Skeleton className="h-3 w-[60%]" />
+            </div>
+          </div>
+        )}
+
         {/* Referensi scroll ke bawah */}
         <div ref={messagesEndRef} />
       </div>
@@ -140,7 +164,8 @@ const ChatCethaBot = () => {
         />
         <button
           onClick={sendMessage}
-          className="rounded-full bg-blue-600 p-2 text-white transition hover:bg-blue-700"
+          disabled={isBotTyping}
+          className="rounded-full bg-blue-600 p-2 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
         >
           <Send size={16} />
         </button>

@@ -1,14 +1,5 @@
-import { Target, PlusCircle, Pencil, Plus } from "lucide-react";
+import { Target, Plus } from "lucide-react";
 import { useState, useEffect } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import {
   collection,
   doc,
@@ -48,8 +39,6 @@ export default function TargetKarir() {
   const [editTarget, setEditTarget] = useState<StoredTarget | null>(null);
 
   const [loading, setLoading] = useState(true);
-  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const userId = auth.currentUser?.uid;
 
@@ -167,6 +156,18 @@ export default function TargetKarir() {
     setIsEditOpen(true);
   };
 
+  const handleDeleteTarget = async (targetId?: string) => {
+    if (!targetId) return;
+
+    await deleteDoc(doc(db, "careerTargets", targetId));
+
+    setTargets((prev) => prev.filter((t) => t.id !== targetId));
+    setIsEditOpen(false);
+    setEditTarget(null);
+
+    toast.success(t("deleteDialog.success"));
+  };
+
   const getProgressText = (tasks?: Task[]) => {
     const total = tasks?.length || 0;
     const done = tasks?.filter((t) => t.checked).length || 0;
@@ -221,54 +222,52 @@ export default function TargetKarir() {
         onSave={handleSaveTarget}
         initialTitle={editTarget?.label}
         initialTasks={editTarget?.tasks || []}
+        onDelete={() => handleDeleteTarget(editTarget?.id)}
+        deleteLabel={t("deleteDialog.confirm")}
+        deleteDialogTitle={t("deleteDialog.title")}
+        deleteDialogDescription={t("deleteDialog.description")}
+        deleteDialogCancelLabel={t("deleteDialog.cancel")}
+        deleteDialogConfirmLabel={t("deleteDialog.confirm")}
       />
 
       {/* LIST */}
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 overflow-hidden pb-2">
         {targets.length > 0 ? (
           targets.map((item) => (
             <div
               key={item.id}
-              className="group rounded-xl border border-slate-200 bg-white p-4 hover:shadow-md"
+              onClick={() => openEdit(item)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  openEdit(item);
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              className="group cursor-pointer rounded-xl border border-slate-200 bg-white p-4 hover:shadow-md"
             >
-              <div className="flex justify-between">
-                <div className="flex items-center gap-3">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex min-w-0 flex-1 items-center gap-3">
                   <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 text-white">
                     <Target size={16} />
                   </div>
 
-                  <div>
-                    <h5 className="text-sm font-semibold text-slate-800">
+                  <div className="min-w-0 flex-1">
+                    <h5 className="line-clamp-1 text-sm font-semibold text-slate-800">
                       {item.label}
                     </h5>
 
-                    <p className="text-xs text-slate-400">
+                    <p className="line-clamp-1 text-xs text-slate-400">
                       {getProgressText(item.tasks)}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <span className="rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-semibold text-indigo-600">
+                <div className="flex shrink-0 items-center gap-2">
+                  <span className="rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-semibold whitespace-nowrap text-indigo-600">
                     {item.progress}%
                   </span>
-
-                  <button
-                    onClick={() => openEdit(item)}
-                    className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-slate-100"
-                  >
-                    <Pencil size={14} />
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setDeleteTargetId(item.id);
-                      setIsDeleteDialogOpen(true);
-                    }}
-                    className="flex h-8 w-8 items-center justify-center rounded-full text-red-500 hover:bg-red-100"
-                  >
-                    <PlusCircle className="rotate-45" size={14} />
-                  </button>
                 </div>
               </div>
 
@@ -314,47 +313,6 @@ export default function TargetKarir() {
           </div>
         )}
       </div>
-
-      {/* DELETE DIALOG */}
-      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{t("deleteDialog.title")}</DialogTitle>
-            <DialogDescription>
-              {t("deleteDialog.description")}
-            </DialogDescription>
-          </DialogHeader>
-
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setIsDeleteDialogOpen(false)}
-            >
-              {t("deleteDialog.cancel")}
-            </Button>
-
-            <Button
-              variant="destructive"
-              onClick={async () => {
-                if (!deleteTargetId) return;
-
-                await deleteDoc(doc(db, "careerTargets", deleteTargetId));
-
-                setTargets((prev) =>
-                  prev.filter((t) => t.id !== deleteTargetId),
-                );
-
-                toast.success(t("deleteDialog.success"));
-
-                setIsDeleteDialogOpen(false);
-                setDeleteTargetId(null);
-              }}
-            >
-              {t("deleteDialog.confirm")}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

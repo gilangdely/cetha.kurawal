@@ -14,6 +14,7 @@ import {
   Search,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { CareerTipsSkeleton } from "@/components/career-tips-skeleton";
 
 interface ContentItem {
   id: string;
@@ -91,6 +92,10 @@ export default function TipsKarirDashboard() {
     setActiveTab(tab);
     setVisibleCount(initialVisible);
   };
+
+  if (loading) {
+    return <CareerTipsSkeleton count={6} />;
+  }
 
   return (
     <main className="mx-auto flex w-full items-center">

@@ -1315,6 +1315,30 @@
       "quotaExceeded": "Kuota kamu habis."
     }
   },
+  "loadingScreen": {
+    "iconAlt": "Memuat",
+    "types": {
+      "cv": {
+        "stage1": "Sedang menganalisis CV kamu",
+        "stage2": "Cari kata kunci yang pas biar HR gampang nemuin kamu",
+        "stage3": "Siap! CV kamu akan jadi lebih siap dilirik recruiter."
+      },
+      "job": {
+        "stage1": "Mencari peluang kerja yang cocok buat kamu",
+        "stage2": "Menganalisis keahlian dan preferensimu untuk hasil terbaik",
+        "stage3": "Rekomendasi pekerjaan siap ditampilkan!"
+      },
+      "linkedin": {
+        "stage1": "Sedang menganalisis profil LinkedIn kamu",
+        "stage2": "Menilai headline, summary, dan skill untuk meningkatkan profilmu",
+        "stage3": "Hampir selesai! Kami menyiapkan insight agar profilmu lebih standout."
+      }
+    },
+    "eta": {
+      "lessThanOneSecond": "Kurang dari 1 detik lagi",
+      "seconds": "Perkiraan selesai dalam {seconds} detik"
+    }
+  },
   "cethaBotLegacy": {
     "header": {
       "title": "CETHA Assistant 🤖",

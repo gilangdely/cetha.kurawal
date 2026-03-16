@@ -1413,6 +1413,30 @@
       "quotaExceeded": "Your quota is exhausted."
     }
   },
+  "loadingScreen": {
+    "iconAlt": "Loading",
+    "types": {
+      "cv": {
+        "stage1": "Analyzing your CV",
+        "stage2": "Finding the right keywords so HR can discover you more easily",
+        "stage3": "Great! Your CV is getting more recruiter-ready."
+      },
+      "job": {
+        "stage1": "Looking for job opportunities that match you",
+        "stage2": "Analyzing your skills and preferences for the best results",
+        "stage3": "Your job recommendations are ready!"
+      },
+      "linkedin": {
+        "stage1": "Analyzing your LinkedIn profile",
+        "stage2": "Reviewing headline, summary, and skills to strengthen your profile",
+        "stage3": "Almost done! We're preparing insights to help your profile stand out."
+      }
+    },
+    "eta": {
+      "lessThanOneSecond": "Less than 1 second left",
+      "seconds": "Estimated completion in {seconds} seconds"
+    }
+  },
   "cethaBotLegacy": {
     "header": {
       "title": "CETHA Assistant 🤖",

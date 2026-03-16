@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Send, X, BotMessageSquare } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { auth } from "@/app/lib/firebase";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function CethaBot() {
   const t = useTranslations("cethaBotLegacy");
@@ -14,6 +15,7 @@ export default function CethaBot() {
   const [messages, setMessages] = useState<{ sender: string; text: string }[]>(
     [],
   );
+  const [isBotTyping, setIsBotTyping] = useState(false);
 
   // 🔹 Cek user login dari Firebase
   useEffect(() => {
@@ -28,21 +30,26 @@ export default function CethaBot() {
   }, []);
 
   const sendMessage = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || isBotTyping) return;
 
     const userMsg = { sender: "user", text: input };
     setMessages((prev) => [...prev, userMsg]);
-
-    const res = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: input, username }),
-    });
-
-    const data = await res.json();
-    const botMsg = { sender: "bot", text: data.reply };
-    setMessages((prev) => [...prev, botMsg]);
     setInput("");
+    setIsBotTyping(true);
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: input, username }),
+      });
+
+      const data = await res.json();
+      const botMsg = { sender: "bot", text: data.reply };
+      setMessages((prev) => [...prev, botMsg]);
+    } finally {
+      setIsBotTyping(false);
+    }
   };
 
   if (!username) return null;
@@ -62,7 +69,11 @@ export default function CethaBot() {
             <div className="flex items-center justify-between bg-blue-600 px-4 py-3 text-white">
               <div>
                 <h2 className="text-sm font-semibold">{t("header.title")}</h2>
-                <p className="text-xs opacity-80">{t("header.status")}</p>
+                <p className="text-xs opacity-80">
+                  {isBotTyping
+                    ? "Cetha sedang mengetik..."
+                    : t("header.status")}
+                </p>
               </div>
               <button onClick={() => setIsOpen(false)} className="text-white">
                 <X size={18} />
@@ -94,6 +105,18 @@ export default function CethaBot() {
                   </div>
                 </div>
               ))}
+
+              {isBotTyping && (
+                <div className="flex justify-start">
+                  <div className="rounded-xl rounded-bl-none bg-gray-200 px-3 py-2">
+                    <div className="flex items-center gap-1.5">
+                      <Skeleton className="h-2 w-2 rounded-full" />
+                      <Skeleton className="h-2 w-2 rounded-full" />
+                      <Skeleton className="h-2 w-2 rounded-full" />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Input */}
@@ -107,7 +130,8 @@ export default function CethaBot() {
               />
               <button
                 onClick={sendMessage}
-                className="rounded-full bg-blue-600 p-2 text-white transition hover:bg-blue-700"
+                disabled={isBotTyping}
+                className="rounded-full bg-blue-600 p-2 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <Send size={16} />
               </button>
