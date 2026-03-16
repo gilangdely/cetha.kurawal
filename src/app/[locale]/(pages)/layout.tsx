@@ -19,28 +19,23 @@ export default function Layout(props: { children: ReactNode }) {
   const isCheckout =
     pathname.includes("/pricing/") && pathname.includes("/checkout");
 
-  if (loading) {
-    return (
-      <>
-        <LoadingScreen type={uploadType ?? "cv"} />
-      </>
-    );
-  }
-
   if (isExcluded) {
     return (
       <>
+        {loading && <LoadingScreen type={uploadType ?? "cv"} />}
         {props.children}
         <CethaBot />
+        <Toaster position="top-right" richColors closeButton />
       </>
     );
   }
 
   return (
     <>
+      {loading && <LoadingScreen type={uploadType ?? "cv"} />}
       {isCheckout ? <> </> : <Navbar />}
       {props.children}
-      <Toaster position="top-right" richColors closeButton />
+      {/* <Toaster position="top-right" richColors closeButton /> */}
       {isCheckout ? <> </> : <CethaBot />}
       {isCheckout ? <> </> : <Footer />}
     </>

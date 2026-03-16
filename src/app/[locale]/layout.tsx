@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import "../globals.css";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Cetha",
@@ -32,6 +33,7 @@ export default async function RootLayout({
       <body className="antialiased">
         <NextIntlClientProvider messages={messages}>
           {children}
+          {/* <Toaster richColors position="top-right" closeButton /> */}
         </NextIntlClientProvider>
       </body>
     </html>
