@@ -122,6 +122,13 @@ This project is built with modern technologies to provide a fast, responsive, an
 
 ---
 
+## Dummy Admin Account
+You can use the dummy admin account below to explore the admin features.
+* Username : miminprihatin.co@gmail.com
+* Password : 12345678
+
+---
+
 ## 🛠️ Local Setup
 
 Follow the steps below to run Cetha locally:
