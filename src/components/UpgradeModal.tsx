@@ -1,17 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { AlertCircle, Lock, Zap } from "lucide-react";
+import { toast } from "sonner";
+import { Lock } from "lucide-react";
 
 interface UpgradeModalProps {
   isOpen: boolean;
@@ -21,38 +13,30 @@ interface UpgradeModalProps {
 
 export function UpgradeModal({ isOpen, onClose, message }: UpgradeModalProps) {
   const router = useRouter();
+  const toastIdRef = useRef<string | number | null>(null);
 
-  return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="text-center sm:max-w-md">
-        <DialogHeader className="flex flex-col items-center pt-4">
-          <div className="mb-4 rounded-full bg-orange-100 p-4">
-            <Lock className="text-accentOrange h-8 w-8" />
-          </div>
-          <DialogTitle className="text-xl font-bold">
-            Batas Penggunaan Tercapai
-          </DialogTitle>
-          <DialogDescription className="mt-2 text-base text-gray-600">
-            {message ||
-              "Kamu telah mencapai batas penggunaan AI harian. Silakan berlangganan untuk akses tanpa batas."}
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter className="mt-6 flex w-full flex-col gap-3 pb-4 sm:flex-row sm:justify-center">
-          <Button
-            variant="outline"
-            onClick={onClose}
-            className="h-12 w-full px-6 sm:w-auto"
-          >
-            Nanti Saja
-          </Button>
-          <Button
-            onClick={() => router.push("/pricing")}
-            className="bg-primaryBlue h-12 w-full gap-2 px-6 font-semibold text-white shadow-sm hover:bg-blue-700 sm:w-auto"
-          >
-            <Zap size={18} /> Upgrade Sekarang
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
+  useEffect(() => {
+    if (isOpen) {
+      toastIdRef.current = toast.error("Token kamu tidak cukup untuk fitur ini. Silakan top-up atau upgrade paket langganan untuk melanjutkan.", {
+
+        duration: 8000,
+        position: "top-right",
+        closeButton: true,
+        onDismiss: () => {
+          onClose();
+        },
+        onAutoClose: () => {
+          onClose();
+        },
+
+      });
+    } else {
+      if (toastIdRef.current) {
+        toast.dismiss(toastIdRef.current);
+        toastIdRef.current = null;
+      }
+    }
+  }, [isOpen, message, onClose, router]);
+
+  return null;
 }

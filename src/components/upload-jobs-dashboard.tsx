@@ -107,7 +107,7 @@ const UploadJobsDashboard = () => {
           errorMessage = errData?.message || errData?.error || errorMessage;
         } catch (_) {}
 
-        if (errData?.requireUpgrade) {
+        if (res.status === 403 || errData?.requireUpgrade) {
           setUpgradeMessage(errorMessage);
           setShowUpgradeModal(true);
           setProgressGlobal(0);

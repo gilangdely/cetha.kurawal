@@ -19,29 +19,24 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
     "/dashboard/job-match-result",
   ].includes(pathname);
 
-  if (loading) {
-    return (
-      <>
-        <LoadingScreen type={uploadType ?? "cv"} />
-      </>
-    );
-  }
-
   return (
-    <div className="flex min-h-screen w-full">
-      <AppSidebar />
+    <>
+      {loading && <LoadingScreen type={uploadType ?? "cv"} />}
+      <div className="flex min-h-screen w-full">
+        <AppSidebar />
 
-      <div className="flex min-w-0 flex-1 flex-col">
-        <AppTopbar />
+        <div className="flex min-w-0 flex-1 flex-col">
+          <AppTopbar />
 
-        <main className="flex flex-1 p-4">
-          <div className="flex w-full flex-col rounded-2xl bg-white p-2">
-            {children}
-          </div>
-        </main>
+          <main className="flex flex-1 p-4">
+            <div className="flex w-full flex-col rounded-2xl bg-white p-2">
+              {children}
+            </div>
+          </main>
 
-        <CethaBot />
+          <CethaBot />
+        </div>
       </div>
-    </div>
+    </>
   );
 }

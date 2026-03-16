@@ -96,7 +96,6 @@ const UploadCvDashboard = () => {
       setGlobalUploading(true, "cv");
       setProgressGlobal(5);
 
-      // Hapus header Content-Type manual agar browser menentukan boundary secara otomatis
       const res = await axios.post("/api/upload", formData, {
         onUploadProgress: (event) => {
           const percent = event.total
@@ -137,7 +136,7 @@ const UploadCvDashboard = () => {
             result: firestoreResult,
           });
           setProgressGlobal(96);
-        } catch (_) {}
+        } catch (_) { }
       }
 
       setProgressGlobal(100);
@@ -145,20 +144,36 @@ const UploadCvDashboard = () => {
       router.push("/dashboard/review-cv/result-review-cv");
       setGlobalUploading(false);
     } catch (err: any) {
-      const errorMessage =
-        err.response?.data?.message || err.message || t("errors.unknown");
-      const errorStatus = err.response?.status;
+      console.error("❌ Upload error", err);
 
-      if (errorStatus === 413) {
-        toast.error(t("errors.fileTooLarge"));
-      } else if (errorStatus === 403) {
-        toast.error(errorMessage || t("errors.quotaInsufficient"));
-      } else {
-        toast.error(t("errors.uploadFailed", { message: errorMessage }));
-      }
+      // Normalisasi error axios vs non-axios
+      const status = err?.response?.status ?? null;
+      const data = err?.response?.data ?? null;
+      const backendMessage = data?.message as string | undefined;
+      const fallbackMessage = err?.message as string | undefined;
 
+      // Reset state
       setProgressGlobal(0);
       setGlobalUploading(false);
+
+      if (status === 413) {
+        toast.error(t("errors.fileTooLarge"));
+        return;
+      }
+
+      if (status === 403) {
+        const msg = backendMessage || t("errors.quotaInsufficient");
+        toast.error(msg);
+
+        return;
+      }
+
+      // Fallback generic error
+      toast.error(
+        t("errors.uploadFailed", {
+          message: backendMessage || fallbackMessage || t("errors.unknown"),
+        }),
+      );
     }
   };
 

@@ -126,19 +126,24 @@ const UploadJobs = () => {
         try {
           errData = await res.json();
           errorMessage = errData?.message || errData?.error || errorMessage;
-        } catch (_) {}
-
-        if (errData?.requireUpgrade) {
-          setUpgradeMessage(errorMessage);
-          setShowUpgradeModal(true);
-          setProgressGlobal(0);
-          if (progressTicker) clearInterval(progressTicker);
-          progressTicker = null;
-          setGlobalUploading(false);
-          return;
+        } catch (_) {
+          // Biarkan errorMessage default jika body JSON tidak ada
         }
 
-        throw new Error(errorMessage);
+        // Reset state sebelum menampilkan notifikasi
+        setProgressGlobal(0);
+        setGlobalUploading(false);
+        if (progressTicker) clearInterval(progressTicker);
+        progressTicker = null;
+
+        // Tampilkan modal untuk 403, toast untuk lainnya
+        if (res.status === 403 || errData?.requireUpgrade) {
+          setUpgradeMessage(errorMessage);
+          setShowUpgradeModal(true);
+        } else {
+          toast.error(errorMessage);
+        }
+        return; // Hentikan eksekusi
       }
 
       const responseData = await res.json();
@@ -168,7 +173,11 @@ const UploadJobs = () => {
       router.push("/job-match/job-match-result");
       setGlobalUploading(false);
     } catch (err: any) {
-      console.error("❌ Upload gagal:", err.message || err);
+      // Blok catch ini sekarang hanya untuk error network atau error tak terduga lainnya
+      console.error(
+        "❌ Upload gagal (Network/Unexpected):",
+        err.message || err,
+      );
       toast.error(err.message || t("errors.uploadOrAnalyzeFailed"));
       setProgressGlobal(0);
       setGlobalUploading(false);
