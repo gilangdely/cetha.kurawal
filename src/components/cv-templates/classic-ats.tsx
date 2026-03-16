@@ -5,6 +5,32 @@ interface CvStyle {
   fontColor: string;
 }
 
+const Description = ({ text }: { text: string }) => {
+  const lines = text
+    .split("\n")
+    .map((l) => l.replace(/^[-•]\s*/, "").trim())
+    .filter(Boolean);
+
+  if (lines.length <= 1) {
+    return (
+      <p className="text-[13px] leading-relaxed whitespace-pre-wrap opacity-90">
+        {text}
+      </p>
+    );
+  }
+
+  return (
+    <ul className="mt-1 space-y-1">
+      {lines.map((line, i) => (
+        <li key={i} className="flex gap-2 text-[13px] leading-relaxed opacity-90">
+          <span className="mt-0.5 shrink-0 text-gray-400">-</span>
+          <span>{line}</span>
+        </li>
+      ))}
+    </ul>
+  );
+};
+
 export const ClassicAts = ({
   data,
   style,
@@ -12,151 +38,173 @@ export const ClassicAts = ({
   data: ResumeData;
   style: CvStyle;
 }) => {
+  const contactItems = [
+    data.personalInfo.email,
+    data.personalInfo.phone,
+    data.personalInfo.location,
+    data.personalInfo.linkedin,
+    data.personalInfo.portfolio,
+  ].filter(Boolean);
+
   return (
     <div
-      className="cv-document mx-auto min-h-[297mm] w-[210mm] bg-white p-8 shadow-sm print:shadow-none"
+      className="cv-document mx-auto min-h-[297mm] w-[210mm] bg-white px-12 py-11 shadow-sm print:shadow-none"
       style={{
         fontFamily: style.fontFamily,
         color: style.fontColor,
       }}
     >
-      {/* Header */}
-      <div className="mb-4 flex flex-col items-center border-b-2 border-current pb-4 text-center">
-        {data.personalInfo.showPhoto && data.personalInfo.photoUrl && (
+      {/* ── HEADER ── */}
+      {data.personalInfo.showPhoto && data.personalInfo.photoUrl ? (
+        // dengan foto: flex row
+        <header
+          className="mb-6 flex items-center gap-6 border-b-2 border-current pb-5"
+        >
           <img
             src={data.personalInfo.photoUrl}
             alt="Profile Photo"
-            className="mb-3 h-24 w-24 rounded-full border border-gray-300 object-cover"
+            className="h-16 w-16 shrink-0 rounded object-cover"
           />
-        )}
-
-        <h1 className="mb-1 text-3xl font-bold tracking-wider uppercase">
-          {data.personalInfo.fullName || "Nama Lengkap"}
-        </h1>
-
-        {data.personalInfo.jobTitle && (
-          <h2 className="mb-2 text-xl font-medium opacity-90">
-            {data.personalInfo.jobTitle}
-          </h2>
-        )}
-
-        <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm opacity-80">
-          {data.personalInfo.email && <span>{data.personalInfo.email}</span>}
-          {data.personalInfo.phone && <span>• {data.personalInfo.phone}</span>}
-          {data.personalInfo.location && (
-            <span>• {data.personalInfo.location}</span>
+          <div className="flex-1">
+            <h1 className="mb-1.5 text-[22px] font-extrabold uppercase tracking-[1.5px] leading-none">
+              {data.personalInfo.fullName || "Nama Lengkap"}
+            </h1>
+            {data.personalInfo.jobTitle && (
+              <h2 className="mb-2.5 text-[10px] font-medium tracking-[0.5px] opacity-60">
+                {data.personalInfo.jobTitle}
+              </h2>
+            )}
+            <div className="flex flex-wrap gap-x-1 gap-y-0.5 text-[8.5px] font-medium opacity-70">
+              {contactItems.map((item, i) => (
+                <span key={i} className="flex items-center gap-1">
+                  {i > 0 && <span className="text-gray-300">|</span>}
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+        </header>
+      ) : (
+        // tanpa foto: centered
+        <header className="mb-6 border-b-2 border-current pb-5 text-center">
+          <h1 className="mb-1.5 text-[22px] font-extrabold uppercase tracking-[1.5px] leading-none">
+            {data.personalInfo.fullName || "Nama Lengkap"}
+          </h1>
+          {data.personalInfo.jobTitle && (
+            <h2 className="mb-2.5 text-[10px] font-medium tracking-[0.5px] opacity-60">
+              {data.personalInfo.jobTitle}
+            </h2>
           )}
-          {data.personalInfo.linkedin && (
-            <span>• {data.personalInfo.linkedin}</span>
-          )}
-          {data.personalInfo.portfolio && (
-            <span>• {data.personalInfo.portfolio}</span>
-          )}
-        </div>
-      </div>
+          <div className="flex flex-wrap justify-center gap-x-1 gap-y-0.5 text-[8.5px] font-medium opacity-70">
+            {contactItems.map((item, i) => (
+              <span key={i} className="flex items-center gap-1">
+                {i > 0 && <span className="text-gray-300">|</span>}
+                {item}
+              </span>
+            ))}
+          </div>
+        </header>
+      )}
 
-      {/* Summary */}
+      {/* ── SUMMARY ── */}
       {data.personalInfo.summary && (
-        <div className="mb-6">
-          <h3 className="mb-2 border-b border-current pb-1 text-lg font-bold uppercase">
+        <section className="mb-5">
+          <h3 className="mb-2.5 border-b border-current pb-1 text-[8.5px] font-bold uppercase tracking-[1.5px]">
             Professional Summary
           </h3>
-
-          <p className="text-sm leading-relaxed whitespace-pre-wrap opacity-90">
+          <p className="text-[13px] leading-relaxed whitespace-pre-wrap opacity-90">
             {data.personalInfo.summary}
           </p>
-        </div>
+        </section>
       )}
 
-      {/* Experience */}
+      {/* ── EXPERIENCE ── */}
       {data.experience.length > 0 && (
-        <div className="mb-6">
-          <h3 className="mb-3 border-b border-current pb-1 text-lg font-bold uppercase">
-            Professional Experience
+        <section className="mb-5">
+          <h3 className="mb-2.5 border-b border-current pb-1 text-[8.5px] font-bold uppercase tracking-[1.5px]">
+            Work Experience
           </h3>
-
-          <div className="flex flex-col gap-4">
-            {data.experience.map((exp) => (
-              <div key={exp.id}>
-                <div className="mb-1 flex items-start justify-between">
-                  <div>
-                    <h4 className="text-base font-bold">{exp.role}</h4>
-
-                    <div className="font-semibold opacity-90">
-                      {exp.company}
-                      {exp.location && `, ${exp.location}`}
-                    </div>
-                  </div>
-
-                  <div className="ml-4 text-sm font-medium whitespace-nowrap opacity-80">
+          <div className="flex flex-col">
+            {data.experience.map((exp, i) => (
+              <div
+                key={exp.id}
+                className={
+                  i < data.experience.length - 1
+                    ? "mb-3 border-b border-gray-100 pb-3"
+                    : ""
+                }
+              >
+                <div className="mb-1 flex items-baseline justify-between gap-4">
+                  <h4 className="text-[10.5px] font-bold leading-tight">
+                    {exp.role}
+                  </h4>
+                  <span className="shrink-0 text-[8.5px] font-semibold opacity-60">
                     {exp.startDate} - {exp.endDate || "Present"}
-                  </div>
+                  </span>
                 </div>
-
-                {exp.description && (
-                  <p className="text-sm leading-relaxed whitespace-pre-wrap opacity-90">
-                    {exp.description}
-                  </p>
-                )}
+                <div className="mb-1.5 text-[9px] font-semibold opacity-70">
+                  {exp.company}{exp.location ? `, ${exp.location}` : ""}
+                </div>
+                {exp.description && <Description text={exp.description} />}
               </div>
             ))}
           </div>
-        </div>
+        </section>
       )}
 
-      {/* Education */}
+      {/* ── EDUCATION ── */}
       {data.education.length > 0 && (
-        <div className="mb-6">
-          <h3 className="mb-3 border-b border-current pb-1 text-lg font-bold uppercase">
+        <section className="mb-5">
+          <h3 className="mb-2.5 border-b border-current pb-1 text-[8.5px] font-bold uppercase tracking-[1.5px]">
             Education
           </h3>
-
-          <div className="flex flex-col gap-4">
-            {data.education.map((edu) => (
-              <div key={edu.id}>
-                <div className="mb-1 flex items-start justify-between">
-                  <div>
-                    <h4 className="text-base font-bold">
-                      {edu.degree}
-                      {edu.fieldOfStudy && ` in ${edu.fieldOfStudy}`}
-                    </h4>
-
-                    <div className="font-semibold opacity-90">
-                      {edu.institution}
-                    </div>
-                  </div>
-
-                  <div className="ml-4 text-sm font-medium whitespace-nowrap opacity-80">
+          <div className="flex flex-col">
+            {data.education.map((edu, i) => (
+              <div
+                key={edu.id}
+                className={
+                  i < data.education.length - 1
+                    ? "mb-3 border-b border-gray-100 pb-3"
+                    : ""
+                }
+              >
+                <div className="mb-1 flex items-baseline justify-between gap-4">
+                  <h4 className="text-[10.5px] font-bold leading-tight">
+                    {edu.degree}
+                    {edu.fieldOfStudy ? `, ${edu.fieldOfStudy}` : ""}
+                  </h4>
+                  <span className="shrink-0 text-[8.5px] font-semibold opacity-60">
                     {edu.startDate} - {edu.endDate || "Present"}
-                  </div>
+                  </span>
                 </div>
-
-                {edu.description && (
-                  <p className="mt-1 text-sm leading-relaxed whitespace-pre-wrap opacity-90">
-                    {edu.description}
-                  </p>
-                )}
+                <div className="mb-1.5 text-[9px] font-semibold opacity-70">
+                  {edu.institution}
+                </div>
+                {edu.description && <Description text={edu.description} />}
               </div>
             ))}
           </div>
-        </div>
+        </section>
       )}
 
-      {/* Skills */}
+      {/* ── SKILLS ── */}
       {data.skills.length > 0 && (
-        <div className="mb-6">
-          <h3 className="mb-2 border-b border-current pb-1 text-lg font-bold uppercase">
-            Skills
+        <section>
+          <h3 className="mb-2.5 border-b border-current pb-1 text-[8.5px] font-bold uppercase tracking-[1.5px]">
+            Core Competencies
           </h3>
-
-          <ul className="list-inside list-disc columns-2 gap-4 text-sm lg:columns-3 opacity-90">
-            {data.skills.map((skill) => (
-              <li key={skill.id} className="leading-relaxed">
+          <div className="flex flex-wrap gap-x-0 gap-y-1">
+            {data.skills.map((skill, i) => (
+              <span
+                key={skill.id}
+                className="flex w-1/3 items-center gap-1.5 text-[9.5px] font-medium opacity-90"
+              >
+                <span className="h-[3px] w-[3px] shrink-0 rounded-full bg-current opacity-40" />
                 {skill.name}
-              </li>
+              </span>
             ))}
-          </ul>
-        </div>
+          </div>
+        </section>
       )}
     </div>
   );

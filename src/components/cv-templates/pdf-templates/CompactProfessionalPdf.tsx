@@ -1,5 +1,6 @@
 import { Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 import { ResumeData } from "@/types/build-cv";
+import { sanitizePdfText } from "@/lib/utils";
 
 const styles = StyleSheet.create({
   page: {
@@ -117,7 +118,7 @@ export const CompactProfessionalPdf = ({ data, style }: { data: ResumeData; styl
           <View style={styles.leftCol}>
             <View style={styles.section} wrap={false}>
               <Text style={styles.sectionTitle}>Summary</Text>
-              <Text style={styles.summaryText}>{data.personalInfo.summary}</Text>
+              <Text style={styles.summaryText}>{sanitizePdfText(data.personalInfo.summary)}</Text>
             </View>
 
             <View style={styles.section} wrap={false}>
@@ -136,7 +137,7 @@ export const CompactProfessionalPdf = ({ data, style }: { data: ResumeData; styl
                   <View key={exp.id} style={styles.item} wrap={false}>
                     <Text style={styles.itemTitle}>{exp.role}</Text>
                     <Text style={[styles.itemSubtitle, { color: primaryColor }]}>{exp.company} | {exp.startDate} - {exp.endDate || "Present"}</Text>
-                    {exp.description && <Text style={styles.itemDescription}>{exp.description}</Text>}
+                    {exp.description && <Text style={styles.itemDescription}>{sanitizePdfText(exp.description)}</Text>}
                   </View>
                 ))}
               </View>
