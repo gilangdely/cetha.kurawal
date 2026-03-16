@@ -23,7 +23,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
       <SidebarProvider>
         <AdminShell>
           {children}
-          <Toaster position="top-right" richColors closeButton />
+          {/* <Toaster position="top-right" richColors closeButton /> */}
         </AdminShell>
       </SidebarProvider>
     </div>

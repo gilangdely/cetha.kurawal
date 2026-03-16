@@ -3,6 +3,7 @@
 import { ArrowRight, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import LinkedInAnalysisResult from "@/components/linkedin-analysis";
 import LinkedInProfileDisplay from "@/components/linkedin-profile-card";
 import { useUploadStore } from "@/store/uploadStore";
@@ -78,7 +79,6 @@ export default function ImproveLinkedInDashboard() {
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [aiResult, setAiResult] = useState<string | null>(null);
   const setGlobalUploading = useUploadStore((s) => s.setUploading);
   const setGlobalProgress = useUploadStore((s) => s.setProgress);
@@ -88,7 +88,6 @@ export default function ImproveLinkedInDashboard() {
     setLoading(true);
     setGlobalUploading(true, "linkedin");
     setGlobalProgress(5);
-    setError(null);
     setProfile(null);
     setAiResult(null);
 
@@ -116,7 +115,7 @@ export default function ImproveLinkedInDashboard() {
     }
 
     if (!cleanUsername) {
-      setError(t("errors.invalidProfileUrl"));
+      toast.error(t("errors.invalidProfileUrl"));
       setLoading(false);
       setGlobalProgress(0);
       setGlobalUploading(false);
@@ -197,7 +196,7 @@ export default function ImproveLinkedInDashboard() {
       router.push("/dashboard/improve-linkedin/result-improve-linkedin");
     } catch (err: any) {
       console.error(err);
-      setError(err.message || t("errors.requestProcessFailed"));
+      toast.error(err.message || t("errors.requestProcessFailed"));
       setGlobalProgress(0);
       setGlobalUploading(false);
     } finally {
@@ -244,11 +243,6 @@ export default function ImproveLinkedInDashboard() {
             </button>
           </div>
 
-          {error && (
-            <div className="mt-4 rounded-lg border border-red-300 bg-red-50 px-4 py-2 text-red-700">
-              {error}
-            </div>
-          )}
         </div>
       </div>
 
