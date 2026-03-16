@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface ContentFormHeaderProps {
   isEdit: boolean;
@@ -16,6 +15,7 @@ export function ContentFormHeader({
   status,
   onToggleStatus,
 }: ContentFormHeaderProps) {
+  const t = useTranslations("adminContents.form.header");
   const isPublished = status === "published";
 
   return (
@@ -23,7 +23,7 @@ export function ContentFormHeader({
       <div className="flex-1">
         <div className="flex items-center gap-2.5">
           <h1 className="text-xl font-bold tracking-tight text-gray-900">
-            {isEdit ? "Edit Konten" : "Buat Konten Baru"}
+            {isEdit ? t("titleEdit") : t("titleCreate")}
           </h1>
           <span
             className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${
@@ -35,11 +35,13 @@ export function ContentFormHeader({
             <span
               className={`h-1.5 w-1.5 rounded-full ${isPublished ? "bg-emerald-500" : "bg-gray-400"}`}
             />
-            {isPublished ? "Published" : "Draft"}
+            {isPublished ? t("status.published") : t("status.draft")}
           </span>
         </div>
         <p className="mt-0.5 text-sm text-gray-500">
-          {contentType === "article" ? "Artikel Teks" : "Video YouTube"}
+          {contentType === "article"
+            ? t("contentType.article")
+            : t("contentType.video")}
         </p>
       </div>
 
@@ -52,7 +54,7 @@ export function ContentFormHeader({
             : "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
         }`}
       >
-        {isPublished ? "Jadikan Draft" : "Set ke Published"}
+        {isPublished ? t("actions.setDraft") : t("actions.setPublished")}
       </button>
     </div>
   );

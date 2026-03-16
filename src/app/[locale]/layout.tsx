@@ -22,11 +22,12 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>;
 }>) {
   const { locale } = await params;
-  const messages = require(`../../messages/${locale}.json`);
 
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
+
+  const messages = (await import(`../../messages/${locale}.json`)).default;
 
   return (
     <html lang={locale}>

@@ -755,7 +755,8 @@
       "notifications": {
         "title": "Notifications",
         "empty": "No notifications yet",
-        "viewAll": "View All Notifications"
+        "viewAll": "View All Notifications",
+        "closeOverlayAria": "Close notifications overlay"
       },
       "routes": {
         "dashboard": "Dashboard",
@@ -1613,6 +1614,508 @@
       }
     },
     "backButton": "Check Another CV"
+  },
+  "adminDashboard": {
+    "actions": {
+      "newPage": "New Page",
+      "newPlan": "New Plan",
+      "newContent": "New Content"
+    },
+    "contentStats": {
+      "revenue": {
+        "title": "Revenue",
+        "hint": "Total successful transactions"
+      },
+      "library": {
+        "title": "Library",
+        "items": "Items",
+        "hint": "Articles, Videos & Assets"
+      },
+      "liveNow": {
+        "title": "Live Now",
+        "hint": "Active public content"
+      },
+      "tiers": {
+        "title": "Tiers",
+        "hint": "Active service plans"
+      }
+    },
+    "transactionDonut": {
+      "title": "Transaction Status",
+      "description": "User transaction summary",
+      "totalLabel": "Transactions",
+      "status": {
+        "success": "Success",
+        "pending": "Pending",
+        "failed": "Failed"
+      }
+    },
+    "transactionTrend": {
+      "revenueLabel": "Revenue",
+      "title": "Last 4 Months Profit",
+      "description": "Revenue statistics for {months}",
+      "footer": {
+        "primary": "Monthly revenue statistics",
+        "secondary": "Showing total revenue for the last 4 months"
+      }
+    },
+    "lastContent": {
+      "title": "Latest Content",
+      "seeAll": "See all",
+      "empty": "No content yet",
+      "types": {
+        "article": "Article",
+        "video": "Video"
+      },
+      "status": {
+        "published": "Published",
+        "draft": "Draft"
+      },
+      "time": {
+        "justNow": "Just now",
+        "minutesAgo": "{value}m ago",
+        "hoursAgo": "{value}h ago",
+        "daysAgo": "{value}d ago"
+      }
+    },
+    "recentTransactions": {
+      "title": "Recent Transactions",
+      "seeAll": "See all",
+      "fallbackUser": "User",
+      "empty": "No transactions",
+      "filters": {
+        "all": "All",
+        "verified": "Verified",
+        "pending": "Pending",
+        "rejected": "Rejected"
+      },
+      "summary": {
+        "total": "Total",
+        "verified": "Verified",
+        "pending": "Pending",
+        "rejected": "Rejected"
+      },
+      "status": {
+        "verified": "Verified",
+        "pending": "Pending",
+        "rejected": "Rejected"
+      },
+      "time": {
+        "justNow": "Just now",
+        "minutesAgo": "{value}m ago",
+        "hoursAgo": "{value}h ago",
+        "daysAgo": "{value}d ago"
+      }
+    }
+  },
+  "adminSubscriptionTiers": {
+    "list": {
+      "title": "Subscription Tiers",
+      "description": "Manage subscription plans and pricing for users.",
+      "addButton": "Add New Tier",
+      "deleteConfirm": "Are you sure you want to permanently delete tier \"{name}\"?"
+    },
+    "createPage": {
+      "title": "Create New Subscription Tier",
+      "description": "Set pricing, quota, and features that users will get."
+    },
+    "editPage": {
+      "title": "Edit Subscription Tier",
+      "description": "Set pricing, quota, and features that users will get."
+    },
+    "form": {
+      "sections": {
+        "basic": "Basic Information",
+        "features": "Feature List",
+        "settings": "Settings"
+      },
+      "fields": {
+        "name": "Tier Name",
+        "slug": "Slug",
+        "price": "Price (IDR)",
+        "quota": "Additional Quota",
+        "description": "Description",
+        "activeStatus": "Active Status",
+        "recommended": "Recommended Tier",
+        "displayOrder": "Display Order"
+      },
+      "placeholders": {
+        "name": "Example: Beginner",
+        "slug": "Example: beginner-tier",
+        "description": "Example: Suitable for fresh graduates.",
+        "feature": "Feature {index}"
+      },
+      "hints": {
+        "recommended": "Only one tier can be recommended",
+        "displayOrder": "Lower numbers are shown first."
+      },
+      "actions": {
+        "addFeature": "Add Feature",
+        "save": "Save Tier"
+      },
+      "errors": {
+        "featureRequired": "Tier must have at least one feature",
+        "saveFailed": "An error occurred while saving"
+      }
+    },
+    "stats": {
+      "total": {
+        "label": "Total Tiers",
+        "sublabel": "All plans"
+      },
+      "active": {
+        "label": "Active",
+        "sublabel": "Running"
+      },
+      "inactive": {
+        "label": "Inactive",
+        "sublabel": "Paused"
+      }
+    },
+    "table": {
+      "title": "Plan List",
+      "description": "Manage subscription tiers and quotas",
+      "totalBadge": "{count} TOTAL TIERS",
+      "columns": {
+        "tierInfo": "Tier Info",
+        "pricingQuota": "Pricing & Quota",
+        "display": "Display",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "empty": {
+        "title": "No plans yet",
+        "description": "Start by creating your first tier",
+        "createButton": "Create First Tier"
+      },
+      "quota": "{count} Credits",
+      "status": {
+        "active": "Active",
+        "paused": "Paused"
+      },
+      "actions": {
+        "edit": "Edit Tier",
+        "delete": "Delete"
+      }
+    }
+  },
+  "adminPayments": {
+    "page": {
+      "title": "Payment Verification",
+      "description": "Review transfer proof and activate user subscription plans.",
+      "confirmMessage": "Are you sure you want to {action} this transaction?",
+      "confirmActions": {
+        "verify": "verify",
+        "reject": "reject"
+      },
+      "alerts": {
+        "failed": "Failed: {error}",
+        "errorProcessing": "Error Processing: {error}"
+      }
+    },
+    "filters": {
+      "all": "All",
+      "pending": "Pending",
+      "verified": "Verified",
+      "rejected": "Rejected"
+    },
+    "status": {
+      "pending": "Pending",
+      "verified": "Verified",
+      "rejected": "Rejected",
+      "unknown": "{status}"
+    },
+    "stats": {
+      "pending": {
+        "label": "Awaiting Review",
+        "sublabel": "Pending"
+      },
+      "verified": {
+        "label": "Verified",
+        "sublabel": "Verified"
+      },
+      "rejected": {
+        "label": "Rejected",
+        "sublabel": "Rejected"
+      }
+    },
+    "table": {
+      "title": "Payment History",
+      "description": "Manage transactions, transfer proofs, and payment verification",
+      "totalBadge": "{count} TOTAL TRANSACTIONS",
+      "columns": {
+        "invoiceTime": "Invoice & Time",
+        "user": "User",
+        "packageAmount": "Package / Amount",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "empty": {
+        "title": "No transactions yet",
+        "description": "No data for this filter"
+      },
+      "fallback": {
+        "initial": "U",
+        "userWithoutName": "Unnamed User"
+      },
+      "actions": {
+        "viewProof": "Proof",
+        "verify": "Verify",
+        "reject": "Reject"
+      },
+      "proofDialog": {
+        "title": "Payment Proof",
+        "invoiceLabel": "Invoice",
+        "imageAlt": "Transfer Proof",
+        "downloadPdf": "Download Document File (PDF)"
+      }
+    }
+  },
+  "adminContents": {
+    "page": {
+      "title": "Career Tips Content",
+      "description": "Manage articles and tutorial videos for the platform.",
+      "newContent": "New Content",
+      "deleteConfirm": "Are you sure you want to permanently delete this content?",
+      "types": {
+        "article": "Article",
+        "video": "Video"
+      },
+      "status": {
+        "live": "Live",
+        "draft": "Draft"
+      },
+      "grid": {
+        "emptyTitle": "No content yet"
+      }
+    },
+    "createPage": {
+      "title": "Create New Content",
+      "description": "Create a new career tips article or video for the Kurawal platform."
+    },
+    "editPage": {
+      "title": "Edit Content",
+      "description": "Update article or video content for the Kurawal platform.",
+      "notFound": "Content not found."
+    },
+    "stats": {
+      "total": {
+        "label": "Total Content",
+        "sublabel": "TOTAL"
+      },
+      "article": {
+        "label": "Articles",
+        "sublabel": "ARTICLE"
+      },
+      "video": {
+        "label": "Videos",
+        "sublabel": "VIDEO"
+      },
+      "published": {
+        "label": "Published",
+        "sublabel": "LIVE",
+        "rate": "{value}% of total"
+      }
+    },
+    "filter": {
+      "searchPlaceholder": "Search content title...",
+      "typeOptions": {
+        "all": "All Formats",
+        "article": "Article",
+        "video": "Video"
+      },
+      "activeFilters": "Active filters:",
+      "resultCount": "{count} results"
+    },
+    "table": {
+      "title": "Content List",
+      "description": "Manage articles and tutorial videos for the platform",
+      "totalBadge": "{count} TOTAL CONTENT",
+      "columns": {
+        "title": "Title",
+        "type": "Type",
+        "status": "Status",
+        "created": "Created",
+        "actions": "Actions"
+      },
+      "empty": {
+        "title": "No content yet",
+        "description": "Create your first article or video",
+        "createButton": "Create Content"
+      },
+      "types": {
+        "article": "Article",
+        "video": "Video"
+      },
+      "status": {
+        "published": "Published",
+        "draft": "Draft"
+      },
+      "actions": {
+        "unpublish": "Move to Draft",
+        "publish": "Publish",
+        "edit": "Edit Content",
+        "delete": "Delete Permanently"
+      }
+    },
+    "form": {
+      "sections": {
+        "basicInfo": "Basic Information"
+      },
+      "errors": {
+        "saveFailed": "An error occurred while saving"
+      },
+      "header": {
+        "titleCreate": "Create New Content",
+        "titleEdit": "Edit Content",
+        "status": {
+          "published": "Published",
+          "draft": "Draft"
+        },
+        "contentType": {
+          "article": "Text Article",
+          "video": "YouTube Video"
+        },
+        "actions": {
+          "setDraft": "Set as Draft",
+          "setPublished": "Set as Published"
+        }
+      },
+      "typeSelector": {
+        "label": "Content Format",
+        "options": {
+          "article": "Article Text",
+          "video": "YouTube Video"
+        }
+      },
+      "mainFields": {
+        "title": {
+          "label": "Title",
+          "placeholder": "Example: 5 Common Mistakes During Interviews"
+        },
+        "excerpt": {
+          "label": "Excerpt",
+          "hint": "Card Summary",
+          "placeholder": "Write a two-sentence summary (max 250 characters)...",
+          "counter": "{count} / 250"
+        }
+      },
+      "editorSection": {
+        "title": {
+          "article": "Full Text Editor",
+          "video": "Video Embed Editor"
+        },
+        "youtube": {
+          "label": "YouTube URL",
+          "placeholder": "https://www.youtube.com/watch?v=...",
+          "hint": "Enter the full YouTube URL - the system will automatically render the iframe."
+        }
+      },
+      "metaSidebar": {
+        "title": "Publishing Metadata",
+        "fields": {
+          "slug": {
+            "label": "URL Slug",
+            "hint": "Leave empty to auto-generate",
+            "placeholder": "your-content-title"
+          },
+          "coverImage": {
+            "label": "Cover Image",
+            "placeholder": "https://...",
+            "previewAlt": "Preview"
+          },
+          "tags": {
+            "label": "Tags",
+            "hint": "Separate with commas",
+            "placeholder": "frontend, javascript, resume"
+          }
+        }
+      },
+      "submitCard": {
+        "saving": "Saving...",
+        "saveChanges": "Save Changes",
+        "saveToDatabase": "Save to Database"
+      }
+    }
+  },
+  "adminSiteSettings": {
+    "page": {
+      "title": "Site Settings",
+      "description": "Global settings for brand, SEO, and integrations. This page is currently in dummy mode for design purposes.",
+      "saveButton": "Save Changes",
+      "alerts": {
+        "saveDummy": "Dummy: settings are not connected to backend yet."
+      }
+    },
+    "form": {
+      "alerts": {
+        "maintenanceToggleDummy": "Dummy: maintenance toggle is not connected to backend yet.",
+        "betaToggleDummy": "Dummy: beta access toggle is not connected to backend yet."
+      },
+      "brand": {
+        "title": "Brand & Identity",
+        "fields": {
+          "siteName": {
+            "label": "Site Name",
+            "placeholder": "Brand name"
+          },
+          "tagline": {
+            "label": "Tagline",
+            "placeholder": "Short tagline"
+          },
+          "primaryColor": {
+            "label": "Primary Color (Tailwind token)",
+            "placeholder": "e.g. blue-600",
+            "hint": "Dummy field. Later this can be used to generate Tailwind theme dynamically."
+          },
+          "supportEmail": {
+            "label": "Support Email",
+            "placeholder": "Support email"
+          }
+        }
+      },
+      "statusSecurity": {
+        "title": "Status & Security",
+        "maintenance": {
+          "title": "Maintenance Mode",
+          "description": "When enabled, public users will see the maintenance page."
+        },
+        "requireLoginBeta": {
+          "title": "Require Login for Beta",
+          "description": "Restrict experimental features to specific users only."
+        },
+        "footer": "All settings are still dummy and do not save any data yet. The current focus is on admin panel layout and structure."
+      },
+      "seo": {
+        "title": "Default SEO",
+        "fields": {
+          "defaultMetaTitle": "Default Meta Title",
+          "defaultMetaDescription": "Default Meta Description",
+          "defaultShareImageUrl": "Default Share Image URL"
+        }
+      },
+      "integrations": {
+        "title": "Integrations",
+        "fields": {
+          "googleAnalyticsId": "Google Analytics ID",
+          "metaPixelId": "Meta Pixel ID"
+        },
+        "footer": "The values above are examples only. Later they can be connected to environment variables or dedicated Firestore config."
+      }
+    }
+  },
+  "adminSidebar": {
+    "logoAlt": "logo",
+    "badge": "ADMIN",
+    "sectionLabel": "Site Management",
+    "menu": {
+      "overview": "Overview",
+      "subscriptionPlans": "Subscription Plans",
+      "transactions": "Transactions",
+      "contentManagement": "Content Management",
+      "systemSettings": "System Settings"
+    },
+    "userUi": "Web User UI"
   },
   "api": {
     "checkout": {
