@@ -740,7 +740,8 @@
         "exhausted": "Your tokens are exhausted. Please add more tokens to continue using AI features.",
         "low": "Your tokens are almost depleted. Add more tokens to keep using AI.",
         "medium": "Your tokens are running low. Use them wisely or add more tokens.",
-        "safe": "Your tokens are still sufficient. Use AI to boost your career."
+        "safe": "Your tokens are still sufficient. Use AI to boost your career.",
+        "extraSafe": "Your tokens are in a safe zone. You can use AI features without worry."
       }
     },
 

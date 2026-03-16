@@ -12,6 +12,7 @@ import {
   PlayCircle,
 } from "lucide-react";
 import DOMPurify from "isomorphic-dompurify";
+import CareerTipsDetailSkeleton from "@/components/career-tips-detail-skeleton";
 
 interface ContentItem {
   id: string;
@@ -93,11 +94,7 @@ export default function CareerTipsDetailPage() {
   );
 
   if (loading) {
-    return (
-      <div className="flex min-h-[72vh] items-center justify-center px-4 pt-28 pb-10">
-        <div className="border-t-primaryBlue h-10 w-10 animate-spin rounded-full border-2 border-gray-300" />
-      </div>
-    );
+    return <CareerTipsDetailSkeleton />;
   }
 
   if (errorMsg || !content) {
