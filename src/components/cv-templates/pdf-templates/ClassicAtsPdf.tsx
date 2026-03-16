@@ -1,4 +1,6 @@
 import { Page, Text, View, StyleSheet, Image as PdfImage } from "@react-pdf/renderer";
+import type { Styles } from "@react-pdf/renderer";
+type Style = Styles[string];
 import { ResumeData } from "@/types/build-cv";
 import { sanitizePdfText } from "@/lib/utils";
 
@@ -187,6 +189,10 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     color: "#374151",
   },
+  contactItemWrapper: { 
+    flexDirection: "row", 
+    alignItems: "center" 
+  } as Style,
 });
 
 // Description: multi-line → dash bullets, single → plain
@@ -218,16 +224,16 @@ const ContactItems = ({
   rowStyle,
 }: {
   items: string[];
-  rowStyle: object;
+  rowStyle: Style;
 }) => {
 
   const filtered = items.filter(Boolean);
   return (
     <View style={rowStyle}>
       {filtered.map((item, i) => (
-        <View key={i} style={{ flexDirection: "row", alignItems: "center" }}>
+        <View key={i} style={styles.contactItemWrapper}>
           {i > 0 && (
-            <Text style={[styles.contactSep, { marginRight: "4pt" }]}>|</Text>
+            <Text style={[styles.contactSep, { marginRight: "4pt" } as Style]}>|</Text>
           )}
           <Text style={styles.contactItem}>{item}</Text>
         </View>
@@ -236,7 +242,7 @@ const ContactItems = ({
   );
 };
 
-export const ClassicAtsPdf = ({ data, style }: { data: ResumeData; style: any }) => {
+export const ClassicAtsPdf = ({ data, style }: { data: ResumeData; style: Record<string, any> }) => {
   const primaryColor: string = style?.fontColor || "#1a1a1a";
   const hasPhoto = data.personalInfo.showPhoto && data.personalInfo.photoUrl;
 
@@ -253,10 +259,10 @@ export const ClassicAtsPdf = ({ data, style }: { data: ResumeData; style: any })
 
       {/* ═══ HEADER */}
       {hasPhoto ? (
-        <View style={[styles.headerWithPhoto, { borderBottomColor: primaryColor }]}>
+        <View style={[styles.headerWithPhoto, { borderBottomColor: primaryColor } as Style]}>
           <PdfImage src={data.personalInfo.photoUrl!} style={styles.photo} />
           <View style={styles.headerText}>
-            <Text style={[styles.name, { color: primaryColor }]}>
+            <Text style={[styles.name, { color: primaryColor } as Style]}>
               {data.personalInfo.fullName || "Nama Lengkap"}
             </Text>
             {data.personalInfo.jobTitle && (
@@ -266,8 +272,8 @@ export const ClassicAtsPdf = ({ data, style }: { data: ResumeData; style: any })
           </View>
         </View>
       ) : (
-        <View style={[styles.header, { borderBottomColor: primaryColor }]}>
-          <Text style={[styles.name, { color: primaryColor }]}>
+        <View style={[styles.header, { borderBottomColor: primaryColor } as Style]}>
+          <Text style={[styles.name, { color: primaryColor } as Style]}>
             {data.personalInfo.fullName || "Nama Lengkap"}
           </Text>
           {data.personalInfo.jobTitle && (
@@ -280,7 +286,7 @@ export const ClassicAtsPdf = ({ data, style }: { data: ResumeData; style: any })
       {/* ═══ SUMMARY */}
       {data.personalInfo.summary && (
         <View style={styles.section} wrap={false}>
-          <Text style={[styles.sectionTitle, { borderBottomColor: primaryColor }]}>
+          <Text style={[styles.sectionTitle, { borderBottomColor: primaryColor } as Style]}>
             Professional Summary
           </Text>
           <Text style={styles.summary}>{sanitizePdfText(data.personalInfo.summary)}</Text>
@@ -290,7 +296,7 @@ export const ClassicAtsPdf = ({ data, style }: { data: ResumeData; style: any })
       {/* ═══ EXPERIENCE */}
       {data.experience.length > 0 && (
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { borderBottomColor: primaryColor }]}>
+          <Text style={[styles.sectionTitle, { borderBottomColor: primaryColor } as Style]}>
             Work Experience
           </Text>
           {data.experience.map((exp, i) => (
@@ -317,7 +323,7 @@ export const ClassicAtsPdf = ({ data, style }: { data: ResumeData; style: any })
       {/* ═══ EDUCATION */}
       {data.education.length > 0 && (
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { borderBottomColor: primaryColor }]}>
+          <Text style={[styles.sectionTitle, { borderBottomColor: primaryColor } as Style]}>
             Education
           </Text>
           {data.education.map((edu, i) => (
@@ -344,7 +350,7 @@ export const ClassicAtsPdf = ({ data, style }: { data: ResumeData; style: any })
       {/* ═══ SKILLS */}
       {data.skills.length > 0 && (
         <View style={styles.section} wrap={false}>
-          <Text style={[styles.sectionTitle, { borderBottomColor: primaryColor }]}>
+          <Text style={[styles.sectionTitle, { borderBottomColor: primaryColor } as Style]}>
             Core Competencies
           </Text>
           <View style={styles.skillsWrap}>

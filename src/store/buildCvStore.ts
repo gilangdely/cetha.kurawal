@@ -86,56 +86,74 @@ export const useCvBuilderStore = create<CvBuilderState>()(
       futureStates: [],
 
       _saveHistory: () => {
-        const state = get();
-        const currentState: CvHistoryState = {
-          data: state.data,
-          style: state.style,
-          activeTemplate: state.activeTemplate,
-        };
-        set({
-          pastStates: [...state.pastStates, currentState],
-          futureStates: [], // Clear future on new action
-        });
+        try {
+          const state = get();
+          const currentState: CvHistoryState = {
+            data: state.data,
+            style: state.style,
+            activeTemplate: state.activeTemplate,
+          };
+          
+          // Limit history depth to 20 to prevent memory bloat
+          const newPastStates = [...state.pastStates, currentState].slice(-20);
+          
+          set({
+            pastStates: newPastStates,
+            futureStates: [], // Clear future on new action
+          });
+        } catch (error) {
+          console.error("Failed to save history:", error);
+          // If storage is full, we might want to clear old history 
+          // or just fail gracefully without crashing
+        }
       },
 
       undo: () => {
-        const state = get();
-        if (state.pastStates.length === 0) return;
+        try {
+          const state = get();
+          if (state.pastStates.length === 0) return;
 
-        const previousState = state.pastStates[state.pastStates.length - 1];
-        const newPastStates = state.pastStates.slice(0, -1);
+          const previousState = state.pastStates[state.pastStates.length - 1];
+          const newPastStates = state.pastStates.slice(0, -1);
 
-        const currentState: CvHistoryState = {
-          data: state.data,
-          style: state.style,
-          activeTemplate: state.activeTemplate,
-        };
+          const currentState: CvHistoryState = {
+            data: state.data,
+            style: state.style,
+            activeTemplate: state.activeTemplate,
+          };
 
-        set({
-          ...previousState,
-          pastStates: newPastStates,
-          futureStates: [currentState, ...state.futureStates],
-        });
+          set({
+            ...previousState,
+            pastStates: newPastStates,
+            futureStates: [currentState, ...state.futureStates].slice(0, 20),
+          });
+        } catch (error) {
+          console.error("Undo failed:", error);
+        }
       },
 
       redo: () => {
-        const state = get();
-        if (state.futureStates.length === 0) return;
+        try {
+          const state = get();
+          if (state.futureStates.length === 0) return;
 
-        const nextState = state.futureStates[0];
-        const newFutureStates = state.futureStates.slice(1);
+          const nextState = state.futureStates[0];
+          const newFutureStates = state.futureStates.slice(1);
 
-        const currentState: CvHistoryState = {
-          data: state.data,
-          style: state.style,
-          activeTemplate: state.activeTemplate,
-        };
+          const currentState: CvHistoryState = {
+            data: state.data,
+            style: state.style,
+            activeTemplate: state.activeTemplate,
+          };
 
-        set({
-          ...nextState,
-          pastStates: [...state.pastStates, currentState],
-          futureStates: newFutureStates,
-        });
+          set({
+            ...nextState,
+            pastStates: [...state.pastStates, currentState].slice(-20),
+            futureStates: newFutureStates,
+          });
+        } catch (error) {
+          console.error("Redo failed:", error);
+        }
       },
 
       setTemplate: (template) => {
@@ -311,6 +329,12 @@ export const useCvBuilderStore = create<CvBuilderState>()(
     }),
     {
       name: "cetha-cv-builder-storage",
+      // Only persist data, activeTemplate and style. Exclude history to prevent QuotaExceededError.
+      partialize: (state) => ({
+        data: state.data,
+        activeTemplate: state.activeTemplate,
+        style: state.style,
+      }),
     },
   ),
 );
