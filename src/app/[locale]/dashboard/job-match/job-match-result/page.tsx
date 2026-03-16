@@ -62,7 +62,7 @@ export default function JobMatchResultPage() {
           <div className="absolute -top-12 -right-10 h-40 w-40 rounded-full bg-sky-200/30 blur-3xl" />
           <div className="absolute -bottom-14 left-10 h-32 w-32 rounded-full bg-amber-200/30 blur-3xl" />
 
-          <div className="absolute top-5 right-5 flex items-center gap-1.5 rounded-full border border-sky-200 bg-white/80 px-3 py-1 text-xs font-semibold text-sky-700 backdrop-blur">
+          <div className="absolute top-5 right-5 hidden items-center gap-1.5 rounded-full border border-sky-200 bg-white/80 px-3 py-1 text-xs font-semibold text-sky-700 backdrop-blur md:flex">
             <Sparkles size={14} />
             {t("hero.badge")}
           </div>

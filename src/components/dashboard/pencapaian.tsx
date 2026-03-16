@@ -168,7 +168,7 @@ export default function PencapaianTerbaru({
         </div>
 
         {/* LIST */}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 overflow-hidden">
           {loading ? (
             <PencapaianSkeleton />
           ) : achievements.length > 0 ? (
@@ -180,14 +180,14 @@ export default function PencapaianTerbaru({
                 <div className="flex items-start justify-between">
                   <button
                     onClick={() => openPreview(item)}
-                    className="flex flex-1 items-center gap-3 text-left"
+                    className="flex flex-1 items-center gap-3 overflow-hidden pr-4 text-left"
                   >
                     <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-orange-400 to-orange-600 text-white shadow-sm">
                       <Award size={16} />
                     </div>
 
-                    <div className="min-w-0">
-                      <h5 className="truncate text-sm font-semibold text-slate-800">
+                    <div className="mr-2 min-w-0">
+                      <h5 className="line-clamp-1 text-sm font-semibold text-slate-800">
                         {item.title}
                       </h5>
 
@@ -208,28 +208,7 @@ export default function PencapaianTerbaru({
                   </button>
 
                   {/* ACTIONS */}
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => openPreview(item)}
-                      className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition-all duration-200 hover:bg-blue-500 hover:text-white xl:opacity-0 xl:group-hover:opacity-100"
-                    >
-                      <Eye size={14} />
-                    </button>
-
-                    <button
-                      onClick={() => openEdit(item)}
-                      className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition-all duration-200 hover:bg-orange-500 hover:text-white xl:opacity-0 xl:group-hover:opacity-100"
-                    >
-                      <Pencil size={14} />
-                    </button>
-
-                    <button
-                      onClick={() => openDeleteDialog(item)}
-                      className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition-all duration-200 hover:bg-red-500 hover:text-white xl:opacity-0 xl:group-hover:opacity-100"
-                    >
-                      <Trash2 size={14} />
-                    </button>
-                  </div>
+                  <div className="flex items-center gap-2"></div>
                 </div>
               </div>
             ))
@@ -321,6 +300,16 @@ export default function PencapaianTerbaru({
                   className="flex items-center gap-1.5 rounded-md border border-gray-300 px-3 py-1.5 text-xs hover:bg-gray-100"
                 >
                   <X size={14} /> {t("preview.close")}
+                </button>
+
+                <button
+                  onClick={() => {
+                    setPreviewItem(null);
+                    openDeleteDialog(previewItem);
+                  }}
+                  className="flex items-center gap-1.5 rounded-md border border-red-200 px-3 py-1.5 text-xs text-red-500 hover:bg-red-50"
+                >
+                  <Trash2 size={14} /> {t("deleteDialog.confirm")}
                 </button>
               </div>
             </div>

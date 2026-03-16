@@ -13,6 +13,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   Check,
   Edit,
   PlusCircle,
@@ -36,6 +46,12 @@ interface EditTargetKarirProps {
   onTasksChange?: (
     tasks: { id: number; label: string; checked: boolean }[],
   ) => void; // baru
+  onDelete?: () => void | Promise<void>;
+  deleteLabel?: string;
+  deleteDialogTitle?: string;
+  deleteDialogDescription?: string;
+  deleteDialogCancelLabel?: string;
+  deleteDialogConfirmLabel?: string;
 }
 
 export default function EditTargetKarir({
@@ -46,6 +62,12 @@ export default function EditTargetKarir({
   initialTitle,
   initialTasks,
   onTasksChange,
+  onDelete,
+  deleteLabel,
+  deleteDialogTitle,
+  deleteDialogDescription,
+  deleteDialogCancelLabel,
+  deleteDialogConfirmLabel,
 }: EditTargetKarirProps) {
   const t = useTranslations("DashboardCareerTargets.editor");
   const [tasks, setTasks] = useState(initialTasks || []);
@@ -56,6 +78,7 @@ export default function EditTargetKarir({
 
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [upgradeMessage, setUpgradeMessage] = useState("");
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   // Prefill ketika sheet dibuka dalam mode edit / tambah
   // Reset bila tambah baru
@@ -129,6 +152,12 @@ export default function EditTargetKarir({
     onOpenChange?.(false);
   };
 
+  const handleConfirmDelete = async () => {
+    if (!onDelete) return;
+    await onDelete();
+    setIsDeleteDialogOpen(false);
+  };
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       {showTrigger && (
@@ -139,13 +168,13 @@ export default function EditTargetKarir({
         </SheetTrigger>
       )}
 
-      <SheetContent className="px-4">
+      <SheetContent className="flex h-full flex-col px-4">
         <SheetHeader className="px-0">
           <SheetTitle>{t("editTitle")}</SheetTitle>
           <SheetDescription>{t("description")}</SheetDescription>
         </SheetHeader>
 
-        <div className="space-y-6">
+        <div className="flex h-full flex-col gap-6">
           {/* Input Judul */}
           <div className="space-y-3">
             <label className="text-sm font-medium">
@@ -281,8 +310,50 @@ export default function EditTargetKarir({
           >
             {t("actions.save")}
           </Button>
+
+          <div className="mt-auto mb-4">
+            {onDelete && (
+              <Button
+                size="sm"
+                variant="destructive"
+                className="w-full"
+                onClick={() => setIsDeleteDialogOpen(true)}
+              >
+                {deleteLabel || t("actions.delete")}
+              </Button>
+            )}
+          </div>
         </div>
       </SheetContent>
+
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {deleteDialogTitle || t("actions.delete")}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {deleteDialogDescription ||
+                "Are you sure you want to delete this target?"}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+
+          <AlertDialogFooter>
+            <AlertDialogCancel>
+              {deleteDialogCancelLabel || "Cancel"}
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-red-500 hover:bg-red-600"
+              onClick={handleConfirmDelete}
+            >
+              {deleteDialogConfirmLabel || deleteLabel || t("actions.delete")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <UpgradeModal
         isOpen={showUpgradeModal}

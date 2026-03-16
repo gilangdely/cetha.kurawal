@@ -7,12 +7,12 @@ import { db } from "@/app/lib/firebase";
 import { logoutUser } from "@/app/lib/auth";
 import {
   Bell,
-  Search,
   User,
   ChevronDown,
   LogOut,
   Menu,
   Settings2,
+  X,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -40,7 +40,6 @@ import {
 import { useTranslations } from "next-intl";
 import { useNotificationStore } from "@/store/useNotificationStore";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
 
 function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(false);
@@ -70,6 +69,7 @@ const AppTopbar = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [openNotifMenu, setOpenNotifMenu] = useState(false);
   const notifMenuRef = useRef<HTMLDivElement>(null);
+  const isCompactScreen = useMediaQuery("(max-width: 1024px)");
 
   const {
     notifications,
@@ -101,6 +101,27 @@ const AppTopbar = () => {
       .replace(/-/g, " ")
       .replace(/\b\w/g, (char) => char.toUpperCase());
   };
+
+  const breadcrumbItems =
+    pathSegments.length > 3
+      ? [
+          { key: "ellipsis", label: "...", href: "", isCurrent: false },
+          ...pathSegments.slice(-2).map((segment, idx) => {
+            const segmentIndex = pathSegments.length - 2 + idx;
+            return {
+              key: `${segment}-${segmentIndex}`,
+              label: formatSegment(segment),
+              href: "/" + pathSegments.slice(0, segmentIndex + 1).join("/"),
+              isCurrent: idx === 1,
+            };
+          }),
+        ]
+      : pathSegments.map((segment, index) => ({
+          key: `${segment}-${index}`,
+          label: formatSegment(segment),
+          href: "/" + pathSegments.slice(0, index + 1).join("/"),
+          isCurrent: index === pathSegments.length - 1,
+        }));
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -176,8 +197,8 @@ const AppTopbar = () => {
   return (
     <>
       <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-gray-200 bg-white px-6 print:hidden">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
+        <div className="flex min-w-0 flex-1 items-center gap-4">
+          <div className="flex min-w-0 items-center gap-2">
             <SidebarTrigger
               onClick={handleSidebarToggle}
               className="flex h-9 w-9 items-center justify-center rounded-lg transition-colors hover:bg-gray-100 md:hidden"
@@ -185,27 +206,27 @@ const AppTopbar = () => {
               <Menu className="h-5 w-5 text-gray-600" />
             </SidebarTrigger>
 
-            <Breadcrumb>
-              <BreadcrumbList>
-                {pathSegments.map((segment, index) => {
-                  const href = "/" + pathSegments.slice(0, index + 1).join("/");
-
+            <Breadcrumb className="min-w-0">
+              <BreadcrumbList className="min-w-0 flex-nowrap overflow-hidden">
+                {breadcrumbItems.map((item, index) => {
                   return (
-                    <React.Fragment key={index}>
-                      <BreadcrumbItem>
-                        {index === pathSegments.length - 1 ? (
-                          <BreadcrumbPage>
-                            {formatSegment(segment)}
+                    <React.Fragment key={item.key}>
+                      <BreadcrumbItem className="max-w-[8rem] min-w-0 sm:max-w-[11rem]">
+                        {item.isCurrent || item.label === "..." ? (
+                          <BreadcrumbPage className="truncate">
+                            {item.label}
                           </BreadcrumbPage>
                         ) : (
                           <BreadcrumbLink asChild>
-                            <Link href={href}>{formatSegment(segment)}</Link>
+                            <Link href={item.href} className="block truncate">
+                              {item.label}
+                            </Link>
                           </BreadcrumbLink>
                         )}
                       </BreadcrumbItem>
 
-                      {index < pathSegments.length - 1 && (
-                        <BreadcrumbSeparator />
+                      {index < breadcrumbItems.length - 1 && (
+                        <BreadcrumbSeparator className="shrink-0" />
                       )}
                     </React.Fragment>
                   );
@@ -224,7 +245,7 @@ const AppTopbar = () => {
           )}
         </div>
 
-        <div className="flex items-center gap-2 md:gap-4">
+        <div className="flex shrink-0 items-center gap-2 md:gap-4">
           <div className="flex items-center gap-1">
             <div className="relative" ref={notifMenuRef}>
               <button
@@ -244,60 +265,88 @@ const AppTopbar = () => {
 
               <AnimatePresence>
                 {openNotifMenu && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute right-0 z-[100] mt-2 flex w-80 flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xl"
-                  >
-                    <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-4 py-3">
-                      <span className="text-sm font-bold text-gray-800">
-                        {t("notifications.title")}
-                      </span>
-                    </div>
-                    <div className="flex max-h-80 w-full flex-col overflow-y-auto">
-                      {notifications.length === 0 ? (
-                        <div className="px-4 py-6 text-center text-sm text-gray-400">
-                          {t("notifications.empty")}
-                        </div>
-                      ) : (
-                        notifications.slice(0, 5).map((notif) => (
-                          <button
-                            key={notif.id}
-                            onClick={() => {
-                              if (!notif.isRead) markAsRead(notif.id);
-                              if (notif.link) router.push(notif.link);
-                              setOpenNotifMenu(false);
-                            }}
-                            className={`flex flex-col gap-1 border-b border-gray-50 px-4 py-3 text-left transition hover:bg-gray-50 ${!notif.isRead ? "bg-blue-50/30" : ""}`}
-                          >
-                            <div className="flex w-full items-start justify-between gap-2">
-                              <span
-                                className={`text-sm ${!notif.isRead ? "font-bold text-gray-900" : "font-semibold text-gray-700"} truncate`}
-                              >
-                                {notif.title}
-                              </span>
-                              {!notif.isRead && (
-                                <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-blue-500" />
-                              )}
-                            </div>
-                            <span className="line-clamp-2 text-xs leading-relaxed text-gray-500">
-                              {notif.message}
-                            </span>
-                          </button>
-                        ))
-                      )}
-                    </div>
-                    {notifications.length > 5 && (
-                      <Link
-                        href="/dashboard"
-                        className="text-primaryBlue border-t border-gray-100 px-4 py-2.5 text-center text-xs font-semibold transition hover:bg-gray-50"
-                      >
-                        {t("notifications.viewAll")}
-                      </Link>
+                  <>
+                    {isCompactScreen && (
+                      <motion.button
+                        type="button"
+                        aria-label="Close notifications overlay"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        onClick={() => setOpenNotifMenu(false)}
+                        className="fixed top-16 right-0 bottom-0 left-0 z-[90] bg-slate-950/20 backdrop-blur-sm"
+                      />
                     )}
-                  </motion.div>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.2 }}
+                      className={`z-[100] flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xl ${
+                        isCompactScreen
+                          ? "fixed top-20 right-4 left-4 max-h-[min(24rem,calc(100vh-6rem))]"
+                          : "absolute right-0 mt-2 w-80"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-4 py-3">
+                        <span className="text-sm font-bold text-gray-800">
+                          {t("notifications.title")}
+                        </span>
+
+                        {isCompactScreen && (
+                          <button
+                            onClick={() => setOpenNotifMenu(false)}
+                            className="rounded-full p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        )}
+                      </div>
+                      <div className="flex min-h-0 w-full flex-col overflow-y-auto">
+                        {notifications.length === 0 ? (
+                          <div className="px-4 py-6 text-center text-sm text-gray-400">
+                            {t("notifications.empty")}
+                          </div>
+                        ) : (
+                          notifications.slice(0, 5).map((notif) => (
+                            <button
+                              key={notif.id}
+                              onClick={() => {
+                                if (!notif.isRead) markAsRead(notif.id);
+                                if (notif.link) router.push(notif.link);
+                                setOpenNotifMenu(false);
+                              }}
+                              className={`flex flex-col gap-1 border-b border-gray-50 px-4 py-3 text-left transition hover:bg-gray-50 ${!notif.isRead ? "bg-blue-50/30" : ""}`}
+                            >
+                              <div className="flex w-full items-start justify-between gap-2">
+                                <span
+                                  className={`text-sm ${!notif.isRead ? "font-bold text-gray-900" : "font-semibold text-gray-700"} truncate`}
+                                >
+                                  {notif.title}
+                                </span>
+                                {!notif.isRead && (
+                                  <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-blue-500" />
+                                )}
+                              </div>
+                              <span className="line-clamp-2 text-xs leading-relaxed text-gray-500">
+                                {notif.message}
+                              </span>
+                            </button>
+                          ))
+                        )}
+                      </div>
+                      {notifications.length > 5 && (
+                        <Link
+                          href="/dashboard"
+                          className="text-primaryBlue border-t border-gray-100 px-4 py-2.5 text-center text-xs font-semibold transition hover:bg-gray-50"
+                        >
+                          {t("notifications.viewAll")}
+                        </Link>
+                      )}
+                    </motion.div>
+                  </>
                 )}
               </AnimatePresence>
             </div>

@@ -25,6 +25,7 @@ export default function CethaBot() {
   const [showChat, setShowChat] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [activePage, setActivePage] = useState("home");
+  const [isBotTyping, setIsBotTyping] = useState(false);
 
   const FAQs = [
     {
@@ -60,11 +61,15 @@ export default function CethaBot() {
       setShowChat(false);
       setShowMenu(false);
       setActivePage("home");
+      setIsBotTyping(false);
     }
   }, [isOpen]);
 
   useEffect(() => {
-    if (!showChat) setShowMenu(false);
+    if (!showChat) {
+      setShowMenu(false);
+      setIsBotTyping(false);
+    }
   }, [showChat]);
 
   const handleFAQClick = (page: string) => {
@@ -119,7 +124,9 @@ export default function CethaBot() {
                             ? t("header.descriptions.howWorks")
                             : activePage === "how-use-cetha"
                               ? t("header.descriptions.howUse")
-                              : t("header.descriptions.default")}
+                              : isBotTyping
+                                ? "Cetha sedang mengetik..."
+                                : t("header.descriptions.default")}
                       </p>
                     </div>
                   </div>
@@ -223,7 +230,7 @@ export default function CethaBot() {
             ) : activePage === "how-use-cetha" ? (
               <HowUseCetha />
             ) : (
-              <ChatCethaBot />
+              <ChatCethaBot onTypingChange={setIsBotTyping} />
             )}
           </motion.div>
         )}
